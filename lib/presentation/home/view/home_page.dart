@@ -7,10 +7,13 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Placeholder(
+      child: Center(
+        child: Text('Vote your face!'),
+      ),
+    );
   }
 }
-
 
 // @RoutePage()
 // class HomePage extends StatelessWidget {

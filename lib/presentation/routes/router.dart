@@ -13,7 +13,7 @@ class AppRouter extends $AppRouter {
     // AutoRoute(page: LoginPage, initial: false),
     // AutoRoute(page: SignUpPage, initial: false),
     // AutoRoute(page: VerificationPage, initial: false),
-    AutoRoute(page: HomeRoute.page, initial: false),
+    AutoRoute(page: HomeRoute.page, initial: true),
     // AutoRoute(
     //     path: '/circle-detail-page/:id',
     //     page: CircleDetailPage,
