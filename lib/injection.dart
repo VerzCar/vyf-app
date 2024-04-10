@@ -1,4 +1,6 @@
 import 'package:get_it/get_it.dart';
+
+import 'package:vote_your_face/application/authentication/bloc/authentication_bloc.dart';
 // import 'package:user_repository/user_repository.dart';
 // import 'package:vote_circle_repository/vote_circle_repository.dart';
 // import 'package:vote_your_face/application/authentication/authentication.dart';

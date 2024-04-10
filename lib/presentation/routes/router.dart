@@ -1,13 +1,11 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:vote_your_face/presentation/home/home.dart';
-
-part 'router.gr.dart';
+import 'package:vote_your_face/presentation/routes/router.gr.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Page,Route')
 class AppRouter extends $AppRouter {
 
   @override
-  RouteType get defaultRouteType => RouteType.material();
+  RouteType get defaultRouteType => const RouteType.material();
 
   @override
   List<AutoRoute> get routes => [
@@ -15,7 +13,7 @@ class AppRouter extends $AppRouter {
     // AutoRoute(page: LoginPage, initial: false),
     // AutoRoute(page: SignUpPage, initial: false),
     // AutoRoute(page: VerificationPage, initial: false),
-    AutoRoute(page: HomePage.page, initial: false),
+    AutoRoute(page: HomeRoute.page, initial: false),
     // AutoRoute(
     //     path: '/circle-detail-page/:id',
     //     page: CircleDetailPage,

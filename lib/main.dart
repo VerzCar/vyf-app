@@ -30,9 +30,9 @@ Future<void> _configureAmplify() async {
     await Amplify.addPlugins([auth]);
     // note that Amplify cannot be configured more than once!
     await Amplify.configure(amplifyconfig);
-  } catch (e) {
+  } on Exception catch (e) {
     // error handling can be improved for sure!
     // but this will be sufficient for the purposes of this
-    print('An error occurred while configuring Amplify: $e');
+    safePrint('An error occurred while configuring Amplify: $e');
   }
 }

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vote_your_face/presentation/routes/router.dart' as r;
+import 'package:vote_your_face/presentation/routes/router.dart';
 import 'package:vote_your_face/application/authentication/authentication.dart';
 import 'package:vote_your_face/theme.dart';
 
 import 'injection.dart';
 
 class App extends StatelessWidget {
-  final _appRouter = r.AppRouter();
+  final _appRouter = AppRouter();
 
-  App({Key? key}) : super(key: key);
+  App({super.key});
 
   @override
   Widget build(BuildContext context) {

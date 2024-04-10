@@ -312,18 +312,19 @@ class AuthenticationRepository {
 
   Future<void> _checkAuthStatus() async {
     try {
-      final AuthSession result = await Amplify.Auth.fetchAuthSession();
-result
-      String? accessToken =
-          (result as CognitoAuthSession).userPoolTokensResult
-      _accessToken = accessToken != null ? accessToken : '';
+      final cognitoPlugin =
+          await Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
+      final result = await cognitoPlugin.fetchAuthSession();
+
+      JsonWebToken accessToken = result.userPoolTokensResult.value.accessToken;
+      _accessToken = accessToken.raw;
 
       if (result.isSignedIn) {
         _authFlowStatus = AuthFlowStatus.authenticated;
         return;
       }
     } catch (e) {
-      print('Check auth state failure $e');
+      safePrint('Check auth state failure $e');
     }
     _authFlowStatus = AuthFlowStatus.unauthenticated;
   }
