@@ -4,7 +4,7 @@
     <application
         android:label="vote_your_face"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/voteyourface_logo">
         <activity
             android:name=".MainActivity"
             android:exported="true"
