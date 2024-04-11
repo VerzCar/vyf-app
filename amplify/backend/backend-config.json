@@ -1,0 +1,45 @@
+{
+  "auth": {
+    "voteyourfaced0e2fcc6": {
+      "customAuth": false,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "serviceType": "imported"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_auth_voteyourfaced0e2fcc6_nativeClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "voteyourfaced0e2fcc6"
+        }
+      ]
+    },
+    "AMPLIFY_auth_voteyourfaced0e2fcc6_userPoolId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "voteyourfaced0e2fcc6"
+        }
+      ]
+    },
+    "AMPLIFY_auth_voteyourfaced0e2fcc6_userPoolName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "voteyourfaced0e2fcc6"
+        }
+      ]
+    },
+    "AMPLIFY_auth_voteyourfaced0e2fcc6_webClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "voteyourfaced0e2fcc6"
+        }
+      ]
+    }
+  }
+}

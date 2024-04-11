@@ -1,0 +1,25 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-voteyourface-dev-125240-authRole",
+      "UnauthRoleArn": "arn:aws:iam::451034840874:role/amplify-voteyourface-dev-125240-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::451034840874:role/amplify-voteyourface-dev-125240-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-voteyourface-dev-125240-deployment",
+      "UnauthRoleName": "amplify-voteyourface-dev-125240-unauthRole",
+      "StackName": "amplify-voteyourface-dev-125240",
+      "StackId": "arn:aws:cloudformation:eu-central-1:451034840874:stack/amplify-voteyourface-dev-125240/74830480-f728-11ee-af58-064436bab3fb",
+      "AmplifyAppId": "d2mpswy0l7kr7h"
+    },
+    "categories": {
+      "auth": {
+        "voteyourfaced0e2fcc6": {
+          "userPoolId": "eu-central-1_3bcD2yICY",
+          "userPoolName": "vyf-user-pool ",
+          "webClientId": "5dtl4vgliro8abpt5rfioseicf",
+          "nativeClientId": "5dtl4vgliro8abpt5rfioseicf"
+        }
+      }
+    }
+  }
+}
