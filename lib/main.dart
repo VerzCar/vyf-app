@@ -7,19 +7,14 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'amplifyconfiguration.dart';
 
-Future<void> main() {
-  return BlocOverrides.runZoned(
-    () async {
-      WidgetsFlutterBinding.ensureInitialized();
-      await _initializeApp();
-      runApp(App());
-    },
-    blocObserver: AppBlocObserver(),
-  );
+Future<void> main() async {
+  Bloc.observer = AppBlocObserver();
+  WidgetsFlutterBinding.ensureInitialized();
+  await _initializeApp();
+  runApp(App());
 }
 
 Future<void> _initializeApp() async {
-  // configure Amplify
   await _configureAmplify();
   await di.init();
 }
@@ -28,11 +23,8 @@ Future<void> _configureAmplify() async {
   try {
     final auth = AmplifyAuthCognito();
     await Amplify.addPlugins([auth]);
-    // note that Amplify cannot be configured more than once!
     await Amplify.configure(amplifyconfig);
   } on Exception catch (e) {
-    // error handling can be improved for sure!
-    // but this will be sufficient for the purposes of this
     safePrint('An error occurred while configuring Amplify: $e');
   }
 }

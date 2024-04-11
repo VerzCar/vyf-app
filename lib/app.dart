@@ -1,3 +1,4 @@
+import 'package:amplify_authenticator/amplify_authenticator.dart';
 import 'package:flutter/material.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,14 +29,17 @@ class App extends StatelessWidget {
         //   create: (context) => sl<ProfileEditCubit>(),
         // ),
       ],
-      child: MaterialApp.router(
-        routeInformationParser: _appRouter.defaultRouteParser(),
-        routerDelegate: _appRouter.delegate(),
-        debugShowCheckedModeBanner: false,
-        title: 'Vote your face',
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.light,
+      child: Authenticator(
+        child: MaterialApp.router(
+          routeInformationParser: _appRouter.defaultRouteParser(),
+          routerDelegate: _appRouter.delegate(),
+          debugShowCheckedModeBanner: false,
+          title: 'Vote your face',
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: ThemeMode.light,
+          builder: Authenticator.builder(),
+        ),
       ),
     );
   }
