@@ -13,7 +13,7 @@ class UserApiClient implements IUserApiClient {
   UserApiClient({required authenticationRepository})
       : _authenticationRepository = authenticationRepository;
 
-  final AuthenticationRepository _authenticationRepository;
+  final IAuthenticationRepository _authenticationRepository;
   final String _baseApiHost = 'vyf-user-service-4fe07f1427d1.herokuapp.com';
   final String _basePath = 'v1/api/user';
 
