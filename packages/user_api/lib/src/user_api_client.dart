@@ -22,26 +22,26 @@ class UserApiClient {
     try {
       final res = await http.get(_uri(), headers: _headers());
 
-      if (res.statusCode < HttpStatus.internalServerError) {
-        final apiResponse = ApiResponse<Map<String, dynamic>>.fromJson(
-            jsonDecode(res.body) as Map<String, dynamic>);
-
-        if (res.statusCode == HttpStatus.ok) {
-          return User.fromJson(apiResponse.data);
-        } else {
-          logger.w('querying user failed: $apiResponse');
-          throw QueryUserFailure(
-            statusCode: res.statusCode,
-            msg: apiResponse.msg,
-            status: apiResponse.status,
-          );
-        }
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.w('querying user server error: $res');
+        throw ApiError(res);
       }
-      logger.w('querying user server error: $res');
-      throw ApiError(res);
+
+      final apiResponse = ApiResponse<Map<String, dynamic>>.fromJson(
+          jsonDecode(res.body) as Map<String, dynamic>);
+
+      if (res.statusCode == HttpStatus.ok) {
+        return User.fromJson(apiResponse.data);
+      }
+
+      logger.w('querying user failed: $apiResponse');
+      throw QueryUserFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
     } catch (e) {
-      logger.w('api error: $e');
-      throw ApiError(e);
+      rethrow;
     }
   }
 
