@@ -7,7 +7,9 @@ class UserRepository implements IUserRepository {
   UserRepository({
     required IAuthenticationRepository authenticationRepository,
     user_api.IUserApiClient? userApi,
-  }) : _userApi = userApi ?? user_api.UserApiClient(authenticationRepository: authenticationRepository);
+  }) : _userApi = userApi ??
+            user_api.UserApiClient(
+                authenticationRepository: authenticationRepository);
 
   final user_api.IUserApiClient _userApi;
 
@@ -15,5 +17,18 @@ class UserRepository implements IUserRepository {
   Future<User> me() async {
     final res = await _userApi.fetchMe();
     return User.fromApiUser(res);
+  }
+
+  @override
+  Future<User> x(String id) async {
+    final res = await _userApi.fetchX(id);
+    return User.fromApiUser(res);
+  }
+
+  @override
+  Future<List<User>> users() async {
+    final res = await _userApi.fetchUsers();
+    final users = res.map((user) => User.fromApiUser(user)).toList();
+    return users;
   }
 }

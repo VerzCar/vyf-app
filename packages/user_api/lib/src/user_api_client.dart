@@ -25,7 +25,7 @@ class UserApiClient implements IUserApiClient {
       final res = await http.get(_uri(), headers: _headers());
 
       if (res.statusCode >= HttpStatus.internalServerError) {
-        logger.w('querying user server error: $res');
+        logger.e('querying user server error: $res');
         throw ApiError(res);
       }
 
@@ -36,7 +36,7 @@ class UserApiClient implements IUserApiClient {
         return User.fromJson(apiResponse.data);
       }
 
-      logger.w('querying user failed: $apiResponse');
+      logger.e('querying user failed: $apiResponse');
       throw QueryUserFailure(
         statusCode: res.statusCode,
         msg: apiResponse.msg,
@@ -47,46 +47,67 @@ class UserApiClient implements IUserApiClient {
     }
   }
 
-  // updates the users profile and returns the updated profile data
-/*  Future<Profile> updateUserProfile(ProfileInput profileInput) async {
+  @override
+  Future<User> fetchX(String id) async {
     var logger = Logger();
 
     try {
-      final client = _client();
-      final result = await client.mutate$updateUserProfile(
-        Options$Mutation$updateUserProfile(
-          variables: Variables$Mutation$updateUserProfile(
-            userInput: Input$UserUpdateInput(
-              profile: Input$ProfileInput(
-                bio: profileInput.bio,
-                whyVoteMe: profileInput.whyVoteMe,
-                imageSrc: profileInput.imageSrc,
-              ),
-            ),
-          ),
-        ),
-      );
+      final res = await http.get(_uri(path: id), headers: _headers());
 
-      if (result.hasException) {
-        logger.i(result.exception?.linkException);
-        logger.i(result.exception?.graphqlErrors.first);
-        throw MutationUpdateUserProfileFailure();
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('querying user x server error: $res');
+        throw ApiError(res);
       }
 
-      final profile = result.parsedData!.updateUser.profile!;
-      logger.i(profile.whyVoteMe);
-      return Profile(
-        id: profile.id,
-        bio: profile.bio,
-        whyVoteMe: profile.whyVoteMe,
-        imageSrc: profile.imageSrc,
-        imagePlaceholderColors: profile.imagePlaceholderColors,
+      final apiResponse = ApiResponse<Map<String, dynamic>>.fromJson(
+          jsonDecode(res.body) as Map<String, dynamic>);
+
+      if (res.statusCode == HttpStatus.ok) {
+        return User.fromJson(apiResponse.data);
+      }
+
+      logger.e('querying user x failed: $apiResponse');
+      throw QueryUserFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
       );
     } catch (e) {
-      logger.e(e);
-      throw MutationUpdateUserProfileFailure();
+      rethrow;
     }
-  }*/
+  }
+
+  @override
+  Future<List<User>> fetchUsers() async {
+    var logger = Logger();
+
+    try {
+      final res = await http.get(_uri(path: 'users'), headers: _headers());
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('querying users server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<List<Map<String, dynamic>>>.fromJson(
+          jsonDecode(res.body) as Map<String, dynamic>);
+
+      if (res.statusCode == HttpStatus.ok) {
+        final users =
+            apiResponse.data.map((user) => User.fromJson(user)).toList();
+        return users;
+      }
+
+      logger.e('querying users failed: $apiResponse');
+      throw QueryUserFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
 
   Uri _uri({String? path, Map<String, dynamic>? queryParameters}) {
     final httpsUri = Uri(
