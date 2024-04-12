@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:logger/logger.dart';
@@ -19,10 +20,24 @@ class UserApiClient {
     var logger = Logger();
     final res = await http.get(_uri(), headers: _headers());
 
-    if(res.statusCode == 200) {
-      return User.fromJson(jsonDecode(res.body) as Map<String, dynamic>);
+    if (res.statusCode == HttpStatus.ok) {
+      try {
+        //logger.i(jsonDecode(res.body) as Map<String, dynamic>);
+
+        // final apiRes = ApiResponse<Map<String,Map<String, dynamic>>>.fromJson(
+        //     jsonDecode(res.body) as Map<String, dynamic>);
+        final jsonData = jsonDecode(res.body) as Map<String, dynamic>;
+
+        logger.i(jsonData['data']);
+        //logger.i(ApiResponse<Map<String, dynamic>>.fromJson(jsonDecode(res.body) as Map<String, dynamic>).data);
+        return User.fromJson(jsonData['data'] as Map<String, dynamic>);
+      } catch (e) {
+        logger.e(e);
+        throw QueryUserFailure();
+      }
     } else {
       logger.e(res.body);
+      logger.i(ApiResponse<Map<String, dynamic>>.fromJson(jsonDecode(res.body) as Map<String, dynamic>));
       throw QueryUserFailure();
     }
   }
