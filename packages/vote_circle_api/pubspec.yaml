@@ -1,6 +1,6 @@
-name: user_api
-description: User Service API client.
-version: 1.0.0
+name: vote_circle_api
+description: "Vote circle api."
+version: 0.0.1
 homepage: ''
 publish_to: none
 
