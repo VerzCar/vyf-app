@@ -18,27 +18,30 @@ class UserApiClient {
 
   Future<User> fetchMe() async {
     var logger = Logger();
-    final res = await http.get(_uri(), headers: _headers());
 
-    if (res.statusCode == HttpStatus.ok) {
-      try {
-        //logger.i(jsonDecode(res.body) as Map<String, dynamic>);
+    try {
+      final res = await http.get(_uri(), headers: _headers());
 
-        // final apiRes = ApiResponse<Map<String,Map<String, dynamic>>>.fromJson(
-        //     jsonDecode(res.body) as Map<String, dynamic>);
-        final jsonData = jsonDecode(res.body) as Map<String, dynamic>;
+      if (res.statusCode < HttpStatus.internalServerError) {
+        final apiResponse = ApiResponse<Map<String, dynamic>>.fromJson(
+            jsonDecode(res.body) as Map<String, dynamic>);
 
-        logger.i(jsonData['data']);
-        //logger.i(ApiResponse<Map<String, dynamic>>.fromJson(jsonDecode(res.body) as Map<String, dynamic>).data);
-        return User.fromJson(jsonData['data'] as Map<String, dynamic>);
-      } catch (e) {
-        logger.e(e);
-        throw QueryUserFailure();
+        if (res.statusCode == HttpStatus.ok) {
+          return User.fromJson(apiResponse.data);
+        } else {
+          logger.w('querying user failed: $apiResponse');
+          throw QueryUserFailure(
+            statusCode: res.statusCode,
+            msg: apiResponse.msg,
+            status: apiResponse.status,
+          );
+        }
       }
-    } else {
-      logger.e(res.body);
-      logger.i(ApiResponse<Map<String, dynamic>>.fromJson(jsonDecode(res.body) as Map<String, dynamic>));
-      throw QueryUserFailure();
+      logger.w('querying user server error: $res');
+      throw ApiError(res);
+    } catch (e) {
+      logger.w('api error: $e');
+      throw ApiError(e);
     }
   }
 

@@ -1,5 +1,28 @@
 part of 'user_api_client.dart';
 
-class QueryUserFailure implements Exception {}
+abstract class ApiFailure implements Exception {
+  final int statusCode;
+  final String? msg;
+  final ResponseStatus? status;
 
-class MutationUpdateUserProfileFailure implements Exception {}
+  ApiFailure({
+    required this.statusCode,
+    this.msg,
+    this.status,
+  });
+}
+
+class ApiError implements Exception {
+  final Object error;
+
+  ApiError(this.error);
+}
+
+class QueryUserFailure extends ApiFailure {
+  QueryUserFailure({
+    required super.statusCode,
+    super.msg,
+    super.status,
+  });
+}
+

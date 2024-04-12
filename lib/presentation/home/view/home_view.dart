@@ -18,39 +18,39 @@ class HomeView extends StatelessWidget {
       body: IndexedStack(
         index: selectedTab.index,
         children: [
-          Placeholder(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('Circles'),
-                  TextButton(
-                    onPressed: () => {
-                      context
-                          .read<AuthenticationBloc>()
-                          .add(AuthenticationLogoutRequested())
-                    },
-                    child: const Text('Sign out'),
-                  )
-                ],
-              ),
-            ),
-          ),
-          const Placeholder(
-            child: Center(
-              child: Text('Rankings'),
-            ),
-          ),
-          const Placeholder(
-            child: Center(
-              child: Text('Users'),
-            ),
-          ),
+          // Placeholder(
+          //   child: Center(
+          //     child: Column(
+          //       mainAxisAlignment: MainAxisAlignment.center,
+          //       children: [
+          //         const Text('Circles'),
+          //         TextButton(
+          //           onPressed: () => {
+          //             context
+          //                 .read<AuthenticationBloc>()
+          //                 .add(AuthenticationLogoutRequested())
+          //           },
+          //           child: const Text('Sign out'),
+          //         )
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          // const Placeholder(
+          //   child: Center(
+          //     child: Text('Rankings'),
+          //   ),
+          // ),
+          // const Placeholder(
+          //   child: Center(
+          //     child: Text('Users'),
+          //   ),
+          // ),
           FutureBuilder<User>(
             future: userApi.fetchMe(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return Text(snapshot.data!.username);
+                return Center(child: Text(snapshot.data!.username));
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
               }

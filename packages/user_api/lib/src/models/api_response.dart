@@ -17,21 +17,11 @@ class ApiResponse<T> {
     required this.data,
   });
 
-  factory ApiResponse.fromJson(Map<String, dynamic> json) {
-    return switch (json) {
-      {
-        'status': ResponseStatus status,
-        'msg': String msg,
-        'data': T data,
-      } =>
-        ApiResponse(
-          status: status,
-          msg: msg,
-          data: data,
-        ),
-      _ => throw const FormatException('Failed to load api response.'),
-    };
-  }
+  factory ApiResponse.fromJson(Map<String, dynamic> json) => ApiResponse(
+        status: _enumDecode(_responseStatusEnumMap, json['status']),
+        msg: json['msg'] as String,
+        data: json['data'] as T,
+      );
 }
 
 // Helper function to convert enum to string
@@ -60,4 +50,38 @@ ResponseStatus stringToResponseStatus(String status) {
     default:
       throw ArgumentError('Invalid ResponseStatus string');
   }
+}
+
+const _responseStatusEnumMap = {
+  ResponseStatus.Nop: 'nop',
+  ResponseStatus.Error: 'error',
+  ResponseStatus.Success: 'success'
+};
+
+K _enumDecode<K extends Enum, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
+  }
+
+  for (var entry in enumValues.entries) {
+    if (entry.value == source) {
+      return entry.key;
+    }
+  }
+
+  if (unknownValue == null) {
+    throw ArgumentError(
+      '`$source` is not one of the supported values: '
+      '${enumValues.values.join(', ')}',
+    );
+  }
+
+  return unknownValue;
 }
