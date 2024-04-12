@@ -14,7 +14,7 @@ class Address extends Equatable {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  Address({
+  const Address({
     required this.id,
     required this.address,
     required this.city,

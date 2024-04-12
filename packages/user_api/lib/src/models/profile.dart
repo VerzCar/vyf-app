@@ -13,7 +13,7 @@ class Profile extends Equatable {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  Profile({
+  const Profile({
     required this.id,
     required this.bio,
     required this.whyVoteMe,

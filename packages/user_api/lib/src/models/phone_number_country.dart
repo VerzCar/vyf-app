@@ -15,7 +15,7 @@ class PhoneNumberCountry extends Equatable {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  PhoneNumberCountry({
+  const PhoneNumberCountry({
     required this.id,
     required this.name,
     required this.alpha2,

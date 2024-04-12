@@ -16,7 +16,7 @@ class Contact extends Equatable {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  Contact({
+  const Contact({
     required this.id,
     required this.email,
     required this.phoneNumber,
