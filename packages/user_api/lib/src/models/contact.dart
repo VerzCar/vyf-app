@@ -1,11 +1,10 @@
-import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'phone_number_country.dart';
 
 part 'contact.g.dart';
 
 @JsonSerializable()
-class Contact extends Equatable {
+class Contact {
   final int id;
   final String email;
   final String phoneNumber;
@@ -32,18 +31,6 @@ class Contact extends Equatable {
 
   Map<String, dynamic> toJson() => _$ContactToJson(this);
 
-  @override
-  List<Object?> get props => [
-        id,
-        email,
-        phoneNumber,
-        phoneNumberCountry,
-        phoneNumber2,
-        phoneNumber2Country,
-        web,
-        createdAt,
-        updatedAt,
-      ];
 }
 
 

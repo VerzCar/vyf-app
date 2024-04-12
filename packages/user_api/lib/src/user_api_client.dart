@@ -5,10 +5,11 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:logger/logger.dart';
 import 'package:user_api/user_api.dart';
 import 'package:http/http.dart' as http;
+import 'i_user_api_client.dart';
 
 part 'api-errors.dart';
 
-class UserApiClient {
+class UserApiClient implements IUserApiClient {
   UserApiClient({required authenticationRepository})
       : _authenticationRepository = authenticationRepository;
 
@@ -16,6 +17,7 @@ class UserApiClient {
   final String _baseApiHost = 'vyf-user-service-4fe07f1427d1.herokuapp.com';
   final String _basePath = 'v1/api/user';
 
+  @override
   Future<User> fetchMe() async {
     var logger = Logger();
 

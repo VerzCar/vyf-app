@@ -1001,12 +1001,19 @@ packages:
     source: hosted
     version: "3.1.1"
   user_api:
-    dependency: "direct main"
+    dependency: transitive
     description:
       path: "packages/user_api"
       relative: true
     source: path
     version: "1.0.0"
+  user_repository:
+    dependency: "direct main"
+    description:
+      path: "packages/user_repository"
+      relative: true
+    source: path
+    version: "0.0.1"
   uuid:
     dependency: transitive
     description:

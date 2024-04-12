@@ -1,8 +1,6 @@
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:user_api/user_api.dart';
-import 'package:vote_your_face/application/authentication/authentication.dart';
+import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/home/cubit/home_cubit.dart';
 
@@ -12,7 +10,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final selectedTab = context.select((HomeCubit cubit) => cubit.state.tab);
-    final userApi = UserApiClient(authenticationRepository: sl<AuthenticationRepository>());
+    final userRepo = sl<IUserRepository>();
 
     return Scaffold(
       body: IndexedStack(
@@ -47,12 +45,12 @@ class HomeView extends StatelessWidget {
           //   ),
           // ),
           FutureBuilder<User>(
-            future: userApi.fetchMe(),
+            future: userRepo.me(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return Center(child: Text(snapshot.data!.username));
               } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
+                return Center(child: Text('${snapshot.error}'));
               }
 
               // By default, show a loading spinner.

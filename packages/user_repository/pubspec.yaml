@@ -1,0 +1,26 @@
+name: user_repository
+description: "User repo"
+version: 0.0.1
+homepage: ''
+publish_to: none
+
+environment:
+  sdk: '>=3.3.3 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  equatable: ^2.0.5
+  user_api:
+    path: ../user_api
+  authentication_repository:
+    path: ../authentication_repository
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+
+flutter:

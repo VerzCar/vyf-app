@@ -18,8 +18,8 @@ dependencies:
   amplify_authenticator: ^1.5.5
   authentication_repository:
     path: packages/authentication_repository
-  user_api:
-    path: packages/user_api
+  user_repository:
+    path: packages/user_repository
 
 dev_dependencies:
   flutter_test:

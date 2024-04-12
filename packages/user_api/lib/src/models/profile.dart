@@ -1,10 +1,9 @@
-import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'profile.g.dart';
 
 @JsonSerializable()
-class Profile extends Equatable {
+class Profile {
   final int id;
   final String bio;
   final String whyVoteMe;
@@ -26,17 +25,6 @@ class Profile extends Equatable {
   factory Profile.fromJson(Map<String, dynamic> json) => _$ProfileFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProfileToJson(this);
-
-  @override
-  List<Object> get props => [
-        id,
-        bio,
-        whyVoteMe,
-        imageSrc,
-        imagePlaceholderColors,
-        createdAt,
-        updatedAt,
-      ];
 }
 
 class ProfileInput {

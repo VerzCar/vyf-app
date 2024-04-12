@@ -1,11 +1,10 @@
-import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'country.dart';
 
 part 'address.g.dart';
 
 @JsonSerializable()
-class Address extends Equatable {
+class Address {
   final int id;
   final String address;
   final String city;
@@ -28,14 +27,4 @@ class Address extends Equatable {
 
   Map<String, dynamic> toJson() => _$AddressToJson(this);
 
-  @override
-  List<Object> get props => [
-        id,
-        address,
-        city,
-        postalCode,
-        country,
-        createdAt,
-        updatedAt,
-      ];
 }
