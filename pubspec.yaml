@@ -20,6 +20,8 @@ dependencies:
     path: packages/authentication_repository
   user_repository:
     path: packages/user_repository
+  vote_circle_repository:
+    path: packages/vote_circle_repository
 
 dev_dependencies:
   flutter_test:
@@ -32,7 +34,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/
+    - assets/brand/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

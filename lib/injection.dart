@@ -1,6 +1,7 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:get_it/get_it.dart';
 import 'package:user_repository/user_repository.dart';
+import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/authentication/bloc/authentication_bloc.dart';
 
 // import 'package:user_repository/user_repository.dart';
@@ -33,4 +34,5 @@ Future<void> init() async {
   // repos
   sl.registerLazySingleton<IAuthenticationRepository>(() => AuthenticationRepository());
   sl.registerLazySingleton<IUserRepository>(() => UserRepository(authenticationRepository: sl()));
+  sl.registerLazySingleton<IVoteCircleRepository>(() => VoteCircleRepository(authenticationRepository: sl()));
 }

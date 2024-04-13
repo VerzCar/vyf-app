@@ -1,7 +1,5 @@
 library vote_circle_repository;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'src/models/models.dart';
+export 'src/i_vote_circle_repository.dart';
+export 'src/vote_circle_repository.dart';

@@ -9,11 +9,11 @@ class AppRouter extends $AppRouter {
 
   @override
   List<AutoRoute> get routes => [
-    // AutoRoute(page: SplashPage, initial: true),
+    AutoRoute(page: SplashRoute.page, initial: true),
     // AutoRoute(page: LoginPage, initial: false),
     // AutoRoute(page: SignUpPage, initial: false),
     // AutoRoute(page: VerificationPage, initial: false),
-    AutoRoute(page: HomeRoute.page, initial: true),
+    AutoRoute(page: HomeRoute.page),
     // AutoRoute(
     //     path: '/circle-detail-page/:id',
     //     page: CircleDetailPage,
