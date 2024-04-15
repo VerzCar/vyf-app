@@ -32,6 +32,20 @@ class User extends Equatable {
   final DateTime createdAt;
   final DateTime updatedAt;
 
+  static final empty = User(
+    id: 0,
+    identityId: '',
+    username: '',
+    firstName: '',
+    lastName: '',
+    gender: Gender.X,
+    profile: Profile.empty,
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+  );
+
+  bool get isEmpty => this == User.empty;
+
   factory User.fromApiUser(user_api.User user) => User(
         id: user.id,
         identityId: user.identityId,

@@ -3,26 +3,23 @@ import 'dart:async';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:user_repository/user_repository.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';
 
-class AuthenticationBloc
-    extends Bloc<AuthenticationEvent, AuthenticationState> {
-  AuthenticationBloc({
-    required IAuthenticationRepository authenticationRepository,
-  })  : _authenticationRepository = authenticationRepository,
-        super(const AuthenticationState.unknown()) {
+class UserBloc extends Bloc<UserEvent, UserState> {
+  UserBloc({
+    required IUserRepository userRepository,
+  })  : _authenticationRepository = userRepository,
+        super(const UserState()) {
     on<AuthenticationStatusChanged>(_onAuthenticationStatusChanged);
     on<AuthenticationLogoutRequested>(_onAuthenticationLogoutRequested);
 
-    _authenticationStatusSubscription = _authenticationRepository.status.listen(
-      (status) => add(AuthenticationStatusChanged(status)),
-    );
+
   }
 
-  final IAuthenticationRepository _authenticationRepository;
-  late StreamSubscription<AuthState> _authenticationStatusSubscription;
+  final IUserRepository _userRepository;
 
   @override
   Future<void> close() {

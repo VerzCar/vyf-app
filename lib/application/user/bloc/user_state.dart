@@ -1,28 +1,34 @@
 part of 'user_bloc.dart';
 
-class UserState extends Equatable {
-  const UserState._({
-    this.status = AuthFlowStatus.unknown,
-  });
+enum StatusIndicator { initial, loading, success, failure }
 
-  const UserState.unknown() : this._();
+extension UserStatus on StatusIndicator {
+  bool get isInitial => this == StatusIndicator.initial;
 
-  const UserState.authenticated()
-      : this._(status: AuthFlowStatus.authenticated);
+  bool get isLoading => this == StatusIndicator.loading;
 
-  const UserState.unauthenticated()
-      : this._(status: AuthFlowStatus.unauthenticated);
+  bool get isSuccessful => this == StatusIndicator.success;
 
-  final AuthFlowStatus status;
+  bool get isFailure => this == StatusIndicator.failure;
+}
+
+final class UserState extends Equatable {
+  const UserState({
+    this.state = StatusIndicator.initial,
+    required this.user,
+  })
+
+  final User user;
+  final StatusIndicator state;
 
   @override
-  List<Object> get props => [status];
+  List<Object> get props => [user,];
 }
 
-sealed class UserEvent {}
-
-final class UserInitialLoaded extends UserEvent {}
-
-class UserBloc extends Bloc<UserEvent, int> {
-  UserBloc() : super(0);
-}
+// sealed class UserEvent {}
+//
+// final class UserInitialLoaded extends UserEvent {}
+//
+// class UserBloc extends Bloc<UserEvent, int> {
+//   UserBloc() : super(0);
+// }

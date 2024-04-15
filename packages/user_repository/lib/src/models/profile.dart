@@ -20,6 +20,18 @@ class Profile extends Equatable {
     required this.updatedAt,
   });
 
+  static final empty = Profile(
+    id: 0,
+    bio: '',
+    whyVoteMe: '',
+    imageSrc: '',
+    imagePlaceholderColors: '',
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+  );
+
+  bool get isEmpty => this == Profile.empty;
+
   factory Profile.fromApiProfile(user_api.Profile profile) => Profile(
         id: profile.id,
         bio: profile.bio,
