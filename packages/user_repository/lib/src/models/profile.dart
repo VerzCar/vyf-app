@@ -1,3 +1,4 @@
+import 'package:const_date_time/const_date_time.dart';
 import 'package:equatable/equatable.dart';
 import 'package:user_api/user_api.dart' as user_api;
 
@@ -20,14 +21,14 @@ class Profile extends Equatable {
     required this.updatedAt,
   });
 
-  static final empty = Profile(
+  static const empty = Profile(
     id: 0,
     bio: '',
     whyVoteMe: '',
     imageSrc: '',
     imagePlaceholderColors: '',
-    createdAt: DateTime.now(),
-    updatedAt: DateTime.now(),
+    createdAt: ConstDateTime(2024),
+    updatedAt: ConstDateTime(2024),
   );
 
   bool get isEmpty => this == Profile.empty;

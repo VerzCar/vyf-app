@@ -1,7 +1,5 @@
 part of 'user_bloc.dart';
 
-enum StatusIndicator { initial, loading, success, failure }
-
 extension UserStatus on StatusIndicator {
   bool get isInitial => this == StatusIndicator.initial;
 
@@ -14,21 +12,26 @@ extension UserStatus on StatusIndicator {
 
 final class UserState extends Equatable {
   const UserState({
-    this.state = StatusIndicator.initial,
-    required this.user,
-  })
+    this.status = StatusIndicator.initial,
+    this.user = User.empty,
+  });
 
   final User user;
-  final StatusIndicator state;
+  final StatusIndicator status;
+
+  UserState copyWith({
+    User? user,
+    StatusIndicator? status,
+  }) {
+    return UserState(
+      user: user ?? this.user,
+      status: status ?? this.status,
+    );
+  }
 
   @override
-  List<Object> get props => [user,];
+  List<Object> get props => [
+        user,
+        status,
+      ];
 }
-
-// sealed class UserEvent {}
-//
-// final class UserInitialLoaded extends UserEvent {}
-//
-// class UserBloc extends Bloc<UserEvent, int> {
-//   UserBloc() : super(0);
-// }

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:const_date_time/const_date_time.dart';
 import 'address.dart';
 import 'contact.dart';
 import 'gender.dart';
@@ -32,7 +33,7 @@ class User extends Equatable {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  static final empty = User(
+  static const empty = User(
     id: 0,
     identityId: '',
     username: '',
@@ -40,8 +41,8 @@ class User extends Equatable {
     lastName: '',
     gender: Gender.X,
     profile: Profile.empty,
-    createdAt: DateTime.now(),
-    updatedAt: DateTime.now(),
+    createdAt: ConstDateTime(2024),
+    updatedAt: ConstDateTime(2024),
   );
 
   bool get isEmpty => this == User.empty;

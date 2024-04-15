@@ -1,55 +1,36 @@
-import 'dart:async';
-
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:user_repository/user_repository.dart';
+import 'package:vote_your_face/application/shared/state_status.dart';
 
 part 'user_event.dart';
+
 part 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc({
     required IUserRepository userRepository,
-  })  : _authenticationRepository = userRepository,
+  })  : _userRepository = userRepository,
         super(const UserState()) {
-    on<AuthenticationStatusChanged>(_onAuthenticationStatusChanged);
-    on<AuthenticationLogoutRequested>(_onAuthenticationLogoutRequested);
-
-
+    on<UserInitialLoaded>(_onUserInitialLoaded);
   }
 
   final IUserRepository _userRepository;
 
-  @override
-  Future<void> close() {
-    _authenticationStatusSubscription.cancel();
-    _authenticationRepository.dispose();
-    return super.close();
-  }
-
-  void _onAuthenticationStatusChanged(
-    AuthenticationStatusChanged event,
-    Emitter<AuthenticationState> emit,
+  void _onUserInitialLoaded(
+    UserInitialLoaded event,
+    Emitter<UserState> emit,
   ) async {
-    switch (event.status.authFlowStatus) {
-      case AuthFlowStatus.unauthenticated:
-        return emit(const AuthenticationState.unauthenticated());
-      case AuthFlowStatus.authenticated:
-        return emit(const AuthenticationState.authenticated());
-      default:
-        return emit(const AuthenticationState.unknown());
-    }
-  }
+    emit(state.copyWith(status: StatusIndicator.loading));
 
-  void _onAuthenticationLogoutRequested(
-    AuthenticationLogoutRequested event,
-    Emitter<AuthenticationState> emit,
-  ) async {
     try {
-      await _authenticationRepository.logOut();
-    } catch (_) {
-      return null;
+      final user = await _userRepository.me();
+      print(user);
+      emit(state.copyWith(user: user, status: StatusIndicator.success));
+    } catch (e) {
+      print(e);
+      emit(state.copyWith(status: StatusIndicator.failure));
     }
   }
 }

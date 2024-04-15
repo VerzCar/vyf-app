@@ -174,9 +174,34 @@ class AuthState {
 /// {@endtemplate}
 class AuthenticationRepository implements IAuthenticationRepository {
   /// {@macro authentication_repository}
-  AuthenticationRepository();
+  AuthenticationRepository() {
+    this._authHubSubscription =
+        Amplify.Hub.listen(HubChannel.Auth, (AuthHubEvent event) async {
+      switch (event.type) {
+        case AuthHubEventType.signedIn:
+          print('User is signed in.');
+          await this._checkAuthStatus();
+          break;
+        case AuthHubEventType.signedOut:
+          print('User is signed out.');
+          await this._checkAuthStatus();
+          break;
+        case AuthHubEventType.sessionExpired:
+          print('The session has expired.');
+          await this._checkAuthStatus();
+          break;
+        case AuthHubEventType.userDeleted:
+          print('The user has been deleted.');
+          await this._checkAuthStatus();
+          break;
+      }
+    });
+
+    this._checkAuthStatus();
+  }
 
   final _authStateController = StreamController<AuthState>();
+  late StreamSubscription<AuthHubEvent> _authHubSubscription;
   late AuthCredentials _credentials =
       LoginCredentials(username: '', password: '');
   late String _accessToken = '';
@@ -306,7 +331,10 @@ class AuthenticationRepository implements IAuthenticationRepository {
   //   }
   // }
 
-  void dispose() => _authStateController.close();
+  void dispose() {
+    _authStateController.close();
+    _authHubSubscription.cancel();
+  }
 
   get accessToken {
     return _accessToken;
