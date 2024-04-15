@@ -53,16 +53,17 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
 
     try {
       final res = await http.get(_uri(path: 'circles'), headers: _headers());
-
+logger.i(res.body);
       if (res.statusCode >= HttpStatus.internalServerError) {
         logger.e('querying circles server error: $res');
         throw ApiError(res);
       }
 
-      final apiResponse = ApiResponse<List<Map<String, dynamic>>>.fromJson(
+      final apiResponse = ApiResponse<List<dynamic>>.fromJson(
           jsonDecode(res.body) as Map<String, dynamic>);
 
       if (res.statusCode == HttpStatus.ok) {
+
         final circles =
             apiResponse.data.map((circle) => Circle.fromJson(circle)).toList();
         return circles;
@@ -92,7 +93,7 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
         throw ApiError(res);
       }
 
-      final apiResponse = ApiResponse<List<Map<String, dynamic>>>.fromJson(
+      final apiResponse = ApiResponse<List<dynamic>>.fromJson(
           jsonDecode(res.body) as Map<String, dynamic>);
 
       if (res.statusCode == HttpStatus.ok) {

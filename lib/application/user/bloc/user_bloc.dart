@@ -26,7 +26,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     try {
       final user = await _userRepository.me();
-      print(user);
       emit(state.copyWith(user: user, status: StatusIndicator.success));
     } catch (e) {
       print(e);

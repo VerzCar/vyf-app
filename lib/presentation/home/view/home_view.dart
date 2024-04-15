@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/injection.dart';
+import 'package:vote_your_face/presentation/circles/view/circles_page.dart';
 import 'package:vote_your_face/presentation/home/cubit/home_cubit.dart';
 
 class HomeView extends StatelessWidget {
@@ -9,54 +10,23 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectedTab = context.select((HomeCubit cubit) => cubit.state.tab);
-    final userRepo = sl<IUserRepository>();
+    final selectedTab = context.read<HomeCubit>().state.tab;
 
     return Scaffold(
       body: IndexedStack(
         index: selectedTab.index,
-        children: [
-          // Placeholder(
-          //   child: Center(
-          //     child: Column(
-          //       mainAxisAlignment: MainAxisAlignment.center,
-          //       children: [
-          //         const Text('Circles'),
-          //         TextButton(
-          //           onPressed: () => {
-          //             context
-          //                 .read<AuthenticationBloc>()
-          //                 .add(AuthenticationLogoutRequested())
-          //           },
-          //           child: const Text('Sign out'),
-          //         )
-          //       ],
-          //     ),
-          //   ),
-          // ),
-          // const Placeholder(
-          //   child: Center(
-          //     child: Text('Rankings'),
-          //   ),
-          // ),
-          // const Placeholder(
-          //   child: Center(
-          //     child: Text('Users'),
-          //   ),
-          // ),
-          FutureBuilder<User>(
-            future: userRepo.me(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Center(child: Text(snapshot.data!.username));
-              } else if (snapshot.hasError) {
-                return Center(child: Text('${snapshot.error}'));
-              }
-
-              // By default, show a loading spinner.
-              return const CircularProgressIndicator();
-            },
-          )
+        children: const [
+          CirclesPage(),
+          Placeholder(
+            child: Center(
+              child: Text('Rankings'),
+            ),
+          ),
+          Placeholder(
+            child: Center(
+              child: Text('Users'),
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: BottomAppBar(

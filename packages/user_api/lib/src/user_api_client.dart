@@ -89,7 +89,7 @@ class UserApiClient implements IUserApiClient {
         throw ApiError(res);
       }
 
-      final apiResponse = ApiResponse<List<Map<String, dynamic>>>.fromJson(
+      final apiResponse = ApiResponse<List<dynamic>>.fromJson(
           jsonDecode(res.body) as Map<String, dynamic>);
 
       if (res.statusCode == HttpStatus.ok) {
