@@ -53,7 +53,7 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
 
     try {
       final res = await http.get(_uri(path: 'circles'), headers: _headers());
-logger.i(res.body);
+
       if (res.statusCode >= HttpStatus.internalServerError) {
         logger.e('querying circles server error: $res');
         throw ApiError(res);
