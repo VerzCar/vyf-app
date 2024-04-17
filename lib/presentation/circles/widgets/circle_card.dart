@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
+import 'package:vote_your_face/presentation/routes/router.gr.dart';
 
 class CircleCard extends StatelessWidget {
   const CircleCard({
@@ -15,53 +15,58 @@ class CircleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
 
-    return Card.outlined(
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      elevation: 3,
-      surfaceTintColor: Colors.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: SizedBox(
-              width: double.infinity,
-              child: Image.network(
-                circle.imageSrc,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          const SizedBox(height: 10.0),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: Text(
-                circle.name,
-                style: TextStyle(
-                  fontSize: themeData.textTheme.headlineSmall?.fontSize,
-                  fontWeight: themeData.textTheme.headlineSmall?.fontWeight,
+    return InkWell(
+      onTap: () {
+        context.router.push(CircleRoute(circleId: circle.id));
+      },
+      child: Card.outlined(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 3,
+        surfaceTintColor: Colors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 2,
+              child: SizedBox(
+                width: double.infinity,
+                child: Image.network(
+                  circle.imageSrc,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: Text(
-                circle.description,
-                style: TextStyle(
-                  fontSize: themeData.textTheme.bodyMedium?.fontSize,
-                  fontWeight: themeData.textTheme.bodyMedium?.fontWeight,
-                  overflow: TextOverflow.ellipsis,
+            const SizedBox(height: 10.0),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Text(
+                  circle.name,
+                  style: TextStyle(
+                    fontSize: themeData.textTheme.headlineSmall?.fontSize,
+                    fontWeight: themeData.textTheme.headlineSmall?.fontWeight,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Text(
+                  circle.description,
+                  style: TextStyle(
+                    fontSize: themeData.textTheme.bodyMedium?.fontSize,
+                    fontWeight: themeData.textTheme.bodyMedium?.fontWeight,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

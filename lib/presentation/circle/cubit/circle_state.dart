@@ -1,6 +1,6 @@
-part of 'circles_bloc.dart';
+part of 'circle_cubit.dart';
 
-extension CirclesStatus on StatusIndicator {
+extension CircleStatus on StatusIndicator {
   bool get isInitial => this == StatusIndicator.initial;
 
   bool get isLoading => this == StatusIndicator.loading;
@@ -10,28 +10,28 @@ extension CirclesStatus on StatusIndicator {
   bool get isFailure => this == StatusIndicator.failure;
 }
 
-final class CirclesState extends Equatable {
-  const CirclesState({
+final class CircleState extends Equatable {
+  const CircleState({
     this.status = StatusIndicator.initial,
-    this.myCircles = const [],
+    this.circle = Circle.empty,
   });
 
-  final List<Circle> myCircles;
+  final Circle circle;
   final StatusIndicator status;
 
-  CirclesState copyWith({
-    List<Circle>? myCircles,
+  CircleState copyWith({
+    Circle? circle,
     StatusIndicator? status,
   }) {
-    return CirclesState(
-      myCircles: myCircles ?? this.myCircles,
+    return CircleState(
+      circle: circle ?? this.circle,
       status: status ?? this.status,
     );
   }
 
   @override
   List<Object> get props => [
-        myCircles,
+        circle,
         status,
       ];
 }

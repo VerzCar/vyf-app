@@ -1,7 +1,7 @@
 import 'models/models.dart';
 
 abstract class IVoteCircleApiClient {
-  Future<Circle> fetchCircle(String id);
+  Future<Circle> fetchCircle(int id);
 
   Future<List<Circle>> fetchCircles();
 

@@ -14,7 +14,7 @@ class VoteCircleRepository implements IVoteCircleRepository {
   final vote_circle_api.IVoteCircleApiClient _voteCircleApi;
 
   @override
-  Future<Circle> circle(String id) async {
+  Future<Circle> circle(int id) async {
     final res = await _voteCircleApi.fetchCircle(id);
     return Circle.fromApiCircle(res);
   }

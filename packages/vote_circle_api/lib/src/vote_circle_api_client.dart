@@ -5,7 +5,6 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:logger/logger.dart';
 import 'package:vote_circle_api/vote_circle_api.dart';
 import 'package:http/http.dart' as http;
-import 'i_vote_circle_api_client.dart';
 
 part 'api-errors.dart';
 
@@ -18,7 +17,7 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
   final String _basePath = 'v1/api/vote-circle';
 
   @override
-  Future<Circle> fetchCircle(String id) async {
+  Future<Circle> fetchCircle(int id) async {
     var logger = Logger();
 
     try {
