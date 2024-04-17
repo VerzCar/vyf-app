@@ -10,7 +10,7 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectedTab = context.read<HomeCubit>().state.tab;
+    final selectedTab = context.select((HomeCubit cubit) => cubit.state.tab);
 
     return Scaffold(
       body: IndexedStack(

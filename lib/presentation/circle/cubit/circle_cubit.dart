@@ -14,6 +14,8 @@ class CircleCubit extends Cubit<CircleState> {
   final IVoteCircleRepository _voteCircleRepository;
 
   Future<void> selectCircle(int id) async {
+    print(state.circle.id);
+    print(id);
     if (state.circle.id == id) return;
 
     emit(state.copyWith(status: StatusIndicator.loading));

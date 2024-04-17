@@ -39,29 +39,20 @@ class CircleCard extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 10.0),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                child: Text(
-                  circle.name,
-                  style: TextStyle(
-                    fontSize: themeData.textTheme.headlineSmall?.fontSize,
-                    fontWeight: themeData.textTheme.headlineSmall?.fontWeight,
-                  ),
+            ListTile(
+              title:Text(
+                circle.name,
+                style: TextStyle(
+                  fontSize: themeData.textTheme.headlineSmall?.fontSize,
+                  fontWeight: themeData.textTheme.headlineSmall?.fontWeight,
                 ),
               ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                child: Text(
-                  circle.description,
-                  style: TextStyle(
-                    fontSize: themeData.textTheme.bodyMedium?.fontSize,
-                    fontWeight: themeData.textTheme.bodyMedium?.fontWeight,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+              subtitle: Text(
+                circle.description,
+                style: TextStyle(
+                  fontSize: themeData.textTheme.bodyMedium?.fontSize,
+                  fontWeight: themeData.textTheme.bodyMedium?.fontWeight,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
