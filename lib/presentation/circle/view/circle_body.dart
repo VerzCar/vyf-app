@@ -12,61 +12,33 @@ class CircleBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery
+        .of(context)
+        .size;
     final themeData = Theme.of(context);
 
     return Column(
       children: [
-        // Container(
-        //   height: size.height * 0.40,
-        //   width: size.width,
-        //   decoration: BoxDecoration(
-        //     image: DecorationImage(
-        //         image: NetworkImage(circle.imageSrc), fit: BoxFit.contain),
-        //   ),
-        //   child: Container(
-        //     height: size.height * 0.40,
-        //     width: size.width,
-        //     decoration: BoxDecoration(
-        //       image: DecorationImage(
-        //           image: NetworkImage(circle.imageSrc), fit: BoxFit.cover),
-        //     ),
-        //     child: ClipRect(
-        //       child: BackdropFilter(
-        //         filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
-        //         child: Container(
-        //           color: Colors.black.withOpacity(0.1),
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        // ),
-        Container(
-          height: size.height * 0.40,
-          width: size.width,
+        SizedBox(
+          height: size.height * 0.25,
           child: Stack(
             fit: StackFit.expand,
             children: [
-              // Blurred Background Image
-              ImageFiltered(
-                imageFilter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
-                child: Image.network(
-                  circle.imageSrc,
-                  fit: BoxFit.cover,
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  bottom: Radius.circular(30.0),
                 ),
-              ),
-              // Foreground Image
-              Positioned.fill(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SizedBox(
-                    height: size.height * 0.40,
-                    child: Image.network(
-                      circle.imageSrc,
-                      fit: BoxFit.contain,
-                    ),
+                child: ImageFiltered(
+                  imageFilter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+                  child: Image.network(
+                    circle.imageSrc,
+                    fit: BoxFit.cover,
                   ),
                 ),
+              ),
+              Image.network(
+                circle.imageSrc,
+                fit: BoxFit.scaleDown,
               ),
             ],
           ),
@@ -75,12 +47,48 @@ class CircleBody extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(
+                'Owner',
+                style: TextStyle(
+                  fontSize: themeData.textTheme.titleMedium?.fontSize,
+                  fontWeight: themeData.textTheme.titleMedium?.fontWeight,
+                ),
+              ),
+              const SizedBox(height: 10.0),
+              SizedBox(
+                width: 48,
+                height: 48,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: Image.network(
+                    'https://mdbcdn.b-cdn.net/img/new/avatars/2.webp',
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              Text(
+                'Description',
+                style: TextStyle(
+                  fontSize: themeData.textTheme.titleMedium?.fontSize,
+                  fontWeight: themeData.textTheme.titleMedium?.fontWeight,
+                ),
+              ),
+              const SizedBox(height: 10.0),
               Text(
                 circle.description,
                 style: TextStyle(
                   fontSize: themeData.textTheme.bodyMedium?.fontSize,
                   fontWeight: themeData.textTheme.bodyMedium?.fontWeight,
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              Text(
+                'Members',
+                style: TextStyle(
+                  fontSize: themeData.textTheme.titleMedium?.fontSize,
+                  fontWeight: themeData.textTheme.titleMedium?.fontWeight,
                 ),
               ),
             ],
