@@ -1,9 +1,8 @@
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
+import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class CircleBody extends StatelessWidget {
   const CircleBody({super.key, required this.circle});
@@ -57,16 +56,7 @@ class CircleBody extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10.0),
-              SizedBox(
-                width: 48,
-                height: 48,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Image.network(
-                    'https://mdbcdn.b-cdn.net/img/new/avatars/2.webp',
-                  ),
-                ),
-              ),
+              const AvatarImage(src: 'https://mdbcdn.b-cdn.net/img/new/avatars/2.webp'),
               const SizedBox(height: 20.0),
               Text(
                 'Description',
