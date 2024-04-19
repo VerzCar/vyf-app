@@ -17,7 +17,7 @@ class UserAvatarPopulated extends StatelessWidget {
         builder: (context, state) {
       switch (state.status) {
         case StatusIndicator.initial:
-          return const Center(child: Text('initial Loading'));
+          return const Center(child: Text('Loading'));
         case StatusIndicator.loading:
           return Container(
             width: AvatarSize.base.preSize.width,
@@ -39,6 +39,7 @@ class UserAvatarPopulated extends StatelessWidget {
     final avatar = AvatarImage(
       src: user.profile.imageSrc,
       capitalLetters: usersInitials(user.username),
+      size: option?.size ?? AvatarSize.base,
     );
 
     if (option == null) {

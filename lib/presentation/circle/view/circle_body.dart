@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
-import 'package:vote_your_face/presentation/shared/shared.dart';
 import 'package:vote_your_face/presentation/user-avatar/view/user_avatar_view.dart';
 
 class CircleBody extends StatelessWidget {

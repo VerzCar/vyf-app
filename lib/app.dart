@@ -6,6 +6,7 @@ import 'package:vote_your_face/presentation/routes/router.dart';
 import 'package:vote_your_face/application/authentication/authentication.dart';
 import 'package:vote_your_face/theme.dart';
 
+import 'application/user/bloc/user_bloc.dart';
 import 'injection.dart';
 
 class App extends StatelessWidget {
@@ -20,14 +21,12 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => sl<AuthenticationBloc>()
             ..add(AuthenticationStatusChanged(
-              AuthState(
-                authFlowStatus: AuthFlowStatus.unknown,
-              ),
+              AuthState(authFlowStatus: AuthFlowStatus.unknown),
             )),
         ),
-        // BlocProvider<ProfileEditCubit>(
-        //   create: (context) => sl<ProfileEditCubit>(),
-        // ),
+        BlocProvider<UserBloc>(
+          create: (context) => sl<UserBloc>(),
+        ),
       ],
       child: Authenticator(
         child: MaterialApp.router(

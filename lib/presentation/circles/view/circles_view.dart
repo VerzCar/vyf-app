@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vote_your_face/application/user/bloc/user_bloc.dart';
 import 'package:vote_your_face/presentation/circles/widgets/your_circles.dart';
+import 'package:vote_your_face/presentation/shared/shared.dart';
+import 'package:vote_your_face/presentation/user-avatar/view/user_avatar_view.dart';
 
 class CirclesView extends StatelessWidget {
   const CirclesView({super.key});
@@ -8,10 +12,19 @@ class CirclesView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Align(
-          alignment: Alignment.centerLeft,
-          child: Text('Circles'),
+        leading: BlocSelector<UserBloc, UserState, String>(
+          selector: (state) => state.user.identityId,
+          builder: (context, identityId) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: UserAvatar(
+                identityId: identityId,
+                option: UserAvatarOption(size: AvatarSize.xs),
+              ),
+            );
+          },
         ),
+        title: const Text('Circles'),
       ),
       body: const SafeArea(
         child: YourCircles(),

@@ -10,7 +10,8 @@ class CirclesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext ctx) => sl<CirclesBloc>()..add(CirclesOfUserInitialLoaded()),
+      create: (BuildContext ctx) =>
+          sl<CirclesBloc>()..add(CirclesOfUserInitialLoaded()),
       child: const CirclesView(),
     );
   }
