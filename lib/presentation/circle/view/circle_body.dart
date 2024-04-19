@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
+import 'package:vote_your_face/presentation/user-avatar/view/user_avatar_view.dart';
 
 class CircleBody extends StatelessWidget {
   const CircleBody({super.key, required this.circle});
@@ -55,6 +56,8 @@ class CircleBody extends StatelessWidget {
                   fontWeight: themeData.textTheme.titleMedium?.fontWeight,
                 ),
               ),
+              const SizedBox(height: 10.0),
+              UserAvatar(identityId: circle.createdFrom),
               const SizedBox(height: 10.0),
               const AvatarImage(src: 'https://mdbcdn.b-cdn.net/img/new/avatars/2.webp'),
               const SizedBox(height: 20.0),
