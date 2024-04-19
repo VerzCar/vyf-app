@@ -58,6 +58,8 @@ class CircleBody extends StatelessWidget {
               const SizedBox(height: 10.0),
               const AvatarImage(src: 'https://mdbcdn.b-cdn.net/img/new/avatars/2.webp'),
               const SizedBox(height: 20.0),
+              const AvatarImage(src: '', capitalLetters: 'CV'),
+              const SizedBox(height: 20.0),
               Text(
                 'Description',
                 style: TextStyle(

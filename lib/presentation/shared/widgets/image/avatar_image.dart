@@ -23,16 +23,35 @@ class AvatarImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final calculatedSize = _preSize;
+    final hasSource = _isNetworkImage;
+
     return Container(
       width: calculatedSize.width,
       height: calculatedSize.height,
-      decoration: _isNetworkImage ? BoxDecoration(
-        borderRadius: BorderRadius.circular(8.0),
-        color: Colors.blue,
-      ) : null,
+      decoration: hasSource
+          ? BoxDecoration(
+              borderRadius: BorderRadius.circular(8.0),
+              color: Colors.white70,
+            )
+          : null,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
-        child: Image.network(src),
+        child: hasSource
+            ? Image.network(src)
+            : Container(
+                color: Colors.black87,
+                child: Center(
+                  child: Text(
+                    capitalLetters,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize:
+                          Theme.of(context).textTheme.titleLarge?.fontSize,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
       ),
     );
   }
