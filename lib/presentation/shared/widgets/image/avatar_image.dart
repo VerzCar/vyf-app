@@ -1,12 +1,5 @@
 import 'package:flutter/material.dart';
-
-enum AvatarSize {
-  xs,
-  sm,
-  base,
-  md,
-  lg,
-}
+import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class AvatarImage extends StatelessWidget {
   const AvatarImage({
@@ -22,12 +15,12 @@ class AvatarImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final calculatedSize = _preSize;
+    final preSize = size.preSize;
     final hasSource = _isNetworkImage;
 
     return Container(
-      width: calculatedSize.width,
-      height: calculatedSize.height,
+      width: preSize.width,
+      height: preSize.height,
       decoration: hasSource
           ? BoxDecoration(
               borderRadius: BorderRadius.circular(8.0),
@@ -37,7 +30,10 @@ class AvatarImage extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
         child: hasSource
-            ? Image.network(src)
+            ? Image.network(
+                src,
+                fit: BoxFit.cover,
+              )
             : Container(
                 color: Colors.black87,
                 child: Center(
@@ -57,19 +53,4 @@ class AvatarImage extends StatelessWidget {
   }
 
   bool get _isNetworkImage => src.startsWith('http');
-
-  Size get _preSize {
-    switch (size) {
-      case AvatarSize.xs:
-        return const Size(24, 24);
-      case AvatarSize.sm:
-        return const Size(36, 36);
-      case AvatarSize.base:
-        return const Size(48, 48);
-      case AvatarSize.md:
-        return const Size(60, 60);
-      case AvatarSize.lg:
-        return const Size(72, 72);
-    }
-  }
 }

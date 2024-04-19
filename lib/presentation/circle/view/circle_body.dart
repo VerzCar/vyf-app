@@ -12,9 +12,7 @@ class CircleBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery
-        .of(context)
-        .size;
+    final size = MediaQuery.of(context).size;
     final themeData = Theme.of(context);
 
     return Column(
@@ -29,7 +27,7 @@ class CircleBody extends StatelessWidget {
                   bottom: Radius.circular(30.0),
                 ),
                 child: ImageFiltered(
-                  imageFilter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+                  imageFilter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
                   child: Image.network(
                     circle.imageSrc,
                     fit: BoxFit.cover,
@@ -57,11 +55,10 @@ class CircleBody extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10.0),
-              UserAvatar(identityId: circle.createdFrom),
-              const SizedBox(height: 10.0),
-              const AvatarImage(src: 'https://mdbcdn.b-cdn.net/img/new/avatars/2.webp'),
-              const SizedBox(height: 20.0),
-              const AvatarImage(src: '', capitalLetters: 'CV'),
+              UserAvatar(
+                identityId: circle.createdFrom,
+                option: UserAvatarOption(withLabel: true),
+              ),
               const SizedBox(height: 20.0),
               Text(
                 'Description',
