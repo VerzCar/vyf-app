@@ -46,17 +46,47 @@ class CircleBody extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Owner',
-                style: TextStyle(
-                  fontSize: themeData.textTheme.titleMedium?.fontSize,
-                  fontWeight: themeData.textTheme.titleMedium?.fontWeight,
-                ),
+              TextButton(
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                  ),
+                  onPressed: () { },
+                  child: const Text('Go to Rankings')
               ),
-              const SizedBox(height: 10.0),
-              UserAvatar(
-                identityId: circle.createdFrom,
-                option: UserAvatarOption(withLabel: true),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Text(
+                          'Owner',
+                          style: TextStyle(
+                            fontSize: themeData.textTheme.titleMedium?.fontSize,
+                            fontWeight: themeData.textTheme.titleMedium?.fontWeight,
+                          ),
+                        ),
+                      ),
+                      UserAvatar(
+                        identityId: circle.createdFrom,
+                        option: UserAvatarOption(withLabel: true),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: Text(
+                      'Valid',
+                      style: TextStyle(
+                        fontSize: themeData.textTheme.titleMedium?.fontSize,
+                        fontWeight: themeData.textTheme.titleMedium?.fontWeight,
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 20.0),
               Text(

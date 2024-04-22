@@ -19,14 +19,7 @@ class UserAvatarPopulated extends StatelessWidget {
         case StatusIndicator.initial:
           return const Center(child: Text('Loading'));
         case StatusIndicator.loading:
-          return Container(
-            width: AvatarSize.base.preSize.width,
-            height: AvatarSize.base.preSize.height,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.0),
-              color: Colors.black12,
-            ),
-          );
+          return _placeholder();
         case StatusIndicator.success:
           return _buildByOption(context, state.user);
         case StatusIndicator.failure:
@@ -65,5 +58,21 @@ class UserAvatarPopulated extends StatelessWidget {
     }
 
     return avatar;
+  }
+
+  Widget _placeholder() {
+    var size = AvatarSize.base.preSize;
+    if (option != null) {
+      size = option!.size.preSize;
+    }
+
+    return Container(
+      width: size.width,
+      height: size.height,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(6.5),
+        color: Colors.black12,
+      ),
+    );
   }
 }

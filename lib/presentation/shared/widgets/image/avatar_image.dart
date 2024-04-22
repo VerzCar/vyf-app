@@ -23,12 +23,12 @@ class AvatarImage extends StatelessWidget {
       height: preSize.height,
       decoration: hasSource
           ? BoxDecoration(
-              borderRadius: BorderRadius.circular(8.0),
+              borderRadius: BorderRadius.circular(6.5),
               color: Colors.white70,
             )
           : null,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(6.5),
         child: hasSource
             ? Image.network(
                 src,
