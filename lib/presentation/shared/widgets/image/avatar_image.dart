@@ -38,12 +38,13 @@ class AvatarImage extends StatelessWidget {
                 color: Colors.black87,
                 child: Center(
                   child: Text(
-                    capitalLetters,
+                    capitalLetters.toUpperCase(),
                     style: TextStyle(
                       color: Colors.white,
                       fontSize:
                           Theme.of(context).textTheme.titleLarge?.fontSize,
                       fontWeight: FontWeight.bold,
+                      letterSpacing: 2.0
                     ),
                   ),
                 ),

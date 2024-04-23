@@ -16,8 +16,8 @@ class YourCircles extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(7.0),
-            margin: const EdgeInsets.symmetric(horizontal: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            margin: const EdgeInsets.only(bottom: 5.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -38,7 +38,7 @@ class YourCircles extends StatelessWidget {
           ),
           Container(
             height: size.height * 0.25,
-            padding: const EdgeInsets.all(7.0),
+            padding: const EdgeInsets.symmetric(vertical: 7.0),
             margin: const EdgeInsets.symmetric(horizontal: 10.0),
             decoration: BoxDecoration(
               border: Border.all(
@@ -54,12 +54,7 @@ class YourCircles extends StatelessWidget {
                 for (final circle in state.myCircles)
                   Padding(
                     padding: const EdgeInsets.only(right: 15.0),
-                    child: Container(
-                      constraints: BoxConstraints(
-                        maxWidth: size.width * 0.10,
-                      ),
-                      child: CircleCard(circle: circle),
-                    ),
+                    child: CircleCard(circle: circle),
                   ),
               ],
             ),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Light {
@@ -35,6 +36,27 @@ class AppTheme {
 
   static const Color iconColor = Colors.black;
 
+  static final ButtonStyle flatButtonStyle = TextButton.styleFrom(
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.elliptical(5, 5)),
+    ),
+    splashFactory: NoSplash.splashFactory,
+  );
+
+  static final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.elliptical(5, 5)),
+    ),
+    splashFactory: NoSplash.splashFactory,
+  );
+
+  static final ButtonStyle outlineButtonStyle = OutlinedButton.styleFrom(
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.elliptical(5, 5)),
+    ),
+    splashFactory: NoSplash.splashFactory,
+  );
+
   static final InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
     floatingLabelStyle: const TextStyle(color: Colors.black),
     focusedBorder: OutlineInputBorder(
@@ -60,6 +82,9 @@ class AppTheme {
     ),
     textTheme: Light.textTheme,
     bottomAppBarTheme: const BottomAppBarTheme(color: Light.appbarColor),
+    textButtonTheme: TextButtonThemeData(style: flatButtonStyle),
+    elevatedButtonTheme: ElevatedButtonThemeData(style: raisedButtonStyle),
+    outlinedButtonTheme: OutlinedButtonThemeData(style: outlineButtonStyle),
   );
 
   static final ThemeData darkTheme = ThemeData(
@@ -77,5 +102,8 @@ class AppTheme {
     ),
     textTheme: Dark.textTheme,
     bottomAppBarTheme: BottomAppBarTheme(color: Dark.appbarColor),
+    textButtonTheme: TextButtonThemeData(style: flatButtonStyle),
+    elevatedButtonTheme: ElevatedButtonThemeData(style: raisedButtonStyle),
+    outlinedButtonTheme: OutlinedButtonThemeData(style: outlineButtonStyle),
   );
 }
