@@ -1,8 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/presentation/user-avatar/view/user_avatar_view.dart';
+import 'package:intl/intl.dart';
 
 class CircleBody extends StatelessWidget {
   const CircleBody({super.key, required this.circle});
@@ -48,11 +50,11 @@ class CircleBody extends StatelessWidget {
             children: [
               TextButton(
                   style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                    foregroundColor:
+                        MaterialStateProperty.all<Color>(Colors.blue),
                   ),
-                  onPressed: () { },
-                  child: const Text('Go to Rankings')
-              ),
+                  onPressed: () {},
+                  child: const Text('Go to Rankings')),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,7 +68,8 @@ class CircleBody extends StatelessWidget {
                           'Owner',
                           style: TextStyle(
                             fontSize: themeData.textTheme.titleMedium?.fontSize,
-                            fontWeight: themeData.textTheme.titleMedium?.fontWeight,
+                            fontWeight:
+                                themeData.textTheme.titleMedium?.fontWeight,
                           ),
                         ),
                       ),
@@ -76,15 +79,58 @@ class CircleBody extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: Text(
-                      'Valid',
-                      style: TextStyle(
-                        fontSize: themeData.textTheme.titleMedium?.fontSize,
-                        fontWeight: themeData.textTheme.titleMedium?.fontWeight,
+                  Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Text(
+                          'Valid',
+                          style: TextStyle(
+                            fontSize: themeData.textTheme.titleMedium?.fontSize,
+                            fontWeight:
+                                themeData.textTheme.titleMedium?.fontWeight,
+                          ),
+                        ),
                       ),
-                    ),
+                      Column(
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                const WidgetSpan(
+                                  child: Icon(Icons.start, size: 14),
+                                ),
+                                TextSpan(
+                                  text: DateFormat.yMMMd()
+                                      .format(circle.validFrom),
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 5),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                const WidgetSpan(
+                                  child: Icon(Icons.share_arrival_time_outlined,
+                                      size: 14),
+                                ),
+                                TextSpan(
+                                  text: DateFormat.yMMMd()
+                                      .format(circle.validFrom),
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ],
               ),
