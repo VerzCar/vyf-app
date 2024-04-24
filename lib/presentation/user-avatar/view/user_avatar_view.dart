@@ -33,7 +33,7 @@ class UserAvatar extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext ctx) =>
           UserAvatarCubit(userRepository: sl<IUserRepository>())
-            ..getUser(identityId),
+            ..getUser(context: ctx, identityId: identityId),
       child: UserAvatarPopulated(option: option),
     );
   }

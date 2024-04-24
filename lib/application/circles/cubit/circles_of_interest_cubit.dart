@@ -26,6 +26,7 @@ class CirclesOfInterestCubit extends Cubit<CirclesOfInterestState> {
       );
     } catch (e) {
       print(e);
+      if(isClosed) return;
       emit(state.copyWith(status: StatusIndicator.failure));
     }
   }

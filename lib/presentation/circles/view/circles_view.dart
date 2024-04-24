@@ -33,17 +33,13 @@ class CirclesView extends StatelessWidget {
           )
         ],
       ),
-      body: const SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Column(
-              children: [
-                YourCircles(),
-                CirclesOfInterest(),
-              ],
-            ),
-          ),
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          children: const [
+            YourCircles(),
+            CirclesOfInterest(),
+          ],
         ),
       ),
     );

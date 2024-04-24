@@ -11,7 +11,6 @@ class CirclesOfInterest extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final themeData = Theme.of(context);
 
-    final double containerHeight = size.height * 0.50;
     final num crossAxisCount = (size.width ~/ 200).clamp(2, size.width);
 
     return BlocBuilder<CirclesOfInterestCubit, CirclesOfInterestState>(
@@ -31,10 +30,11 @@ class CirclesOfInterest extends StatelessWidget {
             ),
           ),
           Container(
-            height: containerHeight,
             margin: const EdgeInsets.symmetric(horizontal: 10.0),
             child: GridView.builder(
               itemCount: state.circlesOfInterest.length,
+              shrinkWrap: true,
+              physics: const ClampingScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: crossAxisCount.toInt(),
                 mainAxisSpacing: 4.0,

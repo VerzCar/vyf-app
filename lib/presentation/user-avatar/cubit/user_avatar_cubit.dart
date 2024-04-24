@@ -1,7 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
+import 'package:vote_your_face/application/user/user.dart';
 
 part 'user_avatar_state.dart';
 
@@ -13,8 +16,20 @@ class UserAvatarCubit extends Cubit<UserAvatarState> {
 
   final IUserRepository _userRepository;
 
-  Future<void> getUser(String identityId) async {
-    if (state.user.identityId == identityId) return;
+  Future<void> getUser({
+    required BuildContext context,
+    required String identityId,
+  }) async {
+    final currentUser = context.read<UserBloc>().state.user;
+
+    if (currentUser.identityId == identityId) {
+      return emit(
+        state.copyWith(
+          status: StatusIndicator.success,
+          user: currentUser,
+        ),
+      );
+    }
 
     emit(state.copyWith(status: StatusIndicator.loading));
 
@@ -28,6 +43,7 @@ class UserAvatarCubit extends Cubit<UserAvatarState> {
       );
     } catch (e) {
       print(e);
+      if(isClosed) return;
       emit(state.copyWith(status: StatusIndicator.failure));
     }
   }
