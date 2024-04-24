@@ -26,7 +26,7 @@ class MiniCircleCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
-        elevation: 1,
+        elevation: 4,
         surfaceTintColor: Colors.white,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
