@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
+import 'package:vote_your_face/presentation/shared/shared.dart';
 import 'package:vote_your_face/presentation/shared/widgets/time/time_box.dart';
 import 'package:vote_your_face/presentation/user-avatar/view/user_avatar_view.dart';
 
@@ -31,14 +32,14 @@ class CircleBody extends StatelessWidget {
                   ),
                   child: ImageFiltered(
                     imageFilter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                    child: Image.network(
-                      circle.imageSrc,
+                    child: NetImage(
+                      imageSrc: circle.imageSrc,
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                Image.network(
-                  circle.imageSrc,
+                NetImage(
+                  imageSrc: circle.imageSrc,
                   fit: BoxFit.scaleDown,
                 ),
               ],

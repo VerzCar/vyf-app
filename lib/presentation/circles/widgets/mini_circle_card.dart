@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
+import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class MiniCircleCard extends StatelessWidget {
   const MiniCircleCard({
@@ -33,11 +35,8 @@ class MiniCircleCard extends StatelessWidget {
               flex: 2,
               child: SizedBox(
                 width: double.infinity,
-                child: FadeInImage.assetNetwork(
-                  placeholder: 'assets/brand/logo-colored-64.png',
-                  image: circle.imageSrc.isNotEmpty
-                      ? circle.imageSrc
-                      : 'https://picsum.photos/200/300.jpg',
+                child: NetImage(
+                  imageSrc: circle.imageSrc,
                   fit: BoxFit.cover,
                 ),
               ),

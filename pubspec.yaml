@@ -35,6 +35,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/brand/
+    - assets/placeholder/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
