@@ -10,6 +10,7 @@ class Light {
   static const Color appbarColor = Colors.white;
   static const Color appbarForegroundColor = Colors.black;
   static const Color accentColor = Color(0xFF10b981);
+  static const Color white = Colors.white;
 
   static const TextTheme textTheme = Typography.blackCupertino;
 
@@ -25,6 +26,7 @@ class Dark {
   static final Color appbarColor = Colors.blueGrey.shade800;
   static const Color appbarForegroundColor = Colors.white;
   static const Color accentColor = Color.fromRGBO(74, 217, 217, 1);
+  static const Color white = Colors.white;
 
   static const TextTheme textTheme = Typography.blackCupertino;
 
@@ -85,6 +87,11 @@ class AppTheme {
     textButtonTheme: TextButtonThemeData(style: flatButtonStyle),
     elevatedButtonTheme: ElevatedButtonThemeData(style: raisedButtonStyle),
     outlinedButtonTheme: OutlinedButtonThemeData(style: outlineButtonStyle),
+    cardTheme: const CardTheme(
+      color: Light.white,
+      surfaceTintColor: Light.white,
+      elevation: 3,
+    ),
   );
 
   static final ThemeData darkTheme = ThemeData(
@@ -105,5 +112,10 @@ class AppTheme {
     textButtonTheme: TextButtonThemeData(style: flatButtonStyle),
     elevatedButtonTheme: ElevatedButtonThemeData(style: raisedButtonStyle),
     outlinedButtonTheme: OutlinedButtonThemeData(style: outlineButtonStyle),
+    cardTheme: const CardTheme(
+      color: Dark.white,
+      surfaceTintColor: Dark.white,
+      elevation: 3,
+    ),
   );
 }

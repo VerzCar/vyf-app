@@ -31,6 +31,8 @@ class CirclePaginated extends Equatable {
         imageSrc: circle.imageSrc,
         active: circle.active,
         stage: circleStageFromApiCircleStage(circle.stage),
+        votersCount: circle.votersCount,
+        candidatesCount: circle.candidatesCount,
       );
 
   @override

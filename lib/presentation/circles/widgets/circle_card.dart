@@ -10,22 +10,22 @@ class CircleCard extends StatelessWidget {
   });
 
   final Circle circle;
+  static final BorderRadius _borderRadius = BorderRadius.circular(10.0);
 
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
 
     return InkWell(
+      borderRadius: _borderRadius,
       onTap: () {
         context.router.push(CircleRoute(circleId: circle.id));
       },
       child: Card.outlined(
         clipBehavior: Clip.antiAliasWithSaveLayer,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: _borderRadius,
         ),
-        elevation: 3,
-        surfaceTintColor: Colors.white,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
