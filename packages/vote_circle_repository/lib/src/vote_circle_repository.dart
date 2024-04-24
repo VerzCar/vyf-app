@@ -34,4 +34,12 @@ class VoteCircleRepository implements IVoteCircleRepository {
         .toList();
     return circles;
   }
+
+  @override
+  Future<List<Ranking>> rankings(int circleId) async {
+    final res = await _voteCircleApi.fetchRankings(circleId);
+    final rankings =
+        res.map((ranking) => Ranking.fromApiRanking(ranking)).toList();
+    return rankings;
+  }
 }

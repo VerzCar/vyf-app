@@ -6,4 +6,6 @@ abstract class IVoteCircleRepository {
   Future<List<Circle>> circles();
 
   Future<List<CirclePaginated>> circlesOfInterest();
+
+  Future<List<Ranking>> rankings(int circleId);
 }

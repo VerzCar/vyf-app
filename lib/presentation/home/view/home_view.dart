@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:user_repository/user_repository.dart';
-import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/circles/view/circles_page.dart';
 import 'package:vote_your_face/presentation/home/cubit/home_cubit.dart';
+import 'package:vote_your_face/presentation/rankings/rankings.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -17,11 +16,7 @@ class HomeView extends StatelessWidget {
         index: selectedTab.index,
         children: const [
           CirclesPage(),
-          Placeholder(
-            child: Center(
-              child: Text('Rankings'),
-            ),
-          ),
+          RankingsPage(),
           Placeholder(
             child: Center(
               child: Text('Users'),

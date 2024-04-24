@@ -26,3 +26,11 @@ class QueryCircleFailure extends ApiFailure {
   });
 }
 
+class QueryRankingFailure extends ApiFailure {
+  QueryRankingFailure({
+    required super.statusCode,
+    super.msg,
+    super.status,
+  });
+}
+

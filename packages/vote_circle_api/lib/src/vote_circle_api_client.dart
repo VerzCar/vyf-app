@@ -62,7 +62,6 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
           jsonDecode(res.body) as Map<String, dynamic>);
 
       if (res.statusCode == HttpStatus.ok) {
-
         final circles =
             apiResponse.data.map((circle) => Circle.fromJson(circle)).toList();
         return circles;
@@ -104,6 +103,40 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
 
       logger.e('querying circles of interest failed: $apiResponse');
       throw QueryCircleFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<Ranking>> fetchRankings(int circleId) async {
+    var logger = Logger();
+
+    try {
+      final res =
+          await http.get(_uri(path: 'rankings/$circleId'), headers: _headers());
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('querying rankings server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<List<dynamic>>.fromJson(
+          jsonDecode(res.body) as Map<String, dynamic>);
+
+      if (res.statusCode == HttpStatus.ok) {
+        final rankings = apiResponse.data
+            .map((ranking) => Ranking.fromJson(ranking))
+            .toList();
+        return rankings;
+      }
+
+      logger.e('querying rankings failed: $apiResponse');
+      throw QueryRankingFailure(
         statusCode: res.statusCode,
         msg: apiResponse.msg,
         status: apiResponse.status,
