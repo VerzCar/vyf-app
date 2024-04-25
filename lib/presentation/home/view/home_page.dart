@@ -21,14 +21,7 @@ class HomePage extends StatelessWidget {
         //       predicate: (Route<dynamic> route) => false);
         // }
       },
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (_) => HomeCubit(),
-          ),
-        ],
-        child: const HomeView(),
-      ),
+      child: const HomeView(),
     );
   }
 }

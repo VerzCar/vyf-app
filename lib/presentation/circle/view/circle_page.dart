@@ -9,7 +9,7 @@ import 'circle_view.dart';
 
 @RoutePage()
 class CirclePage extends StatelessWidget {
-  const CirclePage({super.key, required this.circleId});
+  const CirclePage({super.key, @pathParam required this.circleId});
 
   final int circleId;
 

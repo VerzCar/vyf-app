@@ -58,7 +58,12 @@ class CircleBody extends StatelessWidget {
                           themeData.colorScheme.secondary),
                     ),
                     onPressed: () {
-                      context.router.replace(RankingsRoute(circleId: circle.id));
+                      // final router = context.innerRouterOf<StackRouter>(HomeRoute.name);
+                      // router?.push(RankingsRoute(circleId: circle.id));
+                     AutoRouter.of(context).innerRouterOf<TabsRouter>(HomeRoute.name)?.topMostRouter().root.push(RankingsRoute(circleId: circle.id));
+                      // context.router.popUntilRoot();
+                      // context.router.push(RankingsRoute(circleId: circle.id));
+                      //context.router.parent<TabsRouter>()?.push(RankingsRoute(circleId: circle.id));
                     },
                     child: const Text('Go to Rankings')),
                 Row(

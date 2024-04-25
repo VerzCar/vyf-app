@@ -1,83 +1,48 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vote_your_face/presentation/circles/view/circles_page.dart';
-import 'package:vote_your_face/presentation/home/cubit/home_cubit.dart';
-import 'package:vote_your_face/presentation/rankings/rankings.dart';
+import 'package:vote_your_face/presentation/routes/router.gr.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final selectedTab = context.select((HomeCubit cubit) => cubit.state.tab);
-
-    return Scaffold(
-      body: IndexedStack(
-        index: selectedTab.index,
-        children: const [
-          CirclesPage(),
-          RankingsPage(),
-          Placeholder(
-            child: Center(
-              child: Text('Users'),
-            ),
+    return AutoTabsRouter(
+      routes: [
+        const CirclesRoute(),
+        RankingsRoute(),
+        const SettingsRoute(),
+      ],
+      builder: (context, child) {
+        final tabsRouter = AutoTabsRouter.of(context);
+        return Scaffold(
+          body: child,
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: tabsRouter.activeIndex,
+            onTap: (index) {
+              tabsRouter.setActiveIndex(index);
+            },
+            items: const [
+              BottomNavigationBarItem(
+                key: Key('circlesTab'),
+                label: 'Circles',
+                icon: Icon(Icons.circle_outlined),
+                activeIcon: Icon(Icons.blur_circular_outlined),
+              ),
+              BottomNavigationBarItem(
+                  key: Key('rankingsTab'),
+                  label: 'Rankings',
+                  icon: Icon(Icons.list),
+                  activeIcon: Icon(Icons.list_alt_outlined)),
+              BottomNavigationBarItem(
+                  key: Key('settingsTab'),
+                  label: 'Settings',
+                  icon: Icon(Icons.person_outline),
+                  activeIcon: Icon(Icons.person)),
+            ],
           ),
-        ],
-      ),
-      bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _HomeTabButton(
-              key: const Key('circleTab'),
-              groupValue: selectedTab,
-              value: HomeTab.circleDetail,
-              icon: const Icon(Icons.circle_outlined),
-              activeIcon: const Icon(Icons.blur_circular_outlined),
-            ),
-            _HomeTabButton(
-              key: const Key('rankingsTab'),
-              groupValue: selectedTab,
-              value: HomeTab.search,
-              icon: const Icon(Icons.list),
-              activeIcon: const Icon(Icons.list_alt_outlined),
-            ),
-            _HomeTabButton(
-              key: const Key('userTab'),
-              groupValue: selectedTab,
-              value: HomeTab.profile,
-              icon: const Icon(Icons.person_outline),
-              activeIcon: const Icon(Icons.person),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _HomeTabButton extends StatelessWidget {
-  const _HomeTabButton({
-    super.key,
-    required this.groupValue,
-    required this.value,
-    required this.icon,
-    required this.activeIcon,
-  });
-
-  final HomeTab groupValue;
-  final HomeTab value;
-  final Widget icon;
-  final Widget activeIcon;
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () => context.read<HomeCubit>().setTab(value),
-      iconSize: 32,
-      color: Theme.of(context).colorScheme.primary,
-      icon: groupValue != value ? icon : activeIcon,
+        );
+      },
     );
   }
 }
