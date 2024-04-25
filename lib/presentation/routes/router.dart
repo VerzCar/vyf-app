@@ -9,15 +9,15 @@ class AppRouter extends $AppRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(page: SplashRoute.page, initial: true),
-        // AutoRoute(page: LoginPage, initial: false),
-        // AutoRoute(page: SignUpPage, initial: false),
-        // AutoRoute(page: VerificationPage, initial: false),
         AutoRoute(page: HomeRoute.page),
         AutoRoute(
           path: '/circle/:id',
           page: CircleRoute.page,
         ),
-        // AutoRoute(page: RankingListPage, initial: false),
+        AutoRoute(
+          path: '/rankings/:id',
+          page: RankingsRoute.page,
+        ),
         // AutoRoute(page: SearchPage, initial: false),
         // AutoRoute(page: SettingsPage, initial: false),
         // AutoRoute(page: ProfilePage, initial: false),

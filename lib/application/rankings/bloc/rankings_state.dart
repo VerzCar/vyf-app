@@ -14,21 +14,21 @@ final class RankingsState extends Equatable {
   const RankingsState({
     this.status = StatusIndicator.initial,
     this.selectedCircle,
-    this.placements = const [],
+    this.rankings = const [],
   });
 
   final Circle? selectedCircle;
-  final List<entities.Placement> placements;
+  final List<Ranking> rankings;
   final StatusIndicator status;
 
   RankingsState copyWith({
     Circle? selectedCircle,
-    List<entities.Placement>? placements,
+    List<Ranking>? rankings,
     StatusIndicator? status,
   }) {
     return RankingsState(
       selectedCircle: selectedCircle ?? this.selectedCircle,
-      placements: placements ?? this.placements,
+      rankings: rankings ?? this.rankings,
       status: status ?? this.status,
     );
   }

@@ -5,12 +5,12 @@ abstract class RankingsEvent extends Equatable {
 }
 
 final class RankingCircleSelected extends RankingsEvent {
-  const RankingCircleSelected({required this.circleId});
+  const RankingCircleSelected({this.circleId});
 
-  final int circleId;
+  final int? circleId;
 
   @override
-  List<Object> get props => [circleId];
+  List<Object?> get props => [circleId];
 }
 
 final class CircleForRankingsDefined extends RankingsEvent {

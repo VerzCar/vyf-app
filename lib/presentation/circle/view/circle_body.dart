@@ -1,8 +1,9 @@
 import 'dart:ui';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
+import 'package:vote_your_face/presentation/routes/router.gr.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 import 'package:vote_your_face/presentation/shared/widgets/time/time_box.dart';
 import 'package:vote_your_face/presentation/user-avatar/view/user_avatar_view.dart';
@@ -56,7 +57,9 @@ class CircleBody extends StatelessWidget {
                       foregroundColor:
                           MaterialStateProperty.all<Color>(Colors.blue),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      context.router.push(RankingsRoute(circleId: circle.id));
+                    },
                     child: const Text('Go to Rankings')),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -70,7 +73,8 @@ class CircleBody extends StatelessWidget {
                           child: Text(
                             'Owner',
                             style: TextStyle(
-                              fontSize: themeData.textTheme.titleMedium?.fontSize,
+                              fontSize:
+                                  themeData.textTheme.titleMedium?.fontSize,
                               fontWeight:
                                   themeData.textTheme.titleMedium?.fontWeight,
                             ),
@@ -90,7 +94,8 @@ class CircleBody extends StatelessWidget {
                           child: Text(
                             'Valid',
                             style: TextStyle(
-                              fontSize: themeData.textTheme.titleMedium?.fontSize,
+                              fontSize:
+                                  themeData.textTheme.titleMedium?.fontSize,
                               fontWeight:
                                   themeData.textTheme.titleMedium?.fontWeight,
                             ),

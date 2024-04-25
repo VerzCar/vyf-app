@@ -17,20 +17,20 @@ class CircleView extends StatelessWidget {
       appBar: AppBar(
         title: Text(circleName),
       ),
-      body: BlocBuilder<CircleCubit, CircleState>(builder: (context, state) {
-        switch (state.status) {
-          case StatusIndicator.initial:
-            return const Center(child: Text('initial Loading'));
-          case StatusIndicator.loading:
-            return const Center(child: CircularProgressIndicator());
-          case StatusIndicator.success:
-            return SafeArea(
-              child: CircleBody(circle: state.circle),
-            );
-          case StatusIndicator.failure:
-            return const Center(child: Text('Error'));
-        }
-      }),
+      body: SafeArea(
+        child: BlocBuilder<CircleCubit, CircleState>(builder: (context, state) {
+          switch (state.status) {
+            case StatusIndicator.initial:
+              return const Center(child: Text('initial Loading'));
+            case StatusIndicator.loading:
+              return const Center(child: CircularProgressIndicator());
+            case StatusIndicator.success:
+              return CircleBody(circle: state.circle);
+            case StatusIndicator.failure:
+              return const Center(child: Text('Error'));
+          }
+        }),
+      ),
     );
   }
 }

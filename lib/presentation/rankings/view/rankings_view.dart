@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vote_your_face/application/rankings/bloc/rankings_bloc.dart';
+import 'package:vote_your_face/application/shared/shared.dart';
+import 'package:vote_your_face/presentation/rankings/view/rankings_body.dart';
 
 class RankingsView extends StatelessWidget {
   const RankingsView({super.key});
@@ -9,8 +13,24 @@ class RankingsView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Ranking'),
       ),
-      body: const SafeArea(
-        child: Text('it works'),
+      body: SafeArea(
+        child:
+            BlocBuilder<RankingsBloc, RankingsState>(builder: (context, state) {
+          switch (state.status) {
+            case StatusIndicator.initial:
+              return const Center(child: Text('initial Loading'));
+            case StatusIndicator.loading:
+              return const Center(child: CircularProgressIndicator());
+            case StatusIndicator.success:
+              if (state.selectedCircle != null) {
+                context.read<RankingsBloc>().add(CircleForRankingsDefined(
+                    circleId: state.selectedCircle!.id));
+              }
+              return RankingsBody(circle: state.selectedCircle);
+            case StatusIndicator.failure:
+              return const Center(child: Text('Error'));
+          }
+        }),
       ),
     );
   }
