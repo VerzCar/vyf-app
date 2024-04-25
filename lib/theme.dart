@@ -2,33 +2,51 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Light {
-  static const Color primaryColor = Colors.black;
-  static const Color primaryVariantColor = Colors.red;
+  static const Color primaryColor = Color(0xFF28282d);
+  static const Color onPrimaryColor = Color(0xFFffffff);
+  static const Color secondaryColor = Color(0xFF2962ff);
+  static const Color onSecondaryColor = Color(0xFFFAFAFA);
+  static const Color surfaceColor = Color(0xFFFAFAFA);
+  static const Color onSurfaceColor = Color(0xFF0F0F0F);
   static const Color backgroundColor = Colors.white;
-  static const Color onPrimaryColor = Colors.white;
+  static const Color successColor = Color(0xFF4caf50);
+  static const Color warningColor = Color(0xFFFFA726);
+  static const Color errorColor = Color(0xFFF44336);
   static const Color textColorPrimary = Colors.black;
   static const Color appbarColor = Colors.white;
   static const Color appbarForegroundColor = Colors.black;
-  static const Color accentColor = Color(0xFF10b981);
+  static const Color cardColor = Colors.white;
   static const Color white = Colors.white;
 
-  static const TextTheme textTheme = Typography.blackCupertino;
+  static TextTheme textTheme = Typography.blackCupertino.apply(
+    bodyColor: Colors.black,
+    displayColor: Colors.black,
+  );
 
   Light._();
 }
 
 class Dark {
-  static final Color primaryColor = Colors.blueGrey.shade900;
-  static const Color primaryVariantColor = Colors.black;
+  static const Color primaryColor = Colors.white70;
+  static const Color onPrimaryColor = Colors.white10;
+  static const Color secondaryColor = Color(0xff052b93);
+  static const Color onSecondaryColor = Color(0xFFE7E7E7);
+  static const Color surfaceColor = Color(0xFF0C0C0C);
+  static const Color onSurfaceColor = Color(0xFFE5E5E5);
   static const Color backgroundColor = Colors.black87;
-  static final Color onPrimaryColor = Colors.blueGrey.shade300;
+  static const Color successColor = Color(0xff3d8d40);
+  static const Color warningColor = Color(0xFFE19521);
+  static const Color errorColor = Color(0xFFC5352B);
   static const Color textColorPrimary = Colors.white;
-  static final Color appbarColor = Colors.blueGrey.shade800;
+  static const Color appbarColor = Color(0xFF212121);
   static const Color appbarForegroundColor = Colors.white;
-  static const Color accentColor = Color.fromRGBO(74, 217, 217, 1);
+  static const Color cardColor = Color(0xFF494949);
   static const Color white = Colors.white;
 
-  static const TextTheme textTheme = Typography.blackCupertino;
+  static TextTheme textTheme = Typography.blackCupertino.apply(
+    bodyColor: Colors.white,
+    displayColor: Colors.white,
+  );
 
   Dark._();
 }
@@ -67,55 +85,79 @@ class AppTheme {
     border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
   );
 
-  static final ThemeData lightTheme = ThemeData(
-    inputDecorationTheme: inputDecorationTheme,
-    scaffoldBackgroundColor: Light.backgroundColor,
-    appBarTheme: const AppBarTheme(
-      color: Light.appbarColor,
-      foregroundColor: Light.appbarForegroundColor,
-      iconTheme: IconThemeData(color: iconColor),
-      elevation: 0,
-    ),
-    colorScheme: const ColorScheme.light(
-      primary: Light.primaryColor,
-      onPrimary: Light.onPrimaryColor,
-      secondary: Light.accentColor,
-      background: Light.backgroundColor,
-    ),
-    textTheme: Light.textTheme,
-    bottomAppBarTheme: const BottomAppBarTheme(color: Light.appbarColor),
-    textButtonTheme: TextButtonThemeData(style: flatButtonStyle),
-    elevatedButtonTheme: ElevatedButtonThemeData(style: raisedButtonStyle),
-    outlinedButtonTheme: OutlinedButtonThemeData(style: outlineButtonStyle),
-    cardTheme: const CardTheme(
-      color: Light.white,
-      surfaceTintColor: Light.white,
-      elevation: 3,
-    ),
-  );
+  static ThemeData lightTheme(Brightness brightness) {
+    return ThemeData(
+      useMaterial3: true,
+      brightness: brightness,
+      inputDecorationTheme: inputDecorationTheme,
+      scaffoldBackgroundColor: Light.backgroundColor,
+      iconTheme: const IconThemeData(color: Light.primaryColor),
+      appBarTheme: const AppBarTheme(
+        color: Light.appbarColor,
+        foregroundColor: Light.appbarForegroundColor,
+        iconTheme: IconThemeData(color: Light.primaryColor),
+        elevation: 0,
+      ),
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: Light.primaryColor,
+        brightness: brightness,
+        primary: Light.primaryColor,
+        onPrimary: Light.onPrimaryColor,
+        secondary: Light.secondaryColor,
+        onSecondary: Light.onSecondaryColor,
+        surface: Light.surfaceColor,
+        onSurface: Light.onSurfaceColor,
+        background: Light.backgroundColor,
+        error: Light.errorColor,
+      ),
+      textTheme: Light.textTheme,
+      bottomAppBarTheme: const BottomAppBarTheme(color: Light.appbarColor),
+      textButtonTheme: TextButtonThemeData(style: flatButtonStyle),
+      elevatedButtonTheme: ElevatedButtonThemeData(style: raisedButtonStyle),
+      outlinedButtonTheme: OutlinedButtonThemeData(style: outlineButtonStyle),
+      cardTheme: const CardTheme(
+        color: Light.cardColor,
+        surfaceTintColor: Light.cardColor,
+        elevation: 3,
+      ),
+    );
+  }
 
-  static final ThemeData darkTheme = ThemeData(
-    inputDecorationTheme: inputDecorationTheme,
-    scaffoldBackgroundColor: Dark.backgroundColor,
-    appBarTheme: AppBarTheme(
+  static ThemeData darkTheme(Brightness brightness) {
+    return ThemeData(
+      useMaterial3: true,
+      brightness: brightness,
+      inputDecorationTheme: inputDecorationTheme,
+      scaffoldBackgroundColor: Dark.backgroundColor,
+      iconTheme: const IconThemeData(color: Dark.primaryColor),
+      appBarTheme: const AppBarTheme(
         color: Dark.appbarColor,
         foregroundColor: Dark.appbarForegroundColor,
-        iconTheme: const IconThemeData(color: iconColor)),
-    colorScheme: ColorScheme.dark(
-      primary: Dark.primaryColor,
-      onPrimary: Dark.onPrimaryColor,
-      secondary: Dark.accentColor,
-      background: Dark.backgroundColor,
-    ),
-    textTheme: Dark.textTheme,
-    bottomAppBarTheme: BottomAppBarTheme(color: Dark.appbarColor),
-    textButtonTheme: TextButtonThemeData(style: flatButtonStyle),
-    elevatedButtonTheme: ElevatedButtonThemeData(style: raisedButtonStyle),
-    outlinedButtonTheme: OutlinedButtonThemeData(style: outlineButtonStyle),
-    cardTheme: const CardTheme(
-      color: Dark.white,
-      surfaceTintColor: Dark.white,
-      elevation: 3,
-    ),
-  );
+        iconTheme: IconThemeData(color: Dark.primaryColor),
+        elevation: 0,
+      ),
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: Dark.primaryColor,
+        brightness: brightness,
+        primary: Dark.primaryColor,
+        onPrimary: Dark.onPrimaryColor,
+        secondary: Dark.secondaryColor,
+        onSecondary: Dark.onSecondaryColor,
+        surface: Dark.surfaceColor,
+        onSurface: Dark.onSurfaceColor,
+        background: Dark.backgroundColor,
+        error: Dark.errorColor,
+      ),
+      textTheme: Dark.textTheme,
+      bottomAppBarTheme: BottomAppBarTheme(color: Dark.appbarColor),
+      textButtonTheme: TextButtonThemeData(style: flatButtonStyle),
+      elevatedButtonTheme: ElevatedButtonThemeData(style: raisedButtonStyle),
+      outlinedButtonTheme: OutlinedButtonThemeData(style: outlineButtonStyle),
+      cardTheme: const CardTheme(
+        color: Dark.cardColor,
+        surfaceTintColor: Dark.cardColor,
+        elevation: 3,
+      ),
+    );
+  }
 }

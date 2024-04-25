@@ -72,12 +72,7 @@ class CircleBody extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 10.0),
                           child: Text(
                             'Owner',
-                            style: TextStyle(
-                              fontSize:
-                                  themeData.textTheme.titleMedium?.fontSize,
-                              fontWeight:
-                                  themeData.textTheme.titleMedium?.fontWeight,
-                            ),
+                            style: themeData.textTheme.titleMedium,
                           ),
                         ),
                         UserAvatar(
@@ -93,12 +88,7 @@ class CircleBody extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 10.0),
                           child: Text(
                             'Valid',
-                            style: TextStyle(
-                              fontSize:
-                                  themeData.textTheme.titleMedium?.fontSize,
-                              fontWeight:
-                                  themeData.textTheme.titleMedium?.fontWeight,
-                            ),
+                            style: themeData.textTheme.titleMedium,
                           ),
                         ),
                         TimeBox(
@@ -112,26 +102,17 @@ class CircleBody extends StatelessWidget {
                 const SizedBox(height: 20.0),
                 Text(
                   'Description',
-                  style: TextStyle(
-                    fontSize: themeData.textTheme.titleMedium?.fontSize,
-                    fontWeight: themeData.textTheme.titleMedium?.fontWeight,
-                  ),
+                  style: themeData.textTheme.titleMedium,
                 ),
                 const SizedBox(height: 10.0),
                 Text(
                   circle.description,
-                  style: TextStyle(
-                    fontSize: themeData.textTheme.bodyMedium?.fontSize,
-                    fontWeight: themeData.textTheme.bodyMedium?.fontWeight,
-                  ),
+                  style: themeData.textTheme.bodyMedium,
                 ),
                 const SizedBox(height: 20.0),
                 Text(
                   'Members',
-                  style: TextStyle(
-                    fontSize: themeData.textTheme.titleMedium?.fontSize,
-                    fontWeight: themeData.textTheme.titleMedium?.fontWeight,
-                  ),
+                  style: themeData.textTheme.titleMedium,
                 ),
               ],
             ),

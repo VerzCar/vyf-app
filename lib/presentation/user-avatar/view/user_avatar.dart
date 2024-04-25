@@ -48,10 +48,7 @@ class UserAvatarPopulated extends StatelessWidget {
           const SizedBox(width: 15),
           Text(
             user.username,
-            style: TextStyle(
-              fontSize: themeData.textTheme.labelLarge?.fontSize,
-              fontWeight: themeData.textTheme.labelLarge?.fontWeight,
-            ),
+            style: themeData.textTheme.labelLarge,
           ),
         ],
       );

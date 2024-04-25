@@ -40,21 +40,15 @@ class CircleCard extends StatelessWidget {
               ),
             ),
             ListTile(
-              title:Text(
+              title: Text(
                 circle.name,
-                style: TextStyle(
-                  fontSize: themeData.textTheme.headlineSmall?.fontSize,
-                  fontWeight: themeData.textTheme.headlineSmall?.fontWeight,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                style: themeData.textTheme.headlineSmall
+                    ?.copyWith(overflow: TextOverflow.ellipsis),
               ),
               subtitle: Text(
                 circle.description,
-                style: TextStyle(
-                  fontSize: themeData.textTheme.bodyMedium?.fontSize,
-                  fontWeight: themeData.textTheme.bodyMedium?.fontWeight,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                style: themeData.textTheme.bodyMedium
+                    ?.copyWith(overflow: TextOverflow.ellipsis),
               ),
             ),
           ],

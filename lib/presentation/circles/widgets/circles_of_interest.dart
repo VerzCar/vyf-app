@@ -23,10 +23,7 @@ class CirclesOfInterest extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 10.0),
             child: Text(
               'Circles',
-              style: TextStyle(
-                fontSize: themeData.textTheme.titleLarge?.fontSize,
-                fontWeight: themeData.textTheme.titleLarge?.fontWeight,
-              ),
+              style: themeData.textTheme.titleLarge,
             ),
           ),
           Container(

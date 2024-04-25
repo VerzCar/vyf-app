@@ -30,10 +30,7 @@ class TimeBox extends StatelessWidget {
     final themeData = Theme.of(context);
     return Text(
       text,
-      style: TextStyle(
-        fontSize: themeData.textTheme.labelMedium?.fontSize,
-        fontWeight: themeData.textTheme.labelMedium?.fontWeight,
-      ),
+      style: themeData.textTheme.labelMedium,
     );
   }
 }

@@ -47,19 +47,11 @@ class MiniCircleCard extends StatelessWidget {
                 ListTile(
                   title: Text(
                     circle.name,
-                    style: TextStyle(
-                      fontSize: themeData.textTheme.titleMedium?.fontSize,
-                      fontWeight: themeData.textTheme.titleMedium?.fontWeight,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    style: themeData.textTheme.titleMedium?.copyWith(overflow: TextOverflow.ellipsis),
                   ),
                   subtitle: Text(
                     circle.description,
-                    style: TextStyle(
-                      fontSize: themeData.textTheme.bodySmall?.fontSize,
-                      fontWeight: themeData.textTheme.bodySmall?.fontWeight,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    style: themeData.textTheme.bodySmall?.copyWith(overflow: TextOverflow.ellipsis),
                   ),
                 ),
               ],
@@ -73,10 +65,7 @@ class MiniCircleCard extends StatelessWidget {
             ),
             child: Text(
               '$_countOfPeople Members',
-              style: TextStyle(
-                fontSize: themeData.textTheme.labelSmall?.fontSize,
-                fontWeight: themeData.textTheme.labelSmall?.fontWeight,
-              ),
+              style: themeData.textTheme.labelSmall,
             ),
           ),
         ],

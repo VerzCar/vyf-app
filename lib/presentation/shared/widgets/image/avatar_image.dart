@@ -33,6 +33,7 @@ class AvatarImage extends StatelessWidget {
             ? Image.network(
                 src,
                 fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
               )
             : Container(
                 color: Colors.black87,
@@ -40,12 +41,11 @@ class AvatarImage extends StatelessWidget {
                   child: Text(
                     capitalLetters.toUpperCase(),
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize:
-                          Theme.of(context).textTheme.titleLarge?.fontSize,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 2.0
-                    ),
+                        color: Colors.white,
+                        fontSize:
+                            Theme.of(context).textTheme.titleLarge?.fontSize,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2.0),
                   ),
                 ),
               ),

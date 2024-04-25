@@ -9,14 +9,44 @@ class RankingsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10.0),
       child: ListView.builder(
         itemCount: rankings.length,
         itemBuilder: (BuildContext context, int index) {
-          return UserAvatar(
-            identityId: rankings[index].identityId,
-            //option: UserAvatarOption(size: AvatarSize.xs),
+          return Container(
+            key: Key(rankings[index].id.toString()),
+            width: 50,
+            height: 50,
+            margin: const EdgeInsets.only(bottom: 7.0),
+            child: Row(
+              children: [
+                Text(
+                  rankings[index].number.toString(),
+                  style: themeData.textTheme.labelLarge,
+                ),
+                const SizedBox(width: 10.0),
+                UserAvatar(
+                  identityId: rankings[index].identityId,
+                  option: UserAvatarOption(
+                    withLabel: true,
+                  ),
+                ),
+                const Spacer(),
+                ElevatedButton(
+                  onPressed: () => {},
+                  style: themeData.elevatedButtonTheme.style?.copyWith(
+                    backgroundColor:
+                        MaterialStatePropertyAll(themeData.colorScheme.secondary),
+                    foregroundColor:
+                    MaterialStatePropertyAll(themeData.colorScheme.onSecondary),
+                  ),
+                  child: const Text('Vote'),
+                ),
+              ],
+            ),
           );
         },
       ),

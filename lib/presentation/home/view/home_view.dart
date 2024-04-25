@@ -30,18 +30,21 @@ class HomeView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _HomeTabButton(
+              key: const Key('circleTab'),
               groupValue: selectedTab,
               value: HomeTab.circleDetail,
               icon: const Icon(Icons.circle_outlined),
               activeIcon: const Icon(Icons.blur_circular_outlined),
             ),
             _HomeTabButton(
+              key: const Key('rankingsTab'),
               groupValue: selectedTab,
               value: HomeTab.search,
               icon: const Icon(Icons.list),
               activeIcon: const Icon(Icons.list_alt_outlined),
             ),
             _HomeTabButton(
+              key: const Key('userTab'),
               groupValue: selectedTab,
               value: HomeTab.profile,
               icon: const Icon(Icons.person_outline),

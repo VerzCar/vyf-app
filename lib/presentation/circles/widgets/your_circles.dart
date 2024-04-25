@@ -23,10 +23,7 @@ class YourCircles extends StatelessWidget {
               children: [
                 Text(
                   'Your Circles',
-                  style: TextStyle(
-                    fontSize: themeData.textTheme.titleLarge?.fontSize,
-                    fontWeight: themeData.textTheme.titleLarge?.fontWeight,
-                  ),
+                  style: themeData.textTheme.titleLarge,
                 ),
                 OutlinedButton.icon(
                   onPressed: () => {},
