@@ -1,8 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vote_your_face/application/rankings/bloc/rankings_bloc.dart';
+import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/injection.dart';
+import 'package:vote_your_face/presentation/rankings/cubit/rankings_cubit.dart';
 import 'package:vote_your_face/presentation/rankings/view/rankings_view.dart';
 
 @RoutePage()
@@ -15,7 +16,8 @@ class RankingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (BuildContext ctx) =>
-            sl<RankingsBloc>()..add(RankingCircleSelected(circleId: circleId)),
+            RankingsCubit(voteCircleRepository: sl<IVoteCircleRepository>())
+              ..loadRankings(circleId),
         child: const RankingsView());
   }
 }
