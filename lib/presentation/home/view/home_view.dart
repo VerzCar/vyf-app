@@ -8,10 +8,10 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter(
-      routes: [
-        const CirclesRoute(),
-        RankingsRoute(),
-        const SettingsRoute(),
+      routes: const [
+        CirclesTabRoute(),
+        RankingsTabRoute(),
+        SettingsTabRoute(),
       ],
       builder: (context, child) {
         final tabsRouter = AutoTabsRouter.of(context);

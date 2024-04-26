@@ -58,6 +58,9 @@ class CircleBody extends StatelessWidget {
                           themeData.colorScheme.secondary),
                     ),
                     onPressed: () {
+                      // https://github.com/Milad-Akarie/auto_route_library/blob/master/auto_route/example/lib/mobile/screens/books/book_details_page.dart
+                     // context.navigateTo(RankingsRoute());
+                      context.router.root.push(RankingsRoute());
                       // final router = context.innerRouterOf<StackRouter>(HomeRoute.name);
                       // router?.push(RankingsRoute(circleId: circle.id));
                      AutoRouter.of(context).innerRouterOf<TabsRouter>(HomeRoute.name)?.topMostRouter().root.push(RankingsRoute(circleId: circle.id));
