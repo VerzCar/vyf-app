@@ -8,7 +8,10 @@ class AppRouter extends $AppRouter {
 
   @override
   List<AutoRoute> get routes => [
-        AutoRoute(page: SplashRoute.page, initial: true),
+        AutoRoute(
+          page: SplashRoute.page,
+          initial: true,
+        ),
         AutoRoute(
           path: '/',
           page: HomeRoute.page,
@@ -23,19 +26,24 @@ class AppRouter extends $AppRouter {
                     page: CirclesRoute.page,
                   ),
                   AutoRoute(
-                    path: ':id',
+                    path: ':circleId',
                     page: CircleRoute.page,
                   ),
                 ]),
             AutoRoute(
-                path: 'rankings',
-                page: RankingsTabRoute.page,
-                children: [
-                  AutoRoute(
-                    path: '',
-                    page: RankingsRoute.page,
-                  ),
-                ]),
+              path: 'rankings',
+              page: RankingsTabRoute.page,
+              children: [
+                AutoRoute(
+                  path: '',
+                  page: RankingsRoute.page,
+                ),
+                AutoRoute(
+                  path: ':circleId',
+                  page: RankingRoute.page,
+                ),
+              ],
+            ),
             AutoRoute(
               path: 'settings',
               page: SettingsTabRoute.page,
@@ -48,19 +56,6 @@ class AppRouter extends $AppRouter {
             ),
           ],
         ),
-        // CustomRoute(
-        //     page: ProfileImagePage,
-        //     transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-        //     durationInMilliseconds: 200),
-        // CustomRoute(
-        //     page: ProfileEditPage,
-        //     transitionsBuilder: TransitionsBuilders.slideBottom,
-        //     durationInMilliseconds: 200),
-        // CustomRoute(
-        //     page: ProfileEditImagePage,
-        //     transitionsBuilder: TransitionsBuilders.fadeIn,
-        //     durationInMilliseconds: 200),
-        // AutoRoute(page: CameraPage, initial: false),
       ];
 }
 

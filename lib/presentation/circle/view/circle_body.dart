@@ -59,14 +59,10 @@ class CircleBody extends StatelessWidget {
                     ),
                     onPressed: () {
                       // https://github.com/Milad-Akarie/auto_route_library/blob/master/auto_route/example/lib/mobile/screens/books/book_details_page.dart
-                     // context.navigateTo(RankingsRoute());
-                      context.router.root.push(RankingsRoute());
-                      // final router = context.innerRouterOf<StackRouter>(HomeRoute.name);
-                      // router?.push(RankingsRoute(circleId: circle.id));
-                     AutoRouter.of(context).innerRouterOf<TabsRouter>(HomeRoute.name)?.topMostRouter().root.push(RankingsRoute(circleId: circle.id));
-                      // context.router.popUntilRoot();
-                      // context.router.push(RankingsRoute(circleId: circle.id));
-                      //context.router.parent<TabsRouter>()?.push(RankingsRoute(circleId: circle.id));
+                      //context.navigateTo(RankingRoute(circleId: circle.id));
+                      context.tabsRouter
+                          .navigate(RankingRoute(circleId: circle.id));
+                      // context.router.push(RankingRoute(circleId: circle.id));
                     },
                     child: const Text('Go to Rankings')),
                 Row(
