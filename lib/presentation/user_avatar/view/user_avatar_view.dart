@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
-import 'package:vote_your_face/presentation/user-avatar/view/user_avatar.dart';
-import 'package:vote_your_face/presentation/user-avatar/cubit/user_avatar_cubit.dart';
+import 'package:vote_your_face/presentation/user_avatar/view/user_avatar.dart';
+import 'package:vote_your_face/presentation/user_avatar/cubit/user_avatar_cubit.dart';
 
 final class UserAvatarOption {
   UserAvatarOption({

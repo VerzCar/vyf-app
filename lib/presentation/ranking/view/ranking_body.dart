@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
-import 'package:vote_your_face/presentation/user-avatar/view/user_avatar_view.dart';
+import 'package:vote_your_face/presentation/user_avatar/view/user_avatar_view.dart';
 
 class RankingBody extends StatelessWidget {
   const RankingBody({super.key, required this.rankings});

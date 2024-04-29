@@ -53,6 +53,14 @@ class Dark {
   Dark._();
 }
 
+extension ColorSchemeExtension on ColorScheme {
+  Color get successColor =>
+      brightness == Brightness.light ? Light.successColor : Dark.successColor;
+
+  Color get warningColor =>
+      brightness == Brightness.light ? Light.warningColor : Dark.warningColor;
+}
+
 class AppTheme {
   AppTheme._();
 

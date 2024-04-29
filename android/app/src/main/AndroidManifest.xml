@@ -4,6 +4,7 @@
     <application
         android:label="vote_your_face"
         android:name="${applicationName}"
+        android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/voteyourface_logo">
         <activity
             android:name=".MainActivity"

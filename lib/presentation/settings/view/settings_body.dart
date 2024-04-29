@@ -1,8 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vote_your_face/application/authentication/authentication.dart';
 import 'package:vote_your_face/application/user/user.dart';
-import 'package:vote_your_face/presentation/user-avatar/view/user_avatar_view.dart';
+import 'package:vote_your_face/presentation/routes/router.gr.dart';
+import 'package:vote_your_face/presentation/user_avatar/view/user_avatar_view.dart';
 
 class SettingsBody extends StatelessWidget {
   const SettingsBody({super.key});
@@ -33,7 +35,9 @@ class SettingsBody extends StatelessWidget {
                 ),
                 subtitle:
                     Text('${state.user.firstName} ${state.user.lastName}'),
-                onTap: () => {},
+                onTap: () => {
+                  context.pushRoute(const UserSettingsRoute())
+                },
               ),
             );
           },

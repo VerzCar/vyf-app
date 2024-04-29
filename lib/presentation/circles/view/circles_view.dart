@@ -4,7 +4,7 @@ import 'package:vote_your_face/application/user/bloc/user_bloc.dart';
 import 'package:vote_your_face/presentation/circles/widgets/circles_of_interest.dart';
 import 'package:vote_your_face/presentation/circles/widgets/your_circles.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
-import 'package:vote_your_face/presentation/user-avatar/view/user_avatar_view.dart';
+import 'package:vote_your_face/presentation/user_avatar/view/user_avatar_view.dart';
 
 class CirclesView extends StatelessWidget {
   const CirclesView({super.key});

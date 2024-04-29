@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
-import 'package:vote_your_face/presentation/user-avatar/cubit/user_avatar_cubit.dart';
+import 'package:vote_your_face/presentation/user_avatar/cubit/user_avatar_cubit.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
-import 'package:vote_your_face/presentation/user-avatar/view/user_avatar_view.dart';
+import 'package:vote_your_face/presentation/user_avatar/view/user_avatar_view.dart';
 
 class UserAvatarPopulated extends StatelessWidget {
   const UserAvatarPopulated({super.key, this.option});

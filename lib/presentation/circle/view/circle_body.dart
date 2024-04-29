@@ -6,7 +6,7 @@ import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 import 'package:vote_your_face/presentation/shared/widgets/time/time_box.dart';
-import 'package:vote_your_face/presentation/user-avatar/view/user_avatar_view.dart';
+import 'package:vote_your_face/presentation/user_avatar/view/user_avatar_view.dart';
 
 class CircleBody extends StatelessWidget {
   const CircleBody({super.key, required this.circle});
