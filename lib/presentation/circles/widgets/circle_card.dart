@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
+import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class CircleCard extends StatelessWidget {
   const CircleCard({
@@ -22,10 +23,7 @@ class CircleCard extends StatelessWidget {
         context.router.push(CircleRoute(circleId: circle.id));
       },
       child: Card.outlined(
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        shape: RoundedRectangleBorder(
-          borderRadius: _borderRadius,
-        ),
+        clipBehavior: Clip.antiAlias,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -33,8 +31,8 @@ class CircleCard extends StatelessWidget {
               flex: 2,
               child: SizedBox(
                 width: double.infinity,
-                child: Image.network(
-                  circle.imageSrc,
+                child: NetImage(
+                  imageSrc: circle.imageSrc,
                   fit: BoxFit.cover,
                 ),
               ),

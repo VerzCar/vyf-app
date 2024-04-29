@@ -7,6 +7,8 @@ import 'package:vote_your_face/presentation/user-avatar/view/user_avatar_view.da
 class SettingsBody extends StatelessWidget {
   const SettingsBody({super.key});
 
+  static final BorderRadius _borderRadius = BorderRadius.circular(10.0);
+
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
@@ -15,12 +17,16 @@ class SettingsBody extends StatelessWidget {
       children: [
         BlocBuilder<UserBloc, UserState>(
           builder: (context, state) {
-            return Card(
+            return Card.outlined(
               margin: const EdgeInsets.symmetric(vertical: 6.0),
               child: ListTile(
+                shape: RoundedRectangleBorder(
+                  borderRadius: _borderRadius,
+                ),
                 leading: UserAvatar(
                   identityId: state.user.identityId,
                 ),
+                trailing: const Icon(Icons.arrow_forward_ios_outlined),
                 title: Text(
                   state.user.username,
                   style: themeData.textTheme.titleMedium,
@@ -32,10 +38,12 @@ class SettingsBody extends StatelessWidget {
             );
           },
         ),
-        const Divider(),
-        Card(
+        Card.outlined(
           margin: const EdgeInsets.symmetric(vertical: 6.0),
           child: ListTile(
+            shape: RoundedRectangleBorder(
+              borderRadius: _borderRadius,
+            ),
             title: Text(
               'Impressum',
               textAlign: TextAlign.center,
@@ -44,22 +52,26 @@ class SettingsBody extends StatelessWidget {
             onTap: () => {},
           ),
         ),
-        const Divider(),
-        Card(
+        Card.outlined(
           margin: const EdgeInsets.symmetric(vertical: 6.0),
           child: ListTile(
+            shape: RoundedRectangleBorder(
+              borderRadius: _borderRadius,
+            ),
             title: Text(
-              'Privacy',
+              'Privacy & Terms',
               textAlign: TextAlign.center,
               style: themeData.textTheme.titleMedium,
             ),
             onTap: () => {},
           ),
         ),
-        const Divider(),
-        Card(
+        Card.outlined(
           margin: const EdgeInsets.symmetric(vertical: 6.0),
           child: ListTile(
+            shape: RoundedRectangleBorder(
+              borderRadius: _borderRadius,
+            ),
             title: Text(
               'Sign out',
               textAlign: TextAlign.center,

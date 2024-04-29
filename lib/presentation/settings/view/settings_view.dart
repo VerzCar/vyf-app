@@ -6,14 +6,15 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
       ),
-      body: const SafeArea(
-        child: SettingsBody(),
+      body: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: const SettingsBody(),
+        ),
       ),
     );
   }

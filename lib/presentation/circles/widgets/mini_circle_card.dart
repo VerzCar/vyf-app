@@ -26,11 +26,7 @@ class MiniCircleCard extends StatelessWidget {
         alignment: AlignmentDirectional.topEnd,
         children: [
           Card.outlined(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            shape: RoundedRectangleBorder(
-              borderRadius: _borderRadius,
-            ),
-            elevation: 4,
+            clipBehavior: Clip.antiAlias,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

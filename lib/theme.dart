@@ -10,7 +10,7 @@ class Light {
   static const Color onSecondaryColor = Color(0xFFFAFAFA);
   static const Color surfaceColor = Color(0xFFFAFAFA);
   static const Color onSurfaceColor = Color(0xFF0F0F0F);
-  static const Color backgroundColor = Colors.white;
+  static const Color backgroundColor = Color(0xFFFAFAFA);
   static const Color successColor = Color(0xFF4caf50);
   static const Color warningColor = Color(0xFFFFA726);
   static const Color errorColor = Color(0xFFF44336);
@@ -92,7 +92,6 @@ class AppTheme {
       useMaterial3: true,
       brightness: brightness,
       inputDecorationTheme: inputDecorationTheme,
-      scaffoldBackgroundColor: Light.backgroundColor,
       iconTheme: const IconThemeData(color: Light.primaryColor),
       appBarTheme: const AppBarTheme(
         color: Light.appbarColor,
@@ -113,14 +112,23 @@ class AppTheme {
         error: Light.errorColor,
       ),
       textTheme: Light.textTheme,
-      bottomAppBarTheme: BottomAppBarTheme(color: Light.appbarColor, shape: ),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: Light.appbarColor,
+        elevation: 4.0,
+        selectedItemColor: Colors.black87,
+        unselectedItemColor: Colors.black45,
+      ),
+      bottomAppBarTheme: const BottomAppBarTheme(
+        color: Light.appbarColor,
+        elevation: 4.0,
+      ),
       textButtonTheme: TextButtonThemeData(style: flatButtonStyle),
       elevatedButtonTheme: ElevatedButtonThemeData(style: raisedButtonStyle),
       outlinedButtonTheme: OutlinedButtonThemeData(style: outlineButtonStyle),
       cardTheme: const CardTheme(
         color: Light.cardColor,
         surfaceTintColor: Light.cardColor,
-        elevation: 3,
+        elevation: 2,
       ),
     );
   }
@@ -130,7 +138,6 @@ class AppTheme {
       useMaterial3: true,
       brightness: brightness,
       inputDecorationTheme: inputDecorationTheme,
-      scaffoldBackgroundColor: Dark.backgroundColor,
       iconTheme: const IconThemeData(color: Dark.primaryColor),
       appBarTheme: const AppBarTheme(
         color: Dark.appbarColor,
@@ -151,14 +158,23 @@ class AppTheme {
         error: Dark.errorColor,
       ),
       textTheme: Dark.textTheme,
-      bottomAppBarTheme: BottomAppBarTheme(color: Dark.appbarColor),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: Dark.appbarColor,
+        elevation: 4.0,
+        selectedItemColor: Colors.white70,
+        unselectedItemColor: Colors.white54,
+      ),
+      bottomAppBarTheme: const BottomAppBarTheme(
+        color: Dark.appbarColor,
+        elevation: 4.0,
+      ),
       textButtonTheme: TextButtonThemeData(style: flatButtonStyle),
       elevatedButtonTheme: ElevatedButtonThemeData(style: raisedButtonStyle),
       outlinedButtonTheme: OutlinedButtonThemeData(style: outlineButtonStyle),
       cardTheme: const CardTheme(
         color: Dark.cardColor,
         surfaceTintColor: Dark.cardColor,
-        elevation: 3,
+        elevation: 2,
       ),
     );
   }
