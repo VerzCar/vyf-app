@@ -20,6 +20,9 @@ class HomeView extends StatelessWidget {
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: tabsRouter.activeIndex,
             onTap: (index) {
+              if (tabsRouter.activeIndex == index) {
+                tabsRouter.maybePopTop();
+              }
               tabsRouter.setActiveIndex(index);
             },
             items: const [
