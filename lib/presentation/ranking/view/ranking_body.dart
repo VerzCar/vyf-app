@@ -18,8 +18,6 @@ class RankingBody extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return Container(
             key: Key(rankings[index].id.toString()),
-            width: 50,
-            height: 50,
             margin: const EdgeInsets.only(bottom: 7.0),
             child: Row(
               children: [

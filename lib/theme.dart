@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 
 class Light {
   static const Color primaryColor = Color(0xFF28282d);
@@ -111,7 +113,7 @@ class AppTheme {
         error: Light.errorColor,
       ),
       textTheme: Light.textTheme,
-      bottomAppBarTheme: const BottomAppBarTheme(color: Light.appbarColor),
+      bottomAppBarTheme: BottomAppBarTheme(color: Light.appbarColor, shape: ),
       textButtonTheme: TextButtonThemeData(style: flatButtonStyle),
       elevatedButtonTheme: ElevatedButtonThemeData(style: raisedButtonStyle),
       outlinedButtonTheme: OutlinedButtonThemeData(style: outlineButtonStyle),

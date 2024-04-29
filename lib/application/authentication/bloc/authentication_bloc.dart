@@ -45,6 +45,7 @@ class AuthenticationBloc
     }
   }
 
+  // TODO: add clearing of global states
   void _onAuthenticationLogoutRequested(
     AuthenticationLogoutRequested event,
     Emitter<AuthenticationState> emit,
