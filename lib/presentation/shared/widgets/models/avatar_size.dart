@@ -6,6 +6,7 @@ enum AvatarSize {
   base,
   md,
   lg,
+  xl,
 }
 
 extension AvatarPreSize on AvatarSize {
@@ -21,6 +22,8 @@ extension AvatarPreSize on AvatarSize {
         return const Size(60, 60);
       case AvatarSize.lg:
         return const Size(72, 72);
+      case AvatarSize.xl:
+        return const Size(96, 96);
     }
   }
 }
