@@ -17,7 +17,7 @@ class RankingCubit extends Cubit<RankingState> {
     emit(state.copyWith(status: StatusIndicator.loading));
 
     try {
-      final rankings = await _voteCircleRepository.rankings(circleId!);
+      final rankings = await _voteCircleRepository.rankings(circleId);
       emit(
         state.copyWith(
           status: StatusIndicator.success,

@@ -5,7 +5,7 @@ import 'package:vote_your_face/application/bloc_observer.dart';
 import 'package:vote_your_face/injection.dart' as di;
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'amplifyconfiguration.dart';
+import 'package:vote_your_face/amplifyconfiguration.dart';
 
 Future<void> main() async {
   Bloc.observer = AppBlocObserver();

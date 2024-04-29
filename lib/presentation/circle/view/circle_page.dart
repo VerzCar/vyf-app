@@ -5,7 +5,7 @@ import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/circle/cubit/circle_cubit.dart';
 
-import 'circle_view.dart';
+import 'package:vote_your_face/presentation/circle/view/circle_view.dart';
 
 @RoutePage()
 class CirclePage extends StatelessWidget {

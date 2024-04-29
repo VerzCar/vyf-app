@@ -5,7 +5,6 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:logger/logger.dart';
 import 'package:user_api/user_api.dart';
 import 'package:http/http.dart' as http;
-import 'i_user_api_client.dart';
 
 part 'api-errors.dart';
 

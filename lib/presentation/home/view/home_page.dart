@@ -3,9 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vote_your_face/application/authentication/authentication.dart';
 import 'package:vote_your_face/presentation/home/view/home_view.dart';
-import 'package:vote_your_face/presentation/routes/router.gr.dart';
 
-import '../cubit/home_cubit.dart';
 
 @RoutePage()
 class HomePage extends StatelessWidget {

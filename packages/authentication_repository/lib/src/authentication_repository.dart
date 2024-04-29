@@ -4,7 +4,6 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 
-import 'i_authentication_repository.dart';
 
 /// {@template sign_up_with_email_and_password_failure}
 /// Thrown if during the sign up process if a failure occurs.

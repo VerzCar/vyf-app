@@ -6,8 +6,8 @@ import 'package:vote_your_face/presentation/routes/router.dart';
 import 'package:vote_your_face/application/authentication/authentication.dart';
 import 'package:vote_your_face/theme.dart';
 
-import 'application/user/bloc/user_bloc.dart';
-import 'injection.dart';
+import 'package:vote_your_face/application/user/bloc/user_bloc.dart';
+import 'package:vote_your_face/injection.dart';
 
 class App extends StatelessWidget {
   final _appRouter = AppRouter();

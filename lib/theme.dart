@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
 
 class Light {
   static const Color primaryColor = Color(0xFF28282d);
@@ -90,8 +87,7 @@ class AppTheme {
   static final InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
     floatingLabelStyle: const TextStyle(color: Colors.black),
     focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Colors.black)),
+        borderRadius: BorderRadius.circular(8)),
     border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
   );
 
