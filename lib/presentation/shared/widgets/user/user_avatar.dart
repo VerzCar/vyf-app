@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
+import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
-import 'package:vote_your_face/presentation/user_avatar/cubit/user_avatar_cubit.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
-import 'package:vote_your_face/presentation/user_avatar/models/models.dart';
 
-class UserAvatarPopulated extends StatelessWidget {
-  const UserAvatarPopulated({super.key, this.option});
+class UserAvatar extends StatelessWidget {
+  const UserAvatar({super.key, this.option});
 
   final UserAvatarOption? option;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserAvatarCubit, UserAvatarState>(
-        builder: (context, state) {
+    return BlocBuilder<UserXCubit, UserXState>(builder: (context, state) {
       switch (state.status) {
         case StatusIndicator.initial:
           return const Center(child: Text('Loading'));
@@ -41,17 +39,23 @@ class UserAvatarPopulated extends StatelessWidget {
 
     if (option!.withLabel) {
       final themeData = Theme.of(context);
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          avatar,
-          const SizedBox(width: 15),
-          Text(
-            user.username,
-            style: themeData.textTheme.labelLarge,
-          ),
-        ],
-      );
+      return option!.labelPosition == LabelPosition.right
+          ? Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: _avatarWithLabel(
+                  avatar: avatar,
+                  user: user,
+                  themeData: themeData,
+                  position: option!.labelPosition),
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: _avatarWithLabel(
+                  avatar: avatar,
+                  user: user,
+                  themeData: themeData,
+                  position: option!.labelPosition),
+            );
     }
 
     return avatar;
@@ -71,5 +75,23 @@ class UserAvatarPopulated extends StatelessWidget {
         color: Colors.black12,
       ),
     );
+  }
+
+  List<Widget> _avatarWithLabel({
+    required AvatarImage avatar,
+    required User user,
+    required ThemeData themeData,
+    required LabelPosition position,
+  }) {
+    return [
+      avatar,
+      position == LabelPosition.right
+          ? const SizedBox(width: 15)
+          : const SizedBox(height: 10),
+      Text(
+        user.username,
+        style: themeData.textTheme.labelLarge,
+      ),
+    ];
   }
 }

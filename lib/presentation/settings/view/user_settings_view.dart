@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/application/user/user.dart';
+import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
-import 'package:vote_your_face/presentation/user_avatar/models/models.dart';
-import 'package:vote_your_face/presentation/user_avatar/user_avatar.dart';
 import 'package:vote_your_face/theme.dart';
 
 class UserSettingsView extends StatelessWidget {
@@ -48,10 +48,17 @@ class UserSettingsView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(
-                      child: UserAvatar(
-                        identityId: state.user.identityId,
-                        option: UserAvatarOption(
-                          size: AvatarSize.lg,
+                      child: BlocProvider(
+                        create: (context) =>
+                            UserXCubit(userRepository: sl<IUserRepository>())
+                              ..userXFetched(
+                                context: context,
+                                identityId: state.user.identityId,
+                              ),
+                        child: const UserAvatar(
+                          option: UserAvatarOption(
+                            size: AvatarSize.lg,
+                          ),
                         ),
                       ),
                     ),

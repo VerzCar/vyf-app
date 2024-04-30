@@ -1,21 +1,21 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/application/user/user.dart';
 
-part 'user_avatar_state.dart';
+part 'user_x_state.dart';
 
-class UserAvatarCubit extends Cubit<UserAvatarState> {
-  UserAvatarCubit({
+class UserXCubit extends Cubit<UserXState> {
+  UserXCubit({
     required IUserRepository userRepository,
-  })  : _userRepository = userRepository,
-        super(const UserAvatarState());
+  })  :_userRepository = userRepository,
+        super(const UserXState());
 
   final IUserRepository _userRepository;
 
-  Future<void> getUser({
+  Future<void> userXFetched({
     required BuildContext context,
     required String identityId,
   }) async {
@@ -45,16 +45,5 @@ class UserAvatarCubit extends Cubit<UserAvatarState> {
       if (isClosed) return;
       emit(state.copyWith(status: StatusIndicator.failure));
     }
-  }
-
-  Future<void> initWithExistingUser({
-    required User user,
-  }) async {
-    return emit(
-      state.copyWith(
-        status: StatusIndicator.success,
-        user: user,
-      ),
-    );
   }
 }

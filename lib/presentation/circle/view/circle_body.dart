@@ -2,12 +2,13 @@ import 'dart:ui';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:user_repository/user_repository.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
+import 'package:vote_your_face/application/user/user.dart';
+import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
-import 'package:vote_your_face/presentation/shared/widgets/time/time_box.dart';
-import 'package:vote_your_face/presentation/user_avatar/models/models.dart';
-import 'package:vote_your_face/presentation/user_avatar/view/user_avatar_view.dart';
 
 class CircleBody extends StatelessWidget {
   const CircleBody({super.key, required this.circle});
@@ -76,9 +77,16 @@ class CircleBody extends StatelessWidget {
                             style: themeData.textTheme.titleMedium,
                           ),
                         ),
-                        UserAvatar(
-                          identityId: circle.createdFrom,
-                          option: UserAvatarOption(withLabel: true),
+                        BlocProvider(
+                          create: (context) =>
+                              UserXCubit(userRepository: sl<IUserRepository>())
+                                ..userXFetched(
+                                  context: context,
+                                  identityId: circle.createdFrom,
+                                ),
+                          child: const UserAvatar(
+                            option: UserAvatarOption(withLabel: true),
+                          ),
                         ),
                       ],
                     ),

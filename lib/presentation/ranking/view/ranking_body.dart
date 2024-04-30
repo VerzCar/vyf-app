@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:user_repository/user_repository.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
+import 'package:vote_your_face/application/user/user.dart';
+import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/ranking/widgets/ranking_sheet.dart';
-import 'package:vote_your_face/presentation/user_avatar/models/models.dart';
-import 'package:vote_your_face/presentation/user_avatar/view/user_avatar_view.dart';
+import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class RankingBody extends StatelessWidget {
   const RankingBody({super.key, required this.rankings});
@@ -16,54 +19,69 @@ class RankingBody extends StatelessWidget {
 
     return ListView.separated(
       itemCount: rankings.length,
-      itemBuilder: (BuildContext context, int index) {
+      itemBuilder: (BuildContext contextL, int index) {
+        final ranking = rankings[index];
+        late UserXCubit userXCubit;
+
         return Card(
-          key: Key(rankings[index].id.toString()),
+          key: Key(ranking.id.toString()),
           elevation: 0,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.zero,
           ),
           margin: const EdgeInsets.all(0),
-          child: ListTile(
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 15.0,
-              vertical: 3.0,
-            ),
-            leading: Text(
-              rankings[index].number.toString(),
-              style: themeData.textTheme.bodyLarge,
-            ),
-            title: UserAvatar(
-              identityId: rankings[index].identityId,
-              option: UserAvatarOption(
-                withLabel: true,
-              ),
-            ),
-            trailing: ElevatedButton(
-              onPressed: () => {},
-              style: themeData.elevatedButtonTheme.style?.copyWith(
-                backgroundColor:
-                    MaterialStatePropertyAll(themeData.colorScheme.secondary),
-                foregroundColor:
-                    MaterialStatePropertyAll(themeData.colorScheme.onSecondary),
-              ),
-              child: const Text('Vote'),
-            ),
-            onTap: () => {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                builder: (BuildContext context) {
-                  return SizedBox(
-                    height: size.height * 0.70,
-                    child: RankingSheet(
-                      identityId: rankings[index].identityId,
-                      placementNumber: rankings[index].number,
-                    ),
-                  );
-                },
-              ),
+          child: BlocProvider(
+            create: (context) {
+              userXCubit = UserXCubit(userRepository: sl<IUserRepository>())
+                ..userXFetched(
+                  context: context,
+                  identityId: ranking.identityId,
+                );
+              return userXCubit;
             },
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 15.0,
+                vertical: 3.0,
+              ),
+              leading: Text(
+                ranking.number.toString(),
+                style: themeData.textTheme.bodyLarge,
+              ),
+              title: const UserAvatar(
+                option: UserAvatarOption(
+                  withLabel: true,
+                ),
+              ),
+              trailing: ElevatedButton(
+                onPressed: () => {},
+                style: themeData.elevatedButtonTheme.style?.copyWith(
+                  backgroundColor:
+                      MaterialStatePropertyAll(themeData.colorScheme.secondary),
+                  foregroundColor: MaterialStatePropertyAll(
+                      themeData.colorScheme.onSecondary),
+                ),
+                child: const Text('Vote'),
+              ),
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (BuildContext context2) {
+                    return SizedBox(
+                      height: size.height * 0.70,
+                      child: BlocProvider.value(
+                        value: userXCubit,
+                        child: RankingSheet(
+                          identityId: ranking.identityId,
+                          placementNumber: ranking.number,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
           ),
         );
       },

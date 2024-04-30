@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/application/authentication/authentication.dart';
 import 'package:vote_your_face/application/user/user.dart';
+import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
-import 'package:vote_your_face/presentation/user_avatar/view/user_avatar_view.dart';
+import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class SettingsBody extends StatelessWidget {
   const SettingsBody({super.key});
@@ -25,8 +27,13 @@ class SettingsBody extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: _borderRadius,
                 ),
-                leading: UserAvatar(
-                  identityId: state.user.identityId,
+                leading: BlocProvider(
+                  create: (context) => UserXCubit(userRepository: sl<IUserRepository>())
+                    ..userXFetched(
+                      context: context,
+                      identityId: state.user.identityId,
+                    ),
+                  child: const UserAvatar(),
                 ),
                 trailing: const Icon(Icons.arrow_forward_ios_outlined),
                 title: Text(
@@ -34,8 +41,9 @@ class SettingsBody extends StatelessWidget {
                   style: themeData.textTheme.titleMedium,
                 ),
                 subtitle:
-                    Text('${state.user.firstName} ${state.user.lastName}'),
-                onTap: () => {
+                Text('${state.user.firstName} ${state.user.lastName}'),
+                onTap: () =>
+                {
                   context.pushRoute(const UserSettingsRoute())
                 },
               ),
@@ -80,9 +88,10 @@ class SettingsBody extends StatelessWidget {
               'Sign out',
               textAlign: TextAlign.center,
               style:
-                  themeData.textTheme.titleMedium?.copyWith(color: Colors.red),
+              themeData.textTheme.titleMedium?.copyWith(color: Colors.red),
             ),
-            onTap: () => {
+            onTap: () =>
+            {
               context
                   .read<AuthenticationBloc>()
                   .add(AuthenticationLogoutRequested())

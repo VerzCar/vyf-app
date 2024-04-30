@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vote_your_face/application/user/bloc/user_bloc.dart';
+import 'package:user_repository/user_repository.dart';
+import 'package:vote_your_face/application/user/user.dart';
+import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/circles/widgets/circles_of_interest.dart';
 import 'package:vote_your_face/presentation/circles/widgets/your_circles.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
-import 'package:vote_your_face/presentation/user_avatar/models/models.dart';
-import 'package:vote_your_face/presentation/user_avatar/view/user_avatar_view.dart';
 
 class CirclesView extends StatelessWidget {
   const CirclesView({super.key});
@@ -19,9 +19,15 @@ class CirclesView extends StatelessWidget {
           builder: (context, identityId) {
             return Padding(
               padding: const EdgeInsets.all(10.0),
-              child: UserAvatar(
-                identityId: identityId,
-                option: UserAvatarOption(size: AvatarSize.xs),
+              child: BlocProvider(
+                create: (context) => UserXCubit(userRepository: sl<IUserRepository>())
+                  ..userXFetched(
+                    context: context,
+                    identityId: identityId,
+                  ),
+                child: const UserAvatar(
+                  option: UserAvatarOption(size: AvatarSize.xs),
+                ),
               ),
             );
           },

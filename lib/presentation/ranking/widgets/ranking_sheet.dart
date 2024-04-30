@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
-import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
+import 'package:vote_your_face/application/user/cubit/user_x_cubit.dart';
 import 'package:vote_your_face/injection.dart';
-import 'package:vote_your_face/presentation/ranking/cubit/ranking_placement_cubit.dart';
-import 'package:vote_your_face/presentation/user_avatar/models/models.dart';
-import 'package:vote_your_face/presentation/user_avatar/user_avatar.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class RankingSheet extends StatelessWidget {
@@ -21,28 +18,22 @@ class RankingSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext ctx) => RankingPlacementCubit(
-        voteCircleRepository: sl<IVoteCircleRepository>(),
-        userRepository: sl<IUserRepository>(),
-      )..loadRankingUser(context: context, identityId: identityId),
-      child: BlocBuilder<RankingPlacementCubit, RankingPlacementState>(
-          builder: (context, state) {
-        switch (state.status) {
-          case StatusIndicator.initial:
-            return const Center(child: Text('initial Loading'));
-          case StatusIndicator.loading:
-            return const Center(child: CircularProgressIndicator());
-          case StatusIndicator.success:
-            return _sheetContent(
-              context: context,
-              user: state.user,
-            );
-          case StatusIndicator.failure:
-            return const Center(child: Text('Error'));
-        }
-      }),
-    );
+    return BlocBuilder<UserXCubit, UserXState>(
+        builder: (context, state) {
+          switch (state.status) {
+            case StatusIndicator.initial:
+              return const Center(child: Text('initial Loading'));
+            case StatusIndicator.loading:
+              return const Center(child: CircularProgressIndicator());
+            case StatusIndicator.success:
+              return _sheetContent(
+                context: context,
+                user: state.user,
+              );
+            case StatusIndicator.failure:
+              return const Center(child: Text('Error'));
+          }
+        });
   }
 
   Widget _sheetContent({
@@ -64,11 +55,12 @@ class RankingSheet extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10.0),
-            Center(
+            const Center(
               child: UserAvatar(
-                identityId: identityId,
                 option: UserAvatarOption(
                   size: AvatarSize.xl,
+                  withLabel: true,
+                  labelPosition: LabelPosition.bottom,
                 ),
               ),
             ),
@@ -82,17 +74,12 @@ class RankingSheet extends StatelessWidget {
               user.profile.whyVoteMe,
               style: themeData.textTheme.bodyMedium,
             ),
-            const SizedBox(height: 15.0),
+            const Divider(),
             Text(
-              'Bio',
+              'Voted by',
               style: themeData.textTheme.titleMedium,
             ),
             const SizedBox(height: 10.0),
-            Text(
-              user.profile.bio,
-              style: themeData.textTheme.bodyMedium,
-            ),
-            const Divider(),
           ],
         ),
       ),
