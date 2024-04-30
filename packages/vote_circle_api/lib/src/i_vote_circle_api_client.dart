@@ -8,4 +8,8 @@ abstract class IVoteCircleApiClient {
   Future<List<CirclePaginated>> fetchCirclesOfInterest();
 
   Future<List<Ranking>> fetchRankings(int circleId);
+
+  Future<List<CircleVoter>> fetchCircleVoters(int circleId);
+
+  Future<List<CircleCandidate>> fetchCircleCandidates(int circleId);
 }

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:vote_circle_api/vote_circle_api.dart' as vote_circle_api;
 import 'voter.dart';
 
 class CircleVoter extends Equatable {
@@ -9,6 +10,16 @@ class CircleVoter extends Equatable {
     required this.voters,
     this.userVoter,
   });
+
+  factory CircleVoter.fromApiCircleVoter(vote_circle_api.CircleVoter voter) =>
+      CircleVoter(
+        voters: voter.voters
+            .map((apiCandidate) => Voter.fromApiVoter(apiCandidate))
+            .toList(),
+        userVoter: voter.userVoter != null
+            ? Voter.fromApiVoter(voter.userVoter!)
+            : null,
+      );
 
   @override
   List<Object?> get props => [

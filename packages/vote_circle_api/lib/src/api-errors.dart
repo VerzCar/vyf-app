@@ -34,3 +34,18 @@ class QueryRankingFailure extends ApiFailure {
   });
 }
 
+class QueryCandidatesFailure extends ApiFailure {
+  QueryCandidatesFailure({
+    required super.statusCode,
+    super.msg,
+    super.status,
+  });
+}
+
+class QueryVotersFailure extends ApiFailure {
+  QueryVotersFailure({
+    required super.statusCode,
+    super.msg,
+    super.status,
+  });
+}

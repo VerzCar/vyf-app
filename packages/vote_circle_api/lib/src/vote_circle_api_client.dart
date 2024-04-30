@@ -146,6 +146,74 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     }
   }
 
+  @override
+  Future<List<CircleCandidate>> fetchCircleCandidates(int circleId) async {
+    var logger = Logger();
+
+    try {
+      final res =
+      await http.get(_uri(path: 'circle-candidates/$circleId'), headers: _headers());
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('querying circle candidates server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<List<dynamic>>.fromJson(
+          jsonDecode(res.body) as Map<String, dynamic>);
+
+      if (res.statusCode == HttpStatus.ok) {
+        final circleCandidates = apiResponse.data
+            .map((circleCandidate) => CircleCandidate.fromJson(circleCandidate))
+            .toList();
+        return circleCandidates;
+      }
+
+      logger.e('querying circle candidates failed: $apiResponse');
+      throw QueryCandidatesFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<CircleVoter>> fetchCircleVoters(int circleId) async {
+    var logger = Logger();
+
+    try {
+      final res =
+      await http.get(_uri(path: 'circle-voters/$circleId'), headers: _headers());
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('querying circle voters server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<List<dynamic>>.fromJson(
+          jsonDecode(res.body) as Map<String, dynamic>);
+
+      if (res.statusCode == HttpStatus.ok) {
+        final circleVoters = apiResponse.data
+            .map((circleVoter) => CircleVoter.fromJson(circleVoter))
+            .toList();
+        return circleVoters;
+      }
+
+      logger.e('querying circle voters failed: $apiResponse');
+      throw QueryVotersFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Uri _uri({String? path, Map<String, dynamic>? queryParameters}) {
     final httpsUri = Uri(
       scheme: 'https',

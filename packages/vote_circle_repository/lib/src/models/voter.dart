@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:vote_circle_api/vote_circle_api.dart' as vote_circle_api;
 import 'commitment.dart';
 
 class Voter extends Equatable {
@@ -17,6 +18,15 @@ class Voter extends Equatable {
     required this.createdAt,
     required this.updatedAt,
   });
+
+  factory Voter.fromApiVoter(vote_circle_api.Voter voter) => Voter(
+        id: voter.id,
+        voter: voter.voter,
+        commitment: commitmentFromApiCommitment(voter.commitment),
+        votedFor: voter.votedFor,
+        createdAt: voter.createdAt,
+        updatedAt: voter.updatedAt,
+      );
 
   @override
   List<Object?> get props => [
