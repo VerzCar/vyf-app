@@ -5,6 +5,7 @@ import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/ranking/cubit/ranking_placement_cubit.dart';
+import 'package:vote_your_face/presentation/user_avatar/models/models.dart';
 import 'package:vote_your_face/presentation/user_avatar/user_avatar.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 
@@ -51,7 +52,7 @@ class RankingSheet extends StatelessWidget {
     final themeData = Theme.of(context);
 
     return Container(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

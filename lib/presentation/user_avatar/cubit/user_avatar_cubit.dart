@@ -42,8 +42,19 @@ class UserAvatarCubit extends Cubit<UserAvatarState> {
       );
     } catch (e) {
       print(e);
-      if(isClosed) return;
+      if (isClosed) return;
       emit(state.copyWith(status: StatusIndicator.failure));
     }
+  }
+
+  Future<void> initWithExistingUser({
+    required User user,
+  }) async {
+    return emit(
+      state.copyWith(
+        status: StatusIndicator.success,
+        user: user,
+      ),
+    );
   }
 }

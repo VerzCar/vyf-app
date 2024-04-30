@@ -1,0 +1,4 @@
+enum LabelPosition {
+  right,
+  bottom,
+}

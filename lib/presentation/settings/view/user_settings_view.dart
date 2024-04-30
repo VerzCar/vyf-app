@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
+import 'package:vote_your_face/presentation/user_avatar/models/models.dart';
 import 'package:vote_your_face/presentation/user_avatar/user_avatar.dart';
 import 'package:vote_your_face/theme.dart';
 

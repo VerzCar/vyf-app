@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/presentation/ranking/widgets/ranking_sheet.dart';
+import 'package:vote_your_face/presentation/user_avatar/models/models.dart';
 import 'package:vote_your_face/presentation/user_avatar/view/user_avatar_view.dart';
-
-import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class RankingBody extends StatelessWidget {
   const RankingBody({super.key, required this.rankings});
@@ -12,6 +11,7 @@ class RankingBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     final themeData = Theme.of(context);
 
     return ListView.separated(
@@ -52,10 +52,14 @@ class RankingBody extends StatelessWidget {
             onTap: () => {
               showModalBottomSheet(
                 context: context,
+                isScrollControlled: true,
                 builder: (BuildContext context) {
-                  return RankingSheet(
-                    identityId: rankings[index].identityId,
-                    placementNumber: rankings[index].number,
+                  return SizedBox(
+                    height: size.height * 0.70,
+                    child: RankingSheet(
+                      identityId: rankings[index].identityId,
+                      placementNumber: rankings[index].number,
+                    ),
                   );
                 },
               ),

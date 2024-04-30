@@ -11,7 +11,8 @@ class RankingsRepository implements IRankingsRepository {
 
   @override
   List<Future<entities.Placement>> rankingsToPlacements(
-      List<Ranking> rankings) {
+    List<Ranking> rankings,
+  ) {
     return rankings
         .map((ranking) => _userRepository
             .x(ranking.identityId)

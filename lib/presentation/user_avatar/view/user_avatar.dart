@@ -4,7 +4,7 @@ import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 import 'package:vote_your_face/presentation/user_avatar/cubit/user_avatar_cubit.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
-import 'package:vote_your_face/presentation/user_avatar/view/user_avatar_view.dart';
+import 'package:vote_your_face/presentation/user_avatar/models/models.dart';
 
 class UserAvatarPopulated extends StatelessWidget {
   const UserAvatarPopulated({super.key, this.option});
