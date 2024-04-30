@@ -20,8 +20,6 @@ class RankingSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
-
     return BlocProvider(
       create: (BuildContext ctx) => RankingPlacementCubit(
         voteCircleRepository: sl<IVoteCircleRepository>(),
@@ -35,54 +33,68 @@ class RankingSheet extends StatelessWidget {
           case StatusIndicator.loading:
             return const Center(child: CircularProgressIndicator());
           case StatusIndicator.success:
-            return Container(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Text(
-                      'Placement: $placementNumber',
-                      style: themeData.textTheme.headlineSmall,
-                    ),
-                  ),
-                  const SizedBox(height: 10.0),
-                  Center(
-                    child: UserAvatar(
-                      identityId: identityId,
-                      option: UserAvatarOption(
-                        size: AvatarSize.xl,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20.0),
-                  Text(
-                    'Why vote me',
-                    style: themeData.textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: 10.0),
-                  Text(
-                    state.user.profile.whyVoteMe,
-                    style: themeData.textTheme.bodyMedium,
-                  ),
-                  const SizedBox(height: 15.0),
-                  Text(
-                    'Bio',
-                    style: themeData.textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: 10.0),
-                  Text(
-                    state.user.profile.bio,
-                    style: themeData.textTheme.bodyMedium,
-                  ),
-                  const Divider(),
-                ],
-              ),
+            return _sheetContent(
+              context: context,
+              user: state.user,
             );
           case StatusIndicator.failure:
             return const Center(child: Text('Error'));
         }
       }),
+    );
+  }
+
+  Widget _sheetContent({
+    required BuildContext context,
+    required User user,
+  }) {
+    final themeData = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.all(20.0),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Text(
+                'Placement: $placementNumber',
+                style: themeData.textTheme.headlineSmall,
+              ),
+            ),
+            const SizedBox(height: 10.0),
+            Center(
+              child: UserAvatar(
+                identityId: identityId,
+                option: UserAvatarOption(
+                  size: AvatarSize.xl,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20.0),
+            Text(
+              'Why vote me',
+              style: themeData.textTheme.titleMedium,
+            ),
+            const SizedBox(height: 10.0),
+            Text(
+              user.profile.whyVoteMe,
+              style: themeData.textTheme.bodyMedium,
+            ),
+            const SizedBox(height: 15.0),
+            Text(
+              'Bio',
+              style: themeData.textTheme.titleMedium,
+            ),
+            const SizedBox(height: 10.0),
+            Text(
+              user.profile.bio,
+              style: themeData.textTheme.bodyMedium,
+            ),
+            const Divider(),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -14,51 +14,57 @@ class RankingBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
 
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10.0),
-      child: ListView.builder(
-        itemCount: rankings.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card.outlined(
-            key: Key(rankings[index].id.toString()),
-            child: ListTile(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              leading: Text(
-                rankings[index].number.toString(),
-                style: themeData.textTheme.labelLarge,
-              ),
-              title: UserAvatar(
-                identityId: rankings[index].identityId,
-                option: UserAvatarOption(
-                  withLabel: true,
-                ),
-              ),
-              trailing: ElevatedButton(
-                onPressed: () => {},
-                style: themeData.elevatedButtonTheme.style?.copyWith(
-                  backgroundColor:
-                      MaterialStatePropertyAll(themeData.colorScheme.secondary),
-                  foregroundColor: MaterialStatePropertyAll(
-                      themeData.colorScheme.onSecondary),
-                ),
-                child: const Text('Vote'),
-              ),
-              onTap: () => {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return RankingSheet(
-                      identityId: rankings[index].identityId,
-                      placementNumber: rankings[index].number,
-                    );
-                  },
-                ),
-              },
+    return ListView.separated(
+      itemCount: rankings.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Card(
+          key: Key(rankings[index].id.toString()),
+          elevation: 0,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.zero,
+          ),
+          margin: const EdgeInsets.all(0),
+          child: ListTile(
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 15.0,
+              vertical: 3.0,
             ),
-          );
-        },
+            leading: Text(
+              rankings[index].number.toString(),
+              style: themeData.textTheme.bodyLarge,
+            ),
+            title: UserAvatar(
+              identityId: rankings[index].identityId,
+              option: UserAvatarOption(
+                withLabel: true,
+              ),
+            ),
+            trailing: ElevatedButton(
+              onPressed: () => {},
+              style: themeData.elevatedButtonTheme.style?.copyWith(
+                backgroundColor:
+                    MaterialStatePropertyAll(themeData.colorScheme.secondary),
+                foregroundColor:
+                    MaterialStatePropertyAll(themeData.colorScheme.onSecondary),
+              ),
+              child: const Text('Vote'),
+            ),
+            onTap: () => {
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return RankingSheet(
+                    identityId: rankings[index].identityId,
+                    placementNumber: rankings[index].number,
+                  );
+                },
+              ),
+            },
+          ),
+        );
+      },
+      separatorBuilder: (context, index) => const Divider(
+        height: 0,
       ),
     );
   }
