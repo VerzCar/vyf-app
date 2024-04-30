@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/application/user/cubit/user_x_cubit.dart';
-import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class RankingSheet extends StatelessWidget {

@@ -7,6 +7,7 @@ import 'package:user_repository/user_repository.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/injection.dart';
+import 'package:vote_your_face/presentation/circle/widgets/members_preview.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 
@@ -123,6 +124,8 @@ class CircleBody extends StatelessWidget {
                   'Members',
                   style: themeData.textTheme.titleMedium,
                 ),
+                const SizedBox(height: 10.0),
+                MembersPreview(circleId: circle.id),
               ],
             ),
           ),
