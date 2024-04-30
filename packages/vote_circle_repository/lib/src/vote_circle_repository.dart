@@ -45,19 +45,14 @@ class VoteCircleRepository implements IVoteCircleRepository {
   }
 
   @override
-  Future<List<CircleCandidate>> circleCandidates(int circleId) async {
+  Future<CircleCandidate> circleCandidates(int circleId) async {
     final res = await _voteCircleApi.fetchCircleCandidates(circleId);
-    final candidates = res
-        .map((candidate) => CircleCandidate.fromApiCircleCandidate(candidate))
-        .toList();
-    return candidates;
+    return CircleCandidate.fromApiCircleCandidate(res);
   }
 
   @override
-  Future<List<CircleVoter>> circleVoters(int circleId) async {
+  Future<CircleVoter> circleVoters(int circleId) async {
     final res = await _voteCircleApi.fetchCircleVoters(circleId);
-    final voters =
-        res.map((voter) => CircleVoter.fromApiCircleVoter(voter)).toList();
-    return voters;
+    return CircleVoter.fromApiCircleVoter(res);
   }
 }

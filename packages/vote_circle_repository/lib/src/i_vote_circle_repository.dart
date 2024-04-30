@@ -9,7 +9,7 @@ abstract class IVoteCircleRepository {
 
   Future<List<Ranking>> rankings(int circleId);
 
-  Future<List<CircleVoter>> circleVoters(int circleId);
+  Future<CircleVoter> circleVoters(int circleId);
 
-  Future<List<CircleCandidate>> circleCandidates(int circleId);
+  Future<CircleCandidate> circleCandidates(int circleId);
 }

@@ -147,7 +147,7 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
   }
 
   @override
-  Future<List<CircleCandidate>> fetchCircleCandidates(int circleId) async {
+  Future<CircleCandidate> fetchCircleCandidates(int circleId) async {
     var logger = Logger();
 
     try {
@@ -159,14 +159,11 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
         throw ApiError(res);
       }
 
-      final apiResponse = ApiResponse<List<dynamic>>.fromJson(
+      final apiResponse = ApiResponse<Map<String, dynamic>>.fromJson(
           jsonDecode(res.body) as Map<String, dynamic>);
 
       if (res.statusCode == HttpStatus.ok) {
-        final circleCandidates = apiResponse.data
-            .map((circleCandidate) => CircleCandidate.fromJson(circleCandidate))
-            .toList();
-        return circleCandidates;
+        return CircleCandidate.fromJson(apiResponse.data);
       }
 
       logger.e('querying circle candidates failed: $apiResponse');
@@ -181,7 +178,7 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
   }
 
   @override
-  Future<List<CircleVoter>> fetchCircleVoters(int circleId) async {
+  Future<CircleVoter> fetchCircleVoters(int circleId) async {
     var logger = Logger();
 
     try {
@@ -193,14 +190,11 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
         throw ApiError(res);
       }
 
-      final apiResponse = ApiResponse<List<dynamic>>.fromJson(
+      final apiResponse = ApiResponse<Map<String, dynamic>>.fromJson(
           jsonDecode(res.body) as Map<String, dynamic>);
 
       if (res.statusCode == HttpStatus.ok) {
-        final circleVoters = apiResponse.data
-            .map((circleVoter) => CircleVoter.fromJson(circleVoter))
-            .toList();
-        return circleVoters;
+        return CircleVoter.fromJson(apiResponse.data);
       }
 
       logger.e('querying circle voters failed: $apiResponse');

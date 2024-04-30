@@ -11,6 +11,10 @@ class CircleVoter extends Equatable {
     this.userVoter,
   });
 
+  static const empty = CircleVoter(
+    voters: [],
+  );
+
   factory CircleVoter.fromApiCircleVoter(vote_circle_api.CircleVoter voter) =>
       CircleVoter(
         voters: voter.voters
