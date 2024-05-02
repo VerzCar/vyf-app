@@ -38,12 +38,25 @@ class AppRouter extends $AppRouter {
                     page: MembersRoute.page,
                     children: [
                       AutoRoute(
-                        path: 'candidates',
-                        page: CandidatesRoute.page,
+                        path: '#candidates',
+                        page: MembersCandidatesTabRoute.page,
+                        children: [
+                          AutoRoute(
+                            path: '',
+                            page: CandidatesRoute.page,
+                            initial: true,
+                          ),
+                        ]
                       ),
                       AutoRoute(
-                        path: 'voters',
-                        page: VotersRoute.page,
+                          path: '#voters',
+                          page: MembersVotersTabRoute.page,
+                          children: [
+                            AutoRoute(
+                              path: '',
+                              page: VotersRoute.page,
+                            ),
+                          ]
                       ),
                     ],
                   ),
@@ -94,4 +107,14 @@ class RankingsTabPage extends AutoRouter {
 @RoutePage()
 class SettingsTabPage extends AutoRouter {
   const SettingsTabPage({super.key});
+}
+
+@RoutePage()
+class MembersCandidatesTabPage extends AutoRouter {
+  const MembersCandidatesTabPage({super.key});
+}
+
+@RoutePage()
+class MembersVotersTabPage extends AutoRouter {
+  const MembersVotersTabPage({super.key});
 }

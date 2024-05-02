@@ -1,47 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:vote_your_face/presentation/routes/router.gr.dart';
 
 class MembersView extends StatelessWidget {
   const MembersView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return AutoTabsRouter(
+    return AutoTabsRouter.tabBar(
       routes: const [
-        CirclesTabRoute(),
-        RankingsTabRoute(),
-        SettingsTabRoute(),
+        MembersCandidatesTabRoute(),
+        MembersVotersTabRoute(),
       ],
-      builder: (context, child) {
-        final tabsRouter = AutoTabsRouter.of(context);
+      builder: (context, child, controller) {
         return Scaffold(
-          body: child,
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: tabsRouter.activeIndex,
-            onTap: (index) {
-              if (tabsRouter.activeIndex == index) {
-                tabsRouter.maybePopTop();
-              }
-              tabsRouter.setActiveIndex(index);
-            },
-            items: const [
-              BottomNavigationBarItem(
-                key: Key('circlesTab'),
-                label: 'Circles',
-                icon: Icon(Icons.circle_outlined),
-                activeIcon: Icon(Icons.blur_circular_outlined),
-              ),
-              BottomNavigationBarItem(
-                  key: Key('rankingsTab'),
-                  label: 'Rankings',
-                  icon: Icon(Icons.list),
-                  activeIcon: Icon(Icons.list_alt_outlined)),
-              BottomNavigationBarItem(
-                  key: Key('settingsTab'),
-                  label: 'Settings',
-                  icon: Icon(Icons.person_outline),
-                  activeIcon: Icon(Icons.person)),
-            ],
+          appBar: AppBar(
+            title: const Text('Members'),
+            leading: const AutoLeadingButton(),
+            bottom: TabBar(
+              controller: controller,
+              tabs: const [
+                Tab(text: 'Candidates', icon: Icon(Icons.group)),
+                Tab(text: 'Voters', icon: Icon(Icons.how_to_vote_outlined)),
+              ],
+            ),
           ),
+          body: child,
         );
       },
     );

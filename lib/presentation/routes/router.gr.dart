@@ -75,6 +75,12 @@ abstract class $AppRouter extends _i13.RootStackRouter {
         child: const _i5.HomePage(),
       );
     },
+    MembersCandidatesTabRoute.name: (routeData) {
+      return _i13.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i4.MembersCandidatesTabPage(),
+      );
+    },
     MembersRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<MembersRouteArgs>(
@@ -86,6 +92,12 @@ abstract class $AppRouter extends _i13.RootStackRouter {
           key: args.key,
           circleId: args.circleId,
         ),
+      );
+    },
+    MembersVotersTabRoute.name: (routeData) {
+      return _i13.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i4.MembersVotersTabPage(),
       );
     },
     RankingRoute.name: (routeData) {
@@ -242,6 +254,20 @@ class HomeRoute extends _i13.PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [_i4.MembersCandidatesTabPage]
+class MembersCandidatesTabRoute extends _i13.PageRouteInfo<void> {
+  const MembersCandidatesTabRoute({List<_i13.PageRouteInfo>? children})
+      : super(
+          MembersCandidatesTabRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'MembersCandidatesTabRoute';
+
+  static const _i13.PageInfo<void> page = _i13.PageInfo<void>(name);
+}
+
+/// generated route for
 /// [_i6.MembersPage]
 class MembersRoute extends _i13.PageRouteInfo<MembersRouteArgs> {
   MembersRoute({
@@ -278,6 +304,20 @@ class MembersRouteArgs {
   String toString() {
     return 'MembersRouteArgs{key: $key, circleId: $circleId}';
   }
+}
+
+/// generated route for
+/// [_i4.MembersVotersTabPage]
+class MembersVotersTabRoute extends _i13.PageRouteInfo<void> {
+  const MembersVotersTabRoute({List<_i13.PageRouteInfo>? children})
+      : super(
+          MembersVotersTabRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'MembersVotersTabRoute';
+
+  static const _i13.PageInfo<void> page = _i13.PageInfo<void>(name);
 }
 
 /// generated route for
