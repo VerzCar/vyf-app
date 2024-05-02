@@ -13,7 +13,6 @@ class CircleView extends StatelessWidget {
         context.select((CircleCubit cubit) => cubit.state.circle.name);
 
     return Scaffold(
-      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(circleName),
       ),

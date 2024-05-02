@@ -33,6 +33,20 @@ class AppRouter extends $AppRouter {
                     path: ':circleId/ranking',
                     page: RankingRoute.page,
                   ),
+                  AutoRoute(
+                    path: ':circleId/members',
+                    page: MembersRoute.page,
+                    children: [
+                      AutoRoute(
+                        path: 'candidates',
+                        page: CandidatesRoute.page,
+                      ),
+                      AutoRoute(
+                        path: 'voters',
+                        page: VotersRoute.page,
+                      ),
+                    ],
+                  ),
                 ]),
             AutoRoute(
               path: 'rankings',

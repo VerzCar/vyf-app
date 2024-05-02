@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
@@ -5,6 +6,7 @@ import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/members/bloc/members_bloc.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/injection.dart';
+import 'package:vote_your_face/presentation/routes/router.gr.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class MembersPreview extends StatelessWidget {
@@ -24,29 +26,71 @@ class MembersPreview extends StatelessWidget {
       )..add(MembersInitialLoaded(circleId: circleId)),
       child: BlocBuilder<MembersBloc, MembersState>(
         builder: (context, state) {
-          return Row(
-            children: [
-              ..._buildPreviewAvatars(
-                circleVoter: state.circleVoter,
-                circleCandidate: state.circleCandidate,
-              ),
-              ...[
-                Text(
-                  '+ ${_countOfRemainingMembers(state.circleVoter, state.circleCandidate)}',
-                ),
-              ]
-            ],
+          if (!MembersStateStatus(state.status).isSuccessful) {
+            return const SizedBox();
+          }
+          return _buildMembersPreview(
+            context: context,
+            circleVoter: state.circleVoter,
+            circleCandidate: state.circleCandidate,
           );
         },
       ),
     );
   }
 
-  List<Widget> _buildPreviewAvatars({
+  _buildMembersPreview({
+    required BuildContext context,
     required CircleVoter circleVoter,
     required CircleCandidate circleCandidate,
   }) {
-    return _firstThreeUserIds(circleVoter, circleCandidate)
+    final themeData = Theme.of(context);
+    final userIds = _firstThreeUserIds(circleVoter, circleCandidate);
+
+    if (userIds.isEmpty) {
+      return TextButton(
+        style: themeData.textButtonTheme.style?.copyWith(
+          foregroundColor:
+              MaterialStatePropertyAll(themeData.colorScheme.secondary),
+        ),
+        onPressed: () {
+          context.router.push(MembersRoute(circleId: 0));
+        },
+        child: const Text('There are no members - invite some'),
+      );
+    }
+
+    return Row(
+      children: [
+        ..._buildPreviewAvatars(themeData: themeData, userIds: userIds),
+        ...[
+          const SizedBox(width: 10.0),
+          _countOfMembers(
+            themeData,
+            circleVoter,
+            circleCandidate,
+          ),
+          const SizedBox(width: 20.0),
+          TextButton(
+            style: themeData.textButtonTheme.style?.copyWith(
+              foregroundColor:
+                  MaterialStatePropertyAll(themeData.colorScheme.secondary),
+            ),
+            onPressed: () {
+              context.router.push(MembersRoute(circleId: 0));
+            },
+            child: const Text('View Members'),
+          ),
+        ]
+      ],
+    );
+  }
+
+  List<Widget> _buildPreviewAvatars({
+    required ThemeData themeData,
+    required List<String> userIds,
+  }) {
+    return userIds
         .map((identityId) => BlocProvider(
               create: (context) =>
                   UserXCubit(userRepository: sl<IUserRepository>())
@@ -55,11 +99,24 @@ class MembersPreview extends StatelessWidget {
                       identityId: identityId,
                     ),
               child: Container(
-                margin: EdgeInsets.only(right: 5.0),
+                margin: const EdgeInsets.only(right: 8.0),
                 child: const UserAvatar(),
               ),
             ))
         .toList();
+  }
+
+  Text _countOfMembers(
+    ThemeData themeData,
+    CircleVoter circleVoter,
+    CircleCandidate circleCandidate,
+  ) {
+    final count = _countOfRemainingMembers(circleVoter, circleCandidate);
+    final counterText = count > 0 ? '+ $count' : '';
+    return Text(
+      counterText,
+      style: themeData.textTheme.labelLarge,
+    );
   }
 
   List<String> _firstThreeUserIds(
