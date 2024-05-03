@@ -54,7 +54,7 @@ class MembersPreview extends StatelessWidget {
               MaterialStatePropertyAll(themeData.colorScheme.secondary),
         ),
         onPressed: () {
-          context.router.push(MembersRoute(circleId: 0));
+          context.router.push(MembersRoute(circleId: circleId));
         },
         child: const Text('There are no members - invite some'),
       );
@@ -77,7 +77,7 @@ class MembersPreview extends StatelessWidget {
                   MaterialStatePropertyAll(themeData.colorScheme.secondary),
             ),
             onPressed: () {
-              context.router.push(MembersRoute(circleId: 0));
+              context.router.push(MembersRoute(circleId: circleId));
             },
             child: const Text('View Members'),
           ),
