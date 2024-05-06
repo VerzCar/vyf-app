@@ -18,7 +18,7 @@ class CirclesView extends StatelessWidget {
           selector: (state) => state.user.identityId,
           builder: (context, identityId) {
             return Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: BlocProvider(
                 create: (context) => UserXCubit(userRepository: sl<IUserRepository>())
                   ..userXFetched(
@@ -26,7 +26,7 @@ class CirclesView extends StatelessWidget {
                     identityId: identityId,
                   ),
                 child: const UserAvatar(
-                  option: UserAvatarOption(size: AvatarSize.xs),
+                  option: UserAvatarOption(size: AvatarSize.sm),
                 ),
               ),
             );

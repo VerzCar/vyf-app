@@ -95,6 +95,7 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: brightness,
+      splashFactory: NoSplash.splashFactory,
       inputDecorationTheme: inputDecorationTheme,
       iconTheme: const IconThemeData(color: Light.primaryColor),
       appBarTheme: const AppBarTheme(
@@ -141,6 +142,7 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: brightness,
+      splashFactory: NoSplash.splashFactory,
       inputDecorationTheme: inputDecorationTheme,
       iconTheme: const IconThemeData(color: Dark.primaryColor),
       appBarTheme: const AppBarTheme(

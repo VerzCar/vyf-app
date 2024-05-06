@@ -27,14 +27,35 @@ class UserAvatar extends StatelessWidget {
   }
 
   Widget _buildByOption(BuildContext context, User user) {
-    final avatar = AvatarImage(
-      src: user.profile.imageSrc,
-      capitalLetters: usersInitials(user.username),
-      size: option?.size ?? AvatarSize.base,
+    final avatarSize = option?.size ?? AvatarSize.base;
+
+    final List<Widget> avatarStackChildren = [
+      AvatarImage(
+        src: user.profile.imageSrc,
+        capitalLetters: usersInitials(user.username),
+        size: avatarSize,
+      ),
+    ];
+
+    final avatarStack = Stack(
+      alignment: Alignment.bottomRight,
+      children: avatarStackChildren,
     );
 
     if (option == null) {
-      return avatar;
+      return avatarStack;
+    }
+
+    if (option!.commitment != null) {
+      avatarStackChildren.add(
+        Container(
+          color: Colors.greenAccent,
+          child: Icon(
+            Icons.check,
+            size: avatarSize.preSize.width / 4,
+          ),
+        ),
+      );
     }
 
     if (option!.withLabel) {
@@ -43,7 +64,7 @@ class UserAvatar extends StatelessWidget {
           ? Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: _avatarWithLabel(
-                  avatar: avatar,
+                  avatarStack: avatarStack,
                   user: user,
                   themeData: themeData,
                   position: option!.labelPosition),
@@ -51,14 +72,14 @@ class UserAvatar extends StatelessWidget {
           : Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: _avatarWithLabel(
-                  avatar: avatar,
+                  avatarStack: avatarStack,
                   user: user,
                   themeData: themeData,
                   position: option!.labelPosition),
             );
     }
 
-    return avatar;
+    return avatarStack;
   }
 
   Widget _placeholder() {
@@ -78,13 +99,13 @@ class UserAvatar extends StatelessWidget {
   }
 
   List<Widget> _avatarWithLabel({
-    required AvatarImage avatar,
+    required Stack avatarStack,
     required User user,
     required ThemeData themeData,
     required LabelPosition position,
   }) {
     return [
-      avatar,
+      avatarStack,
       position == LabelPosition.right
           ? const SizedBox(width: 15)
           : const SizedBox(height: 10),

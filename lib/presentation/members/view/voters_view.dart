@@ -19,7 +19,6 @@ class VotersView extends StatelessWidget {
           itemCount: voters.length,
           itemBuilder: (BuildContext context, int index) {
             final voter = voters[index];
-            late UserXCubit userXCubit;
 
             return Card(
               key: Key(voter.id.toString()),
@@ -28,21 +27,19 @@ class VotersView extends StatelessWidget {
                 borderRadius: BorderRadius.zero,
               ),
               margin: const EdgeInsets.all(0),
-              child: BlocProvider(
-                create: (context) {
-                  userXCubit = UserXCubit(userRepository: sl<IUserRepository>())
-                    ..userXFetched(
-                      context: context,
-                      identityId: voter.voter,
-                    );
-                  return userXCubit;
-                },
-                child: const ListTile(
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 15.0,
-                    vertical: 3.0,
-                  ),
-                  leading: UserAvatar(
+              child: ListTile(
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 15.0,
+                  vertical: 3.0,
+                ),
+                title: BlocProvider(
+                  create: (context) =>
+                      UserXCubit(userRepository: sl<IUserRepository>())
+                        ..userXFetched(
+                          context: context,
+                          identityId: voter.voter,
+                        ),
+                  child: const UserAvatar(
                     option: UserAvatarOption(
                       withLabel: true,
                     ),

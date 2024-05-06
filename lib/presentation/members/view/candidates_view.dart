@@ -19,7 +19,6 @@ class CandidatesView extends StatelessWidget {
           itemCount: candidates.length,
           itemBuilder: (BuildContext context, int index) {
             final candidate = candidates[index];
-            late UserXCubit userXCubit;
 
             return Card(
               key: Key(candidate.id.toString()),
@@ -28,23 +27,22 @@ class CandidatesView extends StatelessWidget {
                 borderRadius: BorderRadius.zero,
               ),
               margin: const EdgeInsets.all(0),
-              child: BlocProvider(
-                create: (context) {
-                  userXCubit = UserXCubit(userRepository: sl<IUserRepository>())
-                    ..userXFetched(
-                      context: context,
-                      identityId: candidate.candidate,
-                    );
-                  return userXCubit;
-                },
-                child: const ListTile(
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 15.0,
-                    vertical: 3.0,
-                  ),
-                  leading: UserAvatar(
+              child: ListTile(
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 15.0,
+                  vertical: 3.0,
+                ),
+                title: BlocProvider(
+                  create: (context) =>
+                      UserXCubit(userRepository: sl<IUserRepository>())
+                        ..userXFetched(
+                          context: context,
+                          identityId: candidate.candidate,
+                        ),
+                  child: UserAvatar(
                     option: UserAvatarOption(
                       withLabel: true,
+                      commitment: candidate.commitment
                     ),
                   ),
                 ),
