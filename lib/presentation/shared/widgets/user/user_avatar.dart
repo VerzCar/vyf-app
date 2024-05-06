@@ -48,12 +48,9 @@ class UserAvatar extends StatelessWidget {
 
     if (option!.commitment != null) {
       avatarStackChildren.add(
-        Container(
-          color: Colors.greenAccent,
-          child: Icon(
-            Icons.check,
-            size: avatarSize.preSize.width / 4,
-          ),
+        CommitmentIcon(
+          commitment: option!.commitment!,
+          size: avatarSize.preSize.width / 4,
         ),
       );
     }

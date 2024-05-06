@@ -20,8 +20,8 @@ class MembersView extends StatelessWidget {
             bottom: TabBar(
               controller: controller,
               tabs: const [
-                Tab(text: 'Candidates', icon: Icon(Icons.group)),
-                Tab(text: 'Voters', icon: Icon(Icons.how_to_vote_outlined)),
+                Tab(text: 'Candidates', icon: Icon(Icons.groups_outlined)),
+                Tab(text: 'Voters', icon: Icon(Icons.group_outlined)),
               ],
             ),
           ),

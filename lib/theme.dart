@@ -11,6 +11,7 @@ class Light {
   static const Color successColor = Color(0xFF4caf50);
   static const Color warningColor = Color(0xFFFFA726);
   static const Color errorColor = Color(0xFFF44336);
+  static const Color infoColor = Color(0xff29B6F6);
   static const Color textColorPrimary = Colors.black;
   static const Color appbarColor = Colors.white;
   static const Color appbarForegroundColor = Colors.black;
@@ -36,6 +37,7 @@ class Dark {
   static const Color successColor = Color(0xff3d8d40);
   static const Color warningColor = Color(0xFFE19521);
   static const Color errorColor = Color(0xFFC5352B);
+  static const Color infoColor = Color(0xff2195cb);
   static const Color textColorPrimary = Colors.white;
   static const Color appbarColor = Color(0xFF212121);
   static const Color appbarForegroundColor = Colors.white;
@@ -56,6 +58,9 @@ extension ColorSchemeExtension on ColorScheme {
 
   Color get warningColor =>
       brightness == Brightness.light ? Light.warningColor : Dark.warningColor;
+
+  Color get infoColor =>
+      brightness == Brightness.light ? Light.infoColor : Dark.infoColor;
 }
 
 class AppTheme {

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circles/circles.dart';
 import 'package:vote_your_face/presentation/circles/widgets/widgets.dart';
+import 'package:vote_your_face/presentation/routes/router.gr.dart';
 
 class YourCircles extends StatelessWidget {
   const YourCircles({super.key});
@@ -45,19 +47,44 @@ class YourCircles extends StatelessWidget {
                 Radius.circular(5.0),
               ),
             ),
-            child: PageView(
-              controller: PageController(viewportFraction: 0.80),
-              children: [
-                for (final circle in state.myCircles)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 15.0),
-                    child: CircleCard(circle: circle),
-                  ),
-              ],
-            ),
+            child: state.myCircles.isEmpty
+                ? buildEmptyCirclesPlaceholder(themeData)
+                : buildCirclePageView(state.myCircles),
           ),
         ],
       );
     });
+  }
+
+  Widget buildCirclePageView(List<Circle> circles) {
+    return PageView(
+      controller: PageController(viewportFraction: 0.80),
+      children: [
+        for (final circle in circles)
+          Padding(
+            padding: const EdgeInsets.only(right: 15.0),
+            child: CircleCard(circle: circle),
+          ),
+      ],
+    );
+  }
+
+  Widget buildEmptyCirclesPlaceholder(ThemeData themeData) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('It seems like you do not have any circles.'),
+          TextButton(
+            style: themeData.textButtonTheme.style?.copyWith(
+              foregroundColor:
+                  MaterialStatePropertyAll(themeData.colorScheme.secondary),
+            ),
+            onPressed: () {},
+            child: const Text('You can create one here'),
+          ),
+        ],
+      ),
+    );
   }
 }
