@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
+import 'package:vote_your_face/application/circles/bloc/circles_bloc.dart';
+import 'package:vote_your_face/application/circles/bloc/circles_bloc.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/ranking/widgets/ranking_sheet.dart';
@@ -15,6 +17,33 @@ class RankingBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+    Column(children: [
+      Row(children: [
+        Text('need a vote'),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Text(
+                'Valid',
+                style: themeData.textTheme.titleMedium,
+              ),
+            ),
+            BlocBuilder<CirclesBloc, CirclesState>(
+  builder: (context, state) {
+    return TimeBox(
+              from: state..validFrom,
+              until: circle.validUntil,
+            );
+  },
+),
+          ],
+        ),
+      ],)
+    ],)
+    
     return rankings.isEmpty
         ? buildEmptyRankingsPlaceholder(context)
         : buildRankingListView(context);

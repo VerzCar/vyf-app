@@ -8,8 +8,3 @@ final class CirclesOfUserInitialLoaded extends CirclesEvent {
   @override
   List<Object> get props => [];
 }
-
-final class CirclesOfInterestInitialLoaded extends CirclesEvent {
-  @override
-  List<Object> get props => [];
-}
