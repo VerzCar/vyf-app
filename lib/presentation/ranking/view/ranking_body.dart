@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/user/user.dart';
@@ -14,6 +15,12 @@ class RankingBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return rankings.isEmpty
+        ? buildEmptyRankingsPlaceholder(context)
+        : buildRankingListView(context);
+  }
+
+  ListView buildRankingListView(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final themeData = Theme.of(context);
 
@@ -87,6 +94,38 @@ class RankingBody extends StatelessWidget {
       },
       separatorBuilder: (context, index) => const Divider(
         height: 0,
+      ),
+    );
+  }
+
+  Widget buildEmptyRankingsPlaceholder(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final themeData = Theme.of(context);
+
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            'assets/svg/election-day.svg',
+            semanticsLabel: 'Election day',
+            width: size.width * 0.28,
+            height: size.height * 0.28,
+          ),
+          const SizedBox(height: 15),
+          Text(
+            'No one has voted so far',
+            style: themeData.textTheme.titleLarge,
+          ),
+          TextButton(
+            style: themeData.textButtonTheme.style?.copyWith(
+              foregroundColor:
+                  MaterialStatePropertyAll(themeData.colorScheme.secondary),
+            ),
+            onPressed: () {},
+            child: const Text('give a vote!'),
+          ),
+        ],
       ),
     );
   }
