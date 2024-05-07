@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vote_your_face/application/circle/circle.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
-import 'package:vote_your_face/presentation/circle/cubit/circle_cubit.dart';
 import 'package:vote_your_face/presentation/circle/view/circle_body.dart';
 
 class CircleView extends StatelessWidget {
@@ -10,14 +10,14 @@ class CircleView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final circleName =
-        context.select((CircleCubit cubit) => cubit.state.circle.name);
+        context.select((CircleBloc cubit) => cubit.state.circle.name);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(circleName),
       ),
       body: SafeArea(
-        child: BlocBuilder<CircleCubit, CircleState>(builder: (context, state) {
+        child: BlocBuilder<CircleBloc, CircleState>(builder: (context, state) {
           switch (state.status) {
             case StatusIndicator.initial:
               return const Center(child: Text('initial Loading'));

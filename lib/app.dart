@@ -1,13 +1,14 @@
 import 'package:amplify_authenticator/amplify_authenticator.dart';
-import 'package:flutter/material.dart';
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vote_your_face/presentation/routes/router.dart';
 import 'package:vote_your_face/application/authentication/authentication.dart';
-import 'package:vote_your_face/theme.dart';
-
 import 'package:vote_your_face/application/user/bloc/user_bloc.dart';
 import 'package:vote_your_face/injection.dart';
+import 'package:vote_your_face/presentation/routes/router.dart';
+import 'package:vote_your_face/theme.dart';
+
+import 'application/circle/circle.dart';
 
 class App extends StatelessWidget {
   final _appRouter = AppRouter();
@@ -26,6 +27,9 @@ class App extends StatelessWidget {
         ),
         BlocProvider<UserBloc>(
           create: (context) => sl<UserBloc>(),
+        ),
+        BlocProvider<CircleBloc>(
+          create: (context) => sl<CircleBloc>(),
         ),
       ],
       child: Authenticator(
