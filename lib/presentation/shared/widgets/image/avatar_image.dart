@@ -42,8 +42,7 @@ class AvatarImage extends StatelessWidget {
                     capitalLetters.toUpperCase(),
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize:
-                            Theme.of(context).textTheme.titleLarge?.fontSize,
+                        fontSize: _fontSize(context),
                         fontWeight: FontWeight.bold,
                         letterSpacing: 2.0),
                   ),
@@ -54,4 +53,23 @@ class AvatarImage extends StatelessWidget {
   }
 
   bool get _isNetworkImage => src.startsWith('http');
+
+  double? _fontSize(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    switch (size) {
+      case AvatarSize.xs:
+        return textTheme.bodySmall?.fontSize;
+      case AvatarSize.sm:
+        return textTheme.bodyMedium?.fontSize;
+      case AvatarSize.md:
+        return textTheme.bodyLarge?.fontSize;
+      case AvatarSize.base:
+        return textTheme.titleSmall?.fontSize;
+      case AvatarSize.lg:
+        return textTheme.titleMedium?.fontSize;
+      case AvatarSize.xl:
+        return textTheme.titleLarge?.fontSize;
+    }
+  }
 }

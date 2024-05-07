@@ -6,13 +6,19 @@ import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/injection.dart';
+import 'package:vote_your_face/presentation/ranking/widgets/members_need_vote_preview.dart';
 import 'package:vote_your_face/presentation/ranking/widgets/ranking_sheet.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class RankingBody extends StatelessWidget {
-  const RankingBody({super.key, required this.rankings});
+  const RankingBody({
+    super.key,
+    required this.rankings,
+    required this.circleId,
+  });
 
   final List<Ranking> rankings;
+  final int circleId;
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +30,24 @@ class RankingBody extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('need a vote'),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(bottom: 10.0),
+                    child: Text(
+                      'Need a vote',
+                      style: themeData.textTheme.titleMedium,
+                    ),
+                  ),
+                  MembersNeedVotePreview(circleId: circleId),
+                ],
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    padding: const EdgeInsets.only(bottom: 10.0),
                     child: Text(
                       'Valid',
                       style: themeData.textTheme.titleMedium,

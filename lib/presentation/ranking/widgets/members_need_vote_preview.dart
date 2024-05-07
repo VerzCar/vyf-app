@@ -4,13 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/members/bloc/members_bloc.dart';
+import 'package:vote_your_face/application/members/members.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 
-class MembersPreview extends StatelessWidget {
-  const MembersPreview({
+class MembersNeedVotePreview extends StatelessWidget {
+  const MembersNeedVotePreview({
     super.key,
     required this.circleId,
   });
@@ -22,26 +23,27 @@ class MembersPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: BlocProvider.of<MembersBloc>(context)
-        ..add(CircleMembersInitialLoaded(
+        ..add(RankingMembersInitialLoaded(
           circleId: circleId,
           context: context,
         )),
       child: BlocBuilder<MembersBloc, MembersState>(
         builder: (context, state) {
+          print(state.rankingCandidate.candidates.length);
           if (!MembersStateStatus(state.status).isSuccessful) {
             return const SizedBox();
           }
-          return _buildMembersPreview(
+          return _buildMembersNeedVotePreview(
             context: context,
-            circleVoter: state.circleVoter,
-            circleCandidate: state.circleCandidate,
+            circleVoter: state.rankingVoter,
+            circleCandidate: state.rankingCandidate,
           );
         },
       ),
     );
   }
 
-  _buildMembersPreview({
+  _buildMembersNeedVotePreview({
     required BuildContext context,
     required CircleVoter circleVoter,
     required CircleCandidate circleCandidate,
@@ -58,7 +60,7 @@ class MembersPreview extends StatelessWidget {
         onPressed: () {
           context.router.push(MembersRoute(circleId: circleId));
         },
-        child: const Text('There are no members - invite some'),
+        child: const Text('There are no members'),
       );
     }
 
@@ -71,17 +73,6 @@ class MembersPreview extends StatelessWidget {
             themeData,
             circleVoter,
             circleCandidate,
-          ),
-          const SizedBox(width: 20.0),
-          TextButton(
-            style: themeData.textButtonTheme.style?.copyWith(
-              foregroundColor:
-                  MaterialStatePropertyAll(themeData.colorScheme.secondary),
-            ),
-            onPressed: () {
-              context.router.push(MembersRoute(circleId: circleId));
-            },
-            child: const Text('View Members'),
           ),
         ]
       ],
@@ -102,7 +93,11 @@ class MembersPreview extends StatelessWidget {
                     ),
               child: Container(
                 margin: const EdgeInsets.only(right: 8.0),
-                child: const UserAvatar(),
+                child: const UserAvatar(
+                  option: UserAvatarOption(
+                    size: AvatarSize.sm,
+                  ),
+                ),
               ),
             ))
         .toList();
@@ -145,9 +140,7 @@ class MembersPreview extends StatelessWidget {
     CircleVoter circleVoter,
     CircleCandidate circleCandidate,
   ) {
-    final count =
-        (circleVoter.voters.length + circleCandidate.candidates.length) -
-            previewUserCount;
+    final count = circleCandidate.candidates.length - previewUserCount;
     return count;
   }
 }

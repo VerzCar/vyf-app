@@ -26,7 +26,7 @@ class RankingPage extends StatelessWidget {
             ..add(CircleSelected(circleId: circleId)),
         )
       ],
-      child: const RankingView(),
+      child: RankingView(circleId: circleId),
     );
   }
 }

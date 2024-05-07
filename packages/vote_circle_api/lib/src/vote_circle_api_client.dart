@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:vote_circle_api/vote_circle_api.dart';
-import 'package:http/http.dart' as http;
 
 part 'api-errors.dart';
 
@@ -147,12 +147,18 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
   }
 
   @override
-  Future<CircleCandidate> fetchCircleCandidates(int circleId) async {
+  Future<CircleCandidate> fetchCircleCandidates(
+    int circleId,
+    CircleCandidatesFilter? filter,
+  ) async {
     var logger = Logger();
 
     try {
-      final res =
-      await http.get(_uri(path: 'circle-candidates/$circleId'), headers: _headers());
+      final queryParams = filter?.toParamMap();
+      final res = await http.get(
+        _uri(path: 'circle-candidates/$circleId', queryParameters: queryParams),
+        headers: _headers(),
+      );
 
       if (res.statusCode >= HttpStatus.internalServerError) {
         logger.e('querying circle candidates server error: $res');
@@ -182,8 +188,8 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     var logger = Logger();
 
     try {
-      final res =
-      await http.get(_uri(path: 'circle-voters/$circleId'), headers: _headers());
+      final res = await http.get(_uri(path: 'circle-voters/$circleId'),
+          headers: _headers());
 
       if (res.statusCode >= HttpStatus.internalServerError) {
         logger.e('querying circle voters server error: $res');

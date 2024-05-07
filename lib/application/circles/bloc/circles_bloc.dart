@@ -4,7 +4,6 @@ import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 
 part 'circles_event.dart';
-
 part 'circles_state.dart';
 
 class CirclesBloc extends Bloc<CirclesEvent, CirclesState> {
@@ -28,6 +27,7 @@ class CirclesBloc extends Bloc<CirclesEvent, CirclesState> {
       emit(state.copyWith(myCircles: circles, status: StatusIndicator.success));
     } catch (e) {
       print(e);
+      if (isClosed) return;
       emit(state.copyWith(status: StatusIndicator.failure));
     }
   }

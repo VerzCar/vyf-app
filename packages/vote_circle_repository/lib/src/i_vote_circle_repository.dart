@@ -11,5 +11,8 @@ abstract class IVoteCircleRepository {
 
   Future<CircleVoter> circleVoters(int circleId);
 
-  Future<CircleCandidate> circleCandidates(int circleId);
+  Future<CircleCandidate> circleCandidates(
+    int circleId,
+    CircleCandidatesFilter? filter,
+  );
 }

@@ -41,12 +41,18 @@ class CirclesView extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          children: const [
-            YourCircles(),
-            CirclesOfInterest(),
-          ],
+        child: NotificationListener<OverscrollIndicatorNotification>(
+          onNotification: (overscroll) {
+            overscroll.disallowIndicator();
+            return true;
+          },
+          child: ListView(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            children: const [
+              YourCircles(),
+              CirclesOfInterest(),
+            ],
+          ),
         ),
       ),
     );

@@ -1,6 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:vote_circle_api/vote_circle_api.dart' as vote_circle_api;
-import 'package:vote_circle_repository/src/models/circle_candidate.dart';
+
 import 'i_vote_circle_repository.dart';
 import 'models/models.dart';
 
@@ -45,8 +45,14 @@ class VoteCircleRepository implements IVoteCircleRepository {
   }
 
   @override
-  Future<CircleCandidate> circleCandidates(int circleId) async {
-    final res = await _voteCircleApi.fetchCircleCandidates(circleId);
+  Future<CircleCandidate> circleCandidates(
+    int circleId,
+    CircleCandidatesFilter? filter,
+  ) async {
+    final res = await _voteCircleApi.fetchCircleCandidates(
+      circleId,
+      filter?.toApiCircleCandidatesFilter(),
+    );
     return CircleCandidate.fromApiCircleCandidate(res);
   }
 

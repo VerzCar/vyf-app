@@ -5,7 +5,8 @@ import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/authentication/bloc/authentication_bloc.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
 import 'package:vote_your_face/application/circles/bloc/circles_bloc.dart';
-import 'package:vote_your_face/application/user/bloc/user_bloc.dart';
+import 'package:vote_your_face/application/members/members.dart';
+import 'package:vote_your_face/application/user/user.dart';
 
 final sl = GetIt.I;
 
@@ -15,6 +16,7 @@ Future<void> init() async {
   sl.registerFactory(() => UserBloc(userRepository: sl()));
   sl.registerFactory(() => CirclesBloc(voteCircleRepository: sl()));
   sl.registerFactory(() => CircleBloc(voteCircleRepository: sl()));
+  sl.registerFactory(() => MembersBloc(voteCircleRepository: sl()));
 
   // repos
   sl.registerSingleton<IAuthenticationRepository>(AuthenticationRepository());

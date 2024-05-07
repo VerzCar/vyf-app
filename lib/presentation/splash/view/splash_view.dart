@@ -10,17 +10,17 @@ class SplashView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: BlocListener<UserBloc, UserState>(
-        listener: (context, state) {
-          if (state.status.isSuccessful) {
-            context.router.replace(const HomeRoute());
-          } else if (state.status.isFailure) {
-            print('User init loading failure');
-          }
-        },
-        child: Scaffold(
-          body: SizedBox(
+    return BlocListener<UserBloc, UserState>(
+      listener: (context, state) {
+        if (state.status.isSuccessful) {
+          context.router.replace(const HomeRoute());
+        } else if (state.status.isFailure) {
+          print('User init loading failure');
+        }
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: SizedBox(
             width: MediaQuery.of(context).size.width,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

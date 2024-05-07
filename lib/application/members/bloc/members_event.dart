@@ -4,11 +4,32 @@ sealed class MembersEvent extends Equatable {
   const MembersEvent();
 }
 
-final class MembersInitialLoaded extends MembersEvent {
-  const MembersInitialLoaded({required this.circleId});
+final class CircleMembersInitialLoaded extends MembersEvent {
+  const CircleMembersInitialLoaded({
+    required this.circleId,
+    required this.context,
+  });
 
   final int circleId;
+  final BuildContext context;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [
+        circleId,
+      ];
+}
+
+final class RankingMembersInitialLoaded extends MembersEvent {
+  const RankingMembersInitialLoaded({
+    required this.circleId,
+    required this.context,
+  });
+
+  final int circleId;
+  final BuildContext context;
+
+  @override
+  List<Object> get props => [
+    circleId,
+  ];
 }

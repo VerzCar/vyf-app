@@ -1,8 +1,11 @@
-import 'package:flutter/material.dart';
+import 'dart:ui';
+
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
+import 'package:vote_your_face/theme.dart';
 
 class MiniCircleCard extends StatelessWidget {
   const MiniCircleCard({
@@ -22,12 +25,11 @@ class MiniCircleCard extends StatelessWidget {
       onTap: () {
         context.router.push(CircleRoute(circleId: circle.id));
       },
-      child: Stack(
-        alignment: AlignmentDirectional.topEnd,
-        children: [
-          Card.outlined(
-            clipBehavior: Clip.antiAlias,
-            child: Column(
+      child: Card.outlined(
+        clipBehavior: Clip.antiAlias,
+        child: Stack(
+          children: [
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
@@ -43,28 +45,39 @@ class MiniCircleCard extends StatelessWidget {
                 ListTile(
                   title: Text(
                     circle.name,
-                    style: themeData.textTheme.titleMedium?.copyWith(overflow: TextOverflow.ellipsis),
+                    style: themeData.textTheme.titleMedium
+                        ?.copyWith(overflow: TextOverflow.ellipsis),
                   ),
                   subtitle: Text(
                     circle.description,
-                    style: themeData.textTheme.bodySmall?.copyWith(overflow: TextOverflow.ellipsis),
+                    style: themeData.textTheme.bodySmall
+                        ?.copyWith(overflow: TextOverflow.ellipsis),
                   ),
                 ),
               ],
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 3.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(3.0),
-              color: themeData.cardTheme.color,
-            ),
-            child: Text(
-              '$_countOfPeople Members',
-              style: themeData.textTheme.labelSmall,
-            ),
-          ),
-        ],
+            Positioned(
+              top: 0,
+              right: 0,
+              child: ClipRRect(
+                //clipBehavior: Clip.antiAliasWithSaveLayer,
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+                  child: Container(
+                    padding: const EdgeInsets.all(5.0),
+                    color: Colors.grey.withOpacity(0.2),
+                    child: Text(
+                      '$_countOfPeople Members',
+                      style: themeData.textTheme.labelSmall?.copyWith(
+                        color: themeData.colorScheme.whiteColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

@@ -15,20 +15,38 @@ final class MembersState extends Equatable {
     this.status = StatusIndicator.initial,
     this.circleVoter = CircleVoter.empty,
     this.circleCandidate = CircleCandidate.empty,
+    this.rankingVoter = CircleVoter.empty,
+    this.rankingCandidate = CircleCandidate.empty,
+    this.circleRefId = 0,
+    this.circleRankingsRefId = 0,
   });
 
   final CircleVoter circleVoter;
   final CircleCandidate circleCandidate;
+  final CircleVoter rankingVoter;
+  final CircleCandidate rankingCandidate;
+
+  // the members for this reference of circle id
+  final int circleRefId;
+  final int circleRankingsRefId;
   final StatusIndicator status;
 
   MembersState copyWith({
     CircleVoter? circleVoter,
     CircleCandidate? circleCandidate,
+    CircleVoter? rankingVoter,
+    CircleCandidate? rankingCandidate,
+    int? circleRefId,
+    int? circleRankingsRefId,
     StatusIndicator? status,
   }) {
     return MembersState(
       circleVoter: circleVoter ?? this.circleVoter,
       circleCandidate: circleCandidate ?? this.circleCandidate,
+      rankingVoter: circleVoter ?? this.rankingVoter,
+      rankingCandidate: circleCandidate ?? this.rankingCandidate,
+      circleRefId: circleRefId ?? this.circleRefId,
+      circleRankingsRefId: circleRankingsRefId ?? this.circleRankingsRefId,
       status: status ?? this.status,
     );
   }
@@ -37,6 +55,10 @@ final class MembersState extends Equatable {
   List<Object> get props => [
         circleVoter,
         circleCandidate,
+        rankingVoter,
+        rankingCandidate,
+        circleRefId,
+        circleRankingsRefId,
         status,
       ];
 }

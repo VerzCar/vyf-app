@@ -61,6 +61,9 @@ extension ColorSchemeExtension on ColorScheme {
 
   Color get infoColor =>
       brightness == Brightness.light ? Light.infoColor : Dark.infoColor;
+
+  Color get whiteColor =>
+      brightness == Brightness.light ? Light.white : Dark.white;
 }
 
 class AppTheme {
