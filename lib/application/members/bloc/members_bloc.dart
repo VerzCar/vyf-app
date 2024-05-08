@@ -30,14 +30,14 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
     emit(state.copyWith(status: StatusIndicator.loading));
 
     try {
-      final (voters, candidates) = await (
+      final (voter, candidate) = await (
         _voteCircleRepository.circleVoters(event.circleId),
         _voteCircleRepository.circleCandidates(event.circleId, null),
       ).wait;
 
       emit(state.copyWith(
-        circleVoter: voters,
-        circleCandidate: candidates,
+        circleVoter: voter,
+        circleCandidate: candidate,
         circleRefId: event.circleId,
         status: StatusIndicator.success,
       ));
@@ -63,18 +63,17 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
         hasBeenVoted: false,
       );
 
-      final (voters, candidates) = await (
+      final (voter, candidate) = await (
         _voteCircleRepository.circleVoters(event.circleId),
         _voteCircleRepository.circleCandidates(
           event.circleId,
           candidatesFilter,
         ),
       ).wait;
-      print('HERE');
-print(candidates.candidates.length);
+
       emit(state.copyWith(
-        rankingVoter: voters,
-        rankingCandidate: candidates,
+        rankingVoter: voter,
+        rankingCandidate: candidate,
         circleRankingsRefId: event.circleId,
         status: StatusIndicator.success,
       ));

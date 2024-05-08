@@ -16,7 +16,10 @@ class MembersPreview extends StatelessWidget {
   });
 
   final int circleId;
-  final int previewUserCount = 3;
+
+  static const int _previewMemberCount = 3;
+  static const double _spaceBetweenMember = 8.0;
+  static const AvatarSize _avatarSize = AvatarSize.base;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,7 @@ class MembersPreview extends StatelessWidget {
       child: BlocBuilder<MembersBloc, MembersState>(
         builder: (context, state) {
           if (!MembersStateStatus(state.status).isSuccessful) {
-            return const SizedBox();
+            return _buildMembersPlaceholder();
           }
           return _buildMembersPreview(
             context: context,
@@ -101,11 +104,28 @@ class MembersPreview extends StatelessWidget {
                       identityId: identityId,
                     ),
               child: Container(
-                margin: const EdgeInsets.only(right: 8.0),
+                margin: const EdgeInsets.only(right: _spaceBetweenMember),
                 child: const UserAvatar(),
               ),
             ))
         .toList();
+  }
+
+  Widget _buildMembersPlaceholder() {
+    return Row(
+      children: List<Container>.generate(
+        _previewMemberCount,
+        (index) => Container(
+          width: _avatarSize.preSize.width,
+          height: _avatarSize.preSize.height,
+          margin: const EdgeInsets.only(right: _spaceBetweenMember),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6.5),
+            color: Colors.grey.withOpacity(0.5),
+          ),
+        ),
+      ),
+    );
   }
 
   Text _countOfMembers(
@@ -128,7 +148,7 @@ class MembersPreview extends StatelessWidget {
     return [
       ...circleVoter.voters,
       ...circleCandidate.candidates,
-    ].take(previewUserCount).map((member) {
+    ].take(_previewMemberCount).map((member) {
       if (member is Voter) {
         return member.voter;
       }
@@ -147,7 +167,7 @@ class MembersPreview extends StatelessWidget {
   ) {
     final count =
         (circleVoter.voters.length + circleCandidate.candidates.length) -
-            previewUserCount;
+            _previewMemberCount;
     return count;
   }
 }

@@ -43,8 +43,8 @@ final class MembersState extends Equatable {
     return MembersState(
       circleVoter: circleVoter ?? this.circleVoter,
       circleCandidate: circleCandidate ?? this.circleCandidate,
-      rankingVoter: circleVoter ?? this.rankingVoter,
-      rankingCandidate: circleCandidate ?? this.rankingCandidate,
+      rankingVoter: rankingVoter ?? this.rankingVoter,
+      rankingCandidate: rankingCandidate ?? this.rankingCandidate,
       circleRefId: circleRefId ?? this.circleRefId,
       circleRankingsRefId: circleRankingsRefId ?? this.circleRankingsRefId,
       status: status ?? this.status,
