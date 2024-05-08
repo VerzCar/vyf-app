@@ -29,6 +29,7 @@ class RankingBody extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,9 +112,13 @@ class RankingBody extends StatelessWidget {
                 ranking.number.toString(),
                 style: themeData.textTheme.bodyLarge,
               ),
-              title: const UserAvatar(
+              title: UserAvatar(
                 option: UserAvatarOption(
                   withLabel: true,
+                  labelChild: Text(
+                    '${ranking.votes} votes',
+                    style: themeData.textTheme.labelMedium,
+                  ),
                 ),
               ),
               trailing: ElevatedButton(

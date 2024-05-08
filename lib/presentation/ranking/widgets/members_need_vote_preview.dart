@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
@@ -7,8 +6,8 @@ import 'package:vote_your_face/application/members/bloc/members_bloc.dart';
 import 'package:vote_your_face/application/members/members.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/injection.dart';
-import 'package:vote_your_face/presentation/routes/router.gr.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
+import 'package:vote_your_face/theme.dart';
 
 class MembersNeedVotePreview extends StatelessWidget {
   const MembersNeedVotePreview({
@@ -56,15 +55,11 @@ class MembersNeedVotePreview extends StatelessWidget {
     final userIds = _firstThreeUserIds(circleCandidate);
 
     if (userIds.isEmpty) {
-      return TextButton(
-        style: themeData.textButtonTheme.style?.copyWith(
-          foregroundColor:
-              MaterialStatePropertyAll(themeData.colorScheme.secondary),
+      return Text(
+        'No candidates',
+        style: themeData.textTheme.bodyMedium?.copyWith(
+          color: themeData.colorScheme.textLightColor,
         ),
-        onPressed: () {
-          context.router.push(MembersRoute(circleId: circleId));
-        },
-        child: const Text('There are no members'),
       );
     }
 
@@ -110,7 +105,7 @@ class MembersNeedVotePreview extends StatelessWidget {
     return Row(
       children: List<Container>.generate(
         _previewMemberCount,
-            (index) => Container(
+        (index) => Container(
           width: _avatarSize.preSize.width,
           height: _avatarSize.preSize.height,
           margin: const EdgeInsets.only(right: _spaceBetweenMember),

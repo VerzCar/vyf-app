@@ -19,8 +19,8 @@ class Light {
   static const Color white = Colors.white;
 
   static TextTheme textTheme = Typography.blackCupertino.apply(
-    bodyColor: Colors.black,
-    displayColor: Colors.black,
+    bodyColor: textColorPrimary,
+    displayColor: textColorPrimary,
   );
 
   Light._();
@@ -45,8 +45,8 @@ class Dark {
   static const Color white = Colors.white;
 
   static TextTheme textTheme = Typography.blackCupertino.apply(
-    bodyColor: Colors.white,
-    displayColor: Colors.white,
+    bodyColor: textColorPrimary,
+    displayColor: textColorPrimary,
   );
 
   Dark._();
@@ -64,6 +64,10 @@ extension ColorSchemeExtension on ColorScheme {
 
   Color get whiteColor =>
       brightness == Brightness.light ? Light.white : Dark.white;
+
+  Color get textLightColor => brightness == Brightness.light
+      ? Light.textColorPrimary.withOpacity(0.6)
+      : Dark.textColorPrimary.withOpacity(0.6);
 }
 
 class AppTheme {
@@ -94,8 +98,7 @@ class AppTheme {
 
   static final InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
     floatingLabelStyle: const TextStyle(color: Colors.black),
-    focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8)),
+    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
     border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
   );
 

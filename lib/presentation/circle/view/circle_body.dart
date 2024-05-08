@@ -56,57 +56,61 @@ class CircleBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextButton(
-                    style: themeData.textButtonTheme.style?.copyWith(
-                      foregroundColor: MaterialStatePropertyAll(
-                          themeData.colorScheme.secondary),
-                    ),
-                    onPressed: () {
-                      context.router.push(RankingRoute(circleId: circle.id));
-                    },
-                    child: const Text('Go to Rankings'),
+                  style: themeData.textButtonTheme.style?.copyWith(
+                    foregroundColor: MaterialStatePropertyAll(
+                        themeData.colorScheme.secondary),
+                  ),
+                  onPressed: () {
+                    context.router.push(RankingRoute(circleId: circle.id));
+                  },
+                  child: const Text('Go to Rankings'),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(vertical: 10.0),
-                          child: Text(
-                            'Owner',
-                            style: themeData.textTheme.titleMedium,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            child: Text(
+                              'Owner',
+                              style: themeData.textTheme.titleMedium,
+                            ),
                           ),
-                        ),
-                        BlocProvider(
-                          create: (context) =>
-                              UserXCubit(userRepository: sl<IUserRepository>())
-                                ..userXFetched(
-                                  context: context,
-                                  identityId: circle.createdFrom,
-                                ),
-                          child: const UserAvatar(
-                            option: UserAvatarOption(withLabel: true),
+                          BlocProvider(
+                            create: (context) => UserXCubit(
+                                userRepository: sl<IUserRepository>())
+                              ..userXFetched(
+                                context: context,
+                                identityId: circle.createdFrom,
+                              ),
+                            child: const UserAvatar(
+                              option: UserAvatarOption(withLabel: true),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(vertical: 10.0),
-                          child: Text(
-                            'Valid',
-                            style: themeData.textTheme.titleMedium,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            child: Text(
+                              'Valid',
+                              style: themeData.textTheme.titleMedium,
+                            ),
                           ),
-                        ),
-                        TimeBox(
-                          from: circle.validFrom,
-                          until: circle.validUntil,
-                        ),
-                      ],
+                          TimeBox(
+                            from: circle.validFrom,
+                            until: circle.validUntil,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
