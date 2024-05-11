@@ -26,65 +26,6 @@ class UserAvatar extends StatelessWidget {
     });
   }
 
-  // Widget _buildByOption(BuildContext context, User user) {
-  //   final avatarSize = option?.size ?? AvatarSize.base;
-  //
-  //   final List<Widget> avatarStackChildren = [
-  //     AvatarImage(
-  //       src: user.profile.imageSrc,
-  //       capitalLetters: usersInitials(user.username),
-  //       size: avatarSize,
-  //     ),
-  //   ];
-  //
-  //   final avatarStack = Stack(
-  //     alignment: Alignment.bottomRight,
-  //     children: avatarStackChildren,
-  //   );
-  //
-  //   if (option == null) {
-  //     return avatarStack;
-  //   }
-  //
-  //   if (option!.commitment != null) {
-  //     avatarStackChildren.add(
-  //       CommitmentIcon(
-  //         commitment: option!.commitment!,
-  //         size: avatarSize.preSize.width / 4,
-  //       ),
-  //     );
-  //   }
-  //
-  //   if (option!.withLabel) {
-  //     final themeData = Theme.of(context);
-  //     if (option!.labelPosition == LabelPosition.right) {
-  //       return Row(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: _avatarWithLabel(
-  //           avatarStack: avatarStack,
-  //           user: user,
-  //           themeData: themeData,
-  //           option: option!,
-  //         ),
-  //       );
-  //     }
-  //
-  //     if (option!.labelPosition == LabelPosition.bottom) {
-  //       return Column(
-  //         crossAxisAlignment: CrossAxisAlignment.center,
-  //         children: _avatarWithLabel(
-  //           avatarStack: avatarStack,
-  //           user: user,
-  //           themeData: themeData,
-  //           option: option!,
-  //         ),
-  //       );
-  //     }
-  //   }
-  //
-  //   return avatarStack;
-  // }
-
   Widget _placeholder() {
     var size = AvatarSize.base.preSize;
     if (option != null) {
@@ -100,38 +41,6 @@ class UserAvatar extends StatelessWidget {
       ),
     );
   }
-
-  // List<Widget> _avatarWithLabel({
-  //   required Stack avatarStack,
-  //   required User user,
-  //   required ThemeData themeData,
-  //   required UserAvatarOption option,
-  // }) {
-  //   final sizedBox = option.labelPosition == LabelPosition.bottom
-  //       ? const SizedBox(height: 10)
-  //       : const SizedBox(width: 15);
-  //
-  //   final List<Widget> labelChildren = [
-  //     Text(
-  //       user.username,
-  //       style: themeData.textTheme.labelLarge,
-  //     ),
-  //   ];
-  //
-  //   if (option.labelChild != null) {
-  //     labelChildren.add(option.labelChild!);
-  //   }
-  //
-  //   return [
-  //     avatarStack,
-  //     sizedBox,
-  //     Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: labelChildren,
-  //     ),
-  //   ];
-  // }
 
   Widget _buildByOption(BuildContext context, User user) {
     final avatarSize = option?.size ?? AvatarSize.base;
@@ -197,6 +106,22 @@ class UserAvatar extends StatelessWidget {
 
     if (option.labelChild != null) {
       labelChildren.add(option.labelChild!);
+    }
+
+    if (option.labelPosition == LabelPosition.bottom) {
+      return [
+        TableRow(
+          children: [
+            Column(
+              children: [
+                avatarStack,
+                const SizedBox(height: 10),
+                ...labelChildren,
+              ],
+            ),
+          ],
+        ),
+      ];
     }
 
     return [
