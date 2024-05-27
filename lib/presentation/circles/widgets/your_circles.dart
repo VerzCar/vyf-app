@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circles/circles.dart';
+import 'package:vote_your_face/presentation/circle/widgets/create_circle_sheet.dart';
 import 'package:vote_your_face/presentation/circles/widgets/widgets.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
 
@@ -28,7 +29,15 @@ class YourCircles extends StatelessWidget {
                   style: themeData.textTheme.titleLarge,
                 ),
                 OutlinedButton.icon(
-                  onPressed: () => {},
+                  onPressed: () => showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context2) {
+                      return SizedBox(
+                        height: size.height * 0.70,
+                        child: const CreateCircleSheet(),
+                      );
+                    },
+                  ),
                   icon: const Icon(Icons.add),
                   label: const Text('Create Circle'),
                 ),
