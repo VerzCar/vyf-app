@@ -56,9 +56,8 @@ class CircleBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextButton(
-                  style: themeData.textButtonTheme.style?.copyWith(
-                    foregroundColor: MaterialStatePropertyAll(
-                        themeData.colorScheme.secondary),
+                  style: TextButton.styleFrom(
+                    foregroundColor: themeData.colorScheme.secondary,
                   ),
                   onPressed: () {
                     context.router.push(RankingRoute(circleId: circle.id));

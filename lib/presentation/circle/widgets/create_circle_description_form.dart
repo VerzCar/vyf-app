@@ -3,10 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vote_your_face/presentation/circle/cubit/circle_create_form_cubit.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 
-class CreateCircleNameForm extends StatelessWidget {
-  const CreateCircleNameForm({super.key, required this.onNext});
+class CreateCircleDescriptionForm extends StatelessWidget {
+  const CreateCircleDescriptionForm({
+    super.key,
+    required this.onNext,
+    required this.onPrevious,
+  });
 
   final VoidCallback onNext;
+  final VoidCallback onPrevious;
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +26,11 @@ class CreateCircleNameForm extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Give the circle a name',
+            'Describe the circle',
             style: themeData.textTheme.titleLarge,
           ),
           const SizedBox(height: 20.0),
-          _CircleNameInput(),
+          _CircleDescriptionInput(),
           const SizedBox(height: 20.0),
           Text(
             'The circle should have a descriptive naming, to indicate for what the circle stands for. This gives you the ability to give a first hint for what the circle is for.',
@@ -35,14 +40,21 @@ class CreateCircleNameForm extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              OutlinedButton(
+                style: ElevatedButton.styleFrom(
+                    foregroundColor: themeData.colorScheme.secondary,
+                ),
+                onPressed: onPrevious,
+                child: const Text('Previous'),
+              ),
+              const SizedBox(width: 10),
               BlocBuilder<CircleCreateFormCubit, CircleCreateFormState>(
                 builder: (context, state) {
                   return ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         foregroundColor: themeData.colorScheme.onSecondary,
-                        backgroundColor: themeData.colorScheme.secondary
-                    ),
-                    onPressed: state.name.isValid ? onNext : null,
+                        backgroundColor: themeData.colorScheme.secondary),
+                    onPressed: state.description.isValid ? onNext : null,
                     child: const Text('Next'),
                   );
                 },
@@ -55,23 +67,24 @@ class CreateCircleNameForm extends StatelessWidget {
   }
 }
 
-class _CircleNameInput extends StatelessWidget {
+class _CircleDescriptionInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CircleCreateFormCubit, CircleCreateFormState>(
-      buildWhen: (previous, current) => previous.name != current.name,
+      buildWhen: (previous, current) => previous.description != current.description,
       builder: (context, state) {
         return VyfTextFormField(
-          key: const Key('CreateCircleNameForm_CircleNameInput_textFormField'),
+          key: const Key(
+              'CreateCircleDescriptionForm_CircleDescriptionInput_textFormField'),
           onChanged: (name) =>
-              context.read<CircleCreateFormCubit>().onNameChanged(name),
-          labelText: 'Circle name',
-          errorText: 'Invalid circle name',
-          maxLength: 50,
-          showError: !state.name.isPure && state.name.isNotValid,
+              context.read<CircleCreateFormCubit>().onDescriptionChanged(name),
+          labelText: 'Circle description',
+          errorText: 'Invalid circle description',
+          maxLength: 2500,
+          maxLines: 5,
+          showError: !state.description.isPure && state.description.isNotValid,
         );
       },
     );
   }
 }
-

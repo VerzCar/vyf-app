@@ -54,9 +54,8 @@ class MembersPreview extends StatelessWidget {
 
     if (userIds.isEmpty) {
       return TextButton(
-        style: themeData.textButtonTheme.style?.copyWith(
-          foregroundColor:
-              MaterialStatePropertyAll(themeData.colorScheme.secondary),
+        style: TextButton.styleFrom(
+          foregroundColor: themeData.colorScheme.secondary,
         ),
         onPressed: () {
           context.router.push(MembersRoute(circleId: circleId));
@@ -77,9 +76,8 @@ class MembersPreview extends StatelessWidget {
           ),
           const SizedBox(width: 20.0),
           TextButton(
-            style: themeData.textButtonTheme.style?.copyWith(
-              foregroundColor:
-                  MaterialStatePropertyAll(themeData.colorScheme.secondary),
+            style: TextButton.styleFrom(
+              foregroundColor: themeData.colorScheme.secondary,
             ),
             onPressed: () {
               context.router.push(MembersRoute(circleId: circleId));

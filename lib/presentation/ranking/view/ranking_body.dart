@@ -123,11 +123,9 @@ class RankingBody extends StatelessWidget {
               ),
               trailing: ElevatedButton(
                 onPressed: () => {},
-                style: themeData.elevatedButtonTheme.style?.copyWith(
-                  backgroundColor:
-                      MaterialStatePropertyAll(themeData.colorScheme.secondary),
-                  foregroundColor: MaterialStatePropertyAll(
-                      themeData.colorScheme.onSecondary),
+                style: ElevatedButton.styleFrom(
+                    foregroundColor: themeData.colorScheme.onSecondary,
+                    backgroundColor: themeData.colorScheme.secondary
                 ),
                 child: const Text('Vote'),
               ),
@@ -179,9 +177,8 @@ class RankingBody extends StatelessWidget {
             style: themeData.textTheme.titleLarge,
           ),
           TextButton(
-            style: themeData.textButtonTheme.style?.copyWith(
-              foregroundColor:
-                  MaterialStatePropertyAll(themeData.colorScheme.secondary),
+            style: TextButton.styleFrom(
+              foregroundColor: themeData.colorScheme.secondary,
             ),
             onPressed: () {},
             child: const Text('give a vote!'),

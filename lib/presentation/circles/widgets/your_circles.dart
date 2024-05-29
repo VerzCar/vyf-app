@@ -4,7 +4,6 @@ import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circles/circles.dart';
 import 'package:vote_your_face/presentation/circle/widgets/create_circle_sheet.dart';
 import 'package:vote_your_face/presentation/circles/widgets/widgets.dart';
-import 'package:vote_your_face/presentation/routes/router.gr.dart';
 
 class YourCircles extends StatelessWidget {
   const YourCircles({super.key});
@@ -31,10 +30,11 @@ class YourCircles extends StatelessWidget {
                 OutlinedButton.icon(
                   onPressed: () => showModalBottomSheet(
                     context: context,
+                    isScrollControlled: true,
                     builder: (BuildContext context2) {
                       return SizedBox(
                         height: size.height * 0.70,
-                        child: const CreateCircleSheet(),
+                        child: CreateCircleSheet(),
                       );
                     },
                   ),
@@ -85,9 +85,8 @@ class YourCircles extends StatelessWidget {
         children: [
           const Text('It seems like you do not have any circles.'),
           TextButton(
-            style: themeData.textButtonTheme.style?.copyWith(
-              foregroundColor:
-                  MaterialStatePropertyAll(themeData.colorScheme.secondary),
+            style: TextButton.styleFrom(
+                foregroundColor: themeData.colorScheme.secondary,
             ),
             onPressed: () {},
             child: const Text('You can create one here'),
