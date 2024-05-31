@@ -13,7 +13,7 @@ class CircleNameInput extends FormzInput<String, CircleNameInputError> {
       return CircleNameInputError.empty;
     }
 
-    if (value.length > 50) {
+    if (value.length > 40) {
       return CircleNameInputError.maxLength;
     }
 

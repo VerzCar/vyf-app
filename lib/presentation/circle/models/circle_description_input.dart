@@ -13,7 +13,7 @@ class CircleDescriptionInput extends FormzInput<String, CircleDescriptionInputEr
       return CircleDescriptionInputError.empty;
     }
 
-    if (value.length > 2500) {
+    if (value.length > 1500) {
       return CircleDescriptionInputError.maxLength;
     }
 

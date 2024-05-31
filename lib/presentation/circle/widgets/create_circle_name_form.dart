@@ -67,7 +67,7 @@ class _CircleNameInput extends StatelessWidget {
               context.read<CircleCreateFormCubit>().onNameChanged(name),
           labelText: 'Circle name',
           errorText: 'Invalid circle name',
-          maxLength: 50,
+          maxLength: 40,
           showError: !state.name.isPure && state.name.isNotValid,
         );
       },

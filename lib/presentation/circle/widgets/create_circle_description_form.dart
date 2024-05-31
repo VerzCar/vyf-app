@@ -80,7 +80,7 @@ class _CircleDescriptionInput extends StatelessWidget {
               context.read<CircleCreateFormCubit>().onDescriptionChanged(name),
           labelText: 'Circle description',
           errorText: 'Invalid circle description',
-          maxLength: 2500,
+          maxLength: 1500,
           maxLines: 5,
           showError: !state.description.isPure && state.description.isNotValid,
         );

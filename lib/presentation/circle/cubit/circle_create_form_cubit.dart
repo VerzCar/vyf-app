@@ -14,17 +14,24 @@ class CircleCreateFormCubit extends Cubit<CircleCreateFormState> {
 
   final IUserRepository _userRepository;
 
-  void onNameChanged(String name) {
-    final input = CircleNameInput.dirty(value: name);
+  void onNameChanged(String value) {
+    final input = CircleNameInput.dirty(value: value);
     emit(state.copyWith(
       name: input,
     ));
   }
 
-  void onDescriptionChanged(String name) {
-    final input = CircleDescriptionInput.dirty(value: name);
+  void onDescriptionChanged(String value) {
+    final input = CircleDescriptionInput.dirty(value: value);
     emit(state.copyWith(
       description: input,
+    ));
+  }
+
+  void onDateFromChanged(String value) {
+    final input = CircleDateFromInput.dirty(value: value);
+    emit(state.copyWith(
+      dateFrom: input,
     ));
   }
 }
