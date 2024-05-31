@@ -31,6 +31,7 @@ class YourCircles extends StatelessWidget {
                   onPressed: () => showModalBottomSheet(
                     context: context,
                     isScrollControlled: true,
+                    useSafeArea: true,
                     builder: (BuildContext context2) {
                       return SizedBox(
                         height: size.height * 0.70,
@@ -86,7 +87,7 @@ class YourCircles extends StatelessWidget {
           const Text('It seems like you do not have any circles.'),
           TextButton(
             style: TextButton.styleFrom(
-                foregroundColor: themeData.colorScheme.secondary,
+              foregroundColor: themeData.colorScheme.secondary,
             ),
             onPressed: () {},
             child: const Text('You can create one here'),
