@@ -5,6 +5,7 @@ import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/circle/cubit/circle_create_form_cubit.dart';
 import 'package:vote_your_face/presentation/circle/widgets/create_circle_description_form.dart';
 import 'package:vote_your_face/presentation/circle/widgets/create_circle_duration_form.dart';
+import 'package:vote_your_face/presentation/circle/widgets/create_circle_members_form.dart';
 import 'package:vote_your_face/presentation/circle/widgets/create_circle_name_form.dart';
 
 class CreateCircleSheet extends StatelessWidget {
@@ -30,7 +31,11 @@ class CreateCircleSheet extends StatelessWidget {
           CreateCircleDurationForm(
             onNext: _onNext,
             onPrevious: _onPrevious,
-          )
+          ),
+          CreateCircleMembersForm(
+            onNext: _onNext,
+            onPrevious: _onPrevious,
+          ),
         ],
       ),
     );

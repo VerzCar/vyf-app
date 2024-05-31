@@ -9,6 +9,7 @@ final class CircleCreateFormState extends Equatable {
     this.timeFrom = const CircleTimeFromInput.pure(),
     this.dateUntil = const CircleDateUntilInput.pure(),
     this.timeUntil = const CircleTimeUntilInput.pure(),
+    this.private = const CirclePrivateInput.pure(),
   });
 
   final FormzSubmissionStatus status;
@@ -18,15 +19,18 @@ final class CircleCreateFormState extends Equatable {
   final CircleTimeFromInput timeFrom;
   final CircleDateUntilInput dateUntil;
   final CircleTimeUntilInput timeUntil;
+  final CirclePrivateInput private;
 
-  CircleCreateFormState copyWith(
-      {FormzSubmissionStatus? status,
-      CircleNameInput? name,
-      CircleDescriptionInput? description,
-      CircleDateFromInput? dateFrom,
-      CircleTimeFromInput? timeFrom,
-      CircleDateUntilInput? dateUntil,
-      CircleTimeUntilInput? timeUntil}) {
+  CircleCreateFormState copyWith({
+    FormzSubmissionStatus? status,
+    CircleNameInput? name,
+    CircleDescriptionInput? description,
+    CircleDateFromInput? dateFrom,
+    CircleTimeFromInput? timeFrom,
+    CircleDateUntilInput? dateUntil,
+    CircleTimeUntilInput? timeUntil,
+    CirclePrivateInput? private,
+  }) {
     return CircleCreateFormState(
       status: status ?? this.status,
       name: name ?? this.name,
@@ -35,6 +39,7 @@ final class CircleCreateFormState extends Equatable {
       timeFrom: timeFrom ?? this.timeFrom,
       dateUntil: dateUntil ?? this.dateUntil,
       timeUntil: timeUntil ?? this.timeUntil,
+      private: private ?? this.private,
     );
   }
 
@@ -47,5 +52,6 @@ final class CircleCreateFormState extends Equatable {
         timeFrom,
         dateUntil,
         timeUntil,
+        private,
       ];
 }

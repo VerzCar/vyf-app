@@ -55,4 +55,14 @@ class CircleCreateFormCubit extends Cubit<CircleCreateFormState> {
       timeUntil: input,
     ));
   }
+
+  void onPrivateChanged(bool value) {
+    final input = CirclePrivateInput.dirty(value: value);
+    emit(state.copyWith(
+      private: input,
+    ));
+  }
+
+  void onSubmit() {
+  }
 }
