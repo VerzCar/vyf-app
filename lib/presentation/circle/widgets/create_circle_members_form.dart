@@ -1,15 +1,17 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
+import 'package:vote_your_face/application/circles/bloc/circles_bloc.dart';
 import 'package:vote_your_face/presentation/circle/cubit/circle_create_form_cubit.dart';
+import 'package:vote_your_face/presentation/routes/router.gr.dart';
 
 class CreateCircleMembersForm extends StatelessWidget {
   const CreateCircleMembersForm({
     super.key,
-    required this.onNext,
     required this.onPrevious,
   });
 
-  final VoidCallback onNext;
   final VoidCallback onPrevious;
 
   @override
@@ -47,14 +49,30 @@ class CreateCircleMembersForm extends StatelessWidget {
                 child: const Text('Previous'),
               ),
               const SizedBox(width: 10),
-              BlocBuilder<CircleCreateFormCubit, CircleCreateFormState>(
+              BlocConsumer<CircleCreateFormCubit, CircleCreateFormState>(
+                listener: (context, state) {
+                  if (state.status.isSuccess) {
+                    BlocProvider.of<CirclesBloc>(context).add(CircleCreated(
+                      circle: state.createdCircle!,
+                    ));
+
+                    context.router.maybePop();
+                  }
+
+                  if (state.status.isFailure) {
+                    // context.router.maybePop();
+                  }
+                },
                 builder: (context, state) {
                   return ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         foregroundColor: themeData.colorScheme.onSecondary,
                         backgroundColor: themeData.colorScheme.secondary),
-                    onPressed: state.private.value ? null : onNext,
-                    child: const Text('Next'),
+                    onPressed: state.private.value
+                        ? null
+                        : () =>
+                            context.read<CircleCreateFormCubit>().onSubmit(),
+                    child: const Text('Create'),
                   );
                 },
               ),
@@ -63,6 +81,10 @@ class CreateCircleMembersForm extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  _onSubmit(BuildContext context) {
+    context.read<CircleCreateFormCubit>().onSubmit();
   }
 }
 
@@ -75,8 +97,8 @@ class _CirclePrivateInput extends StatefulWidget {
 
 class __CirclePrivateInputState extends State<_CirclePrivateInput> {
   final WidgetStateProperty<Icon?> _thumbIcon =
-  WidgetStateProperty.resolveWith<Icon?>(
-        (Set<WidgetState> states) {
+      WidgetStateProperty.resolveWith<Icon?>(
+    (Set<WidgetState> states) {
       if (states.contains(WidgetState.selected)) {
         return const Icon(Icons.lock_outline);
       }
@@ -87,10 +109,13 @@ class __CirclePrivateInputState extends State<_CirclePrivateInput> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CircleCreateFormCubit, CircleCreateFormState>(
-      buildWhen: (previous, current) => previous.private.value != current.private.value,
+      buildWhen: (previous, current) =>
+          previous.private.value != current.private.value,
       builder: (context, state) {
         return SwitchListTile(
-          title: state.private.value ? const Text('Private') : const Text('Public'),
+          title: state.private.value
+              ? const Text('Private')
+              : const Text('Public'),
           value: state.private.value,
           thumbIcon: _thumbIcon,
           onChanged: (bool value) {

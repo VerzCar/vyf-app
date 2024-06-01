@@ -49,3 +49,11 @@ class QueryVotersFailure extends ApiFailure {
     super.status,
   });
 }
+
+class CreateCircleFailure extends ApiFailure {
+  CreateCircleFailure({
+    required super.statusCode,
+    super.msg,
+    super.status,
+  });
+}

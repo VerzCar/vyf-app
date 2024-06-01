@@ -61,4 +61,12 @@ class VoteCircleRepository implements IVoteCircleRepository {
     final res = await _voteCircleApi.fetchCircleVoters(circleId);
     return CircleVoter.fromApiCircleVoter(res);
   }
+
+  @override
+  Future<Circle> createCircle(CircleCreateRequest circleRequest) async {
+    final res = await _voteCircleApi.createCircle(
+      circleRequest.toApiCircleCreateRequest(),
+    );
+    return Circle.fromApiCircle(res);
+  }
 }

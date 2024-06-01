@@ -28,17 +28,23 @@ class YourCircles extends StatelessWidget {
                   style: themeData.textTheme.titleLarge,
                 ),
                 OutlinedButton.icon(
-                  onPressed: () => showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    useSafeArea: true,
-                    builder: (BuildContext context2) {
-                      return SizedBox(
-                        height: size.height * 0.70,
-                        child: CreateCircleSheet(),
-                      );
-                    },
-                  ),
+                  onPressed: () {
+                    final circlesBloc = BlocProvider.of<CirclesBloc>(context);
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      useSafeArea: true,
+                      builder: (BuildContext context2) {
+                        return SizedBox(
+                          height: size.height * 0.70,
+                          child: BlocProvider.value(
+                            value: circlesBloc,
+                            child: CreateCircleSheet(),
+                          ),
+                        );
+                      },
+                    );
+                  },
                   icon: const Icon(Icons.add),
                   label: const Text('Create Circle'),
                 ),
@@ -59,14 +65,14 @@ class YourCircles extends StatelessWidget {
             ),
             child: state.myCircles.isEmpty
                 ? buildEmptyCirclesPlaceholder(themeData)
-                : buildCirclePageView(state.myCircles),
+                : buildCirclesPageView(state.myCircles),
           ),
         ],
       );
     });
   }
 
-  Widget buildCirclePageView(List<Circle> circles) {
+  Widget buildCirclesPageView(List<Circle> circles) {
     return PageView(
       controller: PageController(viewportFraction: 0.80),
       children: [

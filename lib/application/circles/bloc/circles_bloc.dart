@@ -4,6 +4,7 @@ import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 
 part 'circles_event.dart';
+
 part 'circles_state.dart';
 
 class CirclesBloc extends Bloc<CirclesEvent, CirclesState> {
@@ -12,6 +13,7 @@ class CirclesBloc extends Bloc<CirclesEvent, CirclesState> {
   })  : _voteCircleRepository = voteCircleRepository,
         super(const CirclesState()) {
     on<CirclesOfUserInitialLoaded>(_onCirclesOfUserInitialLoaded);
+    on<CircleCreated>(_onCircleCreated);
   }
 
   final IVoteCircleRepository _voteCircleRepository;
@@ -24,11 +26,30 @@ class CirclesBloc extends Bloc<CirclesEvent, CirclesState> {
 
     try {
       final circles = await _voteCircleRepository.circles();
-      emit(state.copyWith(myCircles: circles, status: StatusIndicator.success));
+      emit(
+        state.copyWith(
+          myCircles: circles,
+          status: StatusIndicator.success,
+        ),
+      );
     } catch (e) {
       print(e);
       if (isClosed) return;
       emit(state.copyWith(status: StatusIndicator.failure));
     }
+  }
+
+  void _onCircleCreated(
+    CircleCreated event,
+    Emitter<CirclesState> emit,
+  ) {
+    final myCircles = state.myCircles;
+    myCircles.insert(0, event.circle);
+
+    emit(
+      state.copyWith(
+        myCircles: myCircles,
+      ),
+    );
   }
 }

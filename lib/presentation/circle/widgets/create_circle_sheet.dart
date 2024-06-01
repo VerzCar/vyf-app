@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
+import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/circle/cubit/circle_create_form_cubit.dart';
 import 'package:vote_your_face/presentation/circle/widgets/create_circle_description_form.dart';
@@ -16,8 +17,10 @@ class CreateCircleSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          CircleCreateFormCubit(userRepository: sl<IUserRepository>()),
+      create: (context) => CircleCreateFormCubit(
+        userRepository: sl<IUserRepository>(),
+        voteCircleRepository: sl<IVoteCircleRepository>(),
+      ),
       child: PageView(
         controller: _pageController,
         children: [
@@ -33,7 +36,6 @@ class CreateCircleSheet extends StatelessWidget {
             onPrevious: _onPrevious,
           ),
           CreateCircleMembersForm(
-            onNext: _onNext,
             onPrevious: _onPrevious,
           ),
         ],

@@ -214,6 +214,57 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     }
   }
 
+  @override
+  Future<Circle> createCircle(CircleCreateRequest circleRequest) async {
+    final circle = Circle(
+      id: 1,
+      name: 'Circle 1',
+      description: '',
+      imageSrc: '',
+      private: false,
+      active: true,
+      stage: CircleStage.Hot,
+      createdFrom: 'myself',
+      validFrom: DateTime.now(),
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+
+    return Future(() => circle);
+    // var logger = Logger();
+    //
+    // try {
+    //   var jsonBody = jsonEncode(circleRequest.toJson());
+    //
+    //   final res = await http.post(
+    //     _uri(path: 'circle'),
+    //     headers: _headers(),
+    //     body: jsonBody,
+    //   );
+    //
+    //   if (res.statusCode >= HttpStatus.internalServerError) {
+    //     logger.e('creating circle server error: $res');
+    //     throw ApiError(res);
+    //   }
+    //
+    //   final apiResponse = ApiResponse<Map<String, dynamic>>.fromJson(
+    //       jsonDecode(res.body) as Map<String, dynamic>);
+    //
+    //   if (res.statusCode == HttpStatus.ok) {
+    //     return Circle.fromJson(apiResponse.data);
+    //   }
+    //
+    //   logger.e('creating circle failed: $apiResponse');
+    //   throw CreateCircleFailure(
+    //     statusCode: res.statusCode,
+    //     msg: apiResponse.msg,
+    //     status: apiResponse.status,
+    //   );
+    // } catch (e) {
+    //   rethrow;
+    // }
+  }
+
   Uri _uri({String? path, Map<String, dynamic>? queryParameters}) {
     final httpsUri = Uri(
       scheme: 'https',

@@ -15,4 +15,6 @@ abstract class IVoteCircleRepository {
     int circleId,
     CircleCandidatesFilter? filter,
   );
+
+  Future<Circle> createCircle(CircleCreateRequest circleRequest);
 }
