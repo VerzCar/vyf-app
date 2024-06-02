@@ -18,12 +18,10 @@ CircleCreateRequest _$CircleCreateRequestFromJson(Map<String, dynamic> json) =>
           .map((e) => VoterRequest.fromJson(e as Map<String, dynamic>))
           .toList(),
       private: json['private'] as bool?,
-      validFrom: json['validFrom'] == null
-          ? null
-          : DateTime.parse(json['validFrom'] as String),
-      validUntil: json['validUntil'] == null
-          ? null
-          : DateTime.parse(json['validUntil'] as String),
+      validFrom: _$JsonConverterFromJson<String, DateTime>(
+          json['validFrom'], const DateTimeConverter().fromJson),
+      validUntil: _$JsonConverterFromJson<String, DateTime>(
+          json['validUntil'], const DateTimeConverter().fromJson),
     );
 
 Map<String, dynamic> _$CircleCreateRequestToJson(CircleCreateRequest instance) {
@@ -42,7 +40,25 @@ Map<String, dynamic> _$CircleCreateRequestToJson(CircleCreateRequest instance) {
   val['candidates'] = instance.candidates.map((e) => e.toJson()).toList();
   val['voters'] = instance.voters.map((e) => e.toJson()).toList();
   writeNotNull('private', instance.private);
-  writeNotNull('validFrom', instance.validFrom?.toIso8601String());
-  writeNotNull('validUntil', instance.validUntil?.toIso8601String());
+  writeNotNull(
+      'validFrom',
+      _$JsonConverterToJson<String, DateTime>(
+          instance.validFrom, const DateTimeConverter().toJson));
+  writeNotNull(
+      'validUntil',
+      _$JsonConverterToJson<String, DateTime>(
+          instance.validUntil, const DateTimeConverter().toJson));
   return val;
 }
+
+Value? _$JsonConverterFromJson<Json, Value>(
+  Object? json,
+  Value? Function(Json json) fromJson,
+) =>
+    json == null ? null : fromJson(json as Json);
+
+Json? _$JsonConverterToJson<Json, Value>(
+  Value? value,
+  Json? Function(Value value) toJson,
+) =>
+    value == null ? null : toJson(value);

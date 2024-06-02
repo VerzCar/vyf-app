@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'circle_stage.dart';
+import 'date_time_converter.dart';
 
 part 'circle.g.dart';
 
@@ -13,9 +14,13 @@ class Circle {
   final bool active;
   final CircleStage stage;
   final String createdFrom;
+  @DateTimeConverter()
   final DateTime validFrom;
+  @DateTimeConverter()
   final DateTime? validUntil;
+  @DateTimeConverter()
   final DateTime createdAt;
+  @DateTimeConverter()
   final DateTime updatedAt;
 
   Circle({

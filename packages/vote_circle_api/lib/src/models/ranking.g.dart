@@ -15,8 +15,10 @@ Ranking _$RankingFromJson(Map<String, dynamic> json) => Ranking(
       indexedOrder: json['indexedOrder'] as int,
       placement: $enumDecode(_$PlacementEnumMap, json['placement']),
       circleId: json['circleId'] as int,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      createdAt:
+          const DateTimeConverter().fromJson(json['createdAt'] as String),
+      updatedAt:
+          const DateTimeConverter().fromJson(json['updatedAt'] as String),
     );
 
 Map<String, dynamic> _$RankingToJson(Ranking instance) => <String, dynamic>{
@@ -28,8 +30,8 @@ Map<String, dynamic> _$RankingToJson(Ranking instance) => <String, dynamic>{
       'indexedOrder': instance.indexedOrder,
       'placement': _$PlacementEnumMap[instance.placement]!,
       'circleId': instance.circleId,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'updatedAt': instance.updatedAt.toIso8601String(),
+      'createdAt': const DateTimeConverter().toJson(instance.createdAt),
+      'updatedAt': const DateTimeConverter().toJson(instance.updatedAt),
     };
 
 const _$PlacementEnumMap = {

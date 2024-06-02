@@ -11,8 +11,10 @@ Voter _$VoterFromJson(Map<String, dynamic> json) => Voter(
       voter: json['voter'] as String,
       commitment: $enumDecode(_$CommitmentEnumMap, json['commitment']),
       votedFor: json['votedFor'] as String?,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      createdAt:
+          const DateTimeConverter().fromJson(json['createdAt'] as String),
+      updatedAt:
+          const DateTimeConverter().fromJson(json['updatedAt'] as String),
     );
 
 Map<String, dynamic> _$VoterToJson(Voter instance) => <String, dynamic>{
@@ -20,8 +22,8 @@ Map<String, dynamic> _$VoterToJson(Voter instance) => <String, dynamic>{
       'voter': instance.voter,
       'commitment': _$CommitmentEnumMap[instance.commitment]!,
       'votedFor': instance.votedFor,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'updatedAt': instance.updatedAt.toIso8601String(),
+      'createdAt': const DateTimeConverter().toJson(instance.createdAt),
+      'updatedAt': const DateTimeConverter().toJson(instance.updatedAt),
     };
 
 const _$CommitmentEnumMap = {

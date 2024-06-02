@@ -15,12 +15,14 @@ Circle _$CircleFromJson(Map<String, dynamic> json) => Circle(
       active: json['active'] as bool,
       stage: $enumDecode(_$CircleStageEnumMap, json['stage']),
       createdFrom: json['createdFrom'] as String,
-      validFrom: DateTime.parse(json['validFrom'] as String),
-      validUntil: json['validUntil'] == null
-          ? null
-          : DateTime.parse(json['validUntil'] as String),
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      validFrom:
+          const DateTimeConverter().fromJson(json['validFrom'] as String),
+      validUntil: _$JsonConverterFromJson<String, DateTime>(
+          json['validUntil'], const DateTimeConverter().fromJson),
+      createdAt:
+          const DateTimeConverter().fromJson(json['createdAt'] as String),
+      updatedAt:
+          const DateTimeConverter().fromJson(json['updatedAt'] as String),
     );
 
 Map<String, dynamic> _$CircleToJson(Circle instance) => <String, dynamic>{
@@ -32,10 +34,11 @@ Map<String, dynamic> _$CircleToJson(Circle instance) => <String, dynamic>{
       'active': instance.active,
       'stage': _$CircleStageEnumMap[instance.stage]!,
       'createdFrom': instance.createdFrom,
-      'validFrom': instance.validFrom.toIso8601String(),
-      'validUntil': instance.validUntil?.toIso8601String(),
-      'createdAt': instance.createdAt.toIso8601String(),
-      'updatedAt': instance.updatedAt.toIso8601String(),
+      'validFrom': const DateTimeConverter().toJson(instance.validFrom),
+      'validUntil': _$JsonConverterToJson<String, DateTime>(
+          instance.validUntil, const DateTimeConverter().toJson),
+      'createdAt': const DateTimeConverter().toJson(instance.createdAt),
+      'updatedAt': const DateTimeConverter().toJson(instance.updatedAt),
     };
 
 const _$CircleStageEnumMap = {
@@ -43,3 +46,15 @@ const _$CircleStageEnumMap = {
   CircleStage.Hot: 'HOT',
   CircleStage.Closed: 'CLOSED',
 };
+
+Value? _$JsonConverterFromJson<Json, Value>(
+  Object? json,
+  Value? Function(Json json) fromJson,
+) =>
+    json == null ? null : fromJson(json as Json);
+
+Json? _$JsonConverterToJson<Json, Value>(
+  Value? value,
+  Json? Function(Value value) toJson,
+) =>
+    value == null ? null : toJson(value);

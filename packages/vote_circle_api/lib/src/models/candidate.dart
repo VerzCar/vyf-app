@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'commitment.dart';
+import 'date_time_converter.dart';
 
 part 'candidate.g.dart';
 
@@ -8,7 +9,9 @@ class Candidate {
   final int id;
   final String candidate;
   final Commitment commitment;
+  @DateTimeConverter()
   final DateTime createdAt;
+  @DateTimeConverter()
   final DateTime updatedAt;
 
   Candidate({

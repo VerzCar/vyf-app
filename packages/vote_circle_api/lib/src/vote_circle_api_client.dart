@@ -220,7 +220,7 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
 
     try {
       var jsonBody = jsonEncode(circleRequest.toJson());
-print(jsonBody);
+
       final res = await http.post(
         _uri(path: 'circle'),
         headers: _headers(),

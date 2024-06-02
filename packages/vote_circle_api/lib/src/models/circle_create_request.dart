@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'date_time_converter.dart';
 import 'voter_request.dart';
 import 'candidate_request.dart';
 
@@ -12,7 +13,9 @@ class CircleCreateRequest {
   final List<CandidateRequest> candidates;
   final List<VoterRequest> voters;
   final bool? private;
+  @DateTimeConverter()
   final DateTime? validFrom;
+  @DateTimeConverter()
   final DateTime? validUntil;
 
   CircleCreateRequest({

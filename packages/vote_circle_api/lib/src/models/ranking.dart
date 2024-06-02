@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'date_time_converter.dart';
 import 'placement.dart';
 
 part 'ranking.g.dart';
@@ -13,7 +14,9 @@ class Ranking {
   final int indexedOrder;
   final Placement placement;
   final int circleId;
+  @DateTimeConverter()
   final DateTime createdAt;
+  @DateTimeConverter()
   final DateTime updatedAt;
 
   Ranking({

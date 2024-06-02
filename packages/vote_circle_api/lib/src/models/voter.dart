@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'commitment.dart';
+import 'date_time_converter.dart';
 
 part 'voter.g.dart';
 
@@ -9,7 +10,9 @@ class Voter {
   final String voter;
   final Commitment commitment;
   final String? votedFor;
+  @DateTimeConverter()
   final DateTime createdAt;
+  @DateTimeConverter()
   final DateTime updatedAt;
 
   Voter({
