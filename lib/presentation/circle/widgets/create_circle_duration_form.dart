@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:vote_your_face/presentation/circle/cubit/circle_create_form_cubit.dart';
 import 'package:vote_your_face/presentation/circle/models/models.dart';
+import 'package:vote_your_face/presentation/shared/shared.dart';
 
 enum RangeSelection { from, until }
 
@@ -104,60 +105,80 @@ class CreateCircleDurationForm extends StatelessWidget {
   ) {
     final themeData = Theme.of(context);
 
-    return Column(
-      children: [
-        Text(
-          label,
-          style: themeData.textTheme.labelLarge,
-        ),
-        OutlinedButton(
-          onPressed: () => _showCupertinoDialog(context, datePicker),
-          child: BlocBuilder<CircleCreateFormCubit, CircleCreateFormState>(
+    return Expanded(
+      child: Column(
+        children: [
+          Text(
+            label,
+            style: themeData.textTheme.labelLarge,
+          ),
+          BlocBuilder<CircleCreateFormCubit, CircleCreateFormState>(
             builder: (context, state) {
-              if (range == RangeSelection.from) {
+              final controller = TextEditingController();
+              controller.text = state.dateFrom.value.isEmpty
+                  ? DateFormat.yMMMEd()
+                  .format(CircleDateFromInput.initialValue)
+                  : DateFormat.yMMMEd()
+                  .format(DateTime.parse(state.dateFrom.value));
+              return VyfTextFormField(
+                key: Key('CreateCircleDurationForm_Date${range.toString()}Field'),
+                controller: controller,
+                onChanged: (value) {},
+                onTap: () => _showCupertinoDialog(context, datePicker),
+                readOnly: true,
+                textAlign: TextAlign.center,
+              );
+            },
+          ),
+          OutlinedButton(
+            onPressed: () => _showCupertinoDialog(context, datePicker),
+            child: BlocBuilder<CircleCreateFormCubit, CircleCreateFormState>(
+              builder: (context, state) {
+                if (range == RangeSelection.from) {
+                  return Text(
+                    state.dateFrom.value.isEmpty
+                        ? DateFormat.yMMMEd()
+                            .format(CircleDateFromInput.initialValue)
+                        : DateFormat.yMMMEd()
+                            .format(DateTime.parse(state.dateFrom.value)),
+                    softWrap: false,
+                  );
+                }
+
                 return Text(
-                  state.dateFrom.value.isEmpty
-                      ? DateFormat.yMMMEd()
-                          .format(CircleDateFromInput.initialValue)
+                  state.dateUntil.value.isEmpty
+                      ? '   infinite   '
                       : DateFormat.yMMMEd()
-                          .format(DateTime.parse(state.dateFrom.value)),
+                          .format(DateTime.parse(state.dateUntil.value)),
                   softWrap: false,
                 );
-              }
-
-              return Text(
-                state.dateUntil.value.isEmpty
-                    ? '   infinite   '
-                    : DateFormat.yMMMEd()
-                        .format(DateTime.parse(state.dateUntil.value)),
-                softWrap: false,
-              );
-            },
+              },
+            ),
           ),
-        ),
-        OutlinedButton(
-          onPressed: () => _showCupertinoDialog(context, timePicker),
-          child: BlocBuilder<CircleCreateFormCubit, CircleCreateFormState>(
-            builder: (context, state) {
-              if (range == RangeSelection.from) {
+          OutlinedButton(
+            onPressed: () => _showCupertinoDialog(context, timePicker),
+            child: BlocBuilder<CircleCreateFormCubit, CircleCreateFormState>(
+              builder: (context, state) {
+                if (range == RangeSelection.from) {
+                  return Text(
+                    state.timeFrom.value.isEmpty
+                        ? DateFormat.Hm().format(CircleTimeFromInput.initialValue)
+                        : DateFormat.Hm()
+                            .format(DateTime.parse(state.timeFrom.value)),
+                  );
+                }
+
                 return Text(
-                  state.timeFrom.value.isEmpty
-                      ? DateFormat.Hm().format(CircleTimeFromInput.initialValue)
+                  state.timeUntil.value.isEmpty
+                      ? '--:--'
                       : DateFormat.Hm()
-                          .format(DateTime.parse(state.timeFrom.value)),
+                          .format(DateTime.parse(state.timeUntil.value)),
                 );
-              }
-
-              return Text(
-                state.timeUntil.value.isEmpty
-                    ? '--:--'
-                    : DateFormat.Hm()
-                        .format(DateTime.parse(state.timeUntil.value)),
-              );
-            },
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -192,7 +213,6 @@ class CreateCircleDurationForm extends StatelessWidget {
 }
 
 class _CircleDatePicker extends StatelessWidget {
-  final DateTime date = DateTime.now();
   final DateTime maxDate = DateTime.now().add(const Duration(days: 1825));
   final Function(BuildContext, String) onDateChanged;
   final RangeSelection range;
@@ -210,11 +230,11 @@ class _CircleDatePicker extends StatelessWidget {
           : previous.dateUntil != current.dateUntil,
       builder: (context, state) {
         return CupertinoDatePicker(
-          initialDateTime: date,
+          initialDateTime: selectedDate(state),
           mode: CupertinoDatePickerMode.date,
           use24hFormat: true,
           showDayOfWeek: true,
-          minimumDate: date,
+          minimumDate: minDate,
           maximumDate: maxDate,
           // This is called when the user changes the date.
           onDateTimeChanged: (DateTime date) {
@@ -224,15 +244,35 @@ class _CircleDatePicker extends StatelessWidget {
       },
     );
   }
+
+  DateTime selectedDate(CircleCreateFormState state) {
+    final dateString = range == RangeSelection.from
+        ? state.dateFrom.value
+        : state.dateUntil.value;
+
+    if (dateString.isEmpty) {
+      return DateTime.now();
+    }
+
+    return DateTime.parse(dateString);
+  }
+
+  DateTime get minDate {
+    final currentDate = DateTime.now();
+    return DateTime(
+      currentDate.year,
+      currentDate.month,
+      currentDate.day,
+    );
+  }
 }
 
 class _CircleTimePicker extends StatelessWidget {
-  final DateTime date = DateTime.now();
   final Function(BuildContext, String) onTimeChanged;
 
   final RangeSelection range;
 
-  _CircleTimePicker({
+  const _CircleTimePicker({
     required this.onTimeChanged,
     required this.range,
   });
@@ -245,9 +285,8 @@ class _CircleTimePicker extends StatelessWidget {
           : previous.timeUntil != current.timeUntil,
       builder: (context, state) {
         return CupertinoDatePicker(
-          initialDateTime: date,
+          initialDateTime: selectedTime(state),
           mode: CupertinoDatePickerMode.time,
-          minimumDate: date,
           use24hFormat: true,
           // This is called when the user changes the date.
           onDateTimeChanged: (DateTime date) {
@@ -256,6 +295,18 @@ class _CircleTimePicker extends StatelessWidget {
         );
       },
     );
+  }
+
+  DateTime selectedTime(CircleCreateFormState state) {
+    final timeString = range == RangeSelection.from
+        ? state.timeFrom.value
+        : state.timeUntil.value;
+
+    if (timeString.isEmpty) {
+      return DateTime.now();
+    }
+
+    return DateTime.parse(timeString);
   }
 }
 
