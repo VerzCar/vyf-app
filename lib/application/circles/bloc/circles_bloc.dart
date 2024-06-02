@@ -43,12 +43,15 @@ class CirclesBloc extends Bloc<CirclesEvent, CirclesState> {
     CircleCreated event,
     Emitter<CirclesState> emit,
   ) {
+    emit(state.copyWith(status: StatusIndicator.loading));
+
     final myCircles = state.myCircles;
     myCircles.insert(0, event.circle);
 
     emit(
       state.copyWith(
         myCircles: myCircles,
+        status: StatusIndicator.success,
       ),
     );
   }

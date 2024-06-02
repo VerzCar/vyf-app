@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:vote_your_face/application/circles/bloc/circles_bloc.dart';
 import 'package:vote_your_face/presentation/circle/cubit/circle_create_form_cubit.dart';
-import 'package:vote_your_face/presentation/routes/router.gr.dart';
+import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class CreateCircleMembersForm extends StatelessWidget {
   const CreateCircleMembersForm({
@@ -56,11 +56,18 @@ class CreateCircleMembersForm extends StatelessWidget {
                       circle: state.createdCircle!,
                     ));
 
+                    showSuccessSnackbar(
+                      context,
+                      'Circle ${state.createdCircle!.name} created',
+                    );
                     context.router.maybePop();
                   }
 
                   if (state.status.isFailure) {
-                    // context.router.maybePop();
+                    showErrorSnackbar(
+                      context,
+                      'Could not create circle. Try again.',
+                    );
                   }
                 },
                 builder: (context, state) {
@@ -81,10 +88,6 @@ class CreateCircleMembersForm extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  _onSubmit(BuildContext context) {
-    context.read<CircleCreateFormCubit>().onSubmit();
   }
 }
 
