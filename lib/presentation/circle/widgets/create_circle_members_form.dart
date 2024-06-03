@@ -95,10 +95,10 @@ class _CirclePrivateInput extends StatefulWidget {
   const _CirclePrivateInput({super.key});
 
   @override
-  State<_CirclePrivateInput> createState() => __CirclePrivateInputState();
+  State<_CirclePrivateInput> createState() => _CirclePrivateInputState();
 }
 
-class __CirclePrivateInputState extends State<_CirclePrivateInput> {
+class _CirclePrivateInputState extends State<_CirclePrivateInput> {
   final WidgetStateProperty<Icon?> _thumbIcon =
       WidgetStateProperty.resolveWith<Icon?>(
     (Set<WidgetState> states) {
