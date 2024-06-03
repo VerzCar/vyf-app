@@ -64,7 +64,11 @@ class CircleCreateFormCubit extends Cubit<CircleCreateFormState> {
   }
 
   void onTimeUntilChanged(String value) {
-    final input = CircleTimeUntilInput.dirty(value: value);
+    final input = CircleTimeUntilInput.dirty(
+      dateUntil: state.dateUntil.value,
+      timeFrom: state.timeFrom.value,
+      value: value,
+    );
     emit(state.copyWith(
       timeUntil: input,
     ));
