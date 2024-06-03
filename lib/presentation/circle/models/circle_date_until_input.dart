@@ -1,18 +1,31 @@
 import 'package:formz/formz.dart';
 
-enum CircleDateUntilInputError { invalid }
+enum CircleDateUntilInputError { dateIsBeforeMinDate, dateIsBeforeFromDate }
 
-class CircleDateUntilInput extends FormzInput<String, CircleDateUntilInputError> {
-  const CircleDateUntilInput.pure() : super.pure('');
+class CircleDateUntilInput
+    extends FormzInput<String, CircleDateUntilInputError> {
+  const CircleDateUntilInput.pure({this.dateFrom = ''}) : super.pure('');
 
-  const CircleDateUntilInput.dirty({String value = ''}) : super.dirty(value);
+  const CircleDateUntilInput.dirty({
+    required this.dateFrom,
+    String value = '',
+  }) : super.dirty(value);
+
+  final String dateFrom;
 
   @override
   CircleDateUntilInputError? validator(String value) {
-    final dateTime = DateTime.parse(value);
+    final dateUntilTime = DateTime.parse(value);
 
-    if (dateTime.isBefore(DateTime.now())) {
-      return CircleDateUntilInputError.invalid;
+    if (dateUntilTime.isBefore(DateTime.now())) {
+      return CircleDateUntilInputError.dateIsBeforeMinDate;
+    }
+
+    if (dateFrom.isNotEmpty) {
+      final dateFromTime = DateTime.parse(dateFrom);
+      if (dateUntilTime.isBefore(dateFromTime)) {
+        return CircleDateUntilInputError.dateIsBeforeFromDate;
+      }
     }
 
     return null;
