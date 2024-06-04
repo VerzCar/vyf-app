@@ -145,7 +145,7 @@ class CircleCreateFormCubit extends Cubit<CircleCreateFormState> {
         timeFrom.minute,
       );
 
-      late DateTime? validUntil;
+      DateTime? validUntil;
 
       if (state.dateUntil.value.isNotEmpty) {
         final dateUntil = DateTime.parse(state.dateUntil.value);

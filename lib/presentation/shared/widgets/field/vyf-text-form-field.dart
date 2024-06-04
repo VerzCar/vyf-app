@@ -6,6 +6,7 @@ class VyfTextFormField extends StatelessWidget {
     this.controller,
     this.onChanged,
     this.onTap,
+    this.onEditingComplete,
     this.labelText = '',
     this.errorText = '',
     this.showError = false,
@@ -24,6 +25,7 @@ class VyfTextFormField extends StatelessWidget {
   final TextEditingController? controller;
   final Function(String)? onChanged;
   final VoidCallback? onTap;
+  final VoidCallback? onEditingComplete;
   final String labelText;
   final String errorText;
   final bool showError;
@@ -53,6 +55,7 @@ class VyfTextFormField extends StatelessWidget {
           key: key,
           controller: controller,
           onChanged: onChanged,
+          onEditingComplete: onEditingComplete,
           obscureText: obscureText,
           keyboardType: keyboardType,
           initialValue: initialValue,
