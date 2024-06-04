@@ -66,6 +66,7 @@ class VyfTextFormField extends StatelessWidget {
             focusedBorder: const OutlineInputBorder(),
             border: const OutlineInputBorder(),
             errorText: showError ? errorText : null,
+            errorMaxLines: 2,
             icon: icon,
             helperText: helperText,
           ),

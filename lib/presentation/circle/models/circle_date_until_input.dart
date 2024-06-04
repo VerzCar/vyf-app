@@ -16,6 +16,10 @@ class CircleDateUntilInput
 
   @override
   CircleDateUntilInputError? validator(String value) {
+    if(value.isEmpty) {
+      return null;
+    }
+
     final dateUntilTime = DateTime.parse(value);
     final currentDate = DateTime.now().withoutTime;
 

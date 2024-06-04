@@ -34,7 +34,7 @@ class CreateCircleMembersForm extends StatelessWidget {
           const _CirclePrivateInput(),
           const SizedBox(height: 20.0),
           Text(
-            'The circle should have a descriptive naming, to indicate for what the circle stands for. This gives you the ability to give a first hint for what the circle is for.',
+            helpText,
             style: themeData.textTheme.bodyMedium,
           ),
           const Spacer(),
@@ -88,6 +88,13 @@ class CreateCircleMembersForm extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String get helpText {
+    return 'Choose whether your circle should be public or private. '
+        'If it’s public (default), anyone can see and join the circle as a voter or candidate. '
+        'If it’s private, you (the circle owner) will need to select the members, both voters and candidates. '
+        'Only these selected members can interact with the circle and see it.';
   }
 }
 

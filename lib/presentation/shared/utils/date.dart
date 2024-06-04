@@ -11,5 +11,5 @@ extension DateCompare on DateTime {
 
   DateTime get withoutTime => DateTime(year, month, day);
 
-  DateTime get excludeSeconds => DateTime(year, month, day, hour, minute);
+  DateTime get withoutSeconds => DateTime(year, month, day, hour, minute);
 }

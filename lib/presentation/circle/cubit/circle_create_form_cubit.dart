@@ -26,10 +26,7 @@ class CircleCreateFormCubit extends Cubit<CircleCreateFormState> {
       value: DateTime.now().toString(),
     );
 
-    emit(state.copyWith(
-      dateFrom: inputDateFrom,
-      timeFrom: inputTimeFrom
-    ));
+    emit(state.copyWith(dateFrom: inputDateFrom, timeFrom: inputTimeFrom));
   }
 
   final IUserRepository _userRepository;
@@ -50,44 +47,72 @@ class CircleCreateFormCubit extends Cubit<CircleCreateFormState> {
   }
 
   void onDateFromChanged(String value) {
-    final input = CircleDateFromInput.dirty(
+    final dateFromInput = CircleDateFromInput.dirty(
       dateUntil: state.dateUntil.value,
       value: value,
     );
+    final dateUntilInput = CircleDateUntilInput.dirty(
+      dateFrom: state.dateFrom.value,
+      value: state.dateUntil.value,
+    );
     emit(state.copyWith(
-      dateFrom: input,
+      dateFrom: dateFromInput,
+      dateUntil: dateUntilInput,
     ));
   }
 
   void onTimeFromChanged(String value) {
-    final input = CircleTimeFromInput.dirty(
+    final timeFromInput = CircleTimeFromInput.dirty(
       dateFrom: state.dateFrom.value,
       timeUntil: state.timeUntil.value,
       value: value,
     );
+    final timeUntilInput = CircleTimeUntilInput.dirty(
+      dateUntil: state.dateUntil.value,
+      timeFrom: state.timeFrom.value,
+      value: state.timeUntil.value,
+    );
     emit(state.copyWith(
-      timeFrom: input,
+      timeFrom: timeFromInput,
+      timeUntil: timeUntilInput,
     ));
   }
 
   void onDateUntilChanged(String value) {
-    final input = CircleDateUntilInput.dirty(
+    final dateUntilInput = CircleDateUntilInput.dirty(
       dateFrom: state.dateFrom.value,
       value: value,
     );
+    final dateFromInput = CircleDateFromInput.dirty(
+      dateUntil: state.dateUntil.value,
+      value: state.dateFrom.value,
+    );
+    final timeUntilInput = CircleTimeUntilInput.dirty(
+      dateUntil: state.dateUntil.value,
+      timeFrom: state.timeFrom.value,
+      value: state.timeUntil.value,
+    );
     emit(state.copyWith(
-      dateUntil: input,
+      dateUntil: dateUntilInput,
+      dateFrom: dateFromInput,
+      timeUntil: timeUntilInput,
     ));
   }
 
   void onTimeUntilChanged(String value) {
-    final input = CircleTimeUntilInput.dirty(
+    final timeUntilInput = CircleTimeUntilInput.dirty(
       dateUntil: state.dateUntil.value,
       timeFrom: state.timeFrom.value,
       value: value,
     );
+    final timeFromInput = CircleTimeFromInput.dirty(
+      dateFrom: state.dateFrom.value,
+      timeUntil: state.timeUntil.value,
+      value: state.timeFrom.value,
+    );
     emit(state.copyWith(
-      timeUntil: input,
+      timeUntil: timeUntilInput,
+      timeFrom: timeFromInput,
     ));
   }
 
@@ -120,10 +145,26 @@ class CircleCreateFormCubit extends Cubit<CircleCreateFormState> {
         timeFrom.minute,
       );
 
+      late DateTime? validUntil;
+
+      if (state.dateUntil.value.isNotEmpty) {
+        final dateUntil = DateTime.parse(state.dateUntil.value);
+        final timeUntil = DateTime.parse(state.timeUntil.value);
+        validUntil = DateTime(
+          dateUntil.year,
+          dateUntil.month,
+          dateUntil.day,
+          timeUntil.hour,
+          timeUntil.minute,
+        );
+      }
+
       final request = CircleCreateRequest(
         name: state.name.value,
         description: state.description.value,
         validFrom: validFrom,
+        validUntil: validUntil,
+        private: state.private.value,
         candidates: const [],
         voters: const [],
       );

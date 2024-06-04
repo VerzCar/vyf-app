@@ -26,7 +26,11 @@ class CircleTimeUntilInput
 
   @override
   CircleTimeUntilInputError? validator(String value) {
-    final untilTime = DateTime.parse(value);
+    if(value.isEmpty) {
+      return null;
+    }
+
+    final untilTime = DateTime.parse(value).withoutSeconds;
     final currentDate = DateTime.now();
 
     if (dateUntil.isEmpty) {
@@ -41,7 +45,7 @@ class CircleTimeUntilInput
     }
 
     if (timeFrom.isNotEmpty) {
-      final fromTime = DateTime.parse(timeFrom);
+      final fromTime = DateTime.parse(timeFrom).withoutSeconds;
       if (untilTime.isBefore(fromTime)) {
         return CircleTimeUntilInputError.timeIsBeforeFromTime;
       }

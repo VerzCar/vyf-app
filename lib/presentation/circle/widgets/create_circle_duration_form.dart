@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:intl/intl.dart';
 import 'package:vote_your_face/presentation/circle/cubit/circle_create_form_cubit.dart';
 import 'package:vote_your_face/presentation/circle/models/models.dart';
@@ -20,6 +21,9 @@ class CreateCircleDurationForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: check if this is necessary to close keyboard from previous page
+    FocusManager.instance.primaryFocus?.unfocus();
+
     final themeData = Theme.of(context);
 
     return Container(
@@ -36,11 +40,11 @@ class CreateCircleDurationForm extends StatelessWidget {
           ),
           const SizedBox(height: 20.0),
           Expanded(
-            child: _buildDateTimeRow(context),
+            child: _buildDateTimeRangeRow(context),
           ),
           const SizedBox(height: 20.0),
           Text(
-            'The circle should have a descriptive naming, to indicate for what the circle stands for. This gives you the ability to give a first hint for what the circle is for.',
+            helpText,
             style: themeData.textTheme.bodyMedium,
           ),
           const Spacer(),
@@ -61,7 +65,14 @@ class CreateCircleDurationForm extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                         foregroundColor: themeData.colorScheme.onSecondary,
                         backgroundColor: themeData.colorScheme.secondary),
-                    onPressed: state.description.isValid ? onNext : null,
+                    onPressed: Formz.validate([
+                      state.dateFrom,
+                      state.dateUntil,
+                      state.timeFrom,
+                      state.timeUntil,
+                    ])
+                        ? onNext
+                        : null,
                     child: const Text('Next'),
                   );
                 },
@@ -73,7 +84,13 @@ class CreateCircleDurationForm extends StatelessWidget {
     );
   }
 
-  Widget _buildDateTimeRow(BuildContext context) {
+  String get helpText {
+    return 'Set a start time for the voting. This is when voting will begin. '
+        'You can also set an optional end time, which is when voting will close. '
+        'If you don’t set an end time, the voting will remain open indefinitely.';
+  }
+
+  Widget _buildDateTimeRangeRow(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -112,13 +129,17 @@ class CreateCircleDurationForm extends StatelessWidget {
             label,
             style: themeData.textTheme.labelLarge,
           ),
-          _CircleDateInput(
-            range: range,
-            onTap: () => _showCupertinoDialog(context, datePicker),
+          Expanded(
+            child: _CircleDateInput(
+              range: range,
+              onTap: () => _showCupertinoDialog(context, datePicker),
+            ),
           ),
-          _CircleTimeInput(
-            range: range,
-            onTap: () => _showCupertinoDialog(context, timePicker),
+          Expanded(
+            child: _CircleTimeInput(
+              range: range,
+              onTap: () => _showCupertinoDialog(context, timePicker),
+            ),
           ),
         ],
       ),
@@ -157,7 +178,6 @@ class CreateCircleDurationForm extends StatelessWidget {
 
 class _CircleDateInput extends StatefulWidget {
   const _CircleDateInput({
-    super.key,
     required this.range,
     required this.onTap,
   });
@@ -175,6 +195,7 @@ class _CircleDateInputState extends State<_CircleDateInput> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CircleCreateFormCubit, CircleCreateFormState>(
+      buildWhen: buildWhen,
       builder: (context, state) {
         if (widget.range == RangeSelection.from) {
           _controller.text = state.dateFrom.value.isEmpty
@@ -182,26 +203,30 @@ class _CircleDateInputState extends State<_CircleDateInput> {
               : DateFormat.yMMMEd()
                   .format(DateTime.parse(state.dateFrom.value));
           return VyfTextFormField(
-              key: Key(
-                  'CreateCircleDurationForm_Date${widget.range.toString()}Field'),
-              controller: _controller,
-              onTap: () => widget.onTap(),
-              readOnly: true,
-              textAlign: TextAlign.center,
-              showError: !state.dateFrom.isPure && state.dateFrom.isNotValid);
-        }
-
-        _controller.text = state.dateUntil.value.isEmpty
-            ? '   infinite   '
-            : DateFormat.yMMMEd().format(DateTime.parse(state.dateUntil.value));
-        return VyfTextFormField(
             key: Key(
                 'CreateCircleDurationForm_Date${widget.range.toString()}Field'),
             controller: _controller,
             onTap: () => widget.onTap(),
             readOnly: true,
             textAlign: TextAlign.center,
-            showError: !state.dateUntil.isPure && state.dateUntil.isNotValid);
+            showError: !state.dateFrom.isPure && state.dateFrom.isNotValid,
+            errorText: state.dateFrom.error.toString(),
+          );
+        }
+
+        _controller.text = state.dateUntil.value.isEmpty
+            ? '   infinite   '
+            : DateFormat.yMMMEd().format(DateTime.parse(state.dateUntil.value));
+        return VyfTextFormField(
+          key: Key(
+              'CreateCircleDurationForm_Date${widget.range.toString()}Field'),
+          controller: _controller,
+          onTap: () => widget.onTap(),
+          readOnly: true,
+          textAlign: TextAlign.center,
+          showError: !state.dateUntil.isPure && state.dateUntil.isNotValid,
+          errorText: state.dateUntil.error.toString(),
+        );
       },
     );
   }
@@ -211,11 +236,18 @@ class _CircleDateInputState extends State<_CircleDateInput> {
     _controller.dispose();
     super.dispose();
   }
+
+  bool buildWhen(
+    CircleCreateFormState previous,
+    CircleCreateFormState current,
+  ) {
+    return previous.dateFrom.value != current.dateFrom.value ||
+        previous.dateUntil.value != current.dateUntil.value;
+  }
 }
 
 class _CircleTimeInput extends StatefulWidget {
   const _CircleTimeInput({
-    super.key,
     required this.range,
     required this.onTap,
   });
@@ -233,32 +265,37 @@ class _CircleTimeInputState extends State<_CircleTimeInput> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CircleCreateFormCubit, CircleCreateFormState>(
+      buildWhen: buildWhen,
       builder: (context, state) {
         if (widget.range == RangeSelection.from) {
           _controller.text = state.timeFrom.value.isEmpty
               ? DateFormat.Hm().format(CircleTimeFromInput.initialValue)
               : DateFormat.Hm().format(DateTime.parse(state.timeFrom.value));
           return VyfTextFormField(
-              key: Key(
-                  'CreateCircleDurationForm_Time${widget.range.toString()}Field'),
-              controller: _controller,
-              onTap: () => widget.onTap(),
-              readOnly: true,
-              textAlign: TextAlign.center,
-              showError: !state.timeFrom.isPure && state.timeFrom.isNotValid);
-        }
-
-        _controller.text = state.timeUntil.value.isEmpty
-            ? '--:--'
-            : DateFormat.Hm().format(DateTime.parse(state.timeUntil.value));
-        return VyfTextFormField(
             key: Key(
                 'CreateCircleDurationForm_Time${widget.range.toString()}Field'),
             controller: _controller,
             onTap: () => widget.onTap(),
             readOnly: true,
             textAlign: TextAlign.center,
-            showError: !state.timeUntil.isPure && state.timeUntil.isNotValid);
+            showError: !state.timeFrom.isPure && state.timeFrom.isNotValid,
+            errorText: state.timeFrom.error.toString(),
+          );
+        }
+
+        _controller.text = state.timeUntil.value.isEmpty
+            ? '--:--'
+            : DateFormat.Hm().format(DateTime.parse(state.timeUntil.value));
+        return VyfTextFormField(
+          key: Key(
+              'CreateCircleDurationForm_Time${widget.range.toString()}Field'),
+          controller: _controller,
+          onTap: () => widget.onTap(),
+          readOnly: true,
+          textAlign: TextAlign.center,
+          showError: !state.timeUntil.isPure && state.timeUntil.isNotValid,
+          errorText: state.timeUntil.error.toString(),
+        );
       },
     );
   }
@@ -268,17 +305,28 @@ class _CircleTimeInputState extends State<_CircleTimeInput> {
     _controller.dispose();
     super.dispose();
   }
+
+  bool buildWhen(
+    CircleCreateFormState previous,
+    CircleCreateFormState current,
+  ) {
+    return previous.dateFrom != current.dateFrom ||
+        previous.dateUntil != current.dateUntil ||
+        previous.timeFrom != current.timeFrom ||
+        previous.timeUntil != current.timeUntil;
+  }
 }
 
 class _CircleDatePicker extends StatelessWidget {
-  final DateTime maxDate = DateTime.now().add(const Duration(days: 1825));
-  final Function(BuildContext, String) onDateChanged;
-  final RangeSelection range;
-
-  _CircleDatePicker({
+  const _CircleDatePicker({
     required this.onDateChanged,
     required this.range,
   });
+
+  static final DateTime maxDate =
+      DateTime.now().add(const Duration(days: 1825));
+  final Function(BuildContext, String) onDateChanged;
+  final RangeSelection range;
 
   @override
   Widget build(BuildContext context) {
@@ -326,14 +374,13 @@ class _CircleDatePicker extends StatelessWidget {
 }
 
 class _CircleTimePicker extends StatelessWidget {
-  final Function(BuildContext, String) onTimeChanged;
-
-  final RangeSelection range;
-
   const _CircleTimePicker({
     required this.onTimeChanged,
     required this.range,
   });
+
+  final Function(BuildContext, String) onTimeChanged;
+  final RangeSelection range;
 
   @override
   Widget build(BuildContext context) {

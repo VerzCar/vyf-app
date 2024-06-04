@@ -33,7 +33,7 @@ class CreateCircleDescriptionForm extends StatelessWidget {
           _CircleDescriptionInput(),
           const SizedBox(height: 20.0),
           Text(
-            'The circle should have a descriptive naming, to indicate for what the circle stands for. This gives you the ability to give a first hint for what the circle is for.',
+            helpText,
             style: themeData.textTheme.bodyMedium,
           ),
           const Spacer(),
@@ -64,6 +64,13 @@ class CreateCircleDescriptionForm extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String get helpText {
+    return 'Provide a detailed description of your circle. '
+        'This should help both candidates and voters, especially voters, understand the purpose of the circle, who should participate, and what the expected outcome is. '
+        'For instance, ‘This circle is for voting for the best actor in Hollywood. All movie enthusiasts are welcome to vote and any actor can be a candidate. '
+        'The outcome will determine who is considered the best actor in Hollywood by the circle members.';
   }
 }
 

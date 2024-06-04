@@ -17,19 +17,23 @@ class CircleDateFromInput extends FormzInput<String, CircleDateFromInputError> {
 
   @override
   CircleDateFromInputError? validator(String value) {
+    if(value.isEmpty) {
+      return null;
+    }
+
     final dateFromTime = DateTime.parse(value);
     final currentDate = DateTime.now().withoutTime;
 
-    if (!dateFromTime.isAfter(currentDate)) {
+    if (dateFromTime.isBefore(currentDate)) {
       return CircleDateFromInputError.dateIsBeforeMinDate;
     }
 
-    if (dateUntil.isNotEmpty) {
-      final dateUntilTime = DateTime.parse(dateUntil);
-      if (dateUntilTime.isBefore(dateFromTime)) {
-        return CircleDateFromInputError.dateIsAfterUntilDate;
-      }
-    }
+    // if (dateUntil.isNotEmpty) {
+    //   final dateUntilTime = DateTime.parse(dateUntil);
+    //   if (dateUntilTime.isBefore(dateFromTime)) {
+    //     return CircleDateFromInputError.dateIsAfterUntilDate;
+    //   }
+    // }
 
     return null;
   }

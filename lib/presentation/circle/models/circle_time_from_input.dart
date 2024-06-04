@@ -25,7 +25,11 @@ class CircleTimeFromInput extends FormzInput<String, CircleTimeFromInputError> {
 
   @override
   CircleTimeFromInputError? validator(String value) {
-    final fromTime = DateTime.parse(value);
+    if(value.isEmpty) {
+      return null;
+    }
+
+    final fromTime = DateTime.parse(value).withoutSeconds;
     final currentDate = DateTime.now();
 
     if (dateFrom.isNotEmpty) {
@@ -37,10 +41,7 @@ class CircleTimeFromInput extends FormzInput<String, CircleTimeFromInputError> {
     }
 
     if (timeUntil.isNotEmpty) {
-      final untilTime = DateTime.parse(timeUntil);
-      if (fromTime.isAfter(untilTime)) {
-        return CircleTimeFromInputError.timeIsAfterUntilTime;
-      }
+      final untilTime = DateTime.parse(timeUntil).withoutSeconds;
       if (fromTime.isSameTime(untilTime)) {
         return CircleTimeFromInputError.timeIsEqual;
       }

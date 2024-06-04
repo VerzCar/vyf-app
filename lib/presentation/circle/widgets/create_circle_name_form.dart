@@ -28,7 +28,7 @@ class CreateCircleNameForm extends StatelessWidget {
           _CircleNameInput(),
           const SizedBox(height: 20.0),
           Text(
-            'The circle should have a descriptive naming, to indicate for what the circle stands for. This gives you the ability to give a first hint for what the circle is for.',
+            helpText,
             style: themeData.textTheme.bodyMedium,
           ),
           const Spacer(),
@@ -40,8 +40,7 @@ class CreateCircleNameForm extends StatelessWidget {
                   return ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         foregroundColor: themeData.colorScheme.onSecondary,
-                        backgroundColor: themeData.colorScheme.secondary
-                    ),
+                        backgroundColor: themeData.colorScheme.secondary),
                     onPressed: state.name.isValid ? onNext : null,
                     child: const Text('Next'),
                   );
@@ -52,6 +51,12 @@ class CreateCircleNameForm extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String get helpText {
+    return 'Enter a descriptive name for your voting circle. '
+        'This should reflect what the circle stands for. '
+        'For example, if your circle is about voting for the best actor in Hollywood, you might name it "Hollywood Best Actor Voting Circle"';
   }
 }
 
@@ -74,4 +79,3 @@ class _CircleNameInput extends StatelessWidget {
     );
   }
 }
-
