@@ -61,6 +61,7 @@ class UserEditProfileCubit extends Cubit<UserEditProfileState> {
 
       emit(state.copyWith(
         status: FormzSubmissionStatus.success,
+        updatedUser: user,
       ));
     } catch (e) {
       print(e);

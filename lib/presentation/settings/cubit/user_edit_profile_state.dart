@@ -7,6 +7,7 @@ final class UserEditProfileState extends Equatable {
     this.lastName = const LastNameInput.pure(),
     this.bio = const BioInput.pure(),
     this.whyVoteMe = const WhyVoteMeInput.pure(),
+    this.updatedUser,
   });
 
   final FormzSubmissionStatus status;
@@ -14,6 +15,7 @@ final class UserEditProfileState extends Equatable {
   final LastNameInput lastName;
   final BioInput bio;
   final WhyVoteMeInput whyVoteMe;
+  final User? updatedUser;
 
   UserEditProfileState copyWith({
     FormzSubmissionStatus? status,
@@ -21,6 +23,7 @@ final class UserEditProfileState extends Equatable {
     LastNameInput? lastName,
     BioInput? bio,
     WhyVoteMeInput? whyVoteMe,
+    User? updatedUser,
   }) {
     return UserEditProfileState(
       status: status ?? this.status,
@@ -28,6 +31,7 @@ final class UserEditProfileState extends Equatable {
       lastName: lastName ?? this.lastName,
       bio: bio ?? this.bio,
       whyVoteMe: whyVoteMe ?? this.whyVoteMe,
+      updatedUser: updatedUser ?? this.updatedUser,
     );
   }
 
@@ -38,5 +42,6 @@ final class UserEditProfileState extends Equatable {
         lastName,
         bio,
         whyVoteMe,
+        updatedUser,
       ];
 }

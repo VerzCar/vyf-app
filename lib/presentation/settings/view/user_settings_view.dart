@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/injection.dart';
@@ -23,12 +24,36 @@ class UserSettingsView extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: TextButton(
-              child: Text(
-                'Save',
-                style: TextStyle(color: themeData.colorScheme.successColor),
-              ),
-              onPressed: () => context.read<UserEditProfileCubit>().onSubmit(),
+            child: BlocConsumer<UserEditProfileCubit, UserEditProfileState>(
+              listener: (context, state) {
+                if (state.status.isSuccess) {
+                  BlocProvider.of<UserBloc>(context).add(UserUpdated(
+                    user: state.updatedUser!,
+                  ));
+
+                  showSuccessSnackbar(
+                    context,
+                    'Saved successfully',
+                  );
+                }
+
+                if (state.status.isFailure) {
+                  showErrorSnackbar(
+                    context,
+                    'Could not save. Try again.',
+                  );
+                }
+              },
+              builder: (context, state) {
+                return TextButton(
+                  child: Text(
+                    'Save',
+                    style: TextStyle(color: themeData.colorScheme.successColor),
+                  ),
+                  onPressed: () =>
+                      context.read<UserEditProfileCubit>().onSubmit(),
+                );
+              },
             ),
           ),
         ],
