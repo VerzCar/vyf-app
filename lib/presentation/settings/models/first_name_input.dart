@@ -1,6 +1,6 @@
 import 'package:formz/formz.dart';
 
-enum FirstNameInputError { empty, maxLength }
+enum FirstNameInputError { maxLength }
 
 class FirstNameInput extends FormzInput<String, FirstNameInputError> {
   const FirstNameInput.pure() : super.pure('');
@@ -9,10 +9,6 @@ class FirstNameInput extends FormzInput<String, FirstNameInputError> {
 
   @override
   FirstNameInputError? validator(String value) {
-    if (value.isEmpty) {
-      return FirstNameInputError.empty;
-    }
-
     if (value.length > 40) {
       return FirstNameInputError.maxLength;
     }

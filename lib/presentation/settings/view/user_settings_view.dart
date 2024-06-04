@@ -3,16 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/injection.dart';
+import 'package:vote_your_face/presentation/settings/cubit/user_edit_profile_cubit.dart';
+import 'package:vote_your_face/presentation/settings/widgets/bio_input.dart';
+import 'package:vote_your_face/presentation/settings/widgets/user_first_name_input.dart';
+import 'package:vote_your_face/presentation/settings/widgets/user_last_name_input.dart';
+import 'package:vote_your_face/presentation/settings/widgets/why_vote_me_input.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 import 'package:vote_your_face/theme.dart';
 
 class UserSettingsView extends StatelessWidget {
-  UserSettingsView({super.key});
-
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _bioController = TextEditingController();
-  final TextEditingController _whyVoteMeController = TextEditingController();
-  final TextEditingController _phoneNumberController = TextEditingController();
+  const UserSettingsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class UserSettingsView extends StatelessWidget {
                 'Save',
                 style: TextStyle(color: themeData.colorScheme.successColor),
               ),
-              onPressed: () => {},
+              onPressed: () => context.read<UserEditProfileCubit>().onSubmit(),
             ),
           ),
         ],
@@ -38,99 +38,60 @@ class UserSettingsView extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: BlocBuilder<UserBloc, UserState>(
             builder: (context, state) {
-              print(state.user.profile.bio);
-              _bioController.text = state.user.profile.bio;
-              _whyVoteMeController.text = state.user.profile.whyVoteMe;
-
               return SingleChildScrollView(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(
-                      child: BlocProvider(
-                        create: (context) =>
-                            UserXCubit(userRepository: sl<IUserRepository>())
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          BlocProvider(
+                            create: (context) => UserXCubit(
+                                userRepository: sl<IUserRepository>())
                               ..userXFetched(
                                 context: context,
                                 identityId: state.user.identityId,
                               ),
-                        child: const UserAvatar(
-                          option: UserAvatarOption(
-                            size: AvatarSize.lg,
+                            child: const UserAvatar(
+                              option: UserAvatarOption(
+                                size: AvatarSize.lg,
+                              ),
+                            ),
                           ),
-                        ),
+                          const SizedBox(height: 7.0),
+                          Text(
+                            state.user.username,
+                            style: themeData.textTheme.titleMedium,
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 16.0),
-                    Text(
-                      'Bio',
-                      style: themeData.textTheme.labelLarge,
+                    const SizedBox(height: 12.0),
+                    BioInput(
+                      initialValue: state.user.profile.bio,
                     ),
-                    TextFormField(
-                      controller: _bioController,
-                      decoration: const InputDecoration(
-                          hintText:
-                              'Give an example for how beautiful and special you are!'),
-                      maxLines: 3,
-                      maxLength: 1500,
+                    const SizedBox(height: 12.0),
+                    WhyVoteMeInput(
+                      initialValue: state.user.profile.whyVoteMe,
                     ),
-                    const SizedBox(height: 16.0),
-                    Text(
-                      'Why Vote Me?',
-                      style: themeData.textTheme.labelLarge,
-                    ),
-                    TextFormField(
-                      controller: _whyVoteMeController,
-                      decoration: const InputDecoration(
-                          hintText:
-                              'Give an meaningful explanation why anyone should vote you.'),
-                      maxLines: 3,
-                      maxLength: 250,
-                    ),
-                    const SizedBox(height: 16.0),
+                    const SizedBox(height: 12.0),
                     Row(
                       children: [
                         Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'First Name',
-                                style: themeData.textTheme.labelLarge,
-                              ),
-                              TextFormField(
-                                controller: _nameController,
-                              ),
-                            ],
-                          ),
+                          child: UserFirstNameInput(
+                              initialValue: state.user.firstName),
                         ),
-                        const SizedBox(width: 16.0),
+                        const SizedBox(width: 12.0),
                         Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Last Name',
-                                style: themeData.textTheme.labelLarge,
-                              ),
-                              TextFormField(
-                                controller: _nameController,
-                              ),
-                            ],
+                          child: UserLastNameInput(
+                            initialValue: state.user.lastName,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16.0),
-                    Text(
-                      'Phone number',
-                      style: themeData.textTheme.labelLarge,
-                    ),
-                    TextFormField(
-                      controller: _phoneNumberController,
-                      keyboardType: TextInputType.phone,
-                    ),
+                    const SizedBox(height: 12.0),
                   ],
                 ),
               );

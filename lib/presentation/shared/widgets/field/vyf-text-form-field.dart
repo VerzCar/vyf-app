@@ -18,6 +18,7 @@ class VyfTextFormField extends StatelessWidget {
     this.readOnly = false,
     this.textAlign = TextAlign.start,
     this.helperText,
+    this.hintText,
     this.obscureText = false,
     this.icon,
   });
@@ -37,6 +38,7 @@ class VyfTextFormField extends StatelessWidget {
   final bool readOnly;
   final TextAlign textAlign;
   final String? helperText;
+  final String? hintText;
   final bool obscureText;
   final Icon? icon;
 
@@ -72,6 +74,7 @@ class VyfTextFormField extends StatelessWidget {
             errorMaxLines: 2,
             icon: icon,
             helperText: helperText,
+            hintText: hintText,
           ),
         ),
       ],

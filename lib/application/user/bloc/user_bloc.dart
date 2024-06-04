@@ -13,6 +13,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   })  : _userRepository = userRepository,
         super(const UserState()) {
     on<UserInitialLoaded>(_onUserInitialLoaded);
+    on<UserUpdated>(_onUserUpdated);
   }
 
   final IUserRepository _userRepository;
@@ -21,14 +22,35 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     UserInitialLoaded event,
     Emitter<UserState> emit,
   ) async {
-    emit(state.copyWith(status: StatusIndicator.loading));
+    emit(state.copyWith(
+      status: StatusIndicator.loading,
+    ));
 
     try {
       final user = await _userRepository.me();
-      emit(state.copyWith(user: user, status: StatusIndicator.success));
+      emit(state.copyWith(
+        user: user,
+        status: StatusIndicator.success,
+      ));
     } catch (e) {
       print(e);
-      emit(state.copyWith(status: StatusIndicator.failure));
+      emit(state.copyWith(
+        status: StatusIndicator.failure,
+      ));
     }
+  }
+
+  void _onUserUpdated(
+    UserUpdated event,
+    Emitter<UserState> emit,
+  ) async {
+    emit(state.copyWith(
+      status: StatusIndicator.loading,
+    ));
+
+    emit(state.copyWith(
+      user: event.user,
+      status: StatusIndicator.success,
+    ));
   }
 }
