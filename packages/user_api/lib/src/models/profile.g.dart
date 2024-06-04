@@ -12,8 +12,10 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
       whyVoteMe: json['whyVoteMe'] as String,
       imageSrc: json['imageSrc'] as String,
       imagePlaceholderColors: json['imagePlaceholderColors'] as String,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      createdAt:
+          const DateTimeConverter().fromJson(json['createdAt'] as String),
+      updatedAt:
+          const DateTimeConverter().fromJson(json['updatedAt'] as String),
     );
 
 Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
@@ -22,6 +24,6 @@ Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
       'whyVoteMe': instance.whyVoteMe,
       'imageSrc': instance.imageSrc,
       'imagePlaceholderColors': instance.imagePlaceholderColors,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'updatedAt': instance.updatedAt.toIso8601String(),
+      'createdAt': const DateTimeConverter().toJson(instance.createdAt),
+      'updatedAt': const DateTimeConverter().toJson(instance.updatedAt),
     };

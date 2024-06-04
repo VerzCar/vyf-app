@@ -31,4 +31,10 @@ class UserRepository implements IUserRepository {
     final users = res.map((user) => User.fromApiUser(user)).toList();
     return users;
   }
+
+  @override
+  Future<User> updateUser(UserUpdate user) async {
+    final res = await _userApi.updateUser(user.toApiUserUpdate());
+    return User.fromApiUser(res);
+  }
 }

@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'date_time_converter.dart';
+
 part 'profile.g.dart';
 
 @JsonSerializable()
@@ -9,7 +11,9 @@ class Profile {
   final String whyVoteMe;
   final String imageSrc;
   final String imagePlaceholderColors;
+  @DateTimeConverter()
   final DateTime createdAt;
+  @DateTimeConverter()
   final DateTime updatedAt;
 
   const Profile({
@@ -27,14 +31,3 @@ class Profile {
   Map<String, dynamic> toJson() => _$ProfileToJson(this);
 }
 
-class ProfileInput {
-  ProfileInput({
-    this.bio,
-    this.whyVoteMe,
-    this.imageSrc,
-  });
-
-  final String? bio;
-  final String? whyVoteMe;
-  final String? imageSrc;
-}

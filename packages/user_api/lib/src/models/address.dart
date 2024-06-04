@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'country.dart';
+import 'date_time_converter.dart';
 
 part 'address.g.dart';
 
@@ -10,7 +11,9 @@ class Address {
   final String city;
   final String postalCode;
   final Country country;
+  @DateTimeConverter()
   final DateTime createdAt;
+  @DateTimeConverter()
   final DateTime updatedAt;
 
   const Address({

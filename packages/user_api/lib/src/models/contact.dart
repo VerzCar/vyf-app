@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:user_api/src/models/date_time_converter.dart';
 import 'phone_number_country.dart';
 
 part 'contact.g.dart';
@@ -12,7 +13,9 @@ class Contact {
   final String? phoneNumber2;
   final PhoneNumberCountry? phoneNumber2Country;
   final String web;
+  @DateTimeConverter()
   final DateTime createdAt;
+  @DateTimeConverter()
   final DateTime updatedAt;
 
   const Contact({

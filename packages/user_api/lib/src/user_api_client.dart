@@ -108,6 +108,42 @@ class UserApiClient implements IUserApiClient {
     }
   }
 
+  @override
+  Future<User> updateUser(UserUpdate user) async {
+    var logger = Logger();
+
+    try {
+      var jsonBody = jsonEncode(user.toJson());
+
+      final res = await http.put(
+        _uri(path: 'update'),
+        headers: _headers(),
+        body: jsonBody,
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('updating user server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<Map<String, dynamic>>.fromJson(
+          jsonDecode(res.body) as Map<String, dynamic>);
+
+      if (res.statusCode == HttpStatus.ok) {
+        return User.fromJson(apiResponse.data);
+      }
+
+      logger.e('updating user failed: $apiResponse');
+      throw UpdateUserFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Uri _uri({String? path, Map<String, dynamic>? queryParameters}) {
     final httpsUri = Uri(
       scheme: 'https',

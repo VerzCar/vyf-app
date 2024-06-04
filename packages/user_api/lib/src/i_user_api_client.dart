@@ -6,4 +6,6 @@ abstract class IUserApiClient {
   Future<User> fetchX(String id);
 
   Future<List<User>> fetchUsers();
+
+  Future<User> updateUser(UserUpdate user);
 }

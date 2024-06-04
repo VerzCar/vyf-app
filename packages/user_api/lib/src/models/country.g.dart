@@ -14,8 +14,10 @@ Country _$CountryFromJson(Map<String, dynamic> json) => Country(
       continentCode: json['continentCode'] as String,
       number: json['number'] as String,
       fullName: json['fullName'] as String,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      createdAt:
+          const DateTimeConverter().fromJson(json['createdAt'] as String),
+      updatedAt:
+          const DateTimeConverter().fromJson(json['updatedAt'] as String),
     );
 
 Map<String, dynamic> _$CountryToJson(Country instance) => <String, dynamic>{
@@ -26,6 +28,6 @@ Map<String, dynamic> _$CountryToJson(Country instance) => <String, dynamic>{
       'continentCode': instance.continentCode,
       'number': instance.number,
       'fullName': instance.fullName,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'updatedAt': instance.updatedAt.toIso8601String(),
+      'createdAt': const DateTimeConverter().toJson(instance.createdAt),
+      'updatedAt': const DateTimeConverter().toJson(instance.updatedAt),
     };

@@ -26,3 +26,10 @@ class QueryUserFailure extends ApiFailure {
   });
 }
 
+class UpdateUserFailure extends ApiFailure {
+  UpdateUserFailure({
+    required super.statusCode,
+    super.msg,
+    super.status,
+  });
+}

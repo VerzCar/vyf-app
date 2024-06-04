@@ -12,8 +12,10 @@ Address _$AddressFromJson(Map<String, dynamic> json) => Address(
       city: json['city'] as String,
       postalCode: json['postalCode'] as String,
       country: Country.fromJson(json['country'] as Map<String, dynamic>),
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      createdAt:
+          const DateTimeConverter().fromJson(json['createdAt'] as String),
+      updatedAt:
+          const DateTimeConverter().fromJson(json['updatedAt'] as String),
     );
 
 Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
@@ -22,6 +24,6 @@ Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
       'city': instance.city,
       'postalCode': instance.postalCode,
       'country': instance.country,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'updatedAt': instance.updatedAt.toIso8601String(),
+      'createdAt': const DateTimeConverter().toJson(instance.createdAt),
+      'updatedAt': const DateTimeConverter().toJson(instance.updatedAt),
     };

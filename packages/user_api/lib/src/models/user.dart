@@ -35,11 +35,3 @@ class User {
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }
-
-class UpdateUserInput {
-  UpdateUserInput({
-    required this.profile,
-  });
-
-  final ProfileInput profile;
-}

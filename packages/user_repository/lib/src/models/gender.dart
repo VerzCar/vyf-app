@@ -35,7 +35,7 @@ Gender stringToGender(String gender) {
 }
 
 Gender genderFromApiGender(user_api.Gender gender) {
-  switch(gender) {
+  switch (gender) {
     case user_api.Gender.X:
       return Gender.X;
     case user_api.Gender.Women:

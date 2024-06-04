@@ -36,6 +36,18 @@ class Country extends Equatable {
         updatedAt: country.updatedAt,
       );
 
+  user_api.Country toApiCountry() => user_api.Country(
+        id: id,
+        name: name,
+        alpha2: alpha2,
+        alpha3: alpha3,
+        continentCode: continentCode,
+        number: number,
+        fullName: fullName,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+      );
+
   @override
   List<Object> get props => [
         id,

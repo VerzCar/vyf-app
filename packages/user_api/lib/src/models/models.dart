@@ -6,3 +6,5 @@ export 'gender.dart';
 export 'country.dart';
 export 'phone_number_country.dart';
 export 'api_response.dart';
+export 'user_update.dart';
+export 'profile_update.dart';

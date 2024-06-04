@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'date_time_converter.dart';
+
 part 'phone_number_country.g.dart';
 
 @JsonSerializable()
@@ -11,7 +13,9 @@ class PhoneNumberCountry {
   final String continentCode;
   final String number;
   final String fullName;
+  @DateTimeConverter()
   final DateTime createdAt;
+  @DateTimeConverter()
   final DateTime updatedAt;
 
   const PhoneNumberCountry({

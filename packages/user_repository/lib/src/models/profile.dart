@@ -54,15 +54,3 @@ class Profile extends Equatable {
         updatedAt,
       ];
 }
-
-class ProfileInput {
-  ProfileInput({
-    this.bio,
-    this.whyVoteMe,
-    this.imageSrc,
-  });
-
-  final String? bio;
-  final String? whyVoteMe;
-  final String? imageSrc;
-}
