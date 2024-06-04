@@ -182,26 +182,26 @@ class _CircleDateInputState extends State<_CircleDateInput> {
               : DateFormat.yMMMEd()
                   .format(DateTime.parse(state.dateFrom.value));
           return VyfTextFormField(
-            key: Key(
-                'CreateCircleDurationForm_Date${widget.range.toString()}Field'),
-            controller: _controller,
-            onTap: () => widget.onTap(),
-            readOnly: true,
-            textAlign: TextAlign.center,
-          );
+              key: Key(
+                  'CreateCircleDurationForm_Date${widget.range.toString()}Field'),
+              controller: _controller,
+              onTap: () => widget.onTap(),
+              readOnly: true,
+              textAlign: TextAlign.center,
+              showError: !state.dateFrom.isPure && state.dateFrom.isNotValid);
         }
 
         _controller.text = state.dateUntil.value.isEmpty
             ? '   infinite   '
             : DateFormat.yMMMEd().format(DateTime.parse(state.dateUntil.value));
         return VyfTextFormField(
-          key: Key(
-              'CreateCircleDurationForm_Date${widget.range.toString()}Field'),
-          controller: _controller,
-          onTap: () => widget.onTap(),
-          readOnly: true,
-          textAlign: TextAlign.center,
-        );
+            key: Key(
+                'CreateCircleDurationForm_Date${widget.range.toString()}Field'),
+            controller: _controller,
+            onTap: () => widget.onTap(),
+            readOnly: true,
+            textAlign: TextAlign.center,
+            showError: !state.dateUntil.isPure && state.dateUntil.isNotValid);
       },
     );
   }
@@ -239,26 +239,26 @@ class _CircleTimeInputState extends State<_CircleTimeInput> {
               ? DateFormat.Hm().format(CircleTimeFromInput.initialValue)
               : DateFormat.Hm().format(DateTime.parse(state.timeFrom.value));
           return VyfTextFormField(
-            key: Key(
-                'CreateCircleDurationForm_Time${widget.range.toString()}Field'),
-            controller: _controller,
-            onTap: () => widget.onTap(),
-            readOnly: true,
-            textAlign: TextAlign.center,
-          );
+              key: Key(
+                  'CreateCircleDurationForm_Time${widget.range.toString()}Field'),
+              controller: _controller,
+              onTap: () => widget.onTap(),
+              readOnly: true,
+              textAlign: TextAlign.center,
+              showError: !state.timeFrom.isPure && state.timeFrom.isNotValid);
         }
 
         _controller.text = state.timeUntil.value.isEmpty
             ? '--:--'
             : DateFormat.Hm().format(DateTime.parse(state.timeUntil.value));
         return VyfTextFormField(
-          key: Key(
-              'CreateCircleDurationForm_Time${widget.range.toString()}Field'),
-          controller: _controller,
-          onTap: () => widget.onTap(),
-          readOnly: true,
-          textAlign: TextAlign.center,
-        );
+            key: Key(
+                'CreateCircleDurationForm_Time${widget.range.toString()}Field'),
+            controller: _controller,
+            onTap: () => widget.onTap(),
+            readOnly: true,
+            textAlign: TextAlign.center,
+            showError: !state.timeUntil.isPure && state.timeUntil.isNotValid);
       },
     );
   }

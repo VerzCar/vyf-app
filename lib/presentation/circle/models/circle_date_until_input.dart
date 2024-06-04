@@ -1,4 +1,5 @@
 import 'package:formz/formz.dart';
+import 'package:vote_your_face/presentation/shared/shared.dart';
 
 enum CircleDateUntilInputError { dateIsBeforeMinDate, dateIsBeforeFromDate }
 
@@ -16,8 +17,9 @@ class CircleDateUntilInput
   @override
   CircleDateUntilInputError? validator(String value) {
     final dateUntilTime = DateTime.parse(value);
+    final currentDate = DateTime.now().withoutTime;
 
-    if (dateUntilTime.isBefore(DateTime.now())) {
+    if (dateUntilTime.isBefore(currentDate)) {
       return CircleDateUntilInputError.dateIsBeforeMinDate;
     }
 

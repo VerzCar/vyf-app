@@ -4,6 +4,7 @@ import 'package:formz/formz.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/presentation/circle/models/models.dart';
+import 'package:vote_your_face/presentation/shared/shared.dart';
 
 part 'circle_create_form_state.dart';
 
@@ -13,7 +14,23 @@ class CircleCreateFormCubit extends Cubit<CircleCreateFormState> {
     required IVoteCircleRepository voteCircleRepository,
   })  : _userRepository = userRepository,
         _voteCircleRepository = voteCircleRepository,
-        super(const CircleCreateFormState());
+        super(const CircleCreateFormState()) {
+    final inputDateFrom = CircleDateFromInput.dirty(
+      dateUntil: state.dateUntil.value,
+      value: DateTime.now().withoutTime.toString(),
+    );
+
+    final inputTimeFrom = CircleTimeFromInput.dirty(
+      dateFrom: state.dateFrom.value,
+      timeUntil: state.timeUntil.value,
+      value: DateTime.now().toString(),
+    );
+
+    emit(state.copyWith(
+      dateFrom: inputDateFrom,
+      timeFrom: inputTimeFrom
+    ));
+  }
 
   final IUserRepository _userRepository;
   final IVoteCircleRepository _voteCircleRepository;
