@@ -9,9 +9,14 @@ import 'package:vote_your_face/presentation/circle/widgets/create_circle_duratio
 import 'package:vote_your_face/presentation/circle/widgets/create_circle_members_form.dart';
 import 'package:vote_your_face/presentation/circle/widgets/create_circle_name_form.dart';
 
-class CreateCircleSheet extends StatelessWidget {
-  CreateCircleSheet({super.key});
+class CreateCircleSheet extends StatefulWidget {
+  const CreateCircleSheet({super.key});
 
+  @override
+  State<CreateCircleSheet> createState() => _CreateCircleSheetState();
+}
+
+class _CreateCircleSheetState extends State<CreateCircleSheet> {
   final PageController _pageController = PageController();
 
   @override
@@ -41,6 +46,12 @@ class CreateCircleSheet extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   void _onNext() {

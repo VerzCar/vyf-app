@@ -31,23 +31,8 @@ class YourCircles extends StatelessWidget {
                     style: themeData.textTheme.titleLarge,
                   ),
                   OutlinedButton.icon(
-                    onPressed: () {
-                      final circlesBloc = BlocProvider.of<CirclesBloc>(context);
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        useSafeArea: true,
-                        builder: (BuildContext context2) {
-                          return SizedBox(
-                            height: size.height * 0.70,
-                            child: BlocProvider.value(
-                              value: circlesBloc,
-                              child: CreateCircleSheet(),
-                            ),
-                          );
-                        },
-                      );
-                    },
+                    onPressed: () =>
+                        _showCircleCreateSheet(context, size.height * 0.70),
                     icon: const Icon(Icons.add),
                     label: const Text('Create Circle'),
                   ),
@@ -66,8 +51,8 @@ class YourCircles extends StatelessWidget {
                 ),
               ),
               child: state.myCircles.isEmpty
-                  ? buildEmptyCirclesPlaceholder(themeData)
-                  : buildCirclesPageView(state.myCircles),
+                  ? _buildEmptyCirclesPlaceholder(context, themeData, size)
+                  : _buildCirclesPageView(state.myCircles),
             ),
             const SizedBox(height: 3),
             Align(
@@ -83,7 +68,7 @@ class YourCircles extends StatelessWidget {
     });
   }
 
-  Widget buildCirclesPageView(List<Circle> circles) {
+  Widget _buildCirclesPageView(List<Circle> circles) {
     return PageView(
       controller: PageController(viewportFraction: 0.80),
       children: [
@@ -96,7 +81,11 @@ class YourCircles extends StatelessWidget {
     );
   }
 
-  Widget buildEmptyCirclesPlaceholder(ThemeData themeData) {
+  Widget _buildEmptyCirclesPlaceholder(
+    BuildContext context,
+    ThemeData themeData,
+    Size size,
+  ) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -106,11 +95,33 @@ class YourCircles extends StatelessWidget {
             style: TextButton.styleFrom(
               foregroundColor: themeData.colorScheme.secondary,
             ),
-            onPressed: () {},
+            onPressed: () =>
+                _showCircleCreateSheet(context, size.height * 0.70),
             child: const Text('You can create one here'),
           ),
         ],
       ),
+    );
+  }
+
+  void _showCircleCreateSheet(
+    BuildContext context,
+    double height,
+  ) {
+    final circlesBloc = BlocProvider.of<CirclesBloc>(context);
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (BuildContext context2) {
+        return SizedBox(
+          height: height,
+          child: BlocProvider.value(
+            value: circlesBloc,
+            child: CreateCircleSheet(),
+          ),
+        );
+      },
     );
   }
 }
