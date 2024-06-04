@@ -176,7 +176,6 @@ class CircleCreateFormCubit extends Cubit<CircleCreateFormState> {
         createdCircle: circle,
       ));
     } catch (e) {
-      print(e);
       if (isClosed) return;
       emit(state.copyWith(
         status: FormzSubmissionStatus.failure,
