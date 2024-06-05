@@ -25,6 +25,8 @@ class UserEditSettingsView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: BlocConsumer<UserEditProfileCubit, UserEditProfileState>(
+              listenWhen: (previous, current) =>
+                  previous.status != current.status,
               listener: (context, state) {
                 if (state.status.isSuccess) {
                   BlocProvider.of<UserBloc>(context).add(UserUpdated(

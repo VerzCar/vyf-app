@@ -50,6 +50,8 @@ class CreateCircleMembersForm extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               BlocConsumer<CircleCreateFormCubit, CircleCreateFormState>(
+                listenWhen: (previous, current) =>
+                    previous.status != current.status,
                 listener: (context, state) {
                   if (state.status.isSuccess) {
                     BlocProvider.of<CirclesBloc>(context).add(CircleCreated(
