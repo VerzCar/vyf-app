@@ -12,3 +12,12 @@ final class CircleSelected extends CircleEvent {
   @override
   List<Object> get props => [circleId];
 }
+
+final class CircleUpdated extends CircleEvent {
+  const CircleUpdated({required this.circle});
+
+  final Circle circle;
+
+  @override
+  List<Object> get props => [circle];
+}

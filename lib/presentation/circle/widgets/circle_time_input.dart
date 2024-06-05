@@ -10,10 +10,12 @@ class CircleTimeInput extends StatefulWidget {
     super.key,
     required this.range,
     required this.onTap,
+    this.initialValue,
   });
 
   final RangeSelection range;
   final VoidCallback onTap;
+  final DateTime? initialValue;
 
   @override
   State<CircleTimeInput> createState() => _CircleTimeInputState();
@@ -29,7 +31,8 @@ class _CircleTimeInputState extends State<CircleTimeInput> {
       builder: (context, state) {
         if (widget.range == RangeSelection.from) {
           _controller.text = state.timeFrom.value.isEmpty
-              ? DateFormat.Hm().format(CircleTimeFromInput.initialValue)
+              ? DateFormat.Hm().format(
+                  widget.initialValue ?? CircleTimeFromInput.initialValue)
               : DateFormat.Hm().format(DateTime.parse(state.timeFrom.value));
           return VyfTextFormField(
             key: Key(
@@ -44,7 +47,9 @@ class _CircleTimeInputState extends State<CircleTimeInput> {
         }
 
         _controller.text = state.timeUntil.value.isEmpty
-            ? '--:--'
+            ? widget.initialValue != null
+                ? DateFormat.Hm().format(widget.initialValue!)
+                : '--:--'
             : DateFormat.Hm().format(DateTime.parse(state.timeUntil.value));
         return VyfTextFormField(
           key: Key(

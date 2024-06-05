@@ -104,21 +104,24 @@ class CircleEditFormCubit extends Cubit<CircleEditFormState> {
     ));
 
     try {
-      final currentDateTime = DateTime.now();
+      DateTime? validFrom;
 
-      final dateFrom = state.dateFrom.value.isEmpty
-          ? currentDateTime
-          : DateTime.parse(state.dateFrom.value);
-      final timeFrom = state.timeFrom.value.isEmpty
-          ? currentDateTime
-          : DateTime.parse(state.timeFrom.value);
-      final validFrom = DateTime(
-        dateFrom.year,
-        dateFrom.month,
-        dateFrom.day,
-        timeFrom.hour,
-        timeFrom.minute,
-      );
+      if (!state.dateFrom.isPure) {
+        final currentDateTime = DateTime.now();
+        final dateFrom = state.dateFrom.value.isEmpty
+            ? currentDateTime
+            : DateTime.parse(state.dateFrom.value);
+        final timeFrom = state.timeFrom.value.isEmpty
+            ? currentDateTime
+            : DateTime.parse(state.timeFrom.value);
+        validFrom = DateTime(
+          dateFrom.year,
+          dateFrom.month,
+          dateFrom.day,
+          timeFrom.hour,
+          timeFrom.minute,
+        );
+      }
 
       DateTime? validUntil;
 
@@ -135,11 +138,10 @@ class CircleEditFormCubit extends Cubit<CircleEditFormState> {
       }
 
       final request = CircleUpdateRequest(
-        name: state.name.value,
-        description: state.description.value,
+        name: state.name.isPure ? null : state.name.value,
+        description: state.description.isPure ? null : state.description.value,
         validFrom: validFrom,
         validUntil: validUntil,
-        private: state.private.value,
       );
 
       final circle =

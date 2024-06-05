@@ -4,7 +4,6 @@ import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 
 part 'circle_event.dart';
-
 part 'circle_state.dart';
 
 class CircleBloc extends Bloc<CircleEvent, CircleState> {
@@ -13,6 +12,7 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
   })  : _voteCircleRepository = voteCircleRepository,
         super(const CircleState()) {
     on<CircleSelected>(_onCircleSelected);
+    on<CircleUpdated>(_onCircleUpdated);
   }
 
   final IVoteCircleRepository _voteCircleRepository;
@@ -38,5 +38,19 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
       if (isClosed) return;
       emit(state.copyWith(status: StatusIndicator.failure));
     }
+  }
+
+  void _onCircleUpdated(
+    CircleUpdated event,
+    Emitter<CircleState> emit,
+  ) {
+    emit(state.copyWith(status: StatusIndicator.loading));
+
+    emit(
+      state.copyWith(
+        circle: event.circle,
+        status: StatusIndicator.success,
+      ),
+    );
   }
 }

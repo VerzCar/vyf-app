@@ -11,13 +11,13 @@ class EditCircleDescriptionInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CircleEditFormCubit, CircleEditFormState>(
-      buildWhen: (previous, current) => previous.name != current.name,
+      buildWhen: (previous, current) => previous.description != current.description,
       builder: (context, state) {
         return VyfTextFormField(
           key: const Key('EditCircleDescriptionInput_textFormField'),
           initialValue: initialValue,
-          onChanged: (name) =>
-              context.read<CircleEditFormCubit>().onNameChanged(name),
+          onChanged: (value) =>
+              context.read<CircleEditFormCubit>().onDescriptionChanged(value),
           labelText: 'Description',
           errorText: 'Invalid circle description',
           maxLength: 1500,

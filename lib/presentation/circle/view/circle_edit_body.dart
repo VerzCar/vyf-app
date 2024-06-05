@@ -18,9 +18,6 @@ class CircleEditBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final themeData = Theme.of(context);
-
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       children: [
@@ -76,10 +73,12 @@ class CircleEditBody extends StatelessWidget {
           CircleDateInput(
             range: range,
             onTap: () => _showCupertinoDialog(context, datePicker),
+            initialValue: range == RangeSelection.from ? circle.validFrom : circle.validUntil,
           ),
           CircleTimeInput(
             range: range,
             onTap: () => _showCupertinoDialog(context, timePicker),
+            initialValue: range == RangeSelection.from ? circle.validFrom : circle.validUntil,
           ),
         ],
       ),

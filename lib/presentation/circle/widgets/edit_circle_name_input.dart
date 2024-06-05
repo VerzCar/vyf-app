@@ -16,8 +16,8 @@ class EditCircleNameInput extends StatelessWidget {
         return VyfTextFormField(
           key: const Key('EditCircleNameInput_textFormField'),
           initialValue: initialValue,
-          onChanged: (name) =>
-              context.read<CircleEditFormCubit>().onNameChanged(name),
+          onChanged: (value) =>
+              context.read<CircleEditFormCubit>().onNameChanged(value),
           labelText: 'Name',
           errorText: 'Invalid name',
           maxLength: 40,
