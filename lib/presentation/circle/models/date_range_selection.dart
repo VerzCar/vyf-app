@@ -1,0 +1,1 @@
+enum RangeSelection { from, until }

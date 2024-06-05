@@ -1,6 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:user_api/user_api.dart';
 
+import 'date_time_converter.dart';
+
 part 'user.g.dart';
 
 @JsonSerializable()
@@ -15,7 +17,9 @@ class User {
     this.address,
     this.contact,
     required this.profile,
+    @DateTimeConverter()
     required this.createdAt,
+    @DateTimeConverter()
     required this.updatedAt,
   });
 

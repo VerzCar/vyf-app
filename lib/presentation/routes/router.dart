@@ -30,6 +30,10 @@ class AppRouter extends $AppRouter {
                     page: CircleRoute.page,
                   ),
                   AutoRoute(
+                    path: ':circleId/edit',
+                    page: CircleEditRoute.page,
+                  ),
+                  AutoRoute(
                     path: ':circleId/ranking',
                     page: RankingRoute.page,
                   ),

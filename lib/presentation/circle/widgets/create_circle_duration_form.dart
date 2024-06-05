@@ -7,8 +7,6 @@ import 'package:vote_your_face/presentation/circle/cubit/circle_create_form_cubi
 import 'package:vote_your_face/presentation/circle/models/models.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 
-enum RangeSelection { from, until }
-
 class CreateCircleDurationForm extends StatelessWidget {
   const CreateCircleDurationForm({
     super.key,

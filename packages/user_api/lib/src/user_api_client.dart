@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:user_api/user_api.dart';
-import 'package:http/http.dart' as http;
 
 part 'api-errors.dart';
 
