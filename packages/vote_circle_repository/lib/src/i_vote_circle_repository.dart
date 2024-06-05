@@ -17,4 +17,9 @@ abstract class IVoteCircleRepository {
   );
 
   Future<Circle> createCircle(CircleCreateRequest circleRequest);
+
+  Future<Circle> updateCircle(
+    int circleId,
+    CircleUpdateRequest circleUpdateRequest,
+  );
 }

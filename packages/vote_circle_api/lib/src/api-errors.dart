@@ -57,3 +57,11 @@ class CreateCircleFailure extends ApiFailure {
     super.status,
   });
 }
+
+class UpdateCircleFailure extends ApiFailure {
+  UpdateCircleFailure({
+    required super.statusCode,
+    super.msg,
+    super.status,
+  });
+}

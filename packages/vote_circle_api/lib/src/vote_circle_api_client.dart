@@ -250,6 +250,45 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     }
   }
 
+  @override
+  Future<Circle> updateCircle(
+    int circleId,
+    CircleUpdateRequest circleUpdateRequest,
+  ) async {
+    var logger = Logger();
+
+    try {
+      var jsonBody = jsonEncode(circleUpdateRequest.toJson());
+
+      final res = await http.put(
+        _uri(path: 'circle/$circleId'),
+        headers: _headers(),
+        body: jsonBody,
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('updating circle server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<Map<String, dynamic>>.fromJson(
+          jsonDecode(res.body) as Map<String, dynamic>);
+
+      if (res.statusCode == HttpStatus.ok) {
+        return Circle.fromJson(apiResponse.data);
+      }
+
+      logger.e('updating circle failed: $apiResponse');
+      throw UpdateCircleFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Uri _uri({String? path, Map<String, dynamic>? queryParameters}) {
     final httpsUri = Uri(
       scheme: 'https',

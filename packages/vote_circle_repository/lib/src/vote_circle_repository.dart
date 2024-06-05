@@ -69,4 +69,14 @@ class VoteCircleRepository implements IVoteCircleRepository {
     );
     return Circle.fromApiCircle(res);
   }
+
+  @override
+  Future<Circle> updateCircle(
+      int circleId, CircleUpdateRequest circleUpdateRequest) async {
+    final res = await _voteCircleApi.updateCircle(
+      circleId,
+      circleUpdateRequest.toApiCircleUpdateRequest(),
+    );
+    return Circle.fromApiCircle(res);
+  }
 }

@@ -11,7 +11,15 @@ abstract class IVoteCircleApiClient {
 
   Future<CircleVoter> fetchCircleVoters(int circleId);
 
-  Future<CircleCandidate> fetchCircleCandidates(int circleId, CircleCandidatesFilter? filter);
+  Future<CircleCandidate> fetchCircleCandidates(
+    int circleId,
+    CircleCandidatesFilter? filter,
+  );
 
   Future<Circle> createCircle(CircleCreateRequest circleRequest);
+
+  Future<Circle> updateCircle(
+    int circleId,
+    CircleUpdateRequest circleUpdateRequest,
+  );
 }
