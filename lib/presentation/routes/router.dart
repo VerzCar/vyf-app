@@ -87,6 +87,10 @@ class AppRouter extends $AppRouter {
                   path: 'user',
                   page: UserSettingsRoute.page,
                 ),
+                AutoRoute(
+                  path: 'user/edit',
+                  page: UserEditSettingsRoute.page,
+                ),
               ],
             ),
           ],

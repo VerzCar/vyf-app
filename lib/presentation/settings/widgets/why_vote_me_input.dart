@@ -21,7 +21,7 @@ class WhyVoteMeInput extends StatelessWidget {
           labelText: 'Why vote me?',
           hintText: 'Give an meaningful explanation why anyone should vote you.',
           errorText: 'Invalid text',
-          maxLength: 1500,
+          maxLength: 250,
           maxLines: 3,
           showError: !state.whyVoteMe.isPure && state.whyVoteMe.isNotValid,
         );
