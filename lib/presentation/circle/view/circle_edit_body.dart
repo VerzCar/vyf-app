@@ -31,26 +31,24 @@ class CircleEditBody extends StatelessWidget {
   }
 
   Widget _buildDateTimeRangeRow(BuildContext context) {
-    return Expanded(
-      child: Row(
-        children: [
-          _buildDateTimeColumn(
-            context,
-            'Start',
-            _CircleDateFromPicker(),
-            _CircleTimeFromPicker(),
-            RangeSelection.from,
-          ),
-          const VerticalDivider(),
-          _buildDateTimeColumn(
-            context,
-            'End',
-            _CircleDateUntilPicker(),
-            _CircleTimeUntilPicker(),
-            RangeSelection.until,
-          ),
-        ],
-      ),
+    return Row(
+      children: [
+        _buildDateTimeColumn(
+          context,
+          'Start',
+          _CircleDateFromPicker(),
+          _CircleTimeFromPicker(),
+          RangeSelection.from,
+        ),
+        const VerticalDivider(),
+        _buildDateTimeColumn(
+          context,
+          'End',
+          _CircleDateUntilPicker(),
+          _CircleTimeUntilPicker(),
+          RangeSelection.until,
+        ),
+      ],
     );
   }
 

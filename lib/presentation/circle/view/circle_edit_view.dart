@@ -43,13 +43,22 @@ class CircleEditView extends StatelessWidget {
             },
             builder: (context, state) {
               return TextButton(
-                child: Text(
-                  'Save',
-                  style: TextStyle(color: themeData.colorScheme.successColor),
+                style: TextButton.styleFrom(
+                  foregroundColor: themeData.colorScheme.successColor,
                 ),
-                onPressed: () => context
-                    .read<CircleEditFormCubit>()
-                    .onSubmit(context.read<CircleBloc>().state.circle.id),
+                onPressed: Formz.isPure([
+                  state.name,
+                  state.description,
+                  state.dateFrom,
+                  state.timeFrom,
+                  state.dateUntil,
+                  state.timeUntil,
+                ])
+                    ? null
+                    : () => context
+                        .read<CircleEditFormCubit>()
+                        .onSubmit(context.read<CircleBloc>().state.circle.id),
+                child: const Text('Save'),
               );
             },
           ),
