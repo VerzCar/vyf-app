@@ -289,6 +289,38 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     }
   }
 
+  @override
+  Future<void> deleteCircle(int circleId) async {
+    var logger = Logger();
+
+    try {
+      final res = await http.delete(
+        _uri(path: 'circle/$circleId'),
+        headers: _headers(),
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('deleting circle server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<String>.fromJson(jsonDecode(res.body));
+
+      if (res.statusCode == HttpStatus.ok) {
+        return;
+      }
+
+      logger.e('deleting circle failed: $apiResponse');
+      throw DeleteCircleFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Uri _uri({String? path, Map<String, dynamic>? queryParameters}) {
     final httpsUri = Uri(
       scheme: 'https',

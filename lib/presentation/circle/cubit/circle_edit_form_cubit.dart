@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:formz/formz.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/presentation/circle/models/models.dart';
 
@@ -100,7 +99,7 @@ class CircleEditFormCubit extends Cubit<CircleEditFormState> {
 
   void onSubmit(int circleId) async {
     emit(state.copyWith(
-      status: FormzSubmissionStatus.inProgress,
+      status: CircleEditSubmissionStatus.loading,
     ));
 
     try {
@@ -148,13 +147,33 @@ class CircleEditFormCubit extends Cubit<CircleEditFormState> {
           await _voteCircleRepository.updateCircle(circleId, request);
 
       emit(state.copyWith(
-        status: FormzSubmissionStatus.success,
+        status: CircleEditSubmissionStatus.success,
         updatedCircle: circle,
       ));
     } catch (e) {
       if (isClosed) return;
       emit(state.copyWith(
-        status: FormzSubmissionStatus.failure,
+        status: CircleEditSubmissionStatus.failure,
+      ));
+    }
+  }
+
+  void onDelete(int circleId) async {
+    emit(state.copyWith(
+      status: CircleEditSubmissionStatus.loading,
+    ));
+
+    try {
+      await _voteCircleRepository.deleteCircle(circleId);
+
+      emit(state.copyWith(
+        status: CircleEditSubmissionStatus.deleteSuccess,
+        deletedCircleId: circleId,
+      ));
+    } catch (e) {
+      if (isClosed) return;
+      emit(state.copyWith(
+        status: CircleEditSubmissionStatus.failure,
       ));
     }
   }

@@ -14,13 +14,14 @@ class CirclesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (BuildContext ctx) =>
-              sl<CirclesBloc>()..add(CirclesOfUserInitialLoaded()),
+        BlocProvider.value(
+          value: BlocProvider.of<CirclesBloc>(context)
+            ..add(CirclesOfUserInitialLoaded()),
         ),
         BlocProvider(
-          create: (BuildContext ctx) =>
-              CirclesOfInterestCubit(voteCircleRepository: sl<IVoteCircleRepository>())..loadCircles(),
+          create: (BuildContext ctx) => CirclesOfInterestCubit(
+              voteCircleRepository: sl<IVoteCircleRepository>())
+            ..loadCircles(),
         ),
       ],
       child: const CirclesView(),

@@ -22,4 +22,6 @@ abstract class IVoteCircleApiClient {
     int circleId,
     CircleUpdateRequest circleUpdateRequest,
   );
+
+  Future<void> deleteCircle(int circleId);
 }

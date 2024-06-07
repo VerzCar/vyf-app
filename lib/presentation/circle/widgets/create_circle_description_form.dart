@@ -41,7 +41,7 @@ class CreateCircleDescriptionForm extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               OutlinedButton(
-                style: ElevatedButton.styleFrom(
+                style: OutlinedButton.styleFrom(
                     foregroundColor: themeData.colorScheme.secondary,
                 ),
                 onPressed: onPrevious,

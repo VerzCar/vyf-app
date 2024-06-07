@@ -17,3 +17,21 @@ final class CircleCreated extends CirclesEvent {
   @override
   List<Object> get props => [circle];
 }
+
+final class CircleUpdated extends CirclesEvent {
+  const CircleUpdated({required this.circle});
+
+  final Circle circle;
+
+  @override
+  List<Object> get props => [circle];
+}
+
+final class CircleDeleted extends CirclesEvent {
+  const CircleDeleted({required this.circleId});
+
+  final int circleId;
+
+  @override
+  List<Object> get props => [circleId];
+}

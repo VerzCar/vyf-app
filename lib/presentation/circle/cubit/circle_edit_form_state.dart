@@ -1,8 +1,28 @@
 part of 'circle_edit_form_cubit.dart';
 
+enum CircleEditSubmissionStatus {
+initial,
+loading,
+success,
+  deleteSuccess,
+failure,
+}
+
+extension CircleEditSubmissionStatusX on CircleEditSubmissionStatus {
+  bool get isInitial => this == CircleEditSubmissionStatus.initial;
+
+  bool get isLoading => this == CircleEditSubmissionStatus.loading;
+
+  bool get isSuccessful => this == CircleEditSubmissionStatus.success;
+
+  bool get isDeletedSuccessful => this == CircleEditSubmissionStatus.deleteSuccess;
+
+  bool get isFailure => this == CircleEditSubmissionStatus.failure;
+}
+
 final class CircleEditFormState extends Equatable {
   const CircleEditFormState({
-    this.status = FormzSubmissionStatus.initial,
+    this.status = CircleEditSubmissionStatus.initial,
     this.name = const CircleNameInput.pure(),
     this.description = const CircleDescriptionInput.pure(),
     this.dateFrom = const CircleDateFromInput.pure(),
@@ -11,9 +31,10 @@ final class CircleEditFormState extends Equatable {
     this.timeUntil = const CircleTimeUntilInput.pure(),
     this.private = const CirclePrivateInput.pure(),
     this.updatedCircle,
+    this.deletedCircleId,
   });
 
-  final FormzSubmissionStatus status;
+  final CircleEditSubmissionStatus status;
   final CircleNameInput name;
   final CircleDescriptionInput description;
   final CircleDateFromInput dateFrom;
@@ -22,9 +43,10 @@ final class CircleEditFormState extends Equatable {
   final CircleTimeUntilInput timeUntil;
   final CirclePrivateInput private;
   final Circle? updatedCircle;
+  final int? deletedCircleId;
 
   CircleEditFormState copyWith(
-      {FormzSubmissionStatus? status,
+      {CircleEditSubmissionStatus? status,
       CircleNameInput? name,
       CircleDescriptionInput? description,
       CircleDateFromInput? dateFrom,
@@ -32,7 +54,9 @@ final class CircleEditFormState extends Equatable {
       CircleDateUntilInput? dateUntil,
       CircleTimeUntilInput? timeUntil,
       CirclePrivateInput? private,
-      Circle? updatedCircle}) {
+      Circle? updatedCircle,
+        int? deletedCircleId,
+      }) {
     return CircleEditFormState(
       status: status ?? this.status,
       name: name ?? this.name,
@@ -43,6 +67,7 @@ final class CircleEditFormState extends Equatable {
       timeUntil: timeUntil ?? this.timeUntil,
       private: private ?? this.private,
       updatedCircle: updatedCircle ?? this.updatedCircle,
+        deletedCircleId: deletedCircleId ?? this.deletedCircleId,
     );
   }
 
@@ -57,5 +82,6 @@ final class CircleEditFormState extends Equatable {
         timeUntil,
         private,
         updatedCircle,
+    deletedCircleId,
       ];
 }

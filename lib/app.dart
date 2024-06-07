@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vote_your_face/application/authentication/authentication.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
+import 'package:vote_your_face/application/circles/bloc/circles_bloc.dart';
 import 'package:vote_your_face/application/members/members.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/injection.dart';
@@ -25,8 +26,11 @@ class App extends StatelessWidget {
               AuthState(authFlowStatus: AuthFlowStatus.unknown),
             )),
         ),
-        BlocProvider<UserBloc>(
+        BlocProvider(
           create: (context) => sl<UserBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<CirclesBloc>(),
         ),
         BlocProvider<CircleBloc>(
           create: (context) => sl<CircleBloc>(),

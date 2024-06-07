@@ -22,4 +22,8 @@ abstract class IVoteCircleRepository {
     int circleId,
     CircleUpdateRequest circleUpdateRequest,
   );
+
+  Future<void> deleteCircle(
+    int circleId,
+  );
 }

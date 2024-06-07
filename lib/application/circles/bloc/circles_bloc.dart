@@ -4,7 +4,6 @@ import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 
 part 'circles_event.dart';
-
 part 'circles_state.dart';
 
 class CirclesBloc extends Bloc<CirclesEvent, CirclesState> {
@@ -14,6 +13,8 @@ class CirclesBloc extends Bloc<CirclesEvent, CirclesState> {
         super(const CirclesState()) {
     on<CirclesOfUserInitialLoaded>(_onCirclesOfUserInitialLoaded);
     on<CircleCreated>(_onCircleCreated);
+    on<CircleUpdated>(_onCircleUpdated);
+    on<CircleDeleted>(_onCircleDeleted);
   }
 
   final IVoteCircleRepository _voteCircleRepository;
@@ -47,6 +48,58 @@ class CirclesBloc extends Bloc<CirclesEvent, CirclesState> {
 
     final myCircles = state.myCircles;
     myCircles.insert(0, event.circle);
+
+    emit(
+      state.copyWith(
+        myCircles: myCircles,
+        status: StatusIndicator.success,
+      ),
+    );
+  }
+
+  void _onCircleUpdated(
+    CircleUpdated event,
+    Emitter<CirclesState> emit,
+  ) {
+    emit(state.copyWith(status: StatusIndicator.loading));
+
+    final myCircles = state.myCircles;
+    final myCircleIndex =
+        myCircles.indexWhere((circle) => circle.id == event.circle.id);
+
+    if (myCircleIndex == -1) {
+      return emit(state.copyWith(
+        status: StatusIndicator.success,
+      ));
+    }
+
+    myCircles[myCircleIndex] = event.circle;
+
+    emit(
+      state.copyWith(
+        myCircles: myCircles,
+        status: StatusIndicator.success,
+      ),
+    );
+  }
+
+  void _onCircleDeleted(
+      CircleDeleted event,
+      Emitter<CirclesState> emit,
+      ) {
+    emit(state.copyWith(status: StatusIndicator.loading));
+
+    final myCircles = state.myCircles;
+    final myCircleIndex =
+    myCircles.indexWhere((circle) => circle.id == event.circleId);
+
+    if (myCircleIndex == -1) {
+      return emit(state.copyWith(
+        status: StatusIndicator.success,
+      ));
+    }
+
+    myCircles.removeAt(myCircleIndex);
 
     emit(
       state.copyWith(

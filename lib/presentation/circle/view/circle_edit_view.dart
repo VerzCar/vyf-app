@@ -1,10 +1,14 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
+import 'package:vote_your_face/application/circles/bloc/circles_bloc.dart'
+    as circles_bloc;
 import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/presentation/circle/cubit/circle_edit_form_cubit.dart';
 import 'package:vote_your_face/presentation/circle/view/circle_edit_body.dart';
+import 'package:vote_your_face/presentation/routes/router.gr.dart';
 import 'package:vote_your_face/presentation/shared/widgets/snackbar/snackbar.dart';
 import 'package:vote_your_face/theme.dart';
 
@@ -23,8 +27,12 @@ class CircleEditView extends StatelessWidget {
             listenWhen: (previous, current) =>
                 previous.status != current.status,
             listener: (context, state) {
-              if (state.status.isSuccess) {
+              if (state.status.isSuccessful) {
                 BlocProvider.of<CircleBloc>(context).add(CircleUpdated(
+                  circle: state.updatedCircle!,
+                ));
+                BlocProvider.of<circles_bloc.CirclesBloc>(context)
+                    .add(circles_bloc.CircleUpdated(
                   circle: state.updatedCircle!,
                 ));
 
@@ -32,6 +40,19 @@ class CircleEditView extends StatelessWidget {
                   context,
                   'Saved successfully',
                 );
+              }
+
+              if (state.status.isDeletedSuccessful) {
+                BlocProvider.of<circles_bloc.CirclesBloc>(context)
+                    .add(circles_bloc.CircleDeleted(
+                  circleId: state.deletedCircleId!,
+                ));
+
+                showSuccessSnackbar(
+                  context,
+                  'Deleted circle successfully',
+                );
+                context.router.navigate(const CirclesRoute());
               }
 
               if (state.status.isFailure) {

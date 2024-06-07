@@ -8,6 +8,7 @@ import 'package:vote_your_face/presentation/circle/widgets/circle_date_input.dar
 import 'package:vote_your_face/presentation/circle/widgets/circle_date_picker.dart';
 import 'package:vote_your_face/presentation/circle/widgets/circle_time_input.dart';
 import 'package:vote_your_face/presentation/circle/widgets/circle_time_picker.dart';
+import 'package:vote_your_face/presentation/circle/widgets/edit_circle_delete_button.dart';
 import 'package:vote_your_face/presentation/circle/widgets/edit_circle_description_input.dart';
 import 'package:vote_your_face/presentation/circle/widgets/edit_circle_name_input.dart';
 
@@ -26,6 +27,8 @@ class CircleEditBody extends StatelessWidget {
         EditCircleDescriptionInput(initialValue: circle.description),
         const SizedBox(height: 10),
         _buildDateTimeRangeRow(context),
+        const SizedBox(height: 80),
+        EditCircleDeleteButton(circleId: circle.id),
       ],
     );
   }
@@ -71,12 +74,16 @@ class CircleEditBody extends StatelessWidget {
           CircleDateInput(
             range: range,
             onTap: () => _showCupertinoDialog(context, datePicker),
-            initialValue: range == RangeSelection.from ? circle.validFrom : circle.validUntil,
+            initialValue: range == RangeSelection.from
+                ? circle.validFrom
+                : circle.validUntil,
           ),
           CircleTimeInput(
             range: range,
             onTap: () => _showCupertinoDialog(context, timePicker),
-            initialValue: range == RangeSelection.from ? circle.validFrom : circle.validUntil,
+            initialValue: range == RangeSelection.from
+                ? circle.validFrom
+                : circle.validUntil,
           ),
         ],
       ),

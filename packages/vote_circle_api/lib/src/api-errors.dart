@@ -65,3 +65,11 @@ class UpdateCircleFailure extends ApiFailure {
     super.status,
   });
 }
+
+class DeleteCircleFailure extends ApiFailure {
+  DeleteCircleFailure({
+    required super.statusCode,
+    super.msg,
+    super.status,
+  });
+}
