@@ -47,19 +47,18 @@ class UserEditSettingsView extends StatelessWidget {
                 }
               },
               builder: (context, state) {
-                return TextButton(
-                  style: TextButton.styleFrom(
-                    foregroundColor: themeData.colorScheme.successColor,
-                  ),
-                  onPressed: Formz.isPure([
-                    state.firstName,
-                    state.lastName,
-                    state.bio,
-                    state.whyVoteMe,
-                  ])
-                      ? null
-                      : () => context.read<UserEditProfileCubit>().onSubmit(),
-                  child: const Text('Save'),
+                return SubmitButton(
+                  disabled: Formz.isPure([
+                        state.firstName,
+                        state.lastName,
+                        state.bio,
+                        state.whyVoteMe,
+                      ]) ||
+                      state.status.isInProgress,
+                  isLoading: state.status.isInProgress,
+                  foregroundColor: themeData.colorScheme.successColor,
+                  onPressed: () =>
+                      context.read<UserEditProfileCubit>().onSubmit(),
                 );
               },
             ),

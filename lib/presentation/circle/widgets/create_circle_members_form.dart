@@ -73,15 +73,19 @@ class CreateCircleMembersForm extends StatelessWidget {
                   }
                 },
                 builder: (context, state) {
-                  return ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        foregroundColor: themeData.colorScheme.onSecondary,
-                        backgroundColor: themeData.colorScheme.secondary),
-                    onPressed: state.private.value
-                        ? null
-                        : () =>
-                            context.read<CircleCreateFormCubit>().onSubmit(),
-                    child: const Text('Create'),
+                  return SubmitButton(
+                    disabled: Formz.isPure([
+                      state.name,
+                      state.description,
+                      state.private,
+                    ]) ||
+                        state.status.isInProgress || state.private.value,
+                    isLoading: state.status.isInProgress,
+                    foregroundColor: themeData.colorScheme.onSecondary,
+                    backgroundColor: themeData.colorScheme.secondary,
+                    label: 'Create',
+                    onPressed: () =>
+                        context.read<CircleCreateFormCubit>().onSubmit(),
                   );
                 },
               ),

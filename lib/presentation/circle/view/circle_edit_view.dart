@@ -9,7 +9,7 @@ import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/presentation/circle/cubit/circle_edit_form_cubit.dart';
 import 'package:vote_your_face/presentation/circle/view/circle_edit_body.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
-import 'package:vote_your_face/presentation/shared/widgets/snackbar/snackbar.dart';
+import 'package:vote_your_face/presentation/shared/shared.dart';
 import 'package:vote_your_face/theme.dart';
 
 class CircleEditView extends StatelessWidget {
@@ -63,23 +63,21 @@ class CircleEditView extends StatelessWidget {
               }
             },
             builder: (context, state) {
-              return TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: themeData.colorScheme.successColor,
-                ),
-                onPressed: Formz.isPure([
-                  state.name,
-                  state.description,
-                  state.dateFrom,
-                  state.timeFrom,
-                  state.dateUntil,
-                  state.timeUntil,
-                ])
-                    ? null
-                    : () => context
-                        .read<CircleEditFormCubit>()
-                        .onSubmit(context.read<CircleBloc>().state.circle.id),
-                child: const Text('Save'),
+              return SubmitButton(
+                disabled: Formz.isPure([
+                      state.name,
+                      state.description,
+                      state.dateFrom,
+                      state.timeFrom,
+                      state.dateUntil,
+                      state.timeUntil,
+                    ]) ||
+                    state.status.isLoading,
+                isLoading: state.status.isLoading,
+                foregroundColor: themeData.colorScheme.successColor,
+                onPressed: () => context
+                    .read<CircleEditFormCubit>()
+                    .onSubmit(context.read<CircleBloc>().state.circle.id),
               );
             },
           ),
