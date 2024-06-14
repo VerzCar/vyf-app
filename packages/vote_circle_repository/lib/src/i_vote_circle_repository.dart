@@ -26,4 +26,6 @@ abstract class IVoteCircleRepository {
   Future<void> deleteCircle(
     int circleId,
   );
+
+  Future<bool> eligibleToBeInCircle(int circleId);
 }

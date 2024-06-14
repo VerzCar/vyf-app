@@ -64,6 +64,10 @@ class AppRouter extends $AppRouter {
                       ),
                     ],
                   ),
+                  AutoRoute(
+                    path: 'not-eligible',
+                    page: CircleNotEligibleRoute.page,
+                  ),
                 ]),
             AutoRoute(
               path: 'rankings',

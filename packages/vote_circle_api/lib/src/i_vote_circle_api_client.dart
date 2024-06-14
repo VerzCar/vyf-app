@@ -24,4 +24,6 @@ abstract class IVoteCircleApiClient {
   );
 
   Future<void> deleteCircle(int circleId);
+
+  Future<bool> eligibleToBeInCircle(int circleId);
 }

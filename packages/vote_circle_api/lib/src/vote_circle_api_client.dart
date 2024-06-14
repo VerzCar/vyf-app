@@ -321,6 +321,38 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     }
   }
 
+  @override
+  Future<bool> eligibleToBeInCircle(int circleId) async {
+    var logger = Logger();
+
+    try {
+      final res = await http.get(
+        _uri(path: 'circle/$circleId/eligible'),
+        headers: _headers(),
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('querying eligible state of circle server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<bool>.fromJson(jsonDecode(res.body));
+
+      if (res.statusCode == HttpStatus.ok) {
+        return apiResponse.data;
+      }
+
+      logger.e('querying eligible state of circle failed: $apiResponse');
+      throw QueryCircleFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Uri _uri({String? path, Map<String, dynamic>? queryParameters}) {
     final httpsUri = Uri(
       scheme: 'https',

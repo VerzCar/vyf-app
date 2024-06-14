@@ -86,4 +86,11 @@ class VoteCircleRepository implements IVoteCircleRepository {
       circleId,
     );
   }
+
+  @override
+  Future<bool> eligibleToBeInCircle(int circleId) async {
+    return await _voteCircleApi.eligibleToBeInCircle(
+      circleId,
+    );
+  }
 }
