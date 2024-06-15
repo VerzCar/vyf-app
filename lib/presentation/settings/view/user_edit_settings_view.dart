@@ -24,44 +24,7 @@ class UserEditSettingsView extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: BlocConsumer<UserEditProfileCubit, UserEditProfileState>(
-              listenWhen: (previous, current) =>
-                  previous.status != current.status,
-              listener: (context, state) {
-                if (state.status.isSuccess) {
-                  BlocProvider.of<UserBloc>(context).add(UserUpdated(
-                    user: state.updatedUser!,
-                  ));
-
-                  showSuccessSnackbar(
-                    context,
-                    'Saved successfully',
-                  );
-                }
-
-                if (state.status.isFailure) {
-                  showErrorSnackbar(
-                    context,
-                    'Could not save. Try again.',
-                  );
-                }
-              },
-              builder: (context, state) {
-                return SubmitButton(
-                  disabled: Formz.isPure([
-                        state.firstName,
-                        state.lastName,
-                        state.bio,
-                        state.whyVoteMe,
-                      ]) ||
-                      state.status.isInProgress,
-                  isLoading: state.status.isInProgress,
-                  foregroundColor: themeData.colorScheme.successColor,
-                  onPressed: () =>
-                      context.read<UserEditProfileCubit>().onSubmit(),
-                );
-              },
-            ),
+            child: _submitActionButton(themeData),
           ),
         ],
       ),
@@ -131,6 +94,45 @@ class UserEditSettingsView extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _submitActionButton(ThemeData themeData) {
+    return BlocConsumer<UserEditProfileCubit, UserEditProfileState>(
+      listenWhen: (previous, current) => previous.status != current.status,
+      listener: (context, state) {
+        if (state.status.isSuccess) {
+          BlocProvider.of<UserBloc>(context).add(UserUpdated(
+            user: state.updatedUser!,
+          ));
+
+          showSuccessSnackbar(
+            context,
+            'Saved successfully',
+          );
+        }
+
+        if (state.status.isFailure) {
+          showErrorSnackbar(
+            context,
+            'Could not save. Try again.',
+          );
+        }
+      },
+      builder: (context, state) {
+        return SubmitButton(
+          disabled: Formz.isPure([
+                state.firstName,
+                state.lastName,
+                state.bio,
+                state.whyVoteMe,
+              ]) ||
+              state.status.isInProgress,
+          isLoading: state.status.isInProgress,
+          foregroundColor: themeData.colorScheme.successColor,
+          onPressed: () => context.read<UserEditProfileCubit>().onSubmit(),
+        );
+      },
     );
   }
 }

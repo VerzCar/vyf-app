@@ -72,11 +72,13 @@ class VyfTextFormField extends StatelessWidget {
             border: const OutlineInputBorder(),
             errorText: showError ? errorText : null,
             errorMaxLines: 2,
+            //errorStyle: TextStyle(fontSize: 0),
             icon: icon,
             helperText: helperText,
             hintText: hintText,
           ),
         ),
+        SizedBox(height: 50,)
       ],
     );
   }

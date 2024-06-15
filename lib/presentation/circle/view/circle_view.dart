@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
+import 'package:vote_your_face/application/user/bloc/user_bloc.dart';
 import 'package:vote_your_face/presentation/circle/view/circle_body.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
 
@@ -21,20 +23,7 @@ class CircleView extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: BlocBuilder<CircleBloc, CircleState>(
-              builder: (context, state) {
-                return TextButton(
-                  style: TextButton.styleFrom(
-                    foregroundColor: themeData.colorScheme.secondary,
-                  ),
-                  child: const Text('Edit'),
-                  onPressed: () => state.status == StatusIndicator.success
-                      ? context.router
-                          .push(CircleEditRoute(circleId: state.circle.id))
-                      : null,
-                );
-              },
-            ),
+            child: _editActionButton(themeData),
           )
         ],
       ),
@@ -51,6 +40,31 @@ class CircleView extends StatelessWidget {
               return const Center(child: Text('Error'));
           }
         }),
+      ),
+    );
+  }
+
+  Widget _editActionButton(ThemeData themeData) {
+    return BlocSelector<UserBloc, UserState, String>(
+      selector: (state) => state.user.identityId,
+      builder: (context, identityId) =>
+          BlocSelector<CircleBloc, CircleState, int?>(
+        selector: (state) =>
+            CircleSelector.canEdit(state, identityId) ? state.circle.id : null,
+        builder: (context, circleId) {
+          return circleId != null
+              ? TextButton(
+                  style: TextButton.styleFrom(
+                    foregroundColor: themeData.colorScheme.secondary,
+                  ),
+                  child: const Text('Edit'),
+                  onPressed: () =>
+                      context.router.push(CircleEditRoute(circleId: circleId!)))
+              : const SizedBox(
+                  width: 0,
+                  height: 0,
+                );
+        },
       ),
     );
   }

@@ -53,6 +53,7 @@ class AuthenticationBloc
     try {
       await _authenticationRepository.logOut();
     } catch (_) {
+      if (isClosed) return;
       return null;
     }
   }

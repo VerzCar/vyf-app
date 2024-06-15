@@ -39,6 +39,7 @@ class _CircleTimeInputState extends State<CircleTimeInput> {
                 'CreateCircleDurationForm_Time${widget.range.toString()}Field'),
             controller: _controller,
             onTap: () => widget.onTap(),
+            labelText: 'test',
             readOnly: true,
             textAlign: TextAlign.center,
             showError: !state.timeFrom.isPure && state.timeFrom.isNotValid,

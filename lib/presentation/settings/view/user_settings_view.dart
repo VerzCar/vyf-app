@@ -8,26 +8,29 @@ class UserSettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(
         actions: [
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: TextButton(
-              style: TextButton.styleFrom(
-                foregroundColor: themeData.colorScheme.secondary,
-              ),
-              onPressed: () => context.pushRoute(const UserEditSettingsRoute()),
-              child: const Text('Edit'),
-            ),
+            child: _editActionButton(context),
           ),
         ],
       ),
       body: const SafeArea(
         child: UserSettingsBody(),
       ),
+    );
+  }
+
+  Widget _editActionButton(BuildContext context) {
+    final themeData = Theme.of(context);
+    return TextButton(
+      style: TextButton.styleFrom(
+        foregroundColor: themeData.colorScheme.secondary,
+      ),
+      onPressed: () => context.pushRoute(const UserEditSettingsRoute()),
+      child: const Text('Edit'),
     );
   }
 }

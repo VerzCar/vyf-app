@@ -34,6 +34,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       ));
     } catch (e) {
       print(e);
+      if (isClosed) return;
       emit(state.copyWith(
         status: StatusIndicator.failure,
       ));

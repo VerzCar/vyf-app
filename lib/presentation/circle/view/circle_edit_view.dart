@@ -23,63 +23,9 @@ class CircleEditView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Edit Circle'),
         actions: [
-          BlocConsumer<CircleEditFormCubit, CircleEditFormState>(
-            listenWhen: (previous, current) =>
-                previous.status != current.status,
-            listener: (context, state) {
-              if (state.status.isSuccessful) {
-                BlocProvider.of<CircleBloc>(context).add(CircleUpdated(
-                  circle: state.updatedCircle!,
-                ));
-                BlocProvider.of<circles_bloc.CirclesBloc>(context)
-                    .add(circles_bloc.CircleUpdated(
-                  circle: state.updatedCircle!,
-                ));
-
-                showSuccessSnackbar(
-                  context,
-                  'Saved successfully',
-                );
-              }
-
-              if (state.status.isDeletedSuccessful) {
-                BlocProvider.of<circles_bloc.CirclesBloc>(context)
-                    .add(circles_bloc.CircleDeleted(
-                  circleId: state.deletedCircleId!,
-                ));
-
-                showSuccessSnackbar(
-                  context,
-                  'Deleted circle successfully',
-                );
-                context.router.navigate(const CirclesRoute());
-              }
-
-              if (state.status.isFailure) {
-                showErrorSnackbar(
-                  context,
-                  'Could not save. Try again.',
-                );
-              }
-            },
-            builder: (context, state) {
-              return SubmitButton(
-                disabled: Formz.isPure([
-                      state.name,
-                      state.description,
-                      state.dateFrom,
-                      state.timeFrom,
-                      state.dateUntil,
-                      state.timeUntil,
-                    ]) ||
-                    state.status.isLoading,
-                isLoading: state.status.isLoading,
-                foregroundColor: themeData.colorScheme.successColor,
-                onPressed: () => context
-                    .read<CircleEditFormCubit>()
-                    .onSubmit(context.read<CircleBloc>().state.circle.id),
-              );
-            },
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: _submitActionButton(themeData),
           ),
         ],
       ),
@@ -97,6 +43,66 @@ class CircleEditView extends StatelessWidget {
           }
         }),
       ),
+    );
+  }
+
+  Widget _submitActionButton(ThemeData themeData) {
+    return BlocConsumer<CircleEditFormCubit, CircleEditFormState>(
+      listenWhen: (previous, current) => previous.status != current.status,
+      listener: (context, state) {
+        if (state.status.isSuccessful) {
+          BlocProvider.of<CircleBloc>(context).add(CircleUpdated(
+            circle: state.updatedCircle!,
+          ));
+          BlocProvider.of<circles_bloc.CirclesBloc>(context)
+              .add(circles_bloc.CircleUpdated(
+            circle: state.updatedCircle!,
+          ));
+
+          showSuccessSnackbar(
+            context,
+            'Saved successfully',
+          );
+        }
+
+        if (state.status.isDeletedSuccessful) {
+          BlocProvider.of<circles_bloc.CirclesBloc>(context)
+              .add(circles_bloc.CircleDeleted(
+            circleId: state.deletedCircleId!,
+          ));
+
+          showSuccessSnackbar(
+            context,
+            'Deleted circle successfully',
+          );
+          context.router.navigate(const CirclesRoute());
+        }
+
+        if (state.status.isFailure) {
+          showErrorSnackbar(
+            context,
+            'Could not save. Try again.',
+          );
+        }
+      },
+      builder: (context, state) {
+        return SubmitButton(
+          disabled: Formz.isPure([
+                state.name,
+                state.description,
+                state.dateFrom,
+                state.timeFrom,
+                state.dateUntil,
+                state.timeUntil,
+              ]) ||
+              state.status.isLoading,
+          isLoading: state.status.isLoading,
+          foregroundColor: themeData.colorScheme.successColor,
+          onPressed: () => context
+              .read<CircleEditFormCubit>()
+              .onSubmit(context.read<CircleBloc>().state.circle.id),
+        );
+      },
     );
   }
 }
