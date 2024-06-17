@@ -93,4 +93,26 @@ class VoteCircleRepository implements IVoteCircleRepository {
       circleId,
     );
   }
+
+  @override
+  Future<Candidate> joinCircleAsCandidate(int circleId) async {
+    final res = await _voteCircleApi.joinCircleAsCandidate(circleId);
+    return Candidate.fromApiCandidate(res);
+  }
+
+  @override
+  Future<Voter> joinCircleAsVoter(int circleId) async {
+    final res = await _voteCircleApi.joinCircleAsVoter(circleId);
+    return Voter.fromApiVoter(res);
+  }
+
+  @override
+  Future<String> leaveCircleAsCandidate(int circleId) async {
+    return await _voteCircleApi.leaveCircleAsCandidate(circleId);
+  }
+
+  @override
+  Future<String> leaveCircleAsVoter(int circleId) async {
+    return await _voteCircleApi.leaveCircleAsVoter(circleId);
+  }
 }

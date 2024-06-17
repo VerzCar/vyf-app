@@ -73,3 +73,19 @@ class DeleteCircleFailure extends ApiFailure {
     super.status,
   });
 }
+
+class JoinCircleFailure extends ApiFailure {
+  JoinCircleFailure({
+    required super.statusCode,
+    super.msg,
+    super.status,
+  });
+}
+
+class LeaveCircleFailure extends ApiFailure {
+  LeaveCircleFailure({
+    required super.statusCode,
+    super.msg,
+    super.status,
+  });
+}

@@ -353,6 +353,136 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     }
   }
 
+  @override
+  Future<Candidate> joinCircleAsCandidate(int circleId) async {
+    var logger = Logger();
+
+    try {
+      final res = await http.post(
+        _uri(path: 'circle-candidates/$circleId/join'),
+        headers: _headers(),
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('join circle as candidate server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<Map<String, dynamic>>.fromJson(
+          jsonDecode(res.body) as Map<String, dynamic>);
+
+      if (res.statusCode == HttpStatus.ok) {
+        return Candidate.fromJson(apiResponse.data);
+      }
+
+      logger.e('join circle as candidate failed: $apiResponse');
+      throw JoinCircleFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Voter> joinCircleAsVoter(int circleId) async {
+    var logger = Logger();
+
+    try {
+      final res = await http.post(
+        _uri(path: 'circle-voters/$circleId/join'),
+        headers: _headers(),
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('join circle as voter server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<Map<String, dynamic>>.fromJson(
+          jsonDecode(res.body) as Map<String, dynamic>);
+
+      if (res.statusCode == HttpStatus.ok) {
+        return Voter.fromJson(apiResponse.data);
+      }
+
+      logger.e('join circle as voter failed: $apiResponse');
+      throw JoinCircleFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> leaveCircleAsCandidate(int circleId) async {
+    var logger = Logger();
+
+    try {
+      final res = await http.post(
+        _uri(path: 'circle-candidates/$circleId/leave'),
+        headers: _headers(),
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('leave circle as candidate server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<String>.fromJson(jsonDecode(res.body));
+
+      if (res.statusCode == HttpStatus.ok) {
+        return apiResponse.data;
+      }
+
+      logger.e('leave circle as candidate failed: $apiResponse');
+      throw LeaveCircleFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> leaveCircleAsVoter(int circleId) async {
+    var logger = Logger();
+
+    try {
+      final res = await http.post(
+        _uri(path: 'circle-voters/$circleId/leave'),
+        headers: _headers(),
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('leave circle as voter server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<String>.fromJson(jsonDecode(res.body));
+
+      if (res.statusCode == HttpStatus.ok) {
+        return apiResponse.data;
+      }
+
+      logger.e('leave circle as voter failed: $apiResponse');
+      throw LeaveCircleFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Uri _uri({String? path, Map<String, dynamic>? queryParameters}) {
     final httpsUri = Uri(
       scheme: 'https',

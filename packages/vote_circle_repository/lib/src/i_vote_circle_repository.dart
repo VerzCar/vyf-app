@@ -28,4 +28,12 @@ abstract class IVoteCircleRepository {
   );
 
   Future<bool> eligibleToBeInCircle(int circleId);
+
+  Future<Voter> joinCircleAsVoter(int circleId);
+
+  Future<Candidate> joinCircleAsCandidate(int circleId);
+
+  Future<String> leaveCircleAsVoter(int circleId);
+
+  Future<String> leaveCircleAsCandidate(int circleId);
 }
