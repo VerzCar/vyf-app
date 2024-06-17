@@ -76,10 +76,10 @@ class CircleMemberActionSheet extends StatelessWidget {
                         return ListTile(
                           leading: const Icon(Icons.group_add_outlined),
                           title: const Text('Join as candidate'),
-                          trailing: state.status.isLoading
+                          trailing: state.status.isCandidateActionLoading
                               ? _trailingLoadingSpinner()
                               : null,
-                          onTap: state.status.isLoading
+                          onTap: state.status.isCandidateActionLoading
                               ? null
                               : () => context
                                   .read<CircleMemberCubit>()
@@ -96,10 +96,10 @@ class CircleMemberActionSheet extends StatelessWidget {
                         return ListTile(
                           leading: const Icon(Icons.group_remove_outlined),
                           title: const Text('Leave as candidate'),
-                          trailing: state.status.isLoading
+                          trailing: state.status.isCandidateActionLoading
                               ? _trailingLoadingSpinner()
                               : null,
-                          onTap: state.status.isLoading
+                          onTap: state.status.isCandidateActionLoading
                               ? null
                               : () => context
                                   .read<CircleMemberCubit>()
@@ -135,10 +135,10 @@ class CircleMemberActionSheet extends StatelessWidget {
                       return ListTile(
                         leading: const Icon(Icons.add_task_outlined),
                         title: const Text('Join as voter'),
-                        trailing: state.status.isLoading
+                        trailing: state.status.isVoterActionLoading
                             ? _trailingLoadingSpinner()
                             : null,
-                        onTap: state.status.isLoading
+                        onTap: state.status.isVoterActionLoading
                             ? null
                             : () => context
                                 .read<CircleMemberCubit>()
@@ -155,10 +155,10 @@ class CircleMemberActionSheet extends StatelessWidget {
                       return ListTile(
                         leading: const Icon(Icons.remove_done_outlined),
                         title: const Text('Leave as voter'),
-                        trailing: state.status.isLoading
+                        trailing: state.status.isVoterActionLoading
                             ? _trailingLoadingSpinner()
                             : null,
-                        onTap: state.status.isLoading
+                        onTap: state.status.isVoterActionLoading
                             ? null
                             : () => context
                                 .read<CircleMemberCubit>()

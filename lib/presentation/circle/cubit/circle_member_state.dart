@@ -1,24 +1,44 @@
 part of 'circle_member_cubit.dart';
 
-extension CircleMemberStateStatus on StatusIndicator {
-  bool get isInitial => this == StatusIndicator.initial;
+enum CircleMemberStateStatus {
+  initial,
+  loadingCandidate,
+  loadingVoter,
+  successCandidate,
+  successVoter,
+  failureCandidate,
+  failureVoter,
+}
 
-  bool get isLoading => this == StatusIndicator.loading;
+extension CircleMemberStateStatusX on CircleMemberStateStatus {
+  bool get isInitial => this == CircleMemberStateStatus.initial;
 
-  bool get isSuccessful => this == StatusIndicator.success;
+  bool get isCandidateActionLoading =>
+      this == CircleMemberStateStatus.loadingCandidate;
 
-  bool get isFailure => this == StatusIndicator.failure;
+  bool get isVoterActionLoading => this == CircleMemberStateStatus.loadingVoter;
+
+  bool get isCandidateActionSuccessful =>
+      this == CircleMemberStateStatus.successCandidate;
+
+  bool get isVoterActionSuccessful =>
+      this == CircleMemberStateStatus.successVoter;
+
+  bool get isCandidateActionFailure =>
+      this == CircleMemberStateStatus.failureCandidate;
+
+  bool get isVoterActionFailure => this == CircleMemberStateStatus.failureVoter;
 }
 
 final class CircleMemberState extends Equatable {
   const CircleMemberState({
-    this.status = StatusIndicator.initial,
+    this.status = CircleMemberStateStatus.initial,
   });
 
-  final StatusIndicator status;
+  final CircleMemberStateStatus status;
 
   CircleMemberState copyWith({
-    StatusIndicator? status,
+    CircleMemberStateStatus? status,
   }) {
     return CircleMemberState(
       status: status ?? this.status,

@@ -225,7 +225,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
       final result = await Amplify.Auth.signUp(
           username: credentials.email,
           password: credentials.password,
-          options: CognitoSignUpOptions(userAttributes: userAttributes));
+          options: SignUpOptions(userAttributes: userAttributes));
 
       final loginCredentials = LoginCredentials(
         username: credentials.email,
