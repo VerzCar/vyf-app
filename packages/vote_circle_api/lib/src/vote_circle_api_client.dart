@@ -424,7 +424,7 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     var logger = Logger();
 
     try {
-      final res = await http.post(
+      final res = await http.delete(
         _uri(path: 'circle-candidates/$circleId/leave'),
         headers: _headers(),
       );
@@ -453,10 +453,11 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
 
   @override
   Future<String> leaveCircleAsVoter(int circleId) async {
+    return Future.delayed(const Duration(seconds: 5), () => '');
     var logger = Logger();
 
     try {
-      final res = await http.post(
+      final res = await http.delete(
         _uri(path: 'circle-voters/$circleId/leave'),
         headers: _headers(),
       );
