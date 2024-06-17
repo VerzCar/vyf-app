@@ -34,10 +34,6 @@ class AppRouter extends $AppRouter {
                     page: CircleEditRoute.page,
                   ),
                   AutoRoute(
-                    path: ':circleId/ranking',
-                    page: RankingRoute.page,
-                  ),
-                  AutoRoute(
                     path: ':circleId/members',
                     page: MembersRoute.page,
                     children: [
@@ -72,6 +68,7 @@ class AppRouter extends $AppRouter {
                 AutoRoute(
                   path: '',
                   page: RankingsRoute.page,
+                  initial: true,
                 ),
                 AutoRoute(
                   path: ':circleId',

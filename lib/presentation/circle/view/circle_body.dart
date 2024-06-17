@@ -64,7 +64,7 @@ class CircleBody extends StatelessWidget {
                         foregroundColor: themeData.colorScheme.secondary,
                       ),
                       onPressed: () {
-                        context.router.push(RankingRoute(circleId: circle.id));
+                        context.router.navigateNamed('rankings/${circle.id}');
                       },
                       child: const Text('Go to Rankings'),
                     ),
