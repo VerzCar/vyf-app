@@ -1,15 +1,5 @@
 part of 'members_bloc.dart';
 
-extension MembersStateStatus on StatusIndicator {
-  bool get isInitial => this == StatusIndicator.initial;
-
-  bool get isLoading => this == StatusIndicator.loading;
-
-  bool get isSuccessful => this == StatusIndicator.success;
-
-  bool get isFailure => this == StatusIndicator.failure;
-}
-
 final class MembersState extends Equatable {
   const MembersState({
     this.status = StatusIndicator.initial,

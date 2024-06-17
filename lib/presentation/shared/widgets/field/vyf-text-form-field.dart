@@ -78,7 +78,6 @@ class VyfTextFormField extends StatelessWidget {
             hintText: hintText,
           ),
         ),
-        SizedBox(height: 50,)
       ],
     );
   }

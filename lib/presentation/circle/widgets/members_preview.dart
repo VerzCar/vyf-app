@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/members/bloc/members_bloc.dart';
+import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
@@ -31,7 +32,7 @@ class MembersPreview extends StatelessWidget {
         )),
       child: BlocBuilder<MembersBloc, MembersState>(
         builder: (context, state) {
-          if (!MembersStateStatus(state.status).isSuccessful) {
+          if (!state.status.isSuccessful) {
             return _buildMembersPlaceholder();
           }
           return _buildMembersPreview(
@@ -74,7 +75,7 @@ class MembersPreview extends StatelessWidget {
             circleVoter,
             circleCandidate,
           ),
-          const SizedBox(width: 20.0),
+          const SizedBox(width: 10.0),
           TextButton(
             style: TextButton.styleFrom(
               foregroundColor: themeData.colorScheme.secondary,

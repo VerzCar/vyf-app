@@ -1,15 +1,5 @@
 part of 'circles_bloc.dart';
 
-extension CirclesStatus on StatusIndicator {
-  bool get isInitial => this == StatusIndicator.initial;
-
-  bool get isLoading => this == StatusIndicator.loading;
-
-  bool get isSuccessful => this == StatusIndicator.success;
-
-  bool get isFailure => this == StatusIndicator.failure;
-}
-
 final class CirclesState extends Equatable {
   const CirclesState({
     this.status = StatusIndicator.initial,

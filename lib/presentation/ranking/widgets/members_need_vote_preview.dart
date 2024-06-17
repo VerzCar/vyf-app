@@ -4,6 +4,7 @@ import 'package:user_repository/user_repository.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/members/bloc/members_bloc.dart';
 import 'package:vote_your_face/application/members/members.dart';
+import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
@@ -31,7 +32,7 @@ class MembersNeedVotePreview extends StatelessWidget {
         )),
       child: BlocBuilder<MembersBloc, MembersState>(
         builder: (context, state) {
-          if (!MembersStateStatus(state.status).isSuccessful) {
+          if (!state.status.isSuccessful) {
             return SizedBox(
               width: _avatarSize.preSize.width,
               height: _avatarSize.preSize.height,

@@ -7,6 +7,7 @@ import 'package:user_repository/user_repository.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/injection.dart';
+import 'package:vote_your_face/presentation/circle/widgets/circle_member_action_button.dart';
 import 'package:vote_your_face/presentation/circle/widgets/members_preview.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
@@ -55,14 +56,20 @@ class CircleBody extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextButton(
-                  style: TextButton.styleFrom(
-                    foregroundColor: themeData.colorScheme.secondary,
-                  ),
-                  onPressed: () {
-                    context.router.push(RankingRoute(circleId: circle.id));
-                  },
-                  child: const Text('Go to Rankings'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        foregroundColor: themeData.colorScheme.secondary,
+                      ),
+                      onPressed: () {
+                        context.router.push(RankingRoute(circleId: circle.id));
+                      },
+                      child: const Text('Go to Rankings'),
+                    ),
+                    const CircleMemberActionButton(),
+                  ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
