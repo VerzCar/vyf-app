@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,9 +17,24 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
         super(const MembersState()) {
     on<CircleMembersInitialLoaded>(_onCircleMembersInitialLoaded);
     on<RankingMembersInitialLoaded>(_onRankingMembersInitialLoaded);
+    on<CircleCandidateChanged>(_onCircleCandidateChanged);
+
+    _circleCandidateChangeEventSubscription =
+        _voteCircleRepository.circleCandidateChangedEvent.listen(
+      (event) => add(CircleCandidateChanged(changeEvent: event)),
+    );
   }
 
   final IVoteCircleRepository _voteCircleRepository;
+  late StreamSubscription<CircleCandidateChangeEvent>
+      _circleCandidateChangeEventSubscription;
+
+  @override
+  Future<void> close() {
+    _circleCandidateChangeEventSubscription.cancel();
+    _voteCircleRepository.dispose();
+    return super.close();
+  }
 
   void _onCircleMembersInitialLoaded(
     CircleMembersInitialLoaded event,
@@ -81,6 +98,69 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
       print(e);
       if (isClosed) return;
       emit(state.copyWith(status: StatusIndicator.failure));
+    }
+  }
+
+  void _onCircleCandidateChanged(
+    CircleCandidateChanged event,
+    Emitter<MembersState> emit,
+  ) {
+    emit(state.copyWith(status: StatusIndicator.loading));
+
+    try {
+      final changeEvent = event.changeEvent;
+
+      switch (changeEvent.operation) {
+        case EventOperation.created:
+          {
+            final circleCandidate = state.circleCandidate;
+            circleCandidate.candidates.add(changeEvent.candidate);
+
+            emit(state.copyWith(
+              circleCandidate: circleCandidate,
+              status: StatusIndicator.success,
+            ));
+            break;
+          }
+        case EventOperation.updated:
+          {
+            final circleCandidate = state.circleCandidate;
+            final candidateIndex = circleCandidate.candidates.indexWhere(
+                (candidate) => candidate.id == changeEvent.candidate.id);
+
+            if (candidateIndex == -1) {
+              break;
+            }
+
+            circleCandidate.candidates[candidateIndex] = changeEvent.candidate;
+
+            emit(state.copyWith(
+              circleCandidate: circleCandidate,
+              status: StatusIndicator.success,
+            ));
+            break;
+          }
+        case EventOperation.deleted:
+          {
+            final circleCandidate = state.circleCandidate;
+            circleCandidate.candidates.removeWhere(
+                (candidate) => candidate.id == changeEvent.candidate.id);
+
+            emit(state.copyWith(
+              circleCandidate: circleCandidate,
+              status: StatusIndicator.success,
+            ));
+            break;
+          }
+        case EventOperation.repositioned:
+          {
+            break;
+          }
+      }
+    } catch (e) {
+      print(e);
+      if (isClosed) return;
+      emit(state.copyWith(status: StatusIndicator.success));
     }
   }
 }

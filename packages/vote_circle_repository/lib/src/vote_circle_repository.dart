@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:ably_service/ably_service.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:vote_circle_api/vote_circle_api.dart' as vote_circle_api;
 
@@ -8,11 +11,21 @@ class VoteCircleRepository implements IVoteCircleRepository {
   VoteCircleRepository({
     required IAuthenticationRepository authenticationRepository,
     vote_circle_api.IVoteCircleApiClient? voteCircleApi,
-  }) : _voteCircleApi = voteCircleApi ??
+    IAblyServiceClient? ablyService,
+  })  : _voteCircleApi = voteCircleApi ??
             vote_circle_api.VoteCircleApiClient(
-                authenticationRepository: authenticationRepository);
+              authenticationRepository: authenticationRepository,
+            ),
+        _ablyService = ablyService ??
+            AblyServiceClient(
+              authenticationRepository: authenticationRepository,
+            );
 
   final vote_circle_api.IVoteCircleApiClient _voteCircleApi;
+  final IAblyServiceClient _ablyService;
+  final StreamController<CircleCandidateChangeEvent>
+      _candidateChangedEventController =
+      StreamController<CircleCandidateChangeEvent>();
 
   @override
   Future<Circle> circle(int id) async {
@@ -114,5 +127,24 @@ class VoteCircleRepository implements IVoteCircleRepository {
   @override
   Future<String> leaveCircleAsVoter(int circleId) async {
     return await _voteCircleApi.leaveCircleAsVoter(circleId);
+  }
+
+  @override
+  void subscribeToCircleCandidateChangedEvent(int circleId) {
+    final channel = _ablyService.channel('circle-$circleId:candidate');
+    final stream = channel
+        .subscribe(name: 'circle-candidate-changed')
+        .map((event) => CircleCandidateChangeEvent.fromEventData(event.data));
+    _candidateChangedEventController.addStream(stream);
+  }
+
+  @override
+  Stream<CircleCandidateChangeEvent> get circleCandidateChangedEvent async* {
+    yield* _candidateChangedEventController.stream;
+  }
+
+  @override
+  void dispose() {
+    _candidateChangedEventController.close();
   }
 }

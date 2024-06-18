@@ -30,6 +30,19 @@ final class RankingMembersInitialLoaded extends MembersEvent {
 
   @override
   List<Object> get props => [
-    circleId,
-  ];
+        circleId,
+      ];
+}
+
+final class CircleCandidateChanged extends MembersEvent {
+  const CircleCandidateChanged({
+    required this.changeEvent,
+  });
+
+  final CircleCandidateChangeEvent changeEvent;
+
+  @override
+  List<Object> get props => [
+        changeEvent,
+      ];
 }

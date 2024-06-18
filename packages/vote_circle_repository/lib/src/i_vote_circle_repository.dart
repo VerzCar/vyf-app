@@ -36,4 +36,10 @@ abstract class IVoteCircleRepository {
   Future<String> leaveCircleAsVoter(int circleId);
 
   Future<String> leaveCircleAsCandidate(int circleId);
+
+  void subscribeToCircleCandidateChangedEvent(int circleId);
+
+  Stream<CircleCandidateChangeEvent> get circleCandidateChangedEvent;
+
+  void dispose();
 }

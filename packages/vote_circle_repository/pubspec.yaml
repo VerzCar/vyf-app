@@ -16,6 +16,8 @@ dependencies:
     path: ../vote_circle_api
   authentication_repository:
     path: ../authentication_repository
+  ably_service:
+    path: ../ably_service
   const_date_time: ^1.1.0
 
 dev_dependencies:

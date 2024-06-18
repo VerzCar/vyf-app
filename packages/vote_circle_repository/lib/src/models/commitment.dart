@@ -17,6 +17,19 @@ Commitment commitmentFromApiCommitment(vote_circle_api.Commitment commitment) {
   }
 }
 
+Commitment commitmentFromEvent(String commitment) {
+  switch (commitment) {
+    case 'OPEN':
+      return Commitment.open;
+    case 'COMMITTED':
+      return Commitment.committed;
+    case 'REJECTED':
+      return Commitment.rejected;
+    default:
+      throw Exception('casting of commitment event failed.');
+  }
+}
+
 vote_circle_api.Commitment commitmentToApiCommitment(Commitment commitment) {
   switch (commitment) {
     case Commitment.open:

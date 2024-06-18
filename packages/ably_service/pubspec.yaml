@@ -1,0 +1,16 @@
+name: ably_service
+description: Ably connection service
+version: 0.0.1
+homepage: ''
+
+environment:
+  sdk: '>=3.4.3 <4.0.0'
+
+dependencies:
+  logger: ^2.3.0
+  ably_flutter: ^1.2.32
+  authentication_repository:
+    path: ../authentication_repository
+
+dev_dependencies:
+  flutter_lints: ^4.0.0
