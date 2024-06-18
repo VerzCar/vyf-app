@@ -28,6 +28,11 @@ class VoteCircleRepository implements IVoteCircleRepository {
       StreamController<CircleCandidateChangeEvent>();
   StreamSubscription<CircleCandidateChangeEvent>?
       _candidateChangedEventSubscription;
+  final StreamController<CircleVoterChangeEvent>
+  _voterChangedEventController =
+  StreamController<CircleVoterChangeEvent>();
+  StreamSubscription<CircleVoterChangeEvent>?
+  _voterChangedEventSubscription;
 
   @override
   Future<Circle> circle(int id) async {
@@ -135,7 +140,7 @@ class VoteCircleRepository implements IVoteCircleRepository {
   void subscribeToCircleCandidateChangedEvent(int circleId) {
     try {
       if (_candidateChangedEventSubscription != null) {
-       _candidateChangedEventSubscription?.cancel();
+        _candidateChangedEventSubscription?.cancel();
       }
 
       final channel = _ablyService.channel('circle-$circleId:candidate');
@@ -150,13 +155,38 @@ class VoteCircleRepository implements IVoteCircleRepository {
   }
 
   @override
+  void subscribeToCircleVoterChangedEvent(int circleId) {
+    try {
+      if (_voterChangedEventSubscription != null) {
+        _voterChangedEventSubscription?.cancel();
+      }
+
+      final channel = _ablyService.channel('circle-$circleId:voter');
+      _voterChangedEventSubscription = channel
+          .subscribe(name: 'circle-voter-changed')
+          .map((event) => CircleVoterChangeEvent.fromEventData(event.data))
+          .listen((data) => _voterChangedEventController.add(data));
+    } catch (e) {
+      print('subscribeToCircleVoterChangedEvent ERROR +++++++++++');
+      print(e);
+    }
+  }
+
+  @override
   Stream<CircleCandidateChangeEvent> get circleCandidateChangedEvent async* {
     yield* _candidateChangedEventController.stream;
   }
 
   @override
+  Stream<CircleVoterChangeEvent> get circleVoterChangedEvent async* {
+    yield* _voterChangedEventController.stream;
+  }
+
+  @override
   void dispose() {
     _candidateChangedEventController.close();
+    _voterChangedEventController.close();
     _candidateChangedEventSubscription?.cancel();
+    _voterChangedEventSubscription?.cancel();
   }
 }

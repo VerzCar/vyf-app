@@ -47,7 +47,7 @@ class CircleMemberCubit extends Cubit<CircleMemberState> {
       print(e);
       if (isClosed) return;
       emit(state.copyWith(
-        status: CircleMemberStateStatus.failureCandidate,
+        status: CircleMemberStateStatus.failureVoter,
       ));
     }
   }

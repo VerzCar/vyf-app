@@ -18,20 +18,28 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
     on<CircleMembersInitialLoaded>(_onCircleMembersInitialLoaded);
     on<RankingMembersInitialLoaded>(_onRankingMembersInitialLoaded);
     on<CircleCandidateChanged>(_onCircleCandidateChanged);
+    on<CircleVoterChanged>(_onCircleVoterChanged);
 
     _circleCandidateChangeEventSubscription =
         _voteCircleRepository.circleCandidateChangedEvent.listen(
       (event) => add(CircleCandidateChanged(changeEvent: event)),
+    );
+    _circleVoterChangeEventSubscription =
+        _voteCircleRepository.circleVoterChangedEvent.listen(
+      (event) => add(CircleVoterChanged(changeEvent: event)),
     );
   }
 
   final IVoteCircleRepository _voteCircleRepository;
   late StreamSubscription<CircleCandidateChangeEvent>
       _circleCandidateChangeEventSubscription;
+  late StreamSubscription<CircleVoterChangeEvent>
+      _circleVoterChangeEventSubscription;
 
   @override
   Future<void> close() {
     _circleCandidateChangeEventSubscription.cancel();
+    _circleVoterChangeEventSubscription.cancel();
     _voteCircleRepository.dispose();
     return super.close();
   }
@@ -149,6 +157,71 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
 
             emit(state.copyWith(
               circleCandidate: circleCandidate,
+              status: StatusIndicator.success,
+            ));
+            break;
+          }
+        case EventOperation.repositioned:
+          {
+            break;
+          }
+      }
+    } catch (e) {
+      print(e);
+      if (isClosed) return;
+      emit(state.copyWith(status: StatusIndicator.success));
+    }
+  }
+
+  void _onCircleVoterChanged(
+    CircleVoterChanged event,
+    Emitter<MembersState> emit,
+  ) {
+    emit(state.copyWith(status: StatusIndicator.loading));
+
+    try {
+      final changeEvent = event.changeEvent;
+print(changeEvent.voter);
+print(changeEvent.operation);
+      // TODO: handle self made updates of user (user id == candidate id)
+      switch (changeEvent.operation) {
+        case EventOperation.created:
+          {
+            final circleVoter = state.circleVoter;
+            circleVoter.voters.add(changeEvent.voter);
+
+            emit(state.copyWith(
+              circleVoter: circleVoter,
+              status: StatusIndicator.success,
+            ));
+            break;
+          }
+        case EventOperation.updated:
+          {
+            final circleVoter = state.circleVoter;
+            final voterIndex = circleVoter.voters
+                .indexWhere((voter) => voter.id == changeEvent.voter.id);
+
+            if (voterIndex == -1) {
+              break;
+            }
+
+            circleVoter.voters[voterIndex] = changeEvent.voter;
+
+            emit(state.copyWith(
+              circleVoter: circleVoter,
+              status: StatusIndicator.success,
+            ));
+            break;
+          }
+        case EventOperation.deleted:
+          {
+            final circleVoter = state.circleVoter;
+            circleVoter.voters
+                .removeWhere((voter) => voter.id == changeEvent.voter.id);
+
+            emit(state.copyWith(
+              circleVoter: circleVoter,
               status: StatusIndicator.success,
             ));
             break;

@@ -453,7 +453,6 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
 
   @override
   Future<String> leaveCircleAsVoter(int circleId) async {
-    return Future.delayed(const Duration(seconds: 5), () => '');
     var logger = Logger();
 
     try {

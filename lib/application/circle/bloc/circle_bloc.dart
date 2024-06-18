@@ -29,6 +29,7 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
       final circle = await _voteCircleRepository.circle(event.circleId);
 
       _voteCircleRepository.subscribeToCircleCandidateChangedEvent(circle.id);
+      _voteCircleRepository.subscribeToCircleVoterChangedEvent(circle.id);
 
       emit(
         state.copyWith(

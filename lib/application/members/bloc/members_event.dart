@@ -46,3 +46,16 @@ final class CircleCandidateChanged extends MembersEvent {
         changeEvent,
       ];
 }
+
+final class CircleVoterChanged extends MembersEvent {
+  const CircleVoterChanged({
+    required this.changeEvent,
+  });
+
+  final CircleVoterChangeEvent changeEvent;
+
+  @override
+  List<Object> get props => [
+    changeEvent,
+  ];
+}
