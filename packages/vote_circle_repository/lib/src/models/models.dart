@@ -9,6 +9,7 @@ export 'circle_paginated.dart';
 export 'circle_stage.dart';
 export 'circle_update_request.dart';
 export 'circle_voter.dart';
+export 'circle_voter_change_event.dart';
 export 'commitment.dart';
 export 'event_operation.dart';
 export 'placement.dart';

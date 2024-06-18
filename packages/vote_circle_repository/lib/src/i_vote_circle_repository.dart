@@ -39,7 +39,11 @@ abstract class IVoteCircleRepository {
 
   void subscribeToCircleCandidateChangedEvent(int circleId);
 
+  void subscribeToCircleVoterChangedEvent(int circleId);
+
   Stream<CircleCandidateChangeEvent> get circleCandidateChangedEvent;
+
+  Stream<CircleVoterChangeEvent> get circleVoterChangedEvent;
 
   void dispose();
 }
