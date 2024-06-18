@@ -12,11 +12,9 @@ class CircleCandidateChangeEvent {
   final EventOperation operation;
 
   factory CircleCandidateChangeEvent.fromEventData(Object? data) {
-    print(data);
-
     final mappedData = data as Map<Object?, Object?>;
-    print(mappedData['candidate']);
     final candidateMap = mappedData['candidate'] as Map<Object?, Object?>;
+    
     return CircleCandidateChangeEvent(
       operation: eventOperationFromEvent(mappedData['operation'] as String),
       candidate: Candidate(

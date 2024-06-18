@@ -26,6 +26,8 @@ class VoteCircleRepository implements IVoteCircleRepository {
   final StreamController<CircleCandidateChangeEvent>
       _candidateChangedEventController =
       StreamController<CircleCandidateChangeEvent>();
+  StreamSubscription<CircleCandidateChangeEvent>?
+      _candidateChangedEventSubscription;
 
   @override
   Future<Circle> circle(int id) async {
@@ -131,11 +133,20 @@ class VoteCircleRepository implements IVoteCircleRepository {
 
   @override
   void subscribeToCircleCandidateChangedEvent(int circleId) {
-    final channel = _ablyService.channel('circle-$circleId:candidate');
-    final stream = channel
-        .subscribe(name: 'circle-candidate-changed')
-        .map((event) => CircleCandidateChangeEvent.fromEventData(event.data));
-    _candidateChangedEventController.addStream(stream);
+    try {
+      if (_candidateChangedEventSubscription != null) {
+       _candidateChangedEventSubscription?.cancel();
+      }
+
+      final channel = _ablyService.channel('circle-$circleId:candidate');
+      _candidateChangedEventSubscription = channel
+          .subscribe(name: 'circle-candidate-changed')
+          .map((event) => CircleCandidateChangeEvent.fromEventData(event.data))
+          .listen((data) => _candidateChangedEventController.add(data));
+    } catch (e) {
+      print('subscribeToCircleCandidateChangedEvent ERROR +++++++++++');
+      print(e);
+    }
   }
 
   @override
@@ -146,5 +157,6 @@ class VoteCircleRepository implements IVoteCircleRepository {
   @override
   void dispose() {
     _candidateChangedEventController.close();
+    _candidateChangedEventSubscription?.cancel();
   }
 }
