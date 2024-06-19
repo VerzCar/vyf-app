@@ -15,6 +15,7 @@ class AblyServiceClient implements IAblyServiceClient {
 
   @override
   ably.RealtimeChannel channel(String name) {
+    _realtime.auth.authorize();
     return _realtime.channels.get(name);
   }
 
@@ -22,6 +23,7 @@ class AblyServiceClient implements IAblyServiceClient {
     return ably.ClientOptions(
       authMethod: 'GET',
       authUrl: _ablyTokenUrl,
+      authCallback: ,
       authHeaders: {
         'Authorization': 'Bearer ${_authenticationRepository.accessToken}'
       },

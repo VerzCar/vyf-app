@@ -12,7 +12,7 @@ abstract class IAuthenticationRepository {
 
   void dispose();
 
-  get accessToken;
-
   Stream<AuthState> get status;
+
+  Stream<String> get accessJwtToken;
 }

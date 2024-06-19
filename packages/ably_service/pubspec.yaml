@@ -2,6 +2,7 @@ name: ably_service
 description: Ably connection service
 version: 0.0.1
 homepage: ''
+publish_to: none
 
 environment:
   sdk: '>=3.4.3 <4.0.0'

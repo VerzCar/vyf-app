@@ -51,21 +51,28 @@ class AuthenticationRepository implements IAuthenticationRepository {
   }
 
   final _authStateController = StreamController<AuthState>();
+  final _accessJwtTokenController = StreamController<String>();
   late StreamSubscription<AuthHubEvent> _authHubSubscription;
   late AuthCredentials _credentials =
       LoginCredentials(username: '', password: '');
-  late String _accessToken = '';
 
   /// Stream of [AuthState] which will emit the current [AuthFlowStatus] when
   /// the authentication state changes.
+  @override
   Stream<AuthState> get status async* {
     await _checkAuthStatus();
     yield* _authStateController.stream;
   }
 
+  @override
+  Stream<String> get accessJwtToken async* {
+    yield* _accessJwtTokenController.stream;
+  }
+
   /// Creates a new user with the provided [credentials].
   /// Returns true if verification is needed, otherwise false.
   /// Throws a [SignUpWithEmailAndPasswordFailure] if an exception occurs.
+  @override
   Future<bool> signUpWithCredentials(SignUpCredentials credentials) async {
     try {
       final userAttributes = {
@@ -103,6 +110,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
   /// Signs in with the provided [credentials].
   ///
   /// Throws a [AuthCredentials] if an exception occurs.
+  @override
   Future<void> loginWithCredentials(AuthCredentials credentials) async {
     try {
       final result = await Amplify.Auth.signIn(
@@ -125,6 +133,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
   /// Verifies the sign up code.
   ///
   /// Throws a [VerificationFailure] if an exception occurs.
+  @override
   Future<void> verifyCode(String verificationCode) async {
     try {
       final result = await Amplify.Auth.confirmSignUp(
@@ -156,6 +165,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
   /// [User.empty] from the [fetchUser] Stream.
   ///
   /// Throws a [LogOutFailure] if an exception occurs.
+  @override
   Future<void> logOut() async {
     try {
       await Amplify.Auth.signOut();
@@ -181,13 +191,11 @@ class AuthenticationRepository implements IAuthenticationRepository {
   //   }
   // }
 
+  @override
   void dispose() {
     _authStateController.close();
+    _accessJwtTokenController.close();
     _authHubSubscription.cancel();
-  }
-
-  get accessToken {
-    return _accessToken;
   }
 
   Future<void> _checkAuthStatus() async {
@@ -197,7 +205,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
       final result = await cognitoPlugin.fetchAuthSession();
 
       JsonWebToken accessToken = result.userPoolTokensResult.value.accessToken;
-      _accessToken = accessToken.raw;
+      _accessJwtTokenController.add(accessToken.raw);
 
       if (result.isSignedIn) {
         _authFlowStatus = AuthFlowStatus.authenticated;
