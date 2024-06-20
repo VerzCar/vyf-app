@@ -3,27 +3,40 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/application/user/user.dart';
+import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class UserAvatar extends StatelessWidget {
-  const UserAvatar({super.key, this.option});
+  const UserAvatar({
+    super.key,
+    required this.identityId,
+    this.option,
+  });
 
+  final String identityId;
   final UserAvatarOption? option;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserXCubit, UserXState>(builder: (context, state) {
-      switch (state.status) {
-        case StatusIndicator.initial:
-          return const Center(child: Text('Loading'));
-        case StatusIndicator.loading:
-          return _placeholder();
-        case StatusIndicator.success:
-          return _buildByOption(context, state.user);
-        case StatusIndicator.failure:
-          return const Center(child: Text('Error'));
-      }
-    });
+    return BlocProvider(
+      create: (context) => UserXCubit(userRepository: sl<IUserRepository>())
+        ..userXFetched(
+          context: context,
+          identityId: identityId,
+        ),
+      child: BlocBuilder<UserXCubit, UserXState>(builder: (context, state) {
+        switch (state.status) {
+          case StatusIndicator.initial:
+            return const Center(child: Text('Loading'));
+          case StatusIndicator.loading:
+            return _placeholder();
+          case StatusIndicator.success:
+            return _buildByOption(context, state.user);
+          case StatusIndicator.failure:
+            return const Center(child: Text('Error'));
+        }
+      }),
+    );
   }
 
   Widget _placeholder() {
