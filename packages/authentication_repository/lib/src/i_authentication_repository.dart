@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:authentication_repository/authentication_repository.dart';
 
 abstract class IAuthenticationRepository {
@@ -15,4 +16,8 @@ abstract class IAuthenticationRepository {
   Stream<AuthState> get status;
 
   Stream<String> get accessJwtToken;
+
+  Future<String> get jwtToken;
+
+  String get currentJwtToken;
 }

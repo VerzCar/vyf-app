@@ -21,7 +21,10 @@ class UserApiClient implements IUserApiClient {
     var logger = Logger();
 
     try {
-      final res = await http.get(_uri(), headers: _headers());
+      final res = await http.get(
+        _uri(),
+        headers: await _headers,
+      );
 
       if (res.statusCode >= HttpStatus.internalServerError) {
         logger.e('querying user server error: $res');
@@ -51,7 +54,10 @@ class UserApiClient implements IUserApiClient {
     var logger = Logger();
 
     try {
-      final res = await http.get(_uri(path: id), headers: _headers());
+      final res = await http.get(
+        _uri(path: id),
+        headers: await _headers,
+      );
 
       if (res.statusCode >= HttpStatus.internalServerError) {
         logger.e('querying user x server error: $res');
@@ -81,7 +87,10 @@ class UserApiClient implements IUserApiClient {
     var logger = Logger();
 
     try {
-      final res = await http.get(_uri(path: 'users'), headers: _headers());
+      final res = await http.get(
+        _uri(path: 'users'),
+        headers: await _headers,
+      );
 
       if (res.statusCode >= HttpStatus.internalServerError) {
         logger.e('querying users server error: $res');
@@ -117,7 +126,7 @@ class UserApiClient implements IUserApiClient {
 
       final res = await http.put(
         _uri(path: 'update'),
-        headers: _headers(),
+        headers: await _headers,
         body: jsonBody,
       );
 
@@ -155,9 +164,9 @@ class UserApiClient implements IUserApiClient {
     return httpsUri;
   }
 
-  Map<String, String> _headers() {
+  Future<Map<String, String>> get _headers async {
     final Map<String, String> headers = {
-      'Authorization': 'Bearer ${_authenticationRepository.accessToken}',
+      'Authorization': 'Bearer ${await _authenticationRepository.jwtToken}',
     };
     return headers;
   }

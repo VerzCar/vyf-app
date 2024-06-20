@@ -55,6 +55,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
   late StreamSubscription<AuthHubEvent> _authHubSubscription;
   late AuthCredentials _credentials =
       LoginCredentials(username: '', password: '');
+  String _currentJwtToken = '';
 
   /// Stream of [AuthState] which will emit the current [AuthFlowStatus] when
   /// the authentication state changes.
@@ -68,6 +69,27 @@ class AuthenticationRepository implements IAuthenticationRepository {
   Stream<String> get accessJwtToken async* {
     yield* _accessJwtTokenController.stream;
   }
+
+  @override
+  Future<String> get jwtToken async {
+    try {
+      final authSession = await _fetchAuthSession();
+
+      JsonWebToken accessToken =
+          authSession.userPoolTokensResult.value.accessToken;
+
+      if (authSession.isSignedIn) {
+        return accessToken.raw;
+      }
+      return '';
+    } catch (e) {
+      safePrint('get jwtToken failure $e');
+      return '';
+    }
+  }
+
+  @override
+  String get currentJwtToken => _currentJwtToken;
 
   /// Creates a new user with the provided [credentials].
   /// Returns true if verification is needed, otherwise false.
@@ -200,15 +222,15 @@ class AuthenticationRepository implements IAuthenticationRepository {
 
   Future<void> _checkAuthStatus() async {
     try {
-      final cognitoPlugin =
-          await Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
-      final result = await cognitoPlugin.fetchAuthSession();
+      final authSession = await _fetchAuthSession();
 
-      JsonWebToken accessToken = result.userPoolTokensResult.value.accessToken;
-      _accessJwtTokenController.add(accessToken.raw);
-
-      if (result.isSignedIn) {
+      if (authSession.isSignedIn) {
         _authFlowStatus = AuthFlowStatus.authenticated;
+        JsonWebToken accessToken =
+            authSession.userPoolTokensResult.value.accessToken;
+
+        _accessJwtTokenController.add(accessToken.raw);
+        _currentJwtToken = accessToken.raw;
         return;
       }
     } catch (e) {
@@ -220,5 +242,11 @@ class AuthenticationRepository implements IAuthenticationRepository {
   set _authFlowStatus(AuthFlowStatus status) {
     final state = AuthState(authFlowStatus: status);
     _authStateController.add(state);
+  }
+
+  Future<CognitoAuthSession> _fetchAuthSession() async {
+    final cognitoPlugin =
+        await Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
+    return cognitoPlugin.fetchAuthSession();
   }
 }

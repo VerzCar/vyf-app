@@ -21,7 +21,10 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     var logger = Logger();
 
     try {
-      final res = await http.get(_uri(path: 'circle/$id'), headers: _headers());
+      final res = await http.get(
+        _uri(path: 'circle/$id'),
+        headers: await _headers,
+      );
 
       if (res.statusCode >= HttpStatus.internalServerError) {
         logger.e('querying circle server error: $res');
@@ -51,7 +54,10 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     var logger = Logger();
 
     try {
-      final res = await http.get(_uri(path: 'circles'), headers: _headers());
+      final res = await http.get(
+        _uri(path: 'circles'),
+        headers: await _headers,
+      );
 
       if (res.statusCode >= HttpStatus.internalServerError) {
         logger.e('querying circles server error: $res');
@@ -83,8 +89,10 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     var logger = Logger();
 
     try {
-      final res = await http.get(_uri(path: 'circles/of-interest'),
-          headers: _headers());
+      final res = await http.get(
+        _uri(path: 'circles/of-interest'),
+        headers: await _headers,
+      );
 
       if (res.statusCode >= HttpStatus.internalServerError) {
         logger.e('querying circles of interest server error: $res');
@@ -117,8 +125,10 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     var logger = Logger();
 
     try {
-      final res =
-          await http.get(_uri(path: 'rankings/$circleId'), headers: _headers());
+      final res = await http.get(
+        _uri(path: 'rankings/$circleId'),
+        headers: await _headers,
+      );
 
       if (res.statusCode >= HttpStatus.internalServerError) {
         logger.e('querying rankings server error: $res');
@@ -157,7 +167,7 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
       final queryParams = filter?.toParamMap();
       final res = await http.get(
         _uri(path: 'circle-candidates/$circleId', queryParameters: queryParams),
-        headers: _headers(),
+        headers: await _headers,
       );
 
       if (res.statusCode >= HttpStatus.internalServerError) {
@@ -188,8 +198,10 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     var logger = Logger();
 
     try {
-      final res = await http.get(_uri(path: 'circle-voters/$circleId'),
-          headers: _headers());
+      final res = await http.get(
+        _uri(path: 'circle-voters/$circleId'),
+        headers: await _headers,
+      );
 
       if (res.statusCode >= HttpStatus.internalServerError) {
         logger.e('querying circle voters server error: $res');
@@ -223,7 +235,7 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
 
       final res = await http.post(
         _uri(path: 'circle'),
-        headers: _headers(),
+        headers: await _headers,
         body: jsonBody,
       );
 
@@ -262,7 +274,7 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
 
       final res = await http.put(
         _uri(path: 'circle/$circleId'),
-        headers: _headers(),
+        headers: await _headers,
         body: jsonBody,
       );
 
@@ -296,7 +308,7 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     try {
       final res = await http.delete(
         _uri(path: 'circle/$circleId'),
-        headers: _headers(),
+        headers: await _headers,
       );
 
       if (res.statusCode >= HttpStatus.internalServerError) {
@@ -328,7 +340,7 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     try {
       final res = await http.get(
         _uri(path: 'circle/$circleId/eligible'),
-        headers: _headers(),
+        headers: await _headers,
       );
 
       if (res.statusCode >= HttpStatus.internalServerError) {
@@ -360,7 +372,7 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     try {
       final res = await http.post(
         _uri(path: 'circle-candidates/$circleId/join'),
-        headers: _headers(),
+        headers: await _headers,
       );
 
       if (res.statusCode >= HttpStatus.internalServerError) {
@@ -393,7 +405,7 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     try {
       final res = await http.post(
         _uri(path: 'circle-voters/$circleId/join'),
-        headers: _headers(),
+        headers: await _headers,
       );
 
       if (res.statusCode >= HttpStatus.internalServerError) {
@@ -426,7 +438,7 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     try {
       final res = await http.delete(
         _uri(path: 'circle-candidates/$circleId/leave'),
-        headers: _headers(),
+        headers: await _headers,
       );
 
       if (res.statusCode >= HttpStatus.internalServerError) {
@@ -458,7 +470,7 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     try {
       final res = await http.delete(
         _uri(path: 'circle-voters/$circleId/leave'),
-        headers: _headers(),
+        headers: await _headers,
       );
 
       if (res.statusCode >= HttpStatus.internalServerError) {
@@ -494,9 +506,9 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     return httpsUri;
   }
 
-  Map<String, String> _headers() {
+  Future<Map<String, String>> get _headers async {
     final Map<String, String> headers = {
-      'Authorization': 'Bearer ${_authenticationRepository.accessToken}',
+      'Authorization': 'Bearer ${await _authenticationRepository.jwtToken}',
     };
     return headers;
   }

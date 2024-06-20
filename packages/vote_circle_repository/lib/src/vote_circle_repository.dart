@@ -188,5 +188,6 @@ class VoteCircleRepository implements IVoteCircleRepository {
     _voterChangedEventController.close();
     _candidateChangedEventSubscription?.cancel();
     _voterChangedEventSubscription?.cancel();
+    _ablyService.dispose();
   }
 }
