@@ -1,19 +1,19 @@
 import 'package:user_api/user_api.dart' as user_api;
 
 enum Gender {
-  X,
-  Man,
-  Women,
+  x,
+  man,
+  women,
 }
 
 // Helper function to convert enum to string
 String genderToString(Gender gender) {
   switch (gender) {
-    case Gender.X:
+    case Gender.x:
       return 'X';
-    case Gender.Man:
+    case Gender.man:
       return 'MAN';
-    case Gender.Women:
+    case Gender.women:
       return 'WOMEN';
     default:
       return '';
@@ -24,11 +24,11 @@ String genderToString(Gender gender) {
 Gender stringToGender(String gender) {
   switch (gender) {
     case 'X':
-      return Gender.X;
+      return Gender.x;
     case 'MAN':
-      return Gender.Man;
+      return Gender.man;
     case 'WOMEN':
-      return Gender.Women;
+      return Gender.women;
     default:
       throw ArgumentError('Invalid gender string');
   }
@@ -36,11 +36,11 @@ Gender stringToGender(String gender) {
 
 Gender genderFromApiGender(user_api.Gender gender) {
   switch (gender) {
-    case user_api.Gender.X:
-      return Gender.X;
-    case user_api.Gender.Women:
-      return Gender.Women;
-    case user_api.Gender.Man:
-      return Gender.Man;
+    case user_api.Gender.x:
+      return Gender.x;
+    case user_api.Gender.women:
+      return Gender.women;
+    case user_api.Gender.man:
+      return Gender.man;
   }
 }

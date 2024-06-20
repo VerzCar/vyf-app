@@ -39,7 +39,7 @@ class User extends Equatable {
     username: '',
     firstName: '',
     lastName: '',
-    gender: Gender.X,
+    gender: Gender.x,
     profile: Profile.empty,
     createdAt: ConstDateTime(2024),
     updatedAt: ConstDateTime(2024),

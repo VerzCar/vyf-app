@@ -42,9 +42,9 @@ Map<String, dynamic> _$CircleToJson(Circle instance) => <String, dynamic>{
     };
 
 const _$CircleStageEnumMap = {
-  CircleStage.Cold: 'COLD',
-  CircleStage.Hot: 'HOT',
-  CircleStage.Closed: 'CLOSED',
+  CircleStage.cold: 'COLD',
+  CircleStage.hot: 'HOT',
+  CircleStage.closed: 'CLOSED',
 };
 
 Value? _$JsonConverterFromJson<Json, Value>(

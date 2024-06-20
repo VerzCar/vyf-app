@@ -14,6 +14,6 @@ class CircleSelector {
 
     return circleState.circle.createdFrom == userIdentityId &&
         circleState.circle.active &&
-        circleState.circle.stage != CircleStage.Closed;
+        circleState.circle.stage != CircleStage.closed;
   }
 }

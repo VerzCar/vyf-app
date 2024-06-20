@@ -41,7 +41,7 @@ class Circle extends Equatable {
     imageSrc: '',
     private: false,
     active: false,
-    stage: CircleStage.Closed,
+    stage: CircleStage.closed,
     createdFrom: '',
     validFrom: ConstDateTime(2024),
     createdAt: ConstDateTime(2024),

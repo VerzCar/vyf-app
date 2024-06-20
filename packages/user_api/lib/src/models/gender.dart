@@ -2,21 +2,21 @@ import 'package:json_annotation/json_annotation.dart';
 
 enum Gender {
   @JsonValue('X')
-  X,
+  x,
   @JsonValue('MAN')
-  Man,
+  man,
   @JsonValue('WOMEN')
-  Women,
+  women,
 }
 
 // Helper function to convert enum to string
 String genderToString(Gender gender) {
   switch (gender) {
-    case Gender.X:
+    case Gender.x:
       return 'X';
-    case Gender.Man:
+    case Gender.man:
       return 'MAN';
-    case Gender.Women:
+    case Gender.women:
       return 'WOMEN';
     default:
       return '';
@@ -27,11 +27,11 @@ String genderToString(Gender gender) {
 Gender stringToGender(String gender) {
   switch (gender) {
     case 'X':
-      return Gender.X;
+      return Gender.x;
     case 'MAN':
-      return Gender.Man;
+      return Gender.man;
     case 'WOMEN':
-      return Gender.Women;
+      return Gender.women;
     default:
       throw ArgumentError('Invalid gender string');
   }

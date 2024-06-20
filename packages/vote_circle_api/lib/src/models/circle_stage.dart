@@ -2,10 +2,10 @@ import 'package:json_annotation/json_annotation.dart';
 
 enum CircleStage {
   @JsonValue('COLD')
-  Cold,
+  cold,
   @JsonValue('HOT')
-  Hot,
+  hot,
   @JsonValue('CLOSED')
-  Closed,
+  closed,
 }
 

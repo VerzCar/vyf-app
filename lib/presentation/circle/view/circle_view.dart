@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/application/user/bloc/user_bloc.dart';
@@ -59,7 +58,7 @@ class CircleView extends StatelessWidget {
                   ),
                   child: const Text('Edit'),
                   onPressed: () =>
-                      context.router.push(CircleEditRoute(circleId: circleId!)))
+                      context.router.push(CircleEditRoute(circleId: circleId)))
               : const SizedBox(
                   width: 0,
                   height: 0,

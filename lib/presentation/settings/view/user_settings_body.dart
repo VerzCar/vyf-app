@@ -95,7 +95,7 @@ class UserSettingsBody extends StatelessWidget {
 }
 
 class _UserInfoSection extends StatelessWidget {
-  const _UserInfoSection({super.key});
+  const _UserInfoSection();
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +158,7 @@ class _UserInfoSection extends StatelessWidget {
 }
 
 class _ProfileSection extends StatelessWidget {
-  const _ProfileSection({super.key});
+  const _ProfileSection();
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +196,7 @@ class _ProfileSection extends StatelessWidget {
 }
 
 class _AddressSection extends StatelessWidget {
-  const _AddressSection({super.key});
+  const _AddressSection();
 
   @override
   Widget build(BuildContext context) {

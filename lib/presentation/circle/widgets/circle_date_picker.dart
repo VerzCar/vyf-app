@@ -5,12 +5,13 @@ import 'package:vote_your_face/presentation/circle/models/models.dart';
 
 class CircleDatePicker extends StatelessWidget {
   const CircleDatePicker({
+    super.key,
     required this.onDateChanged,
     required this.range,
   });
 
   static final DateTime maxDate =
-  DateTime.now().add(const Duration(days: 1825));
+      DateTime.now().add(const Duration(days: 1825));
   final Function(BuildContext, String) onDateChanged;
   final RangeSelection range;
 

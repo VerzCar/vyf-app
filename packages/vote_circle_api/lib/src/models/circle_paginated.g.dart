@@ -31,7 +31,7 @@ Map<String, dynamic> _$CirclePaginatedToJson(CirclePaginated instance) =>
     };
 
 const _$CircleStageEnumMap = {
-  CircleStage.Cold: 'COLD',
-  CircleStage.Hot: 'HOT',
-  CircleStage.Closed: 'CLOSED',
+  CircleStage.cold: 'COLD',
+  CircleStage.hot: 'HOT',
+  CircleStage.closed: 'CLOSED',
 };

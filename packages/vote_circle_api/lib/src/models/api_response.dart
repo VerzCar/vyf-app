@@ -1,9 +1,9 @@
 import 'dart:core';
 
 enum ResponseStatus {
-  Nop,
-  Success,
-  Error,
+  nop,
+  success,
+  error,
 }
 
 class ApiResponse<T> {
@@ -27,11 +27,11 @@ class ApiResponse<T> {
 // Helper function to convert enum to string
 String responseStatusToString(ResponseStatus status) {
   switch (status) {
-    case ResponseStatus.Nop:
+    case ResponseStatus.nop:
       return 'nop';
-    case ResponseStatus.Success:
+    case ResponseStatus.success:
       return 'success';
-    case ResponseStatus.Error:
+    case ResponseStatus.error:
       return 'error';
     default:
       return '';
@@ -42,20 +42,20 @@ String responseStatusToString(ResponseStatus status) {
 ResponseStatus stringToResponseStatus(String status) {
   switch (status) {
     case 'nop':
-      return ResponseStatus.Nop;
+      return ResponseStatus.nop;
     case 'success':
-      return ResponseStatus.Success;
+      return ResponseStatus.success;
     case 'error':
-      return ResponseStatus.Error;
+      return ResponseStatus.error;
     default:
       throw ArgumentError('Invalid ResponseStatus string');
   }
 }
 
 const _responseStatusEnumMap = {
-  ResponseStatus.Nop: 'nop',
-  ResponseStatus.Error: 'error',
-  ResponseStatus.Success: 'success'
+  ResponseStatus.nop: 'nop',
+  ResponseStatus.error: 'error',
+  ResponseStatus.success: 'success'
 };
 
 K _enumDecode<K extends Enum, V>(

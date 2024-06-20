@@ -105,7 +105,7 @@ class CreateCircleMembersForm extends StatelessWidget {
 }
 
 class _CirclePrivateInput extends StatefulWidget {
-  const _CirclePrivateInput({super.key});
+  const _CirclePrivateInput();
 
   @override
   State<_CirclePrivateInput> createState() => _CirclePrivateInputState();

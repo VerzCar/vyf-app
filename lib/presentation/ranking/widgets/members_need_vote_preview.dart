@@ -102,23 +102,6 @@ class MembersNeedVotePreview extends StatelessWidget {
         .toList();
   }
 
-  Widget _buildMembersPlaceholder() {
-    return Row(
-      children: List<Container>.generate(
-        _previewMemberCount,
-        (index) => Container(
-          width: _avatarSize.preSize.width,
-          height: _avatarSize.preSize.height,
-          margin: const EdgeInsets.only(right: _spaceBetweenMember),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6.5),
-            color: Colors.grey.withOpacity(0.5),
-          ),
-        ),
-      ),
-    );
-  }
-
   Text _countOfMembers(
     ThemeData themeData,
     CircleCandidate circleCandidate,

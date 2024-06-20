@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:user_api/user_api.dart';
 
-part 'api-errors.dart';
+part 'api_errors.dart';
 
 class UserApiClient implements IUserApiClient {
   UserApiClient({required authenticationRepository})
