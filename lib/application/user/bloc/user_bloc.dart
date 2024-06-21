@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:user_repository/user_repository.dart';
+import 'package:vote_your_face/application/core/core.dart';
 import 'package:vote_your_face/application/shared/state_status.dart';
 
 part 'user_event.dart';
-
 part 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
@@ -12,11 +12,19 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     required IUserRepository userRepository,
   })  : _userRepository = userRepository,
         super(const UserState()) {
+    on<UserReset>(_onUserReset);
     on<UserInitialLoaded>(_onUserInitialLoaded);
     on<UserUpdated>(_onUserUpdated);
   }
 
   final IUserRepository _userRepository;
+
+  void _onUserReset(
+    UserReset event,
+    Emitter<UserState> emit,
+  ) async {
+    emit(state.reset());
+  }
 
   void _onUserInitialLoaded(
     UserInitialLoaded event,

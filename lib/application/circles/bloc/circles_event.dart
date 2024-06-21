@@ -4,6 +4,11 @@ sealed class CirclesEvent extends Equatable {
   const CirclesEvent();
 }
 
+final class CirclesReset extends CirclesEvent {
+  @override
+  List<Object> get props => [];
+}
+
 final class CirclesOfUserInitialLoaded extends CirclesEvent {
   @override
   List<Object> get props => [];

@@ -34,18 +34,20 @@ class AuthenticationBloc
   void _onAuthenticationStatusChanged(
     AuthenticationStatusChanged event,
     Emitter<AuthenticationState> emit,
-  ) async {
+  ) {
     switch (event.status.authFlowStatus) {
       case AuthFlowStatus.unauthenticated:
-        return emit(const AuthenticationState.unauthenticated());
+        emit(const AuthenticationState.unauthenticated());
+        break;
       case AuthFlowStatus.authenticated:
-        return emit(const AuthenticationState.authenticated());
+        emit(const AuthenticationState.authenticated());
+        break;
       default:
-        return emit(const AuthenticationState.unknown());
+        emit(const AuthenticationState.unknown());
+        break;
     }
   }
 
-  // TODO: add clearing of global states
   void _onAuthenticationLogoutRequested(
     AuthenticationLogoutRequested event,
     Emitter<AuthenticationState> emit,

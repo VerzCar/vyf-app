@@ -4,6 +4,11 @@ sealed class MembersEvent extends Equatable {
   const MembersEvent();
 }
 
+final class CircleMembersReset extends MembersEvent {
+  @override
+  List<Object> get props => [];
+}
+
 final class CircleMembersInitialLoaded extends MembersEvent {
   const CircleMembersInitialLoaded({
     required this.circleId,

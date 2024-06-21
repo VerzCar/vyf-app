@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/application/user/user.dart';
-import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/settings/cubit/user_edit_profile_cubit.dart';
 import 'package:vote_your_face/presentation/settings/widgets/bio_input.dart';
 import 'package:vote_your_face/presentation/settings/widgets/user_first_name_input.dart';
@@ -42,17 +40,11 @@ class UserEditSettingsView extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          BlocProvider(
-                            create: (context) => UserXCubit(
-                                userRepository: sl<IUserRepository>())
-                              ..userXFetched(
-                                context: context,
-                                identityId: state.user.identityId,
-                              ),
-                            child: const UserAvatar(
-                              option: UserAvatarOption(
-                                size: AvatarSize.lg,
-                              ),
+                          UserAvatar(
+                            key: ValueKey(state.user.identityId),
+                            identityId: state.user.identityId,
+                            option: const UserAvatarOption(
+                              size: AvatarSize.lg,
                             ),
                           ),
                           const SizedBox(height: 7.0),

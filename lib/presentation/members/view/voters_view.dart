@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/application/members/members.dart';
-import 'package:vote_your_face/application/user/user.dart';
-import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class VotersView extends StatelessWidget {
@@ -32,17 +29,11 @@ class VotersView extends StatelessWidget {
                   horizontal: 15.0,
                   vertical: 3.0,
                 ),
-                title: BlocProvider(
-                  create: (context) =>
-                      UserXCubit(userRepository: sl<IUserRepository>())
-                        ..userXFetched(
-                          context: context,
-                          identityId: voter.voter,
-                        ),
-                  child: const UserAvatar(
-                    option: UserAvatarOption(
-                      withLabel: true,
-                    ),
+                title: UserAvatar(
+                  key: ValueKey(voter.voter),
+                  identityId: voter.voter,
+                  option: const UserAvatarOption(
+                    withLabel: true,
                   ),
                 ),
               ),

@@ -4,6 +4,11 @@ sealed class UserEvent extends Equatable {
   const UserEvent();
 }
 
+final class UserReset extends UserEvent {
+  @override
+  List<Object> get props => [];
+}
+
 final class UserInitialLoaded extends UserEvent {
   @override
   List<Object> get props => [];

@@ -1,6 +1,6 @@
 part of 'circle_bloc.dart';
 
-final class CircleState extends Equatable {
+final class CircleState extends VyfBaseState {
   const CircleState({
     this.status = StatusIndicator.initial,
     this.circle = Circle.empty,
@@ -9,6 +9,7 @@ final class CircleState extends Equatable {
   final Circle circle;
   final StatusIndicator status;
 
+  @override
   CircleState copyWith({
     Circle? circle,
     StatusIndicator? status,
@@ -18,6 +19,9 @@ final class CircleState extends Equatable {
       status: status ?? this.status,
     );
   }
+
+  @override
+  CircleState reset() => const CircleState();
 
   @override
   List<Object> get props => [

@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
+import 'package:vote_your_face/application/core/core.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 
 part 'circle_event.dart';
@@ -11,11 +12,19 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
     required IVoteCircleRepository voteCircleRepository,
   })  : _voteCircleRepository = voteCircleRepository,
         super(const CircleState()) {
+    on<CircleReset>(_onCircleReset);
     on<CircleSelected>(_onCircleSelected);
     on<CircleUpdated>(_onCircleUpdated);
   }
 
   final IVoteCircleRepository _voteCircleRepository;
+
+  void _onCircleReset(
+    CircleReset event,
+    Emitter<CircleState> emit,
+  ) async {
+    emit(state.reset());
+  }
 
   void _onCircleSelected(
     CircleSelected event,

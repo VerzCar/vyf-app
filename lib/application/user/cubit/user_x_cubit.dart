@@ -19,12 +19,9 @@ class UserXCubit extends Cubit<UserXState> {
     required BuildContext context,
     required String identityId,
   }) async {
-    print('called fetch');
-    print(identityId);
     final currentUser = context.read<UserBloc>().state.user;
 
     if (currentUser.identityId == identityId) {
-      print('take current user');
       return emit(
         state.copyWith(
           status: StatusIndicator.success,
@@ -34,7 +31,7 @@ class UserXCubit extends Cubit<UserXState> {
     }
 
     emit(state.copyWith(status: StatusIndicator.loading));
-    print('load new user');
+
     try {
       final user = await _userRepository.x(identityId);
       emit(

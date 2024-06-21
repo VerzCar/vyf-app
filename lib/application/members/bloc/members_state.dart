@@ -1,6 +1,6 @@
 part of 'members_bloc.dart';
 
-final class MembersState extends Equatable {
+final class MembersState extends VyfBaseState {
   const MembersState({
     this.status = StatusIndicator.initial,
     this.circleVoter = CircleVoter.empty,
@@ -21,6 +21,7 @@ final class MembersState extends Equatable {
   final int circleRankingsRefId;
   final StatusIndicator status;
 
+  @override
   MembersState copyWith({
     CircleVoter? circleVoter,
     CircleCandidate? circleCandidate,
@@ -40,6 +41,9 @@ final class MembersState extends Equatable {
       status: status ?? this.status,
     );
   }
+
+  @override
+  MembersState reset() => const MembersState();
 
   @override
   List<Object> get props => [

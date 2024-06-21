@@ -2,11 +2,7 @@ import 'dart:ui';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:user_repository/user_repository.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
-import 'package:vote_your_face/application/user/user.dart';
-import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/circle/widgets/circle_member_action_button.dart';
 import 'package:vote_your_face/presentation/circle/widgets/members_preview.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
@@ -85,16 +81,10 @@ class CircleBody extends StatelessWidget {
                               style: themeData.textTheme.titleMedium,
                             ),
                           ),
-                          BlocProvider(
-                            create: (context) => UserXCubit(
-                                userRepository: sl<IUserRepository>())
-                              ..userXFetched(
-                                context: context,
-                                identityId: circle.createdFrom,
-                              ),
-                            child: const UserAvatar(
-                              option: UserAvatarOption(withLabel: true),
-                            ),
+                          UserAvatar(
+                            key: ValueKey(circle.createdFrom),
+                            identityId: circle.createdFrom,
+                            option: const UserAvatarOption(withLabel: true),
                           ),
                         ],
                       ),

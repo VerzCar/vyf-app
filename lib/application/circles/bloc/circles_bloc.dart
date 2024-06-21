@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
+import 'package:vote_your_face/application/core/core.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 
 part 'circles_event.dart';
@@ -11,6 +12,7 @@ class CirclesBloc extends Bloc<CirclesEvent, CirclesState> {
     required IVoteCircleRepository voteCircleRepository,
   })  : _voteCircleRepository = voteCircleRepository,
         super(const CirclesState()) {
+    on<CirclesReset>(_onCirclesReset);
     on<CirclesOfUserInitialLoaded>(_onCirclesOfUserInitialLoaded);
     on<CircleCreated>(_onCircleCreated);
     on<CircleUpdated>(_onCircleUpdated);
@@ -18,6 +20,13 @@ class CirclesBloc extends Bloc<CirclesEvent, CirclesState> {
   }
 
   final IVoteCircleRepository _voteCircleRepository;
+
+  void _onCirclesReset(
+    CirclesReset event,
+    Emitter<CirclesState> emit,
+  ) async {
+    emit(state.reset());
+  }
 
   void _onCirclesOfUserInitialLoaded(
     CirclesOfUserInitialLoaded event,
@@ -84,14 +93,14 @@ class CirclesBloc extends Bloc<CirclesEvent, CirclesState> {
   }
 
   void _onCircleDeleted(
-      CircleDeleted event,
-      Emitter<CirclesState> emit,
-      ) {
+    CircleDeleted event,
+    Emitter<CirclesState> emit,
+  ) {
     emit(state.copyWith(status: StatusIndicator.loading));
 
     final myCircles = state.myCircles;
     final myCircleIndex =
-    myCircles.indexWhere((circle) => circle.id == event.circleId);
+        myCircles.indexWhere((circle) => circle.id == event.circleId);
 
     if (myCircleIndex == -1) {
       return emit(state.copyWith(

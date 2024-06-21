@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:user_repository/user_repository.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/members/bloc/members_bloc.dart';
 import 'package:vote_your_face/application/members/members.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
-import 'package:vote_your_face/application/user/user.dart';
-import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 import 'package:vote_your_face/theme.dart';
 
@@ -83,19 +80,13 @@ class MembersNeedVotePreview extends StatelessWidget {
     required List<String> userIds,
   }) {
     return userIds
-        .map((identityId) => BlocProvider(
-              create: (context) =>
-                  UserXCubit(userRepository: sl<IUserRepository>())
-                    ..userXFetched(
-                      context: context,
-                      identityId: identityId,
-                    ),
-              child: Container(
-                margin: const EdgeInsets.only(right: _spaceBetweenMember),
-                child: const UserAvatar(
-                  option: UserAvatarOption(
-                    size: _avatarSize,
-                  ),
+        .map((identityId) => Container(
+              margin: const EdgeInsets.only(right: _spaceBetweenMember),
+              child: UserAvatar(
+                key: ValueKey(identityId),
+                identityId: identityId,
+                option: const UserAvatarOption(
+                  size: _avatarSize,
                 ),
               ),
             ))

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
+import 'package:vote_your_face/application/core/core.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 
 part 'members_event.dart';
@@ -15,6 +16,7 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
     required IVoteCircleRepository voteCircleRepository,
   })  : _voteCircleRepository = voteCircleRepository,
         super(const MembersState()) {
+    on<CircleMembersReset>(_onCircleMembersReset);
     on<CircleMembersInitialLoaded>(_onCircleMembersInitialLoaded);
     on<RankingMembersInitialLoaded>(_onRankingMembersInitialLoaded);
     on<CircleCandidateChanged>(_onCircleCandidateChanged);
@@ -42,6 +44,13 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
     _circleVoterChangeEventSubscription.cancel();
     _voteCircleRepository.dispose();
     return super.close();
+  }
+
+  void _onCircleMembersReset(
+    CircleMembersReset event,
+    Emitter<MembersState> emit,
+  ) async {
+    emit(state.reset());
   }
 
   void _onCircleMembersInitialLoaded(
@@ -181,8 +190,8 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
 
     try {
       final changeEvent = event.changeEvent;
-print(changeEvent.voter);
-print(changeEvent.operation);
+      print(changeEvent.voter);
+      print(changeEvent.operation);
       // TODO: handle self made updates of user (user id == candidate id)
       switch (changeEvent.operation) {
         case EventOperation.created:
