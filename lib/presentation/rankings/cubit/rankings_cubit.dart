@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:rankings_repository/rankings_repository.dart';
@@ -13,13 +15,26 @@ class RankingsCubit extends Cubit<RankingsState> {
   })  : _voteCircleRepository = voteCircleRepository,
         _rankingsRepository = rankingsRepository,
         super(const RankingsState()) {
-    initialRankingsLoaded();
+    _initialRankingsLoaded();
+
+    _addedCircleToViewedRankingsSubscription =
+        _rankingsRepository.watchAddedCircleToViewedRankings.listen(
+      (circleId) => _addedToRankings(int.parse(circleId)),
+    );
   }
 
   final IVoteCircleRepository _voteCircleRepository;
   final IRankingsRepository _rankingsRepository;
+  late StreamSubscription<String> _addedCircleToViewedRankingsSubscription;
 
-  Future<void> initialRankingsLoaded() async {
+  @override
+  Future<void> close() {
+    _addedCircleToViewedRankingsSubscription.cancel();
+    _rankingsRepository.dispose();
+    return super.close();
+  }
+
+  Future<void> _initialRankingsLoaded() async {
     emit(state.copyWith(status: StatusIndicator.loading));
 
     try {
@@ -29,6 +44,32 @@ class RankingsCubit extends Cubit<RankingsState> {
           .map((id) => _voteCircleRepository.circle(int.parse(id)));
 
       final circles = await Future.wait(circleRequests);
+      emit(
+        state.copyWith(
+          status: StatusIndicator.success,
+          circles: circles,
+        ),
+      );
+    } catch (e) {
+      print(e);
+      if (isClosed) return;
+      emit(state.copyWith(status: StatusIndicator.failure));
+    }
+  }
+
+  Future<void> _addedToRankings(int circleId) async {
+    emit(state.copyWith(status: StatusIndicator.loading));
+
+    try {
+      final circle = await _voteCircleRepository.circle(circleId);
+      final circles = state.circles;
+
+      if (circles.length >= _rankingsRepository.maxLengthViewedRankings) {
+        circles.removeLast();
+      }
+
+      circles.insert(0, circle);
+
       emit(
         state.copyWith(
           status: StatusIndicator.success,
