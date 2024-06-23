@@ -19,7 +19,6 @@ class AppRouter extends $AppRouter {
             AutoRoute(
                 path: 'circles',
                 page: CirclesTabRoute.page,
-                initial: true,
                 children: [
                   AutoRoute(
                     path: '',
@@ -64,6 +63,7 @@ class AppRouter extends $AppRouter {
             AutoRoute(
               path: 'rankings',
               page: RankingsTabRoute.page,
+              initial: true,
               children: [
                 AutoRoute(
                   path: '',
