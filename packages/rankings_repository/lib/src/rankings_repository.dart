@@ -20,25 +20,25 @@ class RankingsRepository implements IRankingsRepository {
   }
 
   late SharedPreferences _sharedPrefs;
-  static const String _viewedRankingsKey = 'vyf_viewed_rankings';
+  static const String _viewedRankingsKey = 'vyf_viewed_ranked_circles';
 
   @override
-  void addToViewedRankings(String rankingId) async {
-    final viewedRankings = _addToViewedRankings(rankingId);
+  void addToViewedRankings(String circleId) async {
+    final viewedRankings = _addToViewedRankings(circleId);
     await _sharedPrefs.setStringList(_viewedRankingsKey, viewedRankings);
   }
 
   @override
   List<String> get viewedRankings => _viewedRankings;
 
-  List<String> _addToViewedRankings(String rankingId) {
+  List<String> _addToViewedRankings(String circleId) {
     final viewedRankings = _viewedRankings;
 
     if (viewedRankings.length >= 15) {
       viewedRankings.removeLast();
     }
 
-    viewedRankings.insert(0, rankingId);
+    viewedRankings.insert(0, circleId);
 
     return viewedRankings;
   }
