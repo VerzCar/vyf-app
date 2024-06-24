@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
-import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/presentation/ranking/widgets/members_need_vote_preview.dart';
 import 'package:vote_your_face/presentation/ranking/widgets/ranking_sheet.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
@@ -67,23 +66,22 @@ class RankingBody extends StatelessWidget {
         ),
         const SizedBox(height: 30),
         rankings.isEmpty
-            ? buildEmptyRankingsPlaceholder(context)
+            ? _buildEmptyRankingsPlaceholder(context)
             : Expanded(
-                child: buildRankingListView(context),
+                child: _buildRankingListView(context),
               ),
       ],
     );
   }
 
-  ListView buildRankingListView(BuildContext context) {
+  ListView _buildRankingListView(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final themeData = Theme.of(context);
 
     return ListView.separated(
       itemCount: rankings.length,
-      itemBuilder: (BuildContext contextL, int index) {
+      itemBuilder: (BuildContext contextList, int index) {
         final ranking = rankings[index];
-        late UserXCubit userXCubit;
 
         return Card(
           key: Key(ranking.id.toString()),
@@ -143,7 +141,7 @@ class RankingBody extends StatelessWidget {
     );
   }
 
-  Widget buildEmptyRankingsPlaceholder(BuildContext context) {
+  Widget _buildEmptyRankingsPlaceholder(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final themeData = Theme.of(context);
 

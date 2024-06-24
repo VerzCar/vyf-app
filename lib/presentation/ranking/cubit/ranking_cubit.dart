@@ -13,7 +13,7 @@ class RankingCubit extends Cubit<RankingState> {
 
   final IVoteCircleRepository _voteCircleRepository;
 
-  Future<void> loadRankings(int circleId) async {
+  void loadRankings(int circleId) async {
     emit(state.copyWith(status: StatusIndicator.loading));
 
     try {

@@ -20,10 +20,20 @@ Future<void> init() async {
   sl.registerFactory(() => MembersBloc(voteCircleRepository: sl()));
 
   // repos
-  sl.registerSingleton<IAuthenticationRepository>(AuthenticationRepository());
+
+  // singletons
+  sl.registerSingleton<IAuthenticationRepository>(
+    AuthenticationRepository(),
+  );
+  sl.registerSingletonAsync<IRankingsRepository>(
+        () async => await RankingsRepository.create(),
+  );
+
+  // lazy singletons
   sl.registerLazySingleton<IUserRepository>(
-      () => UserRepository(authenticationRepository: sl()));
+    () => UserRepository(authenticationRepository: sl()),
+  );
   sl.registerLazySingleton<IVoteCircleRepository>(
-      () => VoteCircleRepository(authenticationRepository: sl()));
-  sl.registerLazySingletonAsync(() async => await RankingsRepository.create());
+    () => VoteCircleRepository(authenticationRepository: sl()),
+  );
 }

@@ -34,7 +34,15 @@ class RankingsCubit extends Cubit<RankingsState> {
     return super.close();
   }
 
-  Future<void> _initialRankingsLoaded() async {
+  void viewedRankingsOfCircle(int circleId) {
+    try {
+      _rankingsRepository.addToViewedRankings(circleId.toString());
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _initialRankingsLoaded() async {
     emit(state.copyWith(status: StatusIndicator.loading));
 
     try {
@@ -57,7 +65,7 @@ class RankingsCubit extends Cubit<RankingsState> {
     }
   }
 
-  Future<void> _addedToRankings(int circleId) async {
+  void _addedToRankings(int circleId) async {
     emit(state.copyWith(status: StatusIndicator.loading));
 
     try {

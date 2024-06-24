@@ -13,12 +13,26 @@ class RankingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => RankingsCubit(
-        voteCircleRepository: sl<IVoteCircleRepository>(),
-        rankingsRepository: sl<IRankingsRepository>(),
-      ),
-      child: const RankingsView(),
+    return FutureBuilder(
+      future: sl.allReady(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          return BlocProvider(
+            create: (context) => RankingsCubit(
+              voteCircleRepository: sl<IVoteCircleRepository>(),
+              rankingsRepository: sl<IRankingsRepository>(),
+            ),
+            child: const RankingsView(),
+          );
+        }
+        return const Scaffold(
+          body: SafeArea(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        );
+      },
     );
   }
 }
