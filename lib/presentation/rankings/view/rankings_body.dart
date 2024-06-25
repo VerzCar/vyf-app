@@ -1,8 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
-import 'package:vote_your_face/presentation/rankings/cubit/rankings_cubit.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
 
 class RankingsBody extends StatelessWidget {
@@ -15,23 +13,25 @@ class RankingsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ElevatedButton(
-          onPressed: () =>
-              context.read<RankingsCubit>().viewedRankingsOfCircle(42),
-          child: const Text('Vote'),
-        ),
-        circles.length > 0
-            ? Expanded(
-                child: _buildViewedRankingsListView(context),
-              )
-            : const SizedBox(
-                width: 0,
-                height: 0,
-              ),
-      ],
+    final themeData = Theme.of(context);
+
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+            child: Text(
+              'Last viewed',
+              style: themeData.textTheme.titleMedium,
+            ),
+          ),
+          const SizedBox(height: 10),
+          circles.isNotEmpty
+              ? _buildViewedRankingsListView(context)
+              : const SizedBox(width: 0, height: 0),
+        ],
+      ),
     );
   }
 
@@ -39,6 +39,8 @@ class RankingsBody extends StatelessWidget {
     final themeData = Theme.of(context);
 
     return ListView.separated(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
       itemCount: circles.length,
       itemBuilder: (BuildContext contextListView, int index) {
         final circle = circles[index];
@@ -64,7 +66,7 @@ class RankingsBody extends StatelessWidget {
           ),
         );
       },
-      separatorBuilder: (context, index) => const SizedBox(height: 15),
+      separatorBuilder: (context, index) => const SizedBox(height: 10),
     );
   }
 }

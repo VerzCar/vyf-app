@@ -68,7 +68,6 @@ class AppRouter extends $AppRouter {
                 AutoRoute(
                   path: '',
                   page: RankingsRoute.page,
-                  initial: true,
                 ),
                 AutoRoute(
                   path: ':circleId',

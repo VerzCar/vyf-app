@@ -34,14 +34,6 @@ class RankingsCubit extends Cubit<RankingsState> {
     return super.close();
   }
 
-  void viewedRankingsOfCircle(int circleId) {
-    try {
-      _rankingsRepository.addToViewedRankings(circleId.toString());
-    } catch (e) {
-      print(e);
-    }
-  }
-
   void _initialRankingsLoaded() async {
     emit(state.copyWith(status: StatusIndicator.loading));
 

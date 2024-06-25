@@ -24,22 +24,28 @@ class RankingView extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child:
-            BlocBuilder<RankingCubit, RankingState>(builder: (context, state) {
-          switch (state.status) {
-            case StatusIndicator.initial:
-              return const Center(child: Text('initial Loading'));
-            case StatusIndicator.loading:
-              return const Center(child: CircularProgressIndicator());
-            case StatusIndicator.success:
-              return RankingBody(
-                rankings: state.rankings,
-                circleId: circleId,
-              );
-            case StatusIndicator.failure:
-              return const Center(child: Text('Error'));
-          }
-        }),
+        child: BlocListener<RankingCubit, RankingState>(
+          listenWhen: (previous, current) => previous.status != current.status,
+          listener: (context, state) {
+            context.read<RankingCubit>().addToViewedRankings(circleId);
+          },
+          child: BlocBuilder<RankingCubit, RankingState>(
+              builder: (context, state) {
+            switch (state.status) {
+              case StatusIndicator.initial:
+                return const Center(child: Text('initial Loading'));
+              case StatusIndicator.loading:
+                return const Center(child: CircularProgressIndicator());
+              case StatusIndicator.success:
+                return RankingBody(
+                  rankings: state.rankings,
+                  circleId: circleId,
+                );
+              case StatusIndicator.failure:
+                return const Center(child: Text('Error'));
+            }
+          }),
+        ),
       ),
     );
   }
