@@ -204,9 +204,17 @@ class RankingBody extends StatelessWidget {
             'But the voting hasn\'t started yet...',
             style: themeData.textTheme.titleLarge,
           ),
-          BlocBuilder<CircleBloc, CircleState>(
-            builder: (context, state) =>
-                TimeUntil(untilTime: state.circle.validFrom),
+          const SizedBox(height: 15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Time until voting - '),
+              BlocBuilder<CircleBloc, CircleState>(
+                builder: (context, state) => TimeUntil(
+                  untilTime: state.circle.validFrom,
+                ),
+              ),
+            ],
           ),
         ],
       ),

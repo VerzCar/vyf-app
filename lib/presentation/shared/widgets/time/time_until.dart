@@ -15,62 +15,37 @@ class TimeUntil extends StatefulWidget {
 }
 
 class _TimeUntilState extends State<TimeUntil> {
-  _TimeUntilState() {
-    _timer = Timer.periodic(
-      const Duration(seconds: 1),
-          (Timer timer) => _onTimeTick(timer),
-    );
-  }
-
   late Timer _timer;
-  DateTime _date = DateTime.now();
-  int _days = 0;
-  int _hours = 0;
-  int _minutes = 0;
-  int _seconds = 0;
+  Duration _duration = const Duration();
 
   @override
   void initState() {
     super.initState();
-    _duration = widget.until.difference(DateTime.now());
+    _duration = widget.untilTime.difference(DateTime.now());
     _startTimer();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text('check'),
-        _days > 0
-            ? _buildTimeOutput(
-                context: context,
-                dt: _days,
-                label: 'days',
-              )
-            : const SizedBox(),
-        _hours > 0
-            ? _buildTimeOutput(
-                context: context,
-                dt: _hours,
-                label: 'hours',
-              )
-            : const SizedBox(),
-        _minutes > 0
-            ? _buildTimeOutput(
-                context: context,
-                dt: _days,
-                label: 'minutes',
-              )
-            : const SizedBox(),
-        _seconds > 0
-            ? _buildTimeOutput(
-                context: context,
-                dt: _seconds,
-                label: 'seconds',
-              )
-            : const SizedBox(),
-      ],
-    );
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigitMinutes = twoDigits(_duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(_duration.inSeconds.remainder(60));
+
+    return _duration.compareTo(const Duration(days: 365)) >= 0
+        ? Text('${(_duration.inDays / 365).floor()} years')
+        : _duration.compareTo(const Duration(days: 30)) >= 0
+            ? Text('${(_duration.inDays / 30).floor()} months')
+            : _duration.compareTo(const Duration(days: 1)) >= 0
+                ? Text('${_duration.inDays} days')
+                : _duration.compareTo(const Duration(hours: 1)) >= 0
+                    ? Text(
+                        '${_duration.inHours} hours, $twoDigitMinutes minutes')
+                    : _duration.compareTo(const Duration(minutes: 1)) >= 0
+                        ? Text(
+                            '$twoDigitMinutes minutes, $twoDigitSeconds seconds')
+                        : _duration == Duration.zero
+                            ? const Text('')
+                            : Text('$twoDigitSeconds seconds');
   }
 
   @override
@@ -79,47 +54,15 @@ class _TimeUntilState extends State<TimeUntil> {
     super.dispose();
   }
 
-  Duration get _difference => _date.difference(widget.untilTime);
-
-  Text _buildTimeOutput({
-    required BuildContext context,
-    required int dt,
-    required String label,
-  }) {
-    final themeData = Theme.of(context);
-
-    return Text.rich(
-      TextSpan(
-        style: themeData.textTheme.labelLarge,
-        children: [
-          TextSpan(
-            text: dt.toString(),
-          ),
-          TextSpan(
-            text: label,
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _onTimeTick(Timer timer) {
-    //print('+++++++++++++TICK+++++++++++');
-    final diff = _difference;
-    //print('+++++++++++++inSeconds ${diff.inSeconds.abs()}+++++++++++');
-    if (diff.inSeconds >= 0) {
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
-        timer.cancel();
+        _duration = widget.untilTime.difference(DateTime.now());
+        if (_duration.isNegative || _duration == Duration.zero) {
+          _timer.cancel();
+          _duration = Duration.zero;
+        }
       });
-      return;
-    }
-
-    setState(() {
-      _date = _date.subtract(const Duration(seconds: 1));
-      _days = diff.inDays.abs();
-      _hours = diff.inHours.abs();
-      _minutes = diff.inMinutes.abs();
-      _seconds = diff.inSeconds.abs();
     });
   }
 }
