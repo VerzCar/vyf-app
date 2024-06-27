@@ -57,6 +57,7 @@ class RankingsRepository implements IRankingsRepository {
 
   @override
   void dispose() {
+    // TODO; delete saved rankings when user changes
     _addedCircleToViewedRankingsController.close();
   }
 

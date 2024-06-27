@@ -63,13 +63,14 @@ class CircleMemberActionSheet extends StatelessWidget {
       return BlocSelector<UserBloc, UserState, String>(
         selector: (state) => state.user.identityId,
         builder: (context, identityId) {
-          return BlocSelector<MembersBloc, MembersState, bool>(
-            selector: (state) => MembersSelector.isUserCandidateMemberOfCircle(
-                state, identityId),
-            builder: (context, isUserCandidateMemberOfCircle) {
-              return BlocSelector<CircleBloc, CircleState, bool>(
-                selector: (state) => state.circle.private,
-                builder: (context, isPrivate) {
+          return BlocSelector<CircleBloc, CircleState, bool>(
+            selector: (state) => state.circle.private,
+            builder: (context, isPrivate) {
+              return BlocSelector<MembersBloc, MembersState, bool>(
+                selector: (state) =>
+                    MembersSelector.isUserCandidateMemberOfCircle(
+                        state, identityId),
+                builder: (context, isUserCandidateMemberOfCircle) {
                   if (!isUserCandidateMemberOfCircle && !isPrivate) {
                     return BlocBuilder<CircleMemberCubit, CircleMemberState>(
                       builder: (context, state) {
@@ -122,13 +123,13 @@ class CircleMemberActionSheet extends StatelessWidget {
     return BlocSelector<UserBloc, UserState, String>(
       selector: (state) => state.user.identityId,
       builder: (context, identityId) {
-        return BlocSelector<MembersBloc, MembersState, bool>(
-          selector: (state) =>
-              MembersSelector.isUserVoterMemberOfCircle(state, identityId),
-          builder: (context, isUserVoterMemberOfCircle) {
-            return BlocSelector<CircleBloc, CircleState, bool>(
-              selector: (state) => state.circle.private,
-              builder: (context, isPrivate) {
+        return BlocSelector<CircleBloc, CircleState, bool>(
+          selector: (state) => state.circle.private,
+          builder: (context, isPrivate) {
+            return BlocSelector<MembersBloc, MembersState, bool>(
+              selector: (state) =>
+                  MembersSelector.isUserVoterMemberOfCircle(state, identityId),
+              builder: (context, isUserVoterMemberOfCircle) {
                 if (!isUserVoterMemberOfCircle && !isPrivate) {
                   return BlocBuilder<CircleMemberCubit, CircleMemberState>(
                     builder: (context, state) {

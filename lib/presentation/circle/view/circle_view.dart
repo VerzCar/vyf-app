@@ -13,12 +13,35 @@ class CircleView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
-    final circleName =
-        context.select((CircleBloc cubit) => cubit.state.circle.name);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(circleName),
+        title: BlocBuilder<CircleBloc, CircleState>(
+          buildWhen: (previousState, state) =>
+              previousState.circle.name != state.circle.name ||
+              previousState.status != state.status,
+          builder: (context, state) {
+            if (!state.status.isLoading) {
+              return Text.rich(
+                TextSpan(
+                  //style: themeData.textTheme.labelSmall,
+                  children: [
+                    state.circle.private
+                        ? const WidgetSpan(
+                            child: Icon(Icons.lock_outline),
+                            alignment: PlaceholderAlignment.middle,
+                          )
+                        : const TextSpan(),
+                    TextSpan(
+                      text: state.circle.name,
+                    ),
+                  ],
+                ),
+              );
+            }
+            return const Text('');
+          },
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.all(10.0),
