@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
@@ -32,7 +33,7 @@ class RankingsBody extends StatelessWidget {
           const SizedBox(height: 10),
           circles.isNotEmpty
               ? _buildViewedRankingsListView(context)
-              : const SizedBox(width: 0, height: 0),
+              : _buildEmptyViewedRankingsPlaceholder(context),
         ],
       ),
     );
@@ -130,6 +131,41 @@ class RankingsBody extends StatelessWidget {
       },
       separatorBuilder: (context, index) => const SizedBox(
         height: 5,
+      ),
+    );
+  }
+
+  Widget _buildEmptyViewedRankingsPlaceholder(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final themeData = Theme.of(context);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              'assets/svg/empty-rankings.svg',
+              semanticsLabel: 'Empty last viewed rankings',
+              width: size.width * 0.28,
+              height: size.height * 0.28,
+            ),
+            const SizedBox(height: 15),
+            Text(
+              'There are not any last viewed rankings of circles.',
+              style: themeData.textTheme.titleLarge,
+              textAlign: TextAlign.center,
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: themeData.colorScheme.secondary,
+              ),
+              onPressed: () => context.router.navigateNamed('/circles'),
+              child: const Text('Go to circles and see the current ranking'),
+            ),
+          ],
+        ),
       ),
     );
   }

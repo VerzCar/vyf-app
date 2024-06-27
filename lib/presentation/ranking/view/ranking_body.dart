@@ -65,13 +65,22 @@ class RankingBody extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 30),
-        rankings.isEmpty
+        _buildRankings(context),
+      ],
+    );
+  }
+
+  Widget _buildRankings(BuildContext context) {
+    return BlocBuilder<CircleBloc, CircleState>(builder: (context, state) {
+      if (state.circle.stage == CircleStage.hot) {
+        return rankings.isEmpty
             ? _buildEmptyRankingsPlaceholder(context)
             : Expanded(
                 child: _buildRankingListView(context),
-              ),
-      ],
-    );
+              );
+      }
+      return _buildColdCirclePlaceholder(context);
+    });
   }
 
   ListView _buildRankingListView(BuildContext context) {
@@ -166,6 +175,38 @@ class RankingBody extends StatelessWidget {
             ),
             onPressed: () {},
             child: const Text('give a vote!'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildColdCirclePlaceholder(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final themeData = Theme.of(context);
+
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            'assets/svg/election-wait.svg',
+            semanticsLabel: 'Election wait',
+            width: size.width * 0.28,
+            height: size.height * 0.28,
+          ),
+          const SizedBox(height: 15),
+          Text(
+            'We are very excited to vote.',
+            style: themeData.textTheme.titleLarge,
+          ),
+          Text(
+            'But the voting hasn\'t started yet...',
+            style: themeData.textTheme.titleLarge,
+          ),
+          BlocBuilder<CircleBloc, CircleState>(
+            builder: (context, state) =>
+                TimeUntil(untilTime: state.circle.validFrom),
           ),
         ],
       ),
