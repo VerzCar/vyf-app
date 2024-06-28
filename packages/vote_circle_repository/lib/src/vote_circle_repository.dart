@@ -57,6 +57,15 @@ class VoteCircleRepository implements IVoteCircleRepository {
   }
 
   @override
+  Future<List<CirclePaginated>> circlesFiltered({required String name}) async {
+    final res = await _voteCircleApi.fetchCirclesFiltered(name: name);
+    final circles = res
+        .map((circle) => CirclePaginated.fromApiCirclePaginated(circle))
+        .toList();
+    return circles;
+  }
+
+  @override
   Future<List<Ranking>> rankings(int circleId) async {
     final res = await _voteCircleApi.fetchRankings(circleId);
     final rankings =

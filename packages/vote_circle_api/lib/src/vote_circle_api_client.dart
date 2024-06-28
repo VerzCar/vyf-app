@@ -121,6 +121,42 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
   }
 
   @override
+  Future<List<CirclePaginated>> fetchCirclesFiltered({required String name}) async {
+    var logger = Logger();
+
+    try {
+      final res = await http.get(
+        _uri(path: 'circles/$name'),
+        headers: await _headers,
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('querying filtered circles server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<List<dynamic>>.fromJson(
+          jsonDecode(res.body) as Map<String, dynamic>);
+
+      if (res.statusCode == HttpStatus.ok) {
+        final circles = apiResponse.data
+            .map((circle) => CirclePaginated.fromJson(circle))
+            .toList();
+        return circles;
+      }
+
+      logger.e('querying filtered circles failed: $apiResponse');
+      throw QueryCircleFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
   Future<List<Ranking>> fetchRankings(int circleId) async {
     var logger = Logger();
 
