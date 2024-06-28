@@ -56,7 +56,9 @@ class CircleBody extends StatelessWidget {
                   children: [
                     TextButton(
                       style: TextButton.styleFrom(
-                        foregroundColor: themeData.colorScheme.secondary,
+                          foregroundColor: themeData.colorScheme.secondary,
+                          padding: EdgeInsets.zero,
+                          alignment: Alignment.centerLeft
                       ),
                       onPressed: () {
                         //context.router.push(RankingRoute(circleId: circle.id));

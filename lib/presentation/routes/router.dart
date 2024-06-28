@@ -25,6 +25,10 @@ class AppRouter extends $AppRouter {
                     page: CirclesRoute.page,
                   ),
                   AutoRoute(
+                    path: 'search',
+                    page: CirclesSearchRoute.page,
+                  ),
+                  AutoRoute(
                     path: ':circleId',
                     page: CircleRoute.page,
                   ),

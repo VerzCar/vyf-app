@@ -1,8 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/presentation/circles/widgets/circles_of_interest.dart';
 import 'package:vote_your_face/presentation/circles/widgets/your_circles.dart';
+import 'package:vote_your_face/presentation/routes/router.gr.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class CirclesView extends StatelessWidget {
@@ -10,6 +12,8 @@ class CirclesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
+    
     return Scaffold(
       appBar: AppBar(
         leading: BlocSelector<UserBloc, UserState, String>(
@@ -26,11 +30,18 @@ class CirclesView extends StatelessWidget {
           },
         ),
         title: const Text('Circles'),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Icon(Icons.search_outlined),
-          )
+              padding: const EdgeInsets.all(10.0),
+              child: TextButton(
+                onPressed: () =>
+                    context.router.push(const CirclesSearchRoute()),
+                style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    alignment: Alignment.centerRight
+                ),
+                child: const Icon(Icons.search_outlined),
+              ))
         ],
       ),
       body: SafeArea(

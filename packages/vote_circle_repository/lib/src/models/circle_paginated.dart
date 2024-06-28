@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:vote_circle_api/vote_circle_api.dart' as vote_circle_api;
+
 import 'circle_stage.dart';
 
 class CirclePaginated extends Equatable {
@@ -22,6 +23,11 @@ class CirclePaginated extends Equatable {
     required this.active,
     required this.stage,
   });
+
+  @override
+  String toString() {
+    return name;
+  }
 
   factory CirclePaginated.fromApiCirclePaginated(vote_circle_api.CirclePaginated circle) =>
       CirclePaginated(
