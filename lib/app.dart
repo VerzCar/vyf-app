@@ -38,6 +38,9 @@ class App extends StatelessWidget {
         BlocProvider<MembersBloc>(
           create: (context) => sl<MembersBloc>(),
         ),
+        BlocProvider<UserOptionCubit>(
+          create: (context) => sl<UserOptionCubit>(),
+        ),
       ],
       child: Authenticator(
         child: MaterialApp.router(

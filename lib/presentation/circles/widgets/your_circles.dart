@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circles/circles.dart';
+import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/presentation/circle/widgets/create_circle_sheet.dart';
 import 'package:vote_your_face/presentation/circles/widgets/widgets.dart';
 
@@ -57,9 +58,13 @@ class YourCircles extends StatelessWidget {
             const SizedBox(height: 3),
             Align(
               alignment: Alignment.centerRight,
-              child: Text(
-                '${state.myCircles.length}/$maxAmountCircles',
-                style: themeData.textTheme.labelSmall,
+              child: BlocBuilder<UserOptionCubit, UserOptionState>(
+                builder: (context, userOptionState) {
+                  return Text(
+                    '${state.myCircles.length}/${userOptionState.userOption.maxCircles}',
+                    style: themeData.textTheme.labelSmall,
+                  );
+                },
               ),
             ),
           ],

@@ -10,6 +10,11 @@ class UserPrivateOption extends Equatable {
     required this.maxCandidates,
   });
 
+  static const empty = UserPrivateOption(
+    maxVoters: 0,
+    maxCandidates: 0,
+  );
+
   factory UserPrivateOption.fromApiUserPrivateOption(
           vote_circle_api.UserPrivateOption option) =>
       UserPrivateOption(

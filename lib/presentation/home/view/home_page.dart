@@ -17,22 +17,29 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // This is necessary because after logout and login the user wont be redirected
-    // to the splash page, therefore the user must be reloaded after login
+    // to the splash page, therefore the user and options must be reloaded after login
     final userBloc = context.read<UserBloc>();
     final userState = userBloc.state;
     if (userState.user.identityId.isEmpty) {
       userBloc.add(UserInitialLoaded());
     }
 
+    final userOptionCubit = context.read<UserOptionCubit>();
+    final userOptionState = userOptionCubit.state;
+    if (userOptionState.userOption.maxCircles == 0) {
+      userOptionCubit.userOptionLoaded();
+    }
+
     return BlocListener<AuthenticationBloc, AuthenticationState>(
       listenWhen: (previousState, state) =>
-      state.status != previousState.status,
+          state.status != previousState.status,
       listener: (context, state) {
         if (state.status == AuthFlowStatus.unauthenticated) {
           context.read<UserBloc>().add(UserReset());
           context.read<CirclesBloc>().add(CirclesReset());
           context.read<CircleBloc>().add(CircleReset());
           context.read<MembersBloc>().add(CircleMembersReset());
+          context.read<UserOptionCubit>().reset();
         }
       },
       child: BlocBuilder<UserBloc, UserState>(
