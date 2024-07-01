@@ -28,11 +28,9 @@ class VoteCircleRepository implements IVoteCircleRepository {
       StreamController<CircleCandidateChangeEvent>();
   StreamSubscription<CircleCandidateChangeEvent>?
       _candidateChangedEventSubscription;
-  final StreamController<CircleVoterChangeEvent>
-  _voterChangedEventController =
-  StreamController<CircleVoterChangeEvent>();
-  StreamSubscription<CircleVoterChangeEvent>?
-  _voterChangedEventSubscription;
+  final StreamController<CircleVoterChangeEvent> _voterChangedEventController =
+      StreamController<CircleVoterChangeEvent>();
+  StreamSubscription<CircleVoterChangeEvent>? _voterChangedEventSubscription;
 
   @override
   Future<Circle> circle(int id) async {
@@ -143,6 +141,38 @@ class VoteCircleRepository implements IVoteCircleRepository {
   @override
   Future<String> leaveCircleAsVoter(int circleId) async {
     return await _voteCircleApi.leaveCircleAsVoter(circleId);
+  }
+
+  @override
+  Future<bool> createVote(
+      int circleId, VoteCreateRequest voteCreateRequest) async {
+    return await _voteCircleApi.createVote(
+      circleId,
+      voteCreateRequest.toApiVoteCreateRequest(),
+    );
+  }
+
+  @override
+  Future<bool> revokeVote(int circleId) async {
+    return await _voteCircleApi.revokeVote(circleId);
+  }
+
+  @override
+  Future<Commitment> updateCommitment(
+    int circleId,
+    CircleCandidateCommitmentRequest commitmentRequest,
+  ) async {
+    final res = await _voteCircleApi.updateCommitment(
+      circleId,
+      commitmentRequest.toApiCircleCandidateCommitmentRequest(),
+    );
+    return commitmentFromApiCommitment(res);
+  }
+
+  @override
+  Future<UserOption> userOption() async {
+    final res = await _voteCircleApi.fetchUserOption();
+    return UserOption.fromApiUserOption(res);
   }
 
   @override

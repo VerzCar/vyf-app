@@ -8,3 +8,10 @@ enum Commitment {
   @JsonValue('REJECTED')
   rejected,
 }
+
+// ignore: constant_identifier_names
+const Map<String, Commitment> CommitmentEnumMap = {
+  'OPEN': Commitment.open,
+  'COMMITTED': Commitment.committed,
+  'REJECTED': Commitment.rejected,
+};

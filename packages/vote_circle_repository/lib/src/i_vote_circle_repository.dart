@@ -39,6 +39,20 @@ abstract class IVoteCircleRepository {
 
   Future<String> leaveCircleAsCandidate(int circleId);
 
+  Future<bool> createVote(
+    int circleId,
+    VoteCreateRequest voteCreateRequest,
+  );
+
+  Future<bool> revokeVote(int circleId);
+
+  Future<UserOption> userOption();
+
+  Future<Commitment> updateCommitment(
+    int circleId,
+    CircleCandidateCommitmentRequest commitmentRequest,
+  );
+
   void subscribeToCircleCandidateChangedEvent(int circleId);
 
   void subscribeToCircleVoterChangedEvent(int circleId);

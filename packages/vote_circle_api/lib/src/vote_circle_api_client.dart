@@ -121,7 +121,9 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
   }
 
   @override
-  Future<List<CirclePaginated>> fetchCirclesFiltered({required String name}) async {
+  Future<List<CirclePaginated>> fetchCirclesFiltered({
+    required String name,
+  }) async {
     var logger = Logger();
 
     try {
@@ -522,6 +524,147 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
 
       logger.e('leave circle as voter failed: $apiResponse');
       throw LeaveCircleFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<bool> createVote(
+    int circleId,
+    VoteCreateRequest voteCreateRequest,
+  ) async {
+    var logger = Logger();
+
+    try {
+      var jsonBody = jsonEncode(voteCreateRequest.toJson());
+
+      final res = await http.post(
+        _uri(path: 'vote/$circleId'),
+        headers: await _headers,
+        body: jsonBody,
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('creating vote server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<bool>.fromJson(jsonDecode(res.body));
+
+      if (res.statusCode == HttpStatus.ok) {
+        return apiResponse.data;
+      }
+
+      logger.e('creating vote failed: $apiResponse');
+      throw CreateVoteFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<bool> revokeVote(int circleId) async {
+    var logger = Logger();
+
+    try {
+      final res = await http.post(
+        _uri(path: 'vote/revoke/$circleId'),
+        headers: await _headers,
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('revoking vote server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<bool>.fromJson(jsonDecode(res.body));
+
+      if (res.statusCode == HttpStatus.ok) {
+        return apiResponse.data;
+      }
+
+      logger.e('revoking vote failed: $apiResponse');
+      throw RevokeVoteFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<UserOption> fetchUserOption() async {
+    var logger = Logger();
+
+    try {
+      final res = await http.get(
+        _uri(path: 'user-option'),
+        headers: await _headers,
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('querying user options server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<Map<String, dynamic>>.fromJson(
+          jsonDecode(res.body) as Map<String, dynamic>);
+
+      if (res.statusCode == HttpStatus.ok) {
+        return UserOption.fromJson(apiResponse.data);
+      }
+
+      logger.e('querying user options failed: $apiResponse');
+      throw QueryUserOptionFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Commitment> updateCommitment(
+    int circleId,
+    CircleCandidateCommitmentRequest commitmentRequest,
+  ) async {
+    var logger = Logger();
+
+    try {
+      var jsonBody = jsonEncode(commitmentRequest.toJson());
+
+      final res = await http.post(
+        _uri(path: 'circle-candidates/$circleId/commitment'),
+        headers: await _headers,
+        body: jsonBody,
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('updating commitment server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<String>.fromJson(jsonDecode(res.body));
+
+      if (res.statusCode == HttpStatus.ok) {
+        return CommitmentEnumMap[apiResponse.data]!;
+      }
+
+      logger.e('updating commitment failed: $apiResponse');
+      throw UpdateCommitmentFailure(
         statusCode: res.statusCode,
         msg: apiResponse.msg,
         status: apiResponse.status,

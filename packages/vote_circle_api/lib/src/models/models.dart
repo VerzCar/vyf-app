@@ -3,6 +3,7 @@ export 'candidate.dart';
 export 'candidate_request.dart';
 export 'circle.dart';
 export 'circle_candidate.dart';
+export 'circle_candidate_commitment_request.dart';
 export 'circle_candidates_filter.dart';
 export 'circle_create_request.dart';
 export 'circle_paginated.dart';
@@ -12,6 +13,8 @@ export 'circle_voter.dart';
 export 'commitment.dart';
 export 'placement.dart';
 export 'ranking.dart';
+export 'user_option.dart';
+export 'user_private_option.dart';
+export 'vote_create_request.dart';
 export 'voter.dart';
 export 'voter_request.dart';
-

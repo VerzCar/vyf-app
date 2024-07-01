@@ -50,6 +50,14 @@ class QueryVotersFailure extends ApiFailure {
   });
 }
 
+class QueryUserOptionFailure extends ApiFailure {
+  QueryUserOptionFailure({
+    required super.statusCode,
+    super.msg,
+    super.status,
+  });
+}
+
 class CreateCircleFailure extends ApiFailure {
   CreateCircleFailure({
     required super.statusCode,
@@ -84,6 +92,30 @@ class JoinCircleFailure extends ApiFailure {
 
 class LeaveCircleFailure extends ApiFailure {
   LeaveCircleFailure({
+    required super.statusCode,
+    super.msg,
+    super.status,
+  });
+}
+
+class CreateVoteFailure extends ApiFailure {
+  CreateVoteFailure({
+    required super.statusCode,
+    super.msg,
+    super.status,
+  });
+}
+
+class RevokeVoteFailure extends ApiFailure {
+  RevokeVoteFailure({
+    required super.statusCode,
+    super.msg,
+    super.status,
+  });
+}
+
+class UpdateCommitmentFailure extends ApiFailure {
+  UpdateCommitmentFailure({
     required super.statusCode,
     super.msg,
     super.status,

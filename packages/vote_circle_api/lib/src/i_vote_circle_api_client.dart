@@ -36,4 +36,18 @@ abstract class IVoteCircleApiClient {
   Future<String> leaveCircleAsVoter(int circleId);
 
   Future<String> leaveCircleAsCandidate(int circleId);
+
+  Future<bool> createVote(
+    int circleId,
+    VoteCreateRequest voteCreateRequest,
+  );
+
+  Future<bool> revokeVote(int circleId);
+
+  Future<Commitment> updateCommitment(
+    int circleId,
+    CircleCandidateCommitmentRequest commitmentRequest,
+  );
+
+  Future<UserOption> fetchUserOption();
 }

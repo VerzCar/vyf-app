@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
+import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class CirclesSearchBody extends StatelessWidget {
   const CirclesSearchBody({super.key});
@@ -39,6 +40,14 @@ class CirclesSearchBody extends StatelessWidget {
               margin: const EdgeInsets.all(0),
               child: ListTile(
                 onTap: () => onSelected(circle),
+                leading:       SizedBox(
+                  height: 32,
+                  width: 32,
+                  child: NetImage(
+                    imageSrc: circle.imageSrc,
+                    fit: BoxFit.cover,
+                  ),
+                ),
                 title: Text(circle.name),
               ),
             );
