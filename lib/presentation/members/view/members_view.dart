@@ -1,5 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vote_your_face/application/members/members.dart';
+import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
 
 class MembersView extends StatelessWidget {
@@ -19,9 +22,51 @@ class MembersView extends StatelessWidget {
             leading: const AutoLeadingButton(),
             bottom: TabBar(
               controller: controller,
-              tabs: const [
-                Tab(text: 'Candidates', icon: Icon(Icons.groups_outlined)),
-                Tab(text: 'Voters', icon: Icon(Icons.group_outlined)),
+              tabs: [
+                Tab(
+                  icon: const Icon(Icons.groups_outlined),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      const Text('Candidates'),
+                      BlocBuilder<UserOptionCubit, UserOptionState>(
+                        builder: (context, state) {
+                          return BlocBuilder<MembersBloc, MembersState>(
+                            buildWhen: (prev, current) =>
+                                prev.circleCandidate.candidates.length !=
+                                current.circleCandidate.candidates.length,
+                            builder: (context, membersState) {
+                              return Text(
+                                  '${membersState.circleCandidate.candidates.length}/${state.userOption.maxCandidates}');
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Tab(
+                  icon: const Icon(Icons.group_outlined),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      const Text('Voters'),
+                      BlocBuilder<UserOptionCubit, UserOptionState>(
+                        builder: (context, state) {
+                          return BlocBuilder<MembersBloc, MembersState>(
+                            buildWhen: (prev, current) =>
+                                prev.circleVoter.voters.length !=
+                                current.circleVoter.voters.length,
+                            builder: (context, membersState) {
+                              return Text(
+                                  '${membersState.circleVoter.voters.length}/${state.userOption.maxVoters}');
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
