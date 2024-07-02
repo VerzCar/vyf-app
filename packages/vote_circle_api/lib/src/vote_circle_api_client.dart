@@ -674,6 +674,82 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     }
   }
 
+  @override
+  Future<String> removeCandidateFromCircle(
+    int circleId,
+    CandidateRequest candidateRequest,
+  ) async {
+    var logger = Logger();
+
+    try {
+      var jsonBody = jsonEncode(candidateRequest.toJson());
+
+      final res = await http.post(
+        _uri(path: 'circle-candidates/$circleId/remove'),
+        headers: await _headers,
+        body: jsonBody,
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('removing candidate from circle server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<String>.fromJson(jsonDecode(res.body));
+
+      if (res.statusCode == HttpStatus.ok) {
+        return apiResponse.data;
+      }
+
+      logger.e('removing candidate from circle failed: $apiResponse');
+      throw CreateVoteFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> removeVoterFromCircle(
+    int circleId,
+    VoterRequest voterRequest,
+  ) async {
+    var logger = Logger();
+
+    try {
+      var jsonBody = jsonEncode(voterRequest.toJson());
+
+      final res = await http.post(
+        _uri(path: 'circle-voters/$circleId/remove'),
+        headers: await _headers,
+        body: jsonBody,
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('removing voter from circle server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<String>.fromJson(jsonDecode(res.body));
+
+      if (res.statusCode == HttpStatus.ok) {
+        return apiResponse.data;
+      }
+
+      logger.e('removing voter from circle failed: $apiResponse');
+      throw CreateVoteFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Uri _uri({String? path, Map<String, dynamic>? queryParameters}) {
     final httpsUri = Uri(
       scheme: 'https',

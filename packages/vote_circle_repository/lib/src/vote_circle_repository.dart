@@ -176,6 +176,28 @@ class VoteCircleRepository implements IVoteCircleRepository {
   }
 
   @override
+  Future<String> removeCandidateFromCircle(
+    int circleId,
+    CandidateRequest candidateRequest,
+  ) async {
+    return await _voteCircleApi.removeCandidateFromCircle(
+      circleId,
+      candidateRequest.toApiCandidateRequest(),
+    );
+  }
+
+  @override
+  Future<String> removeVoterFromCircle(
+    int circleId,
+    VoterRequest voterRequest,
+  ) async {
+    return await _voteCircleApi.removeVoterFromCircle(
+      circleId,
+      voterRequest.toApiVoterRequest(),
+    );
+  }
+
+  @override
   void subscribeToCircleCandidateChangedEvent(int circleId) {
     try {
       if (_candidateChangedEventSubscription != null) {

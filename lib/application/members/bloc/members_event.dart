@@ -39,8 +39,8 @@ final class RankingMembersInitialLoaded extends MembersEvent {
       ];
 }
 
-final class CircleCandidateChanged extends MembersEvent {
-  const CircleCandidateChanged({
+final class CircleMembersCandidateChanged extends MembersEvent {
+  const CircleMembersCandidateChanged({
     required this.changeEvent,
   });
 
@@ -52,8 +52,8 @@ final class CircleCandidateChanged extends MembersEvent {
       ];
 }
 
-final class CircleVoterChanged extends MembersEvent {
-  const CircleVoterChanged({
+final class CircleMembersVoterChanged extends MembersEvent {
+  const CircleMembersVoterChanged({
     required this.changeEvent,
   });
 
@@ -61,6 +61,38 @@ final class CircleVoterChanged extends MembersEvent {
 
   @override
   List<Object> get props => [
-    changeEvent,
+        changeEvent,
+      ];
+}
+
+final class CircleMembersRemovedCandidateFromCircle extends MembersEvent {
+  const CircleMembersRemovedCandidateFromCircle({
+    required this.candidateIdentId,
+    required this.context,
+  });
+
+  final String candidateIdentId;
+  final BuildContext context;
+
+  @override
+  List<Object> get props => [
+        candidateIdentId,
+        context,
+      ];
+}
+
+final class CircleMembersRemovedVoterFromCircle extends MembersEvent {
+  const CircleMembersRemovedVoterFromCircle({
+    required this.voterIdentId,
+    required this.context,
+  });
+
+  final String voterIdentId;
+  final BuildContext context;
+
+  @override
+  List<Object> get props => [
+    voterIdentId,
+    context,
   ];
 }

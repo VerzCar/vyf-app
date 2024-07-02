@@ -32,9 +32,6 @@ class MembersView extends StatelessWidget {
                       BlocBuilder<UserOptionCubit, UserOptionState>(
                         builder: (context, state) {
                           return BlocBuilder<MembersBloc, MembersState>(
-                            buildWhen: (prev, current) =>
-                                prev.circleCandidate.candidates.length !=
-                                current.circleCandidate.candidates.length,
                             builder: (context, membersState) {
                               return Text(
                                   '${membersState.circleCandidate.candidates.length}/${state.userOption.maxCandidates}');
@@ -54,9 +51,6 @@ class MembersView extends StatelessWidget {
                       BlocBuilder<UserOptionCubit, UserOptionState>(
                         builder: (context, state) {
                           return BlocBuilder<MembersBloc, MembersState>(
-                            buildWhen: (prev, current) =>
-                                prev.circleVoter.voters.length !=
-                                current.circleVoter.voters.length,
                             builder: (context, membersState) {
                               return Text(
                                   '${membersState.circleVoter.voters.length}/${state.userOption.maxVoters}');

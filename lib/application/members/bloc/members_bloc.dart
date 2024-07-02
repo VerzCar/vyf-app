@@ -19,16 +19,18 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
     on<CircleMembersReset>(_onCircleMembersReset);
     on<CircleMembersInitialLoaded>(_onCircleMembersInitialLoaded);
     on<RankingMembersInitialLoaded>(_onRankingMembersInitialLoaded);
-    on<CircleCandidateChanged>(_onCircleCandidateChanged);
-    on<CircleVoterChanged>(_onCircleVoterChanged);
+    on<CircleMembersCandidateChanged>(_onCircleCandidateChanged);
+    on<CircleMembersVoterChanged>(_onCircleVoterChanged);
+    on<CircleMembersRemovedCandidateFromCircle>(_onRemovedCandidateFromCircle);
+    on<CircleMembersRemovedVoterFromCircle>(_onRemovedVoterFromCircle);
 
     _circleCandidateChangeEventSubscription =
         _voteCircleRepository.circleCandidateChangedEvent.listen(
-      (event) => add(CircleCandidateChanged(changeEvent: event)),
+      (event) => add(CircleMembersCandidateChanged(changeEvent: event)),
     );
     _circleVoterChangeEventSubscription =
         _voteCircleRepository.circleVoterChangedEvent.listen(
-      (event) => add(CircleVoterChanged(changeEvent: event)),
+      (event) => add(CircleMembersVoterChanged(changeEvent: event)),
     );
   }
 
@@ -119,7 +121,7 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
   }
 
   void _onCircleCandidateChanged(
-    CircleCandidateChanged event,
+    CircleMembersCandidateChanged event,
     Emitter<MembersState> emit,
   ) {
     emit(state.copyWith(status: StatusIndicator.loading));
@@ -183,7 +185,7 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
   }
 
   void _onCircleVoterChanged(
-    CircleVoterChanged event,
+    CircleMembersVoterChanged event,
     Emitter<MembersState> emit,
   ) {
     emit(state.copyWith(status: StatusIndicator.loading));
@@ -244,6 +246,54 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
       print(e);
       if (isClosed) return;
       emit(state.copyWith(status: StatusIndicator.success));
+    }
+  }
+
+  void _onRemovedCandidateFromCircle(
+    CircleMembersRemovedCandidateFromCircle event,
+    Emitter<MembersState> emit,
+  ) async {
+    emit(state.copyWith(status: StatusIndicator.loading));
+
+    try {
+      final currentCircleId = event.context.read<CircleBloc>().state.circle.id;
+      final request = CandidateRequest(candidate: event.candidateIdentId);
+      await _voteCircleRepository.removeCandidateFromCircle(
+        currentCircleId,
+        request,
+      );
+
+      emit(state.copyWith(
+        status: StatusIndicator.success,
+      ));
+    } catch (e) {
+      print(e);
+      if (isClosed) return;
+      emit(state.copyWith(status: StatusIndicator.failure));
+    }
+  }
+
+  void _onRemovedVoterFromCircle(
+    CircleMembersRemovedVoterFromCircle event,
+    Emitter<MembersState> emit,
+  ) async {
+    emit(state.copyWith(status: StatusIndicator.loading));
+
+    try {
+      final currentCircleId = event.context.read<CircleBloc>().state.circle.id;
+      final request = VoterRequest(voter: event.voterIdentId);
+      await _voteCircleRepository.removeVoterFromCircle(
+        currentCircleId,
+        request,
+      );
+
+      emit(state.copyWith(
+        status: StatusIndicator.success,
+      ));
+    } catch (e) {
+      print(e);
+      if (isClosed) return;
+      emit(state.copyWith(status: StatusIndicator.failure));
     }
   }
 }
