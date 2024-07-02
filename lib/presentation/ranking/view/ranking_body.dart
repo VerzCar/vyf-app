@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
+import 'package:vote_your_face/application/members/members.dart';
+import 'package:vote_your_face/presentation/ranking/cubit/ranking_cubit.dart';
 import 'package:vote_your_face/presentation/ranking/widgets/members_need_vote_preview.dart';
 import 'package:vote_your_face/presentation/ranking/widgets/ranking_sheet.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
@@ -119,12 +121,9 @@ class RankingBody extends StatelessWidget {
                 ),
               ),
             ),
-            trailing: ElevatedButton(
-              onPressed: () => {},
-              style: ElevatedButton.styleFrom(
-                  foregroundColor: themeData.colorScheme.onSecondary,
-                  backgroundColor: themeData.colorScheme.secondary),
-              child: const Text('Vote'),
+            trailing: _votingActionButton(
+              themeData: themeData,
+              ranking: ranking,
             ),
             onTap: () {
               showModalBottomSheet(
@@ -147,6 +146,41 @@ class RankingBody extends StatelessWidget {
       separatorBuilder: (context, index) => const Divider(
         height: 0,
       ),
+    );
+  }
+
+  _votingActionButton({
+    required ThemeData themeData,
+    required Ranking ranking,
+  }) {
+    return BlocSelector<MembersBloc, MembersState, bool>(
+      selector: (state) => MembersSelector.canVote(state, ranking.identityId),
+      builder: (context, canVote) {
+        return BlocBuilder<CircleBloc, CircleState>(
+          builder: (context, state) {
+            return canVote
+                ? ElevatedButton(
+                    onPressed: () => context.read<RankingCubit>().voted(
+                          circleId: state.circle.id,
+                          candidateId: ranking.identityId,
+                        ),
+                    style: ElevatedButton.styleFrom(
+                        foregroundColor: themeData.colorScheme.onSecondary,
+                        backgroundColor: themeData.colorScheme.secondary),
+                    child: const Text('Vote'),
+                  )
+                : ElevatedButton(
+                    onPressed: () => context.read<RankingCubit>().revokedVote(
+                          circleId: state.circle.id,
+                        ),
+                    style: ElevatedButton.styleFrom(
+                        foregroundColor: themeData.colorScheme.onSecondary,
+                        backgroundColor: themeData.colorScheme.secondary),
+                    child: const Text('Revoke vote'),
+                  );
+          },
+        );
+      },
     );
   }
 

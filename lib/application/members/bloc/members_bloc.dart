@@ -59,13 +59,13 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
     CircleMembersInitialLoaded event,
     Emitter<MembersState> emit,
   ) async {
-    final currentCircleId = event.context.read<CircleBloc>().state.circle.id;
-
-    if (currentCircleId == state.circleRefId) return;
-
-    emit(state.copyWith(status: StatusIndicator.loading));
-
     try {
+      final currentCircleId = event.context.read<CircleBloc>().state.circle.id;
+
+      if (currentCircleId == state.circleRefId) return;
+
+      emit(state.copyWith(status: StatusIndicator.loading));
+
       final (voter, candidate) = await (
         _voteCircleRepository.circleVoters(event.circleId),
         _voteCircleRepository.circleCandidates(event.circleId, null),
@@ -88,13 +88,13 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
     RankingMembersInitialLoaded event,
     Emitter<MembersState> emit,
   ) async {
-    final currentCircleId = event.context.read<CircleBloc>().state.circle.id;
-
-    if (currentCircleId == state.circleRankingsRefId) return;
-
-    emit(state.copyWith(status: StatusIndicator.loading));
-
     try {
+      final currentCircleId = event.context.read<CircleBloc>().state.circle.id;
+
+      if (currentCircleId == state.circleRankingsRefId) return;
+
+      emit(state.copyWith(status: StatusIndicator.loading));
+
       final candidatesFilter = CircleCandidatesFilter(
         hasBeenVoted: false,
       );

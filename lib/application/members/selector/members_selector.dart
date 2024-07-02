@@ -38,4 +38,26 @@ class MembersSelector {
 
     return voterIndex > -1;
   }
+
+  static bool canVote(
+    MembersState memberState,
+    String toVoteForIdentityId,
+  ) {
+    if (memberState.status.isNotSuccessful) {
+      return false;
+    }
+
+    // The member (myself) must be a voter to be able to vote
+    if (memberState.circleVoter.userVoter == null) {
+      return false;
+    }
+
+    // voter is the same user, cannot vote for himself
+    if (memberState.circleVoter.userVoter!.voter == toVoteForIdentityId) {
+      return false;
+    }
+
+    // voter hasn't voted yet
+    return memberState.circleVoter.userVoter!.votedFor == null;
+  }
 }
