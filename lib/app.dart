@@ -38,8 +38,8 @@ class App extends StatelessWidget {
         BlocProvider<MembersBloc>(
           create: (context) => sl<MembersBloc>(),
         ),
-        BlocProvider<UserOptionCubit>(
-          create: (context) => sl<UserOptionCubit>(),
+        BlocProvider<UserOptionBloc>(
+          create: (context) => sl<UserOptionBloc>(),
         ),
       ],
       child: Authenticator(

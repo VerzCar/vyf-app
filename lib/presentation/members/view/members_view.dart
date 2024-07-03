@@ -29,7 +29,7 @@ class MembersView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       const Text('Candidates'),
-                      BlocBuilder<UserOptionCubit, UserOptionState>(
+                      BlocBuilder<UserOptionBloc, UserOptionState>(
                         builder: (context, state) {
                           return BlocBuilder<MembersBloc, MembersState>(
                             builder: (context, membersState) {
@@ -48,7 +48,7 @@ class MembersView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       const Text('Voters'),
-                      BlocBuilder<UserOptionCubit, UserOptionState>(
+                      BlocBuilder<UserOptionBloc, UserOptionState>(
                         builder: (context, state) {
                           return BlocBuilder<MembersBloc, MembersState>(
                             builder: (context, membersState) {

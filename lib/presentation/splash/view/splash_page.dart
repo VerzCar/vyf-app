@@ -16,7 +16,8 @@ class SplashPage extends StatelessWidget {
           value: BlocProvider.of<UserBloc>(context)..add(UserInitialLoaded()),
         ),
         BlocProvider.value(
-          value: BlocProvider.of<UserOptionCubit>(context)..userOptionLoaded(),
+          value: BlocProvider.of<UserOptionBloc>(context)
+            ..add(UserOptionLoaded()),
         ),
       ],
       child: const SplashView(),

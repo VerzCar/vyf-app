@@ -1,6 +1,5 @@
-part of 'user_option_cubit.dart';
+part of 'user_option_bloc.dart';
 
-// TODO: transform this global cubit to a bloc
 final class UserOptionState extends VyfBaseState {
   const UserOptionState({
     this.status = StatusIndicator.initial,

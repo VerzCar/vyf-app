@@ -58,7 +58,7 @@ class YourCircles extends StatelessWidget {
             const SizedBox(height: 3),
             Align(
               alignment: Alignment.centerRight,
-              child: BlocBuilder<UserOptionCubit, UserOptionState>(
+              child: BlocBuilder<UserOptionBloc, UserOptionState>(
                 builder: (context, userOptionState) {
                   return Text(
                     '${state.myCircles.length}/${userOptionState.userOption.maxCircles}',

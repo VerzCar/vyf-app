@@ -24,10 +24,10 @@ class HomePage extends StatelessWidget {
       userBloc.add(UserInitialLoaded());
     }
 
-    final userOptionCubit = context.read<UserOptionCubit>();
+    final userOptionCubit = context.read<UserOptionBloc>();
     final userOptionState = userOptionCubit.state;
     if (userOptionState.userOption.maxCircles == 0) {
-      userOptionCubit.userOptionLoaded();
+      userOptionCubit.add(UserOptionLoaded());
     }
 
     return BlocListener<AuthenticationBloc, AuthenticationState>(
@@ -39,7 +39,7 @@ class HomePage extends StatelessWidget {
           context.read<CirclesBloc>().add(CirclesReset());
           context.read<CircleBloc>().add(CircleReset());
           context.read<MembersBloc>().add(CircleMembersReset());
-          context.read<UserOptionCubit>().reset();
+          context.read<UserOptionBloc>().add(UserOptionReset());
         }
       },
       child: BlocBuilder<UserBloc, UserState>(
