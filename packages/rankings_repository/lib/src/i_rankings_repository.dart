@@ -1,3 +1,5 @@
+import 'models/models.dart';
+
 abstract class IRankingsRepository {
   /// Adds the circle id to the last viewed rankings.
   void addToViewedRankings(String circleId);
@@ -8,7 +10,11 @@ abstract class IRankingsRepository {
 
   Stream<String> get watchAddedCircleToViewedRankings;
 
+  Stream<RankingChangeEvent> get watchRankingChangedEvent;
+
   int get maxLengthViewedRankings;
+
+  void subscribeToRankingChangedEvent(int circleId);
 
   void dispose();
 }

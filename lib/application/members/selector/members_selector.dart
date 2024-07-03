@@ -48,16 +48,16 @@ class MembersSelector {
     }
 
     // The member (myself) must be a voter to be able to vote
-    if (memberState.circleVoter.userVoter == null) {
+    if (memberState.rankingVoter.userVoter == null) {
       return false;
     }
 
     // voter is the same user, cannot vote for himself
-    if (memberState.circleVoter.userVoter!.voter == toVoteForIdentityId) {
+    if (memberState.rankingVoter.userVoter!.voter == toVoteForIdentityId) {
       return false;
     }
 
     // voter hasn't voted yet
-    return memberState.circleVoter.userVoter!.votedFor == null;
+    return memberState.rankingVoter.userVoter!.votedFor == null;
   }
 }

@@ -12,6 +12,10 @@ dependencies:
   flutter:
     sdk: flutter
   shared_preferences: ^2.2.3
+  authentication_repository:
+    path: ../authentication_repository
+  ably_service:
+    path: ../ably_service
 
 dev_dependencies:
   flutter_test:

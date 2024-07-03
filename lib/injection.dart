@@ -12,7 +12,7 @@ import 'package:vote_your_face/application/user/user.dart';
 final sl = GetIt.I;
 
 Future<void> init() async {
-  // state management
+  // global state management
   sl.registerFactory(() => AuthenticationBloc(authenticationRepository: sl()));
   sl.registerFactory(() => UserBloc(userRepository: sl()));
   sl.registerFactory(() => CirclesBloc(voteCircleRepository: sl()));
@@ -23,11 +23,12 @@ Future<void> init() async {
   // repos
 
   // singletons
-  sl.registerSingleton<IAuthenticationRepository>(
-    AuthenticationRepository(),
+  sl.registerSingletonAsync<IAuthenticationRepository>(
+      () async => AuthenticationRepository(),
   );
   sl.registerSingletonAsync<IRankingsRepository>(
-        () async => await RankingsRepository.create(),
+    () async => await RankingsRepository.create(authenticationRepository: sl()),
+    dependsOn: [IAuthenticationRepository],
   );
 
   // lazy singletons

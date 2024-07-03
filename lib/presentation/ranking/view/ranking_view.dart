@@ -25,7 +25,8 @@ class RankingView extends StatelessWidget {
       ),
       body: SafeArea(
         child: BlocListener<RankingCubit, RankingState>(
-          listenWhen: (previous, current) => previous.status != current.status,
+          listenWhen: (previous, current) =>
+              previous.rankings.firstOrNull != current.rankings.firstOrNull,
           listener: (context, state) {
             context.read<RankingCubit>().addToViewedRankings(circleId);
           },

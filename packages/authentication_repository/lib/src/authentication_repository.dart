@@ -50,8 +50,8 @@ class AuthenticationRepository implements IAuthenticationRepository {
     this._checkAuthStatus();
   }
 
-  final _authStateController = StreamController<AuthState>();
-  final _accessJwtTokenController = StreamController<String>();
+  final _authStateController = StreamController<AuthState>.broadcast();
+  final _accessJwtTokenController = StreamController<String>.broadcast();
   late StreamSubscription<AuthHubEvent> _authHubSubscription;
   late AuthCredentials _credentials =
       LoginCredentials(username: '', password: '');

@@ -192,8 +192,7 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
 
     try {
       final changeEvent = event.changeEvent;
-      print(changeEvent.voter);
-      print(changeEvent.operation);
+
       // TODO: handle self made updates of user (user id == candidate id)
       switch (changeEvent.operation) {
         case EventOperation.created:
