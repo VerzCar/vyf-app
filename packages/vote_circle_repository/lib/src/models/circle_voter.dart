@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:vote_circle_api/vote_circle_api.dart' as vote_circle_api;
+
 import 'voter.dart';
 
 class CircleVoter extends Equatable {
@@ -14,6 +15,15 @@ class CircleVoter extends Equatable {
   static const empty = CircleVoter(
     voters: [],
   );
+
+  CircleVoter copyWith({
+    List<Voter>? voters,
+    Voter? userVoter,
+  }) =>
+      CircleVoter(
+        voters: voters ?? this.voters,
+        userVoter: userVoter ?? this.userVoter,
+      );
 
   factory CircleVoter.fromApiCircleVoter(vote_circle_api.CircleVoter voter) =>
       CircleVoter(

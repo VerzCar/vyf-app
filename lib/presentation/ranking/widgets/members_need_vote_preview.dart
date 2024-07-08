@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
+import 'package:vote_your_face/application/circle/circle.dart';
 import 'package:vote_your_face/application/members/bloc/members_bloc.dart';
 import 'package:vote_your_face/application/members/members.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
@@ -21,27 +22,31 @@ class MembersNeedVotePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: BlocProvider.of<MembersBloc>(context)
-        ..add(RankingMembersInitialLoaded(
-          circleId: circleId,
-          context: context,
-        )),
-      child: BlocBuilder<MembersBloc, MembersState>(
-        builder: (context, state) {
-          if (!state.status.isSuccessful) {
-            return SizedBox(
-              width: _avatarSize.preSize.width,
-              height: _avatarSize.preSize.height,
-            );
-          }
+    return BlocBuilder<CircleBloc, CircleState>(
+      builder: (context, circleState) {
+        return BlocProvider.value(
+          value: BlocProvider.of<MembersBloc>(context)
+            ..add(RankingMembersInitialLoaded(
+              circleId: circleId,
+              currentCircleId: circleState.circle.id,
+            )),
+          child: BlocBuilder<MembersBloc, MembersState>(
+            builder: (context, state) {
+              if (!state.status.isSuccessful) {
+                return SizedBox(
+                  width: _avatarSize.preSize.width,
+                  height: _avatarSize.preSize.height,
+                );
+              }
 
-          return _buildMembersNeedVotePreview(
-            context: context,
-            circleCandidate: state.rankingCandidate,
-          );
-        },
-      ),
+              return _buildMembersNeedVotePreview(
+                context: context,
+                circleCandidate: state.rankingCandidate,
+              );
+            },
+          ),
+        );
+      },
     );
   }
 

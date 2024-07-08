@@ -63,17 +63,18 @@ class VotersView extends StatelessWidget {
     return BlocSelector<UserBloc, UserState, String>(
       selector: (state) => state.user.identityId,
       builder: (context, identityId) =>
-          BlocSelector<CircleBloc, CircleState, bool>(
-        selector: (state) => CircleSelector.canEdit(state, identityId),
-        builder: (context, canEdit) {
-          return canEdit
+          BlocSelector<CircleBloc, CircleState, int?>(
+        selector: (state) =>
+            CircleSelector.canEdit(state, identityId) ? state.circle.id : null,
+        builder: (context, circleId) {
+          return circleId != null
               ? TextButton(
                   style: TextButton.styleFrom(
                       foregroundColor: themeData.colorScheme.error),
                   onPressed: () => context
                       .read<MembersBloc>()
                       .add(CircleMembersRemovedVoterFromCircle(
-                        context: context,
+                        currentCircleId: circleId,
                         voterIdentId: voter.voter,
                       )),
                   child: const Icon(Icons.close),

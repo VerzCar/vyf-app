@@ -12,11 +12,9 @@ import 'package:vote_your_face/presentation/shared/shared.dart';
 class RankingBody extends StatelessWidget {
   const RankingBody({
     super.key,
-    required this.rankings,
     required this.circleId,
   });
 
-  final List<Ranking> rankings;
   final int circleId;
 
   @override
@@ -75,17 +73,27 @@ class RankingBody extends StatelessWidget {
   Widget _buildRankings(BuildContext context) {
     return BlocBuilder<CircleBloc, CircleState>(builder: (context, state) {
       if (state.circle.stage == CircleStage.hot) {
-        return rankings.isEmpty
-            ? _buildEmptyRankingsPlaceholder(context)
-            : Expanded(
-                child: _buildRankingListView(context),
-              );
+        return BlocBuilder<RankingCubit, RankingState>(
+          builder: (context, rankingState) {
+            return rankingState.rankings.isEmpty
+                ? _buildEmptyRankingsPlaceholder(context)
+                : Expanded(
+                    child: _buildRankingListView(
+                      context: context,
+                      rankings: rankingState.rankings,
+                    ),
+                  );
+          },
+        );
       }
       return _buildColdCirclePlaceholder(context);
     });
   }
 
-  ListView _buildRankingListView(BuildContext context) {
+  ListView _buildRankingListView({
+    required BuildContext context,
+    required List<Ranking> rankings,
+  }) {
     final size = MediaQuery.of(context).size;
     final themeData = Theme.of(context);
 

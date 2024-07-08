@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
-import 'package:vote_your_face/application/user/cubit/user_x_cubit.dart';
+import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 
@@ -20,27 +20,32 @@ class RankingSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: change the providing of a single user as here the loading happens twice
     // once the user is loaded use it everywhere else
-    return BlocProvider(
-      create: (context) => UserXCubit(userRepository: sl<IUserRepository>())
-        ..userXFetched(
-          context: context,
-          identityId: identityId,
-        ),
-      child: BlocBuilder<UserXCubit, UserXState>(builder: (context, state) {
-        switch (state.status) {
-          case StatusIndicator.initial:
-            return const Center(child: Text('initial Loading'));
-          case StatusIndicator.loading:
-            return const Center(child: CircularProgressIndicator());
-          case StatusIndicator.success:
-            return _sheetContent(
-              context: context,
-              user: state.user,
-            );
-          case StatusIndicator.failure:
-            return const Center(child: Text('Error'));
-        }
-      }),
+    return BlocSelector<UserBloc, UserState, User>(
+      selector: (state) => state.user,
+      builder: (context, user) {
+        return BlocProvider(
+          create: (context) => UserXCubit(userRepository: sl<IUserRepository>())
+            ..userXFetched(
+              currentUser: user,
+              identityId: identityId,
+            ),
+          child: BlocBuilder<UserXCubit, UserXState>(builder: (context, state) {
+            switch (state.status) {
+              case StatusIndicator.initial:
+                return const Center(child: Text('initial Loading'));
+              case StatusIndicator.loading:
+                return const Center(child: CircularProgressIndicator());
+              case StatusIndicator.success:
+                return _sheetContent(
+                  context: context,
+                  user: state.user,
+                );
+              case StatusIndicator.failure:
+                return const Center(child: Text('Error'));
+            }
+          }),
+        );
+      },
     );
   }
 

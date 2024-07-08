@@ -18,24 +18,29 @@ class UserAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => UserXCubit(userRepository: sl<IUserRepository>())
-        ..userXFetched(
-          context: context,
-          identityId: identityId,
-        ),
-      child: BlocBuilder<UserXCubit, UserXState>(builder: (context, state) {
-        switch (state.status) {
-          case StatusIndicator.initial:
-            return const Center(child: Text('Loading'));
-          case StatusIndicator.loading:
-            return _placeholder();
-          case StatusIndicator.success:
-            return _buildByOption(context, state.user);
-          case StatusIndicator.failure:
-            return const Center(child: Text('Error'));
-        }
-      }),
+    return BlocSelector<UserBloc, UserState, User>(
+      selector: (state) => state.user,
+      builder: (context, user) {
+        return BlocProvider(
+          create: (context) => UserXCubit(userRepository: sl<IUserRepository>())
+            ..userXFetched(
+              currentUser: user,
+              identityId: identityId,
+            ),
+          child: BlocBuilder<UserXCubit, UserXState>(builder: (context, state) {
+            switch (state.status) {
+              case StatusIndicator.initial:
+                return const Center(child: Text('Loading'));
+              case StatusIndicator.loading:
+                return _placeholder();
+              case StatusIndicator.success:
+                return _buildByOption(context, state.user);
+              case StatusIndicator.failure:
+                return const Center(child: Text('Error'));
+            }
+          }),
+        );
+      },
     );
   }
 

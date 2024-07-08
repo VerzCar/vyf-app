@@ -67,9 +67,9 @@ abstract class IVoteCircleRepository {
 
   void subscribeToCircleVoterChangedEvent(int circleId);
 
-  Stream<CircleCandidateChangeEvent> get circleCandidateChangedEvent;
+  Stream<CircleCandidateChangeEvent> get watchCircleCandidateChangedEvent;
 
-  Stream<CircleVoterChangeEvent> get circleVoterChangedEvent;
+  Stream<CircleVoterChangeEvent> get watchCircleVoterChangedEvent;
 
   void dispose();
 }

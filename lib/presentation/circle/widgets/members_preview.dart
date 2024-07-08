@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
+import 'package:vote_your_face/application/circle/circle.dart';
 import 'package:vote_your_face/application/members/bloc/members_bloc.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
@@ -21,24 +22,28 @@ class MembersPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: BlocProvider.of<MembersBloc>(context)
-        ..add(CircleMembersInitialLoaded(
-          circleId: circleId,
-          context: context,
-        )),
-      child: BlocBuilder<MembersBloc, MembersState>(
-        builder: (context, state) {
-          if (!state.status.isSuccessful) {
-            return _buildMembersPlaceholder();
-          }
-          return _buildMembersPreview(
-            context: context,
-            circleVoter: state.circleVoter,
-            circleCandidate: state.circleCandidate,
-          );
-        },
-      ),
+    return BlocBuilder<CircleBloc, CircleState>(
+      builder: (context, circleState) {
+        return BlocProvider.value(
+          value: BlocProvider.of<MembersBloc>(context)
+            ..add(CircleMembersInitialLoaded(
+              circleId: circleId,
+              currentCircleId: circleState.circle.id,
+            )),
+          child: BlocBuilder<MembersBloc, MembersState>(
+            builder: (context, state) {
+              if (!state.status.isSuccessful) {
+                return _buildMembersPlaceholder();
+              }
+              return _buildMembersPreview(
+                context: context,
+                circleVoter: state.circleVoter,
+                circleCandidate: state.circleCandidate,
+              );
+            },
+          ),
+        );
+      },
     );
   }
 

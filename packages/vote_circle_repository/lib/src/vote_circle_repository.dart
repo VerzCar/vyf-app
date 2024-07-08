@@ -234,12 +234,12 @@ class VoteCircleRepository implements IVoteCircleRepository {
   }
 
   @override
-  Stream<CircleCandidateChangeEvent> get circleCandidateChangedEvent async* {
+  Stream<CircleCandidateChangeEvent> get watchCircleCandidateChangedEvent async* {
     yield* _candidateChangedEventController.stream;
   }
 
   @override
-  Stream<CircleVoterChangeEvent> get circleVoterChangedEvent async* {
+  Stream<CircleVoterChangeEvent> get watchCircleVoterChangedEvent async* {
     yield* _voterChangedEventController.stream;
   }
 

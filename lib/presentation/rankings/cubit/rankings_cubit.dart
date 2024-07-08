@@ -58,11 +58,9 @@ class RankingsCubit extends Cubit<RankingsState> {
   }
 
   void _addedToRankings(int circleId) async {
-    emit(state.copyWith(status: StatusIndicator.loading));
-
     try {
       final circle = await _voteCircleRepository.circle(circleId);
-      final circles = state.circles;
+      final circles = List.of(state.circles);
 
       if (circles.length >= _rankingsRepository.maxLengthViewedRankings) {
         circles.removeLast();

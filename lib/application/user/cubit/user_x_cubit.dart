@@ -1,9 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
-import 'package:vote_your_face/application/user/user.dart';
 
 part 'user_x_state.dart';
 
@@ -16,11 +14,9 @@ class UserXCubit extends Cubit<UserXState> {
   final IUserRepository _userRepository;
 
   Future<void> userXFetched({
-    required BuildContext context,
+    required User currentUser,
     required String identityId,
   }) async {
-    final currentUser = context.read<UserBloc>().state.user;
-
     if (currentUser.identityId == identityId) {
       return emit(
         state.copyWith(

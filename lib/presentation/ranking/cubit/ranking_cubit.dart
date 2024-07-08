@@ -104,14 +104,12 @@ class RankingCubit extends Cubit<RankingState> {
   void _onRankingChanged({
     required rankings_repo.RankingChangeEvent changeEvent,
   }) {
-   // emit(state.copyWith(status: StatusIndicator.loading));
-
     try {
       switch (changeEvent.operation) {
         case rankings_repo.EventOperation.created:
         case rankings_repo.EventOperation.updated:
           {
-            final rankings = state.rankings;
+            final rankings = List.of(state.rankings);
             final rankingIndex = rankings
                 .indexWhere((ranking) => ranking.id == changeEvent.ranking.id);
 
@@ -145,7 +143,7 @@ class RankingCubit extends Cubit<RankingState> {
           }
         case rankings_repo.EventOperation.deleted:
           {
-            final rankings = state.rankings;
+            final rankings = List.of(state.rankings);
             rankings
                 .removeWhere((ranking) => ranking.id == changeEvent.ranking.id);
 

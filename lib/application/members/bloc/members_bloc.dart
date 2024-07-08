@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
-import 'package:vote_your_face/application/circle/circle.dart';
 import 'package:vote_your_face/application/core/core.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 
@@ -25,11 +23,11 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
     on<CircleMembersRemovedVoterFromCircle>(_onRemovedVoterFromCircle);
 
     _circleCandidateChangeEventSubscription =
-        _voteCircleRepository.circleCandidateChangedEvent.listen(
+        _voteCircleRepository.watchCircleCandidateChangedEvent.listen(
       (event) => add(CircleMembersCandidateChanged(changeEvent: event)),
     );
     _circleVoterChangeEventSubscription =
-        _voteCircleRepository.circleVoterChangedEvent.listen(
+        _voteCircleRepository.watchCircleVoterChangedEvent.listen(
       (event) => add(CircleMembersVoterChanged(changeEvent: event)),
     );
   }
@@ -60,9 +58,7 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
     Emitter<MembersState> emit,
   ) async {
     try {
-      final currentCircleId = event.context.read<CircleBloc>().state.circle.id;
-
-      if (currentCircleId == state.circleRefId) return;
+      if (event.currentCircleId == state.circleRefId) return;
 
       emit(state.copyWith(status: StatusIndicator.loading));
 
@@ -89,9 +85,7 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
     Emitter<MembersState> emit,
   ) async {
     try {
-      final currentCircleId = event.context.read<CircleBloc>().state.circle.id;
-
-      if (currentCircleId == state.circleRankingsRefId) return;
+      if (event.currentCircleId == state.circleRankingsRefId) return;
 
       emit(state.copyWith(status: StatusIndicator.loading));
 
@@ -124,8 +118,6 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
     CircleMembersCandidateChanged event,
     Emitter<MembersState> emit,
   ) {
-    emit(state.copyWith(status: StatusIndicator.loading));
-
     try {
       final changeEvent = event.changeEvent;
 
@@ -133,41 +125,44 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
       switch (changeEvent.operation) {
         case EventOperation.created:
           {
-            final circleCandidate = state.circleCandidate;
-            circleCandidate.candidates.add(changeEvent.candidate);
+            final candidates = List.of(state.circleCandidate.candidates);
+            candidates.add(changeEvent.candidate);
 
             emit(state.copyWith(
-              circleCandidate: circleCandidate,
+              circleCandidate:
+                  state.circleCandidate.copyWith(candidates: candidates),
               status: StatusIndicator.success,
             ));
             break;
           }
         case EventOperation.updated:
           {
-            final circleCandidate = state.circleCandidate;
-            final candidateIndex = circleCandidate.candidates.indexWhere(
+            final candidates = List.of(state.circleCandidate.candidates);
+            final candidateIndex = candidates.indexWhere(
                 (candidate) => candidate.id == changeEvent.candidate.id);
 
             if (candidateIndex == -1) {
               break;
             }
 
-            circleCandidate.candidates[candidateIndex] = changeEvent.candidate;
+            candidates[candidateIndex] = changeEvent.candidate;
 
             emit(state.copyWith(
-              circleCandidate: circleCandidate,
+              circleCandidate:
+                  state.circleCandidate.copyWith(candidates: candidates),
               status: StatusIndicator.success,
             ));
             break;
           }
         case EventOperation.deleted:
           {
-            final circleCandidate = state.circleCandidate;
-            circleCandidate.candidates.removeWhere(
+            final candidates = List.of(state.circleCandidate.candidates);
+            candidates.removeWhere(
                 (candidate) => candidate.id == changeEvent.candidate.id);
 
             emit(state.copyWith(
-              circleCandidate: circleCandidate,
+              circleCandidate:
+                  state.circleCandidate.copyWith(candidates: candidates),
               status: StatusIndicator.success,
             ));
             break;
@@ -197,41 +192,41 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
       switch (changeEvent.operation) {
         case EventOperation.created:
           {
-            final circleVoter = state.circleVoter;
-            circleVoter.voters.add(changeEvent.voter);
+            final voters = List.of(state.circleVoter.voters);
+            voters.add(changeEvent.voter);
 
             emit(state.copyWith(
-              circleVoter: circleVoter,
+              circleVoter: state.circleVoter.copyWith(voters: voters),
               status: StatusIndicator.success,
             ));
             break;
           }
         case EventOperation.updated:
           {
-            final circleVoter = state.circleVoter;
-            final voterIndex = circleVoter.voters
-                .indexWhere((voter) => voter.id == changeEvent.voter.id);
+            final voters = List.of(state.circleVoter.voters);
+            final voterIndex =
+                voters.indexWhere((voter) => voter.id == changeEvent.voter.id);
 
             if (voterIndex == -1) {
               break;
             }
 
-            circleVoter.voters[voterIndex] = changeEvent.voter;
+
+            voters[voterIndex] = changeEvent.voter;
 
             emit(state.copyWith(
-              circleVoter: circleVoter,
+              circleVoter: state.circleVoter.copyWith(voters: voters),
               status: StatusIndicator.success,
             ));
             break;
           }
         case EventOperation.deleted:
           {
-            final circleVoter = state.circleVoter;
-            circleVoter.voters
-                .removeWhere((voter) => voter.id == changeEvent.voter.id);
+            final voters = List.of(state.circleVoter.voters);
+            voters.removeWhere((voter) => voter.id == changeEvent.voter.id);
 
             emit(state.copyWith(
-              circleVoter: circleVoter,
+              circleVoter: state.circleVoter.copyWith(voters: voters),
               status: StatusIndicator.success,
             ));
             break;
@@ -252,19 +247,12 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
     CircleMembersRemovedCandidateFromCircle event,
     Emitter<MembersState> emit,
   ) async {
-    emit(state.copyWith(status: StatusIndicator.loading));
-
     try {
-      final currentCircleId = event.context.read<CircleBloc>().state.circle.id;
       final request = CandidateRequest(candidate: event.candidateIdentId);
       await _voteCircleRepository.removeCandidateFromCircle(
-        currentCircleId,
+        event.currentCircleId,
         request,
       );
-
-      emit(state.copyWith(
-        status: StatusIndicator.success,
-      ));
     } catch (e) {
       print(e);
       if (isClosed) return;
@@ -276,19 +264,12 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
     CircleMembersRemovedVoterFromCircle event,
     Emitter<MembersState> emit,
   ) async {
-    emit(state.copyWith(status: StatusIndicator.loading));
-
     try {
-      final currentCircleId = event.context.read<CircleBloc>().state.circle.id;
       final request = VoterRequest(voter: event.voterIdentId);
       await _voteCircleRepository.removeVoterFromCircle(
-        currentCircleId,
+        event.currentCircleId,
         request,
       );
-
-      emit(state.copyWith(
-        status: StatusIndicator.success,
-      ));
     } catch (e) {
       print(e);
       if (isClosed) return;

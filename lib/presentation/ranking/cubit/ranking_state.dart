@@ -30,5 +30,8 @@ final class RankingState extends Equatable {
   }
 
   @override
-  List<Object> get props => [status, rankings];
+  List<Object> get props => [
+        status,
+        rankings,
+      ];
 }

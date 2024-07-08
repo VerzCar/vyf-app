@@ -12,30 +12,32 @@ final class CircleMembersReset extends MembersEvent {
 final class CircleMembersInitialLoaded extends MembersEvent {
   const CircleMembersInitialLoaded({
     required this.circleId,
-    required this.context,
+    required this.currentCircleId,
   });
 
   final int circleId;
-  final BuildContext context;
+  final int currentCircleId;
 
   @override
   List<Object> get props => [
         circleId,
+        currentCircleId,
       ];
 }
 
 final class RankingMembersInitialLoaded extends MembersEvent {
   const RankingMembersInitialLoaded({
     required this.circleId,
-    required this.context,
+    required this.currentCircleId,
   });
 
   final int circleId;
-  final BuildContext context;
+  final int currentCircleId;
 
   @override
   List<Object> get props => [
         circleId,
+        currentCircleId,
       ];
 }
 
@@ -68,31 +70,31 @@ final class CircleMembersVoterChanged extends MembersEvent {
 final class CircleMembersRemovedCandidateFromCircle extends MembersEvent {
   const CircleMembersRemovedCandidateFromCircle({
     required this.candidateIdentId,
-    required this.context,
+    required this.currentCircleId,
   });
 
   final String candidateIdentId;
-  final BuildContext context;
+  final int currentCircleId;
 
   @override
   List<Object> get props => [
         candidateIdentId,
-        context,
+        currentCircleId,
       ];
 }
 
 final class CircleMembersRemovedVoterFromCircle extends MembersEvent {
   const CircleMembersRemovedVoterFromCircle({
     required this.voterIdentId,
-    required this.context,
+    required this.currentCircleId,
   });
 
   final String voterIdentId;
-  final BuildContext context;
+  final int currentCircleId;
 
   @override
   List<Object> get props => [
-    voterIdentId,
-    context,
-  ];
+        voterIdentId,
+        currentCircleId,
+      ];
 }
