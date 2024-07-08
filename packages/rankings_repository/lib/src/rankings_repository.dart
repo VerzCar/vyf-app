@@ -58,7 +58,7 @@ class RankingsRepository implements IRankingsRepository {
 
     await _sharedPrefs.setStringList(_viewedRankingsKey, viewedRankings);
 
-    _addedCircleToViewedRankingsController.add(circleId);
+    _addedCircleToViewedRankingsController.sink.add(circleId);
   }
 
   @override

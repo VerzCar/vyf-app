@@ -22,13 +22,14 @@ class MembersNeedVotePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CircleBloc, CircleState>(
-      builder: (context, circleState) {
+    return BlocSelector<CircleBloc, CircleState, int>(
+      selector: (state) => state.circle.id,
+      builder: (context, circleId) {
         return BlocProvider.value(
           value: BlocProvider.of<MembersBloc>(context)
-            ..add(RankingMembersInitialLoaded(
+            ..add(CircleMembersInitialLoaded(
               circleId: circleId,
-              currentCircleId: circleState.circle.id,
+              currentCircleId: circleId,
             )),
           child: BlocBuilder<MembersBloc, MembersState>(
             builder: (context, state) {
@@ -41,7 +42,7 @@ class MembersNeedVotePreview extends StatelessWidget {
 
               return _buildMembersNeedVotePreview(
                 context: context,
-                circleCandidate: state.rankingCandidate,
+                circleCandidate: state.circleCandidate,
               );
             },
           ),

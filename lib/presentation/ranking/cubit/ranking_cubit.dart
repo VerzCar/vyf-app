@@ -40,6 +40,8 @@ class RankingCubit extends Cubit<RankingState> {
       final rankings = await _voteCircleRepository.rankings(circleId);
 
       _rankingsRepository.subscribeToRankingChangedEvent(circleId);
+      _voteCircleRepository.subscribeToCircleCandidateChangedEvent(circleId);
+      _voteCircleRepository.subscribeToCircleVoterChangedEvent(circleId);
 
       emit(
         state.copyWith(
@@ -70,12 +72,6 @@ class RankingCubit extends Cubit<RankingState> {
       final req = VoteCreateRequest(candidateId: candidateId);
 
       await _voteCircleRepository.createVote(circleId, req);
-
-      emit(
-        state.copyWith(
-          status: StatusIndicator.success,
-        ),
-      );
     } catch (e) {
       print(e);
       if (isClosed) return;
@@ -88,12 +84,6 @@ class RankingCubit extends Cubit<RankingState> {
   }) async {
     try {
       await _voteCircleRepository.revokeVote(circleId);
-
-      emit(
-        state.copyWith(
-          status: StatusIndicator.success,
-        ),
-      );
     } catch (e) {
       print(e);
       if (isClosed) return;

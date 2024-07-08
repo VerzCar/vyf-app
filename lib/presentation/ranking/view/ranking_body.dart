@@ -164,30 +164,49 @@ class RankingBody extends StatelessWidget {
     return BlocSelector<MembersBloc, MembersState, bool>(
       selector: (state) => MembersSelector.canVote(state, ranking.identityId),
       builder: (context, canVote) {
-        return BlocBuilder<CircleBloc, CircleState>(
-          builder: (context, state) {
-            return canVote
-                ? ElevatedButton(
-                    onPressed: () => context.read<RankingCubit>().voted(
-                          circleId: state.circle.id,
-                          candidateId: ranking.identityId,
-                        ),
-                    style: ElevatedButton.styleFrom(
-                        foregroundColor: themeData.colorScheme.onSecondary,
-                        backgroundColor: themeData.colorScheme.secondary),
-                    child: const Text('Vote'),
-                  )
-                : ElevatedButton(
-                    onPressed: () => context.read<RankingCubit>().revokedVote(
-                          circleId: state.circle.id,
-                        ),
-                    style: ElevatedButton.styleFrom(
-                        foregroundColor: themeData.colorScheme.onSecondary,
-                        backgroundColor: themeData.colorScheme.secondary),
-                    child: const Text('Revoke vote'),
+        return canVote
+            ? BlocSelector<CircleBloc, CircleState, int>(
+                selector: (state) => state.circle.id,
+                builder: (context, circleId) {
+                  return AnimatedOpacity(
+                    opacity: 1.0,
+                    duration: const Duration(milliseconds: 500),
+                    child: ElevatedButton(
+                      onPressed: () => context.read<RankingCubit>().voted(
+                            circleId: circleId,
+                            candidateId: ranking.identityId,
+                          ),
+                      style: ElevatedButton.styleFrom(
+                          foregroundColor: themeData.colorScheme.onSecondary,
+                          backgroundColor: themeData.colorScheme.secondary),
+                      child: const Text('Vote'),
+                    ),
                   );
-          },
-        );
+                },
+              )
+            : BlocSelector<CircleBloc, CircleState, int>(
+                selector: (state) => state.circle.id,
+                builder: (context, circleId) {
+                  return BlocBuilder<RankingCubit, RankingState>(
+                    builder: (context, state) {
+                      return AnimatedOpacity(
+                        opacity: state.status.isLoading ? 0.0 : 1.0,
+                        duration: const Duration(milliseconds: 500),
+                        child: ElevatedButton(
+                          onPressed: () =>
+                              context.read<RankingCubit>().revokedVote(
+                                    circleId: circleId,
+                                  ),
+                          style: ElevatedButton.styleFrom(
+                              foregroundColor: themeData.colorScheme.onPrimary,
+                              backgroundColor: themeData.colorScheme.primary),
+                          child: const Text('Revoke vote'),
+                        ),
+                      );
+                    },
+                  );
+                },
+              );
       },
     );
   }

@@ -25,19 +25,29 @@ final class CircleMembersInitialLoaded extends MembersEvent {
       ];
 }
 
-final class RankingMembersInitialLoaded extends MembersEvent {
-  const RankingMembersInitialLoaded({
-    required this.circleId,
-    required this.currentCircleId,
+final class CircleMembersStartCandidateChangedEvent extends MembersEvent {
+  const CircleMembersStartCandidateChangedEvent({
+    required this.currentUserIdentityId,
   });
 
-  final int circleId;
-  final int currentCircleId;
+  final String currentUserIdentityId;
 
   @override
   List<Object> get props => [
-        circleId,
-        currentCircleId,
+        currentUserIdentityId,
+      ];
+}
+
+final class CircleMembersStartVoterChangedEvent extends MembersEvent {
+  const CircleMembersStartVoterChangedEvent({
+    required this.currentUserIdentityId,
+  });
+
+  final String currentUserIdentityId;
+
+  @override
+  List<Object> get props => [
+        currentUserIdentityId,
       ];
 }
 
