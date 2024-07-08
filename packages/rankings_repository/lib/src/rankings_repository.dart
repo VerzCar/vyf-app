@@ -38,7 +38,7 @@ class RankingsRepository implements IRankingsRepository {
   late IAblyServiceClient _ablyService;
   late SharedPreferences _sharedPrefs;
   final StreamController<RankingChangeEvent> _rankingChangedEventController =
-      StreamController<RankingChangeEvent>();
+      StreamController<RankingChangeEvent>.broadcast();
   StreamSubscription<RankingChangeEvent>? _rankingChangedEventSubscription;
   static const String _viewedRankingsKey = 'vyf_viewed_ranked_circles';
   static const int _maxLengthViewedRankings = 15;

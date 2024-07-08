@@ -64,33 +64,6 @@ class RankingCubit extends Cubit<RankingState> {
     }
   }
 
-  void voted({
-    required int circleId,
-    required String candidateId,
-  }) async {
-    try {
-      final req = VoteCreateRequest(candidateId: candidateId);
-
-      await _voteCircleRepository.createVote(circleId, req);
-    } catch (e) {
-      print(e);
-      if (isClosed) return;
-      emit(state.copyWith(status: StatusIndicator.failure));
-    }
-  }
-
-  void revokedVote({
-    required int circleId,
-  }) async {
-    try {
-      await _voteCircleRepository.revokeVote(circleId);
-    } catch (e) {
-      print(e);
-      if (isClosed) return;
-      emit(state.copyWith(status: StatusIndicator.failure));
-    }
-  }
-
   void _onRankingChanged({
     required rankings_repo.RankingChangeEvent changeEvent,
   }) {

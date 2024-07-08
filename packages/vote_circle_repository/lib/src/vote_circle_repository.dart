@@ -25,11 +25,11 @@ class VoteCircleRepository implements IVoteCircleRepository {
   final IAblyServiceClient _ablyService;
   final StreamController<CircleCandidateChangeEvent>
       _candidateChangedEventController =
-      StreamController<CircleCandidateChangeEvent>();
+      StreamController<CircleCandidateChangeEvent>.broadcast();
   StreamSubscription<CircleCandidateChangeEvent>?
       _candidateChangedEventSubscription;
   final StreamController<CircleVoterChangeEvent> _voterChangedEventController =
-      StreamController<CircleVoterChangeEvent>();
+      StreamController<CircleVoterChangeEvent>.broadcast();
   StreamSubscription<CircleVoterChangeEvent>? _voterChangedEventSubscription;
 
   @override
