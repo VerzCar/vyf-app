@@ -12,8 +12,6 @@ class CirclesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
-    
     return Scaffold(
       appBar: AppBar(
         leading: BlocSelector<UserBloc, UserState, String>(

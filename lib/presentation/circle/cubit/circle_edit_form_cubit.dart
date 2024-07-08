@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:logger/logger.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
+import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/circle/models/models.dart';
 
 part 'circle_edit_form_state.dart';
@@ -151,6 +153,10 @@ class CircleEditFormCubit extends Cubit<CircleEditFormState> {
         updatedCircle: circle,
       ));
     } catch (e) {
+      sl<Logger>().t(
+        'onSubmit circle edit form',
+        error: e,
+      );
       if (isClosed) return;
       emit(state.copyWith(
         status: CircleEditSubmissionStatus.failure,
@@ -171,6 +177,10 @@ class CircleEditFormCubit extends Cubit<CircleEditFormState> {
         deletedCircleId: circleId,
       ));
     } catch (e) {
+      sl<Logger>().t(
+        'onDelete circle edit form',
+        error: e,
+      );
       if (isClosed) return;
       emit(state.copyWith(
         status: CircleEditSubmissionStatus.failure,

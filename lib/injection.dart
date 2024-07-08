@@ -1,5 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
 import 'package:rankings_repository/rankings_repository.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
@@ -24,7 +25,7 @@ Future<void> init() async {
 
   // singletons
   sl.registerSingletonAsync<IAuthenticationRepository>(
-      () async => AuthenticationRepository(),
+    () async => AuthenticationRepository(),
   );
   sl.registerSingletonAsync<IRankingsRepository>(
     () async => await RankingsRepository.create(authenticationRepository: sl()),
@@ -37,5 +38,8 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<IVoteCircleRepository>(
     () => VoteCircleRepository(authenticationRepository: sl()),
+  );
+  sl.registerLazySingleton<Logger>(
+    () => Logger(printer: PrettyPrinter()),
   );
 }

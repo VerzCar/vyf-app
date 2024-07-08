@@ -1,7 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
+import 'package:vote_your_face/injection.dart';
 
 part 'user_x_state.dart';
 
@@ -37,7 +39,10 @@ class UserXCubit extends Cubit<UserXState> {
         ),
       );
     } catch (e) {
-      print(e);
+      sl<Logger>().t(
+        'userXFetched',
+        error: e,
+      );
       if (isClosed) return;
       emit(state.copyWith(status: StatusIndicator.failure));
     }

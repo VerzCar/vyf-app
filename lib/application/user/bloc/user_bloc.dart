@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:logger/logger.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/application/core/core.dart';
 import 'package:vote_your_face/application/shared/state_status.dart';
+import 'package:vote_your_face/injection.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';
@@ -41,7 +43,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         status: StatusIndicator.success,
       ));
     } catch (e) {
-      print(e);
+      sl<Logger>().t(
+        '_onUserInitialLoaded',
+        error: e,
+      );
       if (isClosed) return;
       emit(state.copyWith(
         status: StatusIndicator.failure,

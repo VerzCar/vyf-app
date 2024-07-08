@@ -3,11 +3,14 @@ import 'dart:async';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/core/core.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
+import 'package:vote_your_face/injection.dart';
 
 part 'members_event.dart';
+
 part 'members_state.dart';
 
 class MembersBloc extends Bloc<MembersEvent, MembersState> {
@@ -82,22 +85,42 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
     CircleMembersStartCandidateChangedEvent event,
     Emitter<MembersState> emit,
   ) async {
-    await emit.forEach(_voteCircleRepository.watchCircleCandidateChangedEvent,
-        onData: (changeEvent) => _circleCandidateChanged(
-              changeEvent: changeEvent,
-              currentUserIdentityId: event.currentUserIdentityId,
-            ));
+    await emit.forEach(
+      _voteCircleRepository.watchCircleCandidateChangedEvent,
+      onData: (changeEvent) => _circleCandidateChanged(
+        changeEvent: changeEvent,
+        currentUserIdentityId: event.currentUserIdentityId,
+      ),
+      onError: (object, stackTrace) {
+        sl<Logger>().t(
+          '_onCircleMembersStartCandidateChangedEvent',
+          error: object,
+          stackTrace: stackTrace,
+        );
+        return state;
+      },
+    );
   }
 
   void _onCircleMembersStartVoterChangedEvent(
     CircleMembersStartVoterChangedEvent event,
     Emitter<MembersState> emit,
   ) async {
-    await emit.forEach(_voteCircleRepository.watchCircleVoterChangedEvent,
-        onData: (changeEvent) => _circleVoterChanged(
-              changeEvent: changeEvent,
-              currentUserIdentityId: event.currentUserIdentityId,
-            ));
+    await emit.forEach(
+      _voteCircleRepository.watchCircleVoterChangedEvent,
+      onData: (changeEvent) => _circleVoterChanged(
+        changeEvent: changeEvent,
+        currentUserIdentityId: event.currentUserIdentityId,
+      ),
+      onError: (object, stackTrace) {
+        sl<Logger>().t(
+          '_onCircleMembersStartVoterChangedEvent',
+          error: object,
+          stackTrace: stackTrace,
+        );
+        return state;
+      },
+    );
   }
 
   void _onRemovedCandidateFromCircle(
@@ -111,7 +134,10 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
         request,
       );
     } catch (e) {
-      print(e);
+      sl<Logger>().t(
+        '_onRemovedCandidateFromCircle',
+        error: e,
+      );
       if (isClosed) return;
       emit(state.copyWith(status: StatusIndicator.failure));
     }
@@ -128,7 +154,10 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
         request,
       );
     } catch (e) {
-      print(e);
+      sl<Logger>().t(
+        '_onRemovedVoterFromCircle',
+        error: e,
+      );
       if (isClosed) return;
       emit(state.copyWith(status: StatusIndicator.failure));
     }
@@ -215,7 +244,10 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
           }
       }
     } catch (e) {
-      print(e);
+      sl<Logger>().t(
+        '_circleCandidateChanged',
+        error: e,
+      );
       if (isClosed) return state;
       return state.copyWith(status: StatusIndicator.success);
     }
@@ -299,7 +331,10 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
           }
       }
     } catch (e) {
-      print(e);
+      sl<Logger>().t(
+        '_circleVoterChanged',
+        error: e,
+      );
       if (isClosed) return state;
       return state.copyWith(status: StatusIndicator.success);
     }

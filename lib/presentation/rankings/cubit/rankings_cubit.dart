@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:logger/logger.dart';
 import 'package:rankings_repository/rankings_repository.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
+import 'package:vote_your_face/injection.dart';
 
 part 'rankings_state.dart';
 
@@ -51,7 +53,10 @@ class RankingsCubit extends Cubit<RankingsState> {
         ),
       );
     } catch (e) {
-      print(e);
+      sl<Logger>().t(
+        '_initialRankingsLoaded',
+        error: e,
+      );
       if (isClosed) return;
       emit(state.copyWith(status: StatusIndicator.failure));
     }
@@ -75,7 +80,10 @@ class RankingsCubit extends Cubit<RankingsState> {
         ),
       );
     } catch (e) {
-      print(e);
+      sl<Logger>().t(
+        '_addedToRankings',
+        error: e,
+      );
       if (isClosed) return;
       emit(state.copyWith(status: StatusIndicator.failure));
     }

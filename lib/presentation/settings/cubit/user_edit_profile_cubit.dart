@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
+import 'package:logger/logger.dart';
 import 'package:user_repository/user_repository.dart';
+import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/settings/models/models.dart';
 
 part 'user_edit_profile_state.dart';
@@ -63,7 +65,10 @@ class UserEditProfileCubit extends Cubit<UserEditProfileState> {
         updatedUser: user,
       ));
     } catch (e) {
-      print(e);
+      sl<Logger>().t(
+        'onSubmit user edit form',
+        error: e,
+      );
       if (isClosed) return;
       emit(state.copyWith(
         status: FormzSubmissionStatus.failure,

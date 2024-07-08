@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:logger/logger.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/core/core.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
+import 'package:vote_your_face/injection.dart';
 
 part 'user_option_event.dart';
 part 'user_option_state.dart';
@@ -40,7 +42,10 @@ class UserOptionBloc extends Bloc<UserOptionEvent, UserOptionState> {
         ),
       );
     } catch (e) {
-      print(e);
+      sl<Logger>().t(
+        '_onUserOptionLoaded',
+        error: e,
+      );
       if (isClosed) return;
       emit(state.copyWith(status: StatusIndicator.failure));
     }

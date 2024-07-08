@@ -1,9 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/application/user/bloc/user_bloc.dart';
 import 'package:vote_your_face/application/user/user.dart';
+import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
 
 class SplashView extends StatelessWidget {
@@ -16,7 +18,9 @@ class SplashView extends StatelessWidget {
         if (state.status.isSuccessful) {
           context.router.replace(const HomeRoute());
         } else if (state.status.isFailure) {
-          print('User init loading failure');
+          sl<Logger>().t(
+            'User init loading failure',
+          );
         }
       },
       child: Scaffold(

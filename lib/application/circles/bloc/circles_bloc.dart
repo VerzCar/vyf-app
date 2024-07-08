@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:logger/logger.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/core/core.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
+import 'package:vote_your_face/injection.dart';
 
 part 'circles_event.dart';
 part 'circles_state.dart';
@@ -43,7 +45,10 @@ class CirclesBloc extends Bloc<CirclesEvent, CirclesState> {
         ),
       );
     } catch (e) {
-      print(e);
+      sl<Logger>().t(
+        '_onCirclesOfUserInitialLoaded',
+        error: e,
+      );
       if (isClosed) return;
       emit(state.copyWith(status: StatusIndicator.failure));
     }

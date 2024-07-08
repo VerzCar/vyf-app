@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:logger/logger.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
+import 'package:vote_your_face/injection.dart';
 
 part 'circle_member_state.dart';
 
@@ -24,7 +26,10 @@ class CircleMemberCubit extends Cubit<CircleMemberState> {
         status: CircleMemberStateStatus.successCandidate,
       ));
     } catch (e) {
-      print(e);
+      sl<Logger>().t(
+        'onJoinAsCandidate',
+        error: e,
+      );
       if (isClosed) return;
       emit(state.copyWith(
         status: CircleMemberStateStatus.failureCandidate,
@@ -44,7 +49,10 @@ class CircleMemberCubit extends Cubit<CircleMemberState> {
         status: CircleMemberStateStatus.successVoter,
       ));
     } catch (e) {
-      print(e);
+      sl<Logger>().t(
+        'onJoinAsVoter',
+        error: e,
+      );
       if (isClosed) return;
       emit(state.copyWith(
         status: CircleMemberStateStatus.failureVoter,
@@ -64,7 +72,10 @@ class CircleMemberCubit extends Cubit<CircleMemberState> {
         status: CircleMemberStateStatus.successCandidate,
       ));
     } catch (e) {
-      print(e);
+      sl<Logger>().t(
+        'onLeaveAsCandidate',
+        error: e,
+      );
       if (isClosed) return;
       emit(state.copyWith(
         status: CircleMemberStateStatus.failureCandidate,
@@ -84,7 +95,10 @@ class CircleMemberCubit extends Cubit<CircleMemberState> {
         status: CircleMemberStateStatus.successVoter,
       ));
     } catch (e) {
-      print(e);
+      sl<Logger>().t(
+        'onLeaveAsVoter',
+        error: e,
+      );
       if (isClosed) return;
       emit(state.copyWith(
         status: CircleMemberStateStatus.failureVoter,

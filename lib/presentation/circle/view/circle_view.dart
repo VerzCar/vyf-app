@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
+import 'package:vote_your_face/application/members/members.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/application/user/bloc/user_bloc.dart';
 import 'package:vote_your_face/presentation/circle/view/circle_body.dart';
@@ -50,18 +51,33 @@ class CircleView extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: BlocBuilder<CircleBloc, CircleState>(builder: (context, state) {
-          switch (state.status) {
-            case StatusIndicator.initial:
-              return const Center(child: Text('initial Loading'));
-            case StatusIndicator.loading:
-              return const Center(child: CircularProgressIndicator());
-            case StatusIndicator.success:
-              return CircleBody(circle: state.circle);
-            case StatusIndicator.failure:
-              return const Center(child: Text('Error'));
-          }
-        }),
+        child: BlocSelector<UserBloc, UserState, String>(
+          selector: (state) => state.user.identityId,
+          builder: (context, userIdentityId) {
+            context
+                .read<MembersBloc>()
+                .add(CircleMembersStartCandidateChangedEvent(
+                  currentUserIdentityId: userIdentityId,
+                ));
+            context.read<MembersBloc>().add(CircleMembersStartVoterChangedEvent(
+                  currentUserIdentityId: userIdentityId,
+                ));
+
+            return BlocBuilder<CircleBloc, CircleState>(
+                builder: (context, state) {
+              switch (state.status) {
+                case StatusIndicator.initial:
+                  return const Center(child: Text('initial Loading'));
+                case StatusIndicator.loading:
+                  return const Center(child: CircularProgressIndicator());
+                case StatusIndicator.success:
+                  return CircleBody(circle: state.circle);
+                case StatusIndicator.failure:
+                  return const Center(child: Text('Error'));
+              }
+            });
+          },
+        ),
       ),
     );
   }

@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
-import 'package:user_repository/user_repository.dart';
+import 'package:logger/logger.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
+import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/circle/models/models.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 
@@ -10,10 +11,8 @@ part 'circle_create_form_state.dart';
 
 class CircleCreateFormCubit extends Cubit<CircleCreateFormState> {
   CircleCreateFormCubit({
-    required IUserRepository userRepository,
     required IVoteCircleRepository voteCircleRepository,
-  })  : _userRepository = userRepository,
-        _voteCircleRepository = voteCircleRepository,
+  })  : _voteCircleRepository = voteCircleRepository,
         super(const CircleCreateFormState()) {
     final inputDateFrom = CircleDateFromInput.dirty(
       dateUntil: state.dateUntil.value,
@@ -29,7 +28,6 @@ class CircleCreateFormCubit extends Cubit<CircleCreateFormState> {
     emit(state.copyWith(dateFrom: inputDateFrom, timeFrom: inputTimeFrom));
   }
 
-  final IUserRepository _userRepository;
   final IVoteCircleRepository _voteCircleRepository;
 
   void onNameChanged(String value) {
@@ -176,7 +174,10 @@ class CircleCreateFormCubit extends Cubit<CircleCreateFormState> {
         createdCircle: circle,
       ));
     } catch (e) {
-      print(e);
+      sl<Logger>().t(
+        'onSubmit circle create form',
+        error: e,
+      );
       if (isClosed) return;
       emit(state.copyWith(
         status: FormzSubmissionStatus.failure,

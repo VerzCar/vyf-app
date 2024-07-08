@@ -27,7 +27,7 @@ class _TimeUntilState extends State<TimeUntil> {
 
   @override
   Widget build(BuildContext context) {
-    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
     String twoDigitMinutes = twoDigits(_duration.inMinutes.remainder(60));
     String twoDigitSeconds = twoDigits(_duration.inSeconds.remainder(60));
 
