@@ -14,7 +14,7 @@ abstract class IRankingsRepository {
 
   int get maxLengthViewedRankings;
 
-  void subscribeToRankingChangedEvent(int circleId);
+  Future<void> subscribeToRankingChangedEvent(int circleId);
 
   void dispose();
 }

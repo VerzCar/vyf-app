@@ -33,7 +33,7 @@ class MembersNeedVotePreview extends StatelessWidget {
             )),
           child: BlocBuilder<MembersBloc, MembersState>(
             builder: (context, state) {
-              if (!state.status.isSuccessful) {
+              if (state.status.isNotSuccessful || state.status.isLoading) {
                 return SizedBox(
                   width: _avatarSize.preSize.width,
                   height: _avatarSize.preSize.height,

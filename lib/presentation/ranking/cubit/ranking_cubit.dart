@@ -31,7 +31,6 @@ class RankingCubit extends Cubit<RankingState> {
   @override
   Future<void> close() {
     _rankingChangeEventSubscription.cancel();
-    _rankingsRepository.dispose();
     return super.close();
   }
 
@@ -41,9 +40,10 @@ class RankingCubit extends Cubit<RankingState> {
     try {
       final rankings = await _voteCircleRepository.rankings(circleId);
 
-      _rankingsRepository.subscribeToRankingChangedEvent(circleId);
-      _voteCircleRepository.subscribeToCircleCandidateChangedEvent(circleId);
-      _voteCircleRepository.subscribeToCircleVoterChangedEvent(circleId);
+      await _rankingsRepository.subscribeToRankingChangedEvent(circleId);
+      await _voteCircleRepository
+          .subscribeToCircleCandidateChangedEvent(circleId);
+      await _voteCircleRepository.subscribeToCircleVoterChangedEvent(circleId);
 
       emit(
         state.copyWith(

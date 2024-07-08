@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:logger/logger.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
+import 'package:vote_your_face/injection.dart';
 
 part 'vote_state.dart';
 
@@ -26,7 +28,10 @@ class VoteCubit extends Cubit<VoteState> {
 
       emit(state.copyWith(status: StatusIndicator.success));
     } catch (e) {
-      print(e);
+      sl<Logger>().t(
+        'voted',
+        error: e,
+      );
       if (isClosed) return;
       emit(state.copyWith(status: StatusIndicator.failure));
     }
@@ -42,7 +47,10 @@ class VoteCubit extends Cubit<VoteState> {
 
       emit(state.copyWith(status: StatusIndicator.success));
     } catch (e) {
-      print(e);
+      sl<Logger>().t(
+        'revokedVote',
+        error: e,
+      );
       if (isClosed) return;
       emit(state.copyWith(status: StatusIndicator.failure));
     }

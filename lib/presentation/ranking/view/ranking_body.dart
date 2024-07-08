@@ -141,7 +141,7 @@ class RankingBody extends StatelessWidget {
                         themeData: themeData,
                         ranking: ranking,
                       )
-                    : null;
+                    : const SizedBox();
               },
             ),
             onTap: () {

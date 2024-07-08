@@ -63,9 +63,9 @@ abstract class IVoteCircleRepository {
     CircleCandidateCommitmentRequest commitmentRequest,
   );
 
-  void subscribeToCircleCandidateChangedEvent(int circleId);
+  Future<void> subscribeToCircleCandidateChangedEvent(int circleId);
 
-  void subscribeToCircleVoterChangedEvent(int circleId);
+  Future<void> subscribeToCircleVoterChangedEvent(int circleId);
 
   Stream<CircleCandidateChangeEvent> get watchCircleCandidateChangedEvent;
 

@@ -58,17 +58,17 @@ class RankingsRepository implements IRankingsRepository {
 
     await _sharedPrefs.setStringList(_viewedRankingsKey, viewedRankings);
 
-    _addedCircleToViewedRankingsController.sink.add(circleId);
+    _addedCircleToViewedRankingsController.add(circleId);
   }
 
   @override
-  Stream<String> get watchAddedCircleToViewedRankings async* {
-    yield* _addedCircleToViewedRankingsController.stream;
+  Stream<String> get watchAddedCircleToViewedRankings {
+    return _addedCircleToViewedRankingsController.stream;
   }
 
   @override
-  Stream<RankingChangeEvent> get watchRankingChangedEvent async* {
-    yield* _rankingChangedEventController.stream;
+  Stream<RankingChangeEvent> get watchRankingChangedEvent {
+    return _rankingChangedEventController.stream;
   }
 
   @override
@@ -78,10 +78,10 @@ class RankingsRepository implements IRankingsRepository {
   int get maxLengthViewedRankings => _maxLengthViewedRankings;
 
   @override
-  void subscribeToRankingChangedEvent(int circleId) {
+  Future<void> subscribeToRankingChangedEvent(int circleId) async {
     try {
       if (_rankingChangedEventSubscription != null) {
-        _rankingChangedEventSubscription?.cancel();
+        await _rankingChangedEventSubscription?.cancel();
       }
 
       final channel = _ablyService.channel('circle-$circleId:rankings');

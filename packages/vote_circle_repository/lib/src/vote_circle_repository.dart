@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:ably_service/ably_service.dart';
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:logger/logger.dart';
 import 'package:vote_circle_api/vote_circle_api.dart' as vote_circle_api;
 
 import 'i_vote_circle_repository.dart';
@@ -23,6 +24,7 @@ class VoteCircleRepository implements IVoteCircleRepository {
 
   final vote_circle_api.IVoteCircleApiClient _voteCircleApi;
   final IAblyServiceClient _ablyService;
+  final Logger log = Logger();
   final StreamController<CircleCandidateChangeEvent>
       _candidateChangedEventController =
       StreamController<CircleCandidateChangeEvent>.broadcast();
@@ -198,10 +200,10 @@ class VoteCircleRepository implements IVoteCircleRepository {
   }
 
   @override
-  void subscribeToCircleCandidateChangedEvent(int circleId) {
+  Future<void> subscribeToCircleCandidateChangedEvent(int circleId) async {
     try {
       if (_candidateChangedEventSubscription != null) {
-        _candidateChangedEventSubscription?.cancel();
+        await _candidateChangedEventSubscription?.cancel();
       }
 
       final channel = _ablyService.channel('circle-$circleId:candidate');
@@ -210,16 +212,15 @@ class VoteCircleRepository implements IVoteCircleRepository {
           .map((event) => CircleCandidateChangeEvent.fromEventData(event.data))
           .listen((data) => _candidateChangedEventController.add(data));
     } catch (e) {
-      print('subscribeToCircleCandidateChangedEvent ERROR +++++++++++');
-      print(e);
+      log.t('subscribeToCircleCandidateChangedEvent', error: e);
     }
   }
 
   @override
-  void subscribeToCircleVoterChangedEvent(int circleId) {
+  Future<void> subscribeToCircleVoterChangedEvent(int circleId) async {
     try {
       if (_voterChangedEventSubscription != null) {
-        _voterChangedEventSubscription?.cancel();
+        await _voterChangedEventSubscription?.cancel();
       }
 
       final channel = _ablyService.channel('circle-$circleId:voter');
@@ -228,19 +229,18 @@ class VoteCircleRepository implements IVoteCircleRepository {
           .map((event) => CircleVoterChangeEvent.fromEventData(event.data))
           .listen((data) => _voterChangedEventController.add(data));
     } catch (e) {
-      print('subscribeToCircleVoterChangedEvent ERROR +++++++++++');
-      print(e);
+      log.t('subscribeToCircleVoterChangedEvent', error: e);
     }
   }
 
   @override
-  Stream<CircleCandidateChangeEvent> get watchCircleCandidateChangedEvent async* {
-    yield* _candidateChangedEventController.stream;
+  Stream<CircleCandidateChangeEvent> get watchCircleCandidateChangedEvent {
+    return _candidateChangedEventController.stream;
   }
 
   @override
-  Stream<CircleVoterChangeEvent> get watchCircleVoterChangedEvent async* {
-    yield* _voterChangedEventController.stream;
+  Stream<CircleVoterChangeEvent> get watchCircleVoterChangedEvent {
+    return _voterChangedEventController.stream;
   }
 
   @override
