@@ -20,6 +20,7 @@ dependencies:
     path: ../ably_service
   const_date_time: ^1.1.0
   logger: ^2.3.0
+  rxdart: ^0.28.0
 
 dev_dependencies:
   flutter_test:

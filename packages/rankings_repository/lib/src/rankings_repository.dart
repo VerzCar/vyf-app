@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:ably_service/ably_service.dart';
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:logger/logger.dart';
 import 'package:rankings_repository/rankings_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -35,6 +36,7 @@ class RankingsRepository implements IRankingsRepository {
   }
 
   final _addedCircleToViewedRankingsController = StreamController<String>();
+  final Logger log = Logger();
   late IAblyServiceClient _ablyService;
   late SharedPreferences _sharedPrefs;
   final StreamController<RankingChangeEvent> _rankingChangedEventController =
@@ -90,8 +92,7 @@ class RankingsRepository implements IRankingsRepository {
           .map((event) => RankingChangeEvent.fromEventData(event.data))
           .listen((data) => _rankingChangedEventController.add(data));
     } catch (e) {
-      print('subscribeToRankingChangedEvent ERROR +++++++++++');
-      print(e);
+      log.t('subscribeToRankingChangedEvent', error: e);
     }
   }
 
@@ -122,7 +123,7 @@ class RankingsRepository implements IRankingsRepository {
     try {
       return _sharedPrefs.getStringList(_viewedRankingsKey) ?? [];
     } catch (e) {
-      print(e);
+      log.t('_viewedRankings', error: e);
     }
     return [];
   }

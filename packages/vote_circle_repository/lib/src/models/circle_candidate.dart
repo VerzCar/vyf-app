@@ -18,11 +18,12 @@ class CircleCandidate extends Equatable {
 
   CircleCandidate copyWith({
     List<Candidate>? candidates,
-    Candidate? userCandidate,
+    Candidate? Function()? userCandidate,
   }) =>
       CircleCandidate(
         candidates: candidates ?? this.candidates,
-        userCandidate: userCandidate ?? this.userCandidate,
+        userCandidate:
+            userCandidate != null ? userCandidate() : this.userCandidate,
       );
 
   factory CircleCandidate.fromApiCircleCandidate(

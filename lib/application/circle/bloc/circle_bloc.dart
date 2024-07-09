@@ -7,7 +7,6 @@ import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/injection.dart';
 
 part 'circle_event.dart';
-
 part 'circle_state.dart';
 
 class CircleBloc extends Bloc<CircleEvent, CircleState> {
@@ -40,9 +39,10 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
     try {
       final circle = await _voteCircleRepository.circle(event.circleId);
 
-      await _voteCircleRepository
-          .subscribeToCircleCandidateChangedEvent(circle.id);
-      await _voteCircleRepository.subscribeToCircleVoterChangedEvent(circle.id);
+      await Future.wait([
+        _voteCircleRepository.subscribeToCircleCandidateChangedEvent(circle.id),
+        _voteCircleRepository.subscribeToCircleVoterChangedEvent(circle.id),
+      ]);
 
       emit(
         state.copyWith(

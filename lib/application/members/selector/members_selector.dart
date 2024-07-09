@@ -9,16 +9,8 @@ class MembersSelector {
     if (memberState.status.isNotSuccessful) {
       return false;
     }
-
-    if (memberState.circleCandidate.userCandidate?.candidate ==
-        userIdentityId) {
-      return true;
-    }
-
-    final candidateIndex = memberState.circleCandidate.candidates
-        .indexWhere((candidate) => candidate.candidate == userIdentityId);
-
-    return candidateIndex > -1;
+    print(memberState.circleCandidate.userCandidate);
+    return memberState.circleCandidate.userCandidate?.candidate == userIdentityId;
   }
 
   static bool isUserVoterMemberOfCircle(
@@ -29,14 +21,7 @@ class MembersSelector {
       return false;
     }
 
-    if (memberState.circleVoter.userVoter?.voter == userIdentityId) {
-      return true;
-    }
-
-    final voterIndex = memberState.circleVoter.voters
-        .indexWhere((voter) => voter.voter == userIdentityId);
-
-    return voterIndex > -1;
+    return memberState.circleVoter.userVoter?.voter == userIdentityId;
   }
 
   static bool canVote(

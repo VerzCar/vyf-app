@@ -13,6 +13,6 @@ Placement placementFromEvent(String placement) {
     case 'DESCENDING':
       return Placement.descending;
     default:
-      throw Exception('casting of placement event failed.');
+      return Placement.neutral;
   }
 }

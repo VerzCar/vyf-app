@@ -40,10 +40,11 @@ class RankingCubit extends Cubit<RankingState> {
     try {
       final rankings = await _voteCircleRepository.rankings(circleId);
 
-      await _rankingsRepository.subscribeToRankingChangedEvent(circleId);
-      await _voteCircleRepository
-          .subscribeToCircleCandidateChangedEvent(circleId);
-      await _voteCircleRepository.subscribeToCircleVoterChangedEvent(circleId);
+      await Future.wait([
+        _rankingsRepository.subscribeToRankingChangedEvent(circleId),
+        _voteCircleRepository.subscribeToCircleCandidateChangedEvent(circleId),
+        _voteCircleRepository.subscribeToCircleVoterChangedEvent(circleId),
+      ]);
 
       emit(
         state.copyWith(
@@ -84,11 +85,9 @@ class RankingCubit extends Cubit<RankingState> {
             final rankingIndex = rankings
                 .indexWhere((ranking) => ranking.id == changeEvent.ranking.id);
 
-            if (rankingIndex == -1) {
-              break;
+            if (rankingIndex != -1) {
+              rankings.removeAt(rankingIndex);
             }
-
-            rankings.removeAt(rankingIndex);
 
             final mappedRanking = Ranking(
               id: changeEvent.ranking.id,

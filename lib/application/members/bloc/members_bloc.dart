@@ -10,7 +10,6 @@ import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/injection.dart';
 
 part 'members_event.dart';
-
 part 'members_state.dart';
 
 class MembersBloc extends Bloc<MembersEvent, MembersState> {
@@ -183,7 +182,7 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
             return state.copyWith(
               circleCandidate: state.circleCandidate.copyWith(
                 candidates: candidates,
-                userCandidate: userCandidate,
+                userCandidate: () => userCandidate,
               ),
               status: StatusIndicator.success,
             );
@@ -213,7 +212,7 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
             return state.copyWith(
               circleCandidate: state.circleCandidate.copyWith(
                 candidates: candidates,
-                userCandidate: userCandidate,
+                userCandidate: () => userCandidate,
               ),
               status: StatusIndicator.success,
             );
@@ -227,13 +226,13 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
             var userCandidate = state.circleCandidate.userCandidate;
 
             if (changeEvent.candidate.candidate == currentUserIdentityId) {
-              userCandidate = changeEvent.candidate;
+              userCandidate = null;
             }
 
             return state.copyWith(
               circleCandidate: state.circleCandidate.copyWith(
                 candidates: candidates,
-                userCandidate: userCandidate,
+                userCandidate: () => userCandidate,
               ),
               status: StatusIndicator.success,
             );
@@ -273,7 +272,7 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
             return state.copyWith(
               circleVoter: state.circleVoter.copyWith(
                 voters: voters,
-                userVoter: userVoter,
+                userVoter: () => userVoter,
               ),
               status: StatusIndicator.success,
             );
@@ -301,7 +300,7 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
             return state.copyWith(
               circleVoter: state.circleVoter.copyWith(
                 voters: voters,
-                userVoter: userVoter,
+                userVoter: () => userVoter,
               ),
               status: StatusIndicator.success,
             );
@@ -320,7 +319,7 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
             return state.copyWith(
               circleVoter: state.circleVoter.copyWith(
                 voters: voters,
-                userVoter: userVoter,
+                userVoter: () => userVoter,
               ),
               status: StatusIndicator.success,
             );

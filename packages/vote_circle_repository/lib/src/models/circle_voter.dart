@@ -18,11 +18,11 @@ class CircleVoter extends Equatable {
 
   CircleVoter copyWith({
     List<Voter>? voters,
-    Voter? userVoter,
+    Voter? Function()? userVoter,
   }) =>
       CircleVoter(
         voters: voters ?? this.voters,
-        userVoter: userVoter ?? this.userVoter,
+        userVoter: userVoter != null ? userVoter() : this.userVoter,
       );
 
   factory CircleVoter.fromApiCircleVoter(vote_circle_api.CircleVoter voter) =>

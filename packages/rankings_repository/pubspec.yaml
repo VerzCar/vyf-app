@@ -17,6 +17,7 @@ dependencies:
     path: ../authentication_repository
   ably_service:
     path: ../ably_service
+  logger: ^2.3.0
 
 dev_dependencies:
   flutter_test:
