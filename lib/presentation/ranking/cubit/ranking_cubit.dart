@@ -76,6 +76,7 @@ class RankingCubit extends Cubit<RankingState> {
   void _onRankingChanged({
     required rankings_repo.RankingChangeEvent changeEvent,
   }) {
+    sl<Logger>().i('${changeEvent.ranking} : ${changeEvent.operation}');
     try {
       switch (changeEvent.operation) {
         case rankings_repo.EventOperation.created:

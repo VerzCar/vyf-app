@@ -74,7 +74,10 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
         status: StatusIndicator.success,
       ));
     } catch (e) {
-      print(e);
+      sl<Logger>().t(
+        '_onCircleMembersInitialLoaded',
+        error: e,
+      );
       if (isClosed) return;
       emit(state.copyWith(status: StatusIndicator.failure));
     }
@@ -166,6 +169,7 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
     required CircleCandidateChangeEvent changeEvent,
     required String currentUserIdentityId,
   }) {
+    sl<Logger>().i('${changeEvent.candidate} : ${changeEvent.operation}');
     try {
       switch (changeEvent.operation) {
         case EventOperation.created:
@@ -193,13 +197,13 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
             final candidateIndex = candidates.indexWhere(
                 (candidate) => candidate.id == changeEvent.candidate.id);
 
-            Candidate? userCandidate;
+            var userCandidate = state.circleCandidate.userCandidate;
 
             if (changeEvent.candidate.candidate == currentUserIdentityId) {
               userCandidate = changeEvent.candidate;
             }
 
-            if (candidateIndex == -1 && userCandidate == null) {
+            if (candidateIndex == -1) {
               return state;
             }
 
@@ -256,6 +260,7 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
     required CircleVoterChangeEvent changeEvent,
     required String currentUserIdentityId,
   }) {
+    sl<Logger>().i('${changeEvent.voter} : ${changeEvent.operation}');
     try {
       switch (changeEvent.operation) {
         case EventOperation.created:
@@ -283,13 +288,13 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
             final voterIndex =
                 voters.indexWhere((voter) => voter.id == changeEvent.voter.id);
 
-            Voter? userVoter;
+            var userVoter = state.circleVoter.userVoter;
 
             if (changeEvent.voter.voter == currentUserIdentityId) {
               userVoter = changeEvent.voter;
             }
 
-            if (voterIndex == -1 && userVoter == null) {
+            if (voterIndex == -1) {
               return state;
             }
 

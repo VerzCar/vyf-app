@@ -9,7 +9,7 @@ class MembersSelector {
     if (memberState.status.isNotSuccessful) {
       return false;
     }
-    print(memberState.circleCandidate.userCandidate);
+
     return memberState.circleCandidate.userCandidate?.candidate == userIdentityId;
   }
 
@@ -44,5 +44,27 @@ class MembersSelector {
 
     // voter hasn't voted yet
     return memberState.circleVoter.userVoter!.votedFor == null;
+  }
+
+  static bool canRevokeVote(
+      MembersState memberState,
+      String toVoteForIdentityId,
+      ) {
+    if (memberState.status.isNotSuccessful) {
+      return false;
+    }
+
+    // The member (myself) must be a voter to be able to revoke the vote
+    if (memberState.circleVoter.userVoter == null) {
+      return false;
+    }
+
+    // voter hasn't voted yet
+    if (memberState.circleVoter.userVoter!.votedFor == null) {
+      return false;
+    }
+
+    // voter has voted for given user id
+    return memberState.circleVoter.userVoter!.votedFor == toVoteForIdentityId;
   }
 }

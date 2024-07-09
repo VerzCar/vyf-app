@@ -204,33 +204,44 @@ class RankingBody extends StatelessWidget {
                     );
                   },
                 )
-              : BlocSelector<CircleBloc, CircleState, int>(
-                  selector: (state) => state.circle.id,
-                  builder: (context, circleId) {
-                    return BlocBuilder<RankingCubit, RankingState>(
-                      builder: (context, state) {
-                        return BlocBuilder<VoteCubit, VoteState>(
-                          builder: (context, state) {
-                            return AnimatedOpacity(
-                              opacity: state.status.isLoading ? 0.0 : 1.0,
-                              duration: const Duration(milliseconds: 500),
-                              child: ElevatedButton(
-                                onPressed: () =>
-                                    context.read<VoteCubit>().revokedVote(
-                                          circleId: circleId,
+              : BlocSelector<MembersBloc, MembersState, bool>(
+                  selector: (state) =>
+                      MembersSelector.canRevokeVote(state, ranking.identityId),
+                  builder: (context, canRevokeVote) {
+                    return canRevokeVote
+                        ? BlocSelector<CircleBloc, CircleState, int>(
+                            selector: (state) => state.circle.id,
+                            builder: (context, circleId) {
+                              return BlocBuilder<RankingCubit, RankingState>(
+                                builder: (context, state) {
+                                  return BlocBuilder<VoteCubit, VoteState>(
+                                    builder: (context, state) {
+                                      return AnimatedOpacity(
+                                        opacity:
+                                            state.status.isLoading ? 0.0 : 1.0,
+                                        duration:
+                                            const Duration(milliseconds: 500),
+                                        child: ElevatedButton(
+                                          onPressed: () => context
+                                              .read<VoteCubit>()
+                                              .revokedVote(
+                                                circleId: circleId,
+                                              ),
+                                          style: ElevatedButton.styleFrom(
+                                              foregroundColor: themeData
+                                                  .colorScheme.onPrimary,
+                                              backgroundColor: themeData
+                                                  .colorScheme.primary),
+                                          child: const Text('Revoke vote'),
                                         ),
-                                style: ElevatedButton.styleFrom(
-                                    foregroundColor:
-                                        themeData.colorScheme.onPrimary,
-                                    backgroundColor:
-                                        themeData.colorScheme.primary),
-                                child: const Text('Revoke vote'),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    );
+                                      );
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                          )
+                        : const SizedBox();
                   },
                 );
         },
