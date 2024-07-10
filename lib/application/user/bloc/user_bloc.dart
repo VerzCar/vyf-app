@@ -24,7 +24,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   void _onUserReset(
     UserReset event,
     Emitter<UserState> emit,
-  ) async {
+  ) {
     emit(state.reset());
   }
 

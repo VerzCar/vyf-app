@@ -18,7 +18,7 @@ class MembersPage extends StatelessWidget {
       builder: (context, state) {
         return BlocProvider.value(
           value: BlocProvider.of<MembersBloc>(context)
-            ..add(CircleMembersInitialLoaded(
+            ..add(MembersInitialLoaded(
               circleId: circleId,
               currentCircleId: state.circle.id,
             )),

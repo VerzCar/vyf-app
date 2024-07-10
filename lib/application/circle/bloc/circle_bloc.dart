@@ -24,7 +24,7 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
   void _onCircleReset(
     CircleReset event,
     Emitter<CircleState> emit,
-  ) async {
+  ) {
     emit(state.reset());
   }
 

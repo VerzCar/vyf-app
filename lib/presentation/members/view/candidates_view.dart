@@ -72,7 +72,7 @@ class CandidatesView extends StatelessWidget {
                       foregroundColor: themeData.colorScheme.error),
                   onPressed: () => context
                       .read<MembersBloc>()
-                      .add(CircleMembersRemovedCandidateFromCircle(
+                      .add(MembersRemovedCandidateFromCircle(
                         currentCircleId: circleId,
                         candidateIdentId: candidate.candidate,
                       )),

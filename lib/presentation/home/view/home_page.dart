@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
           context.read<UserBloc>().add(UserReset());
           context.read<CirclesBloc>().add(CirclesReset());
           context.read<CircleBloc>().add(CircleReset());
-          context.read<MembersBloc>().add(CircleMembersReset());
+          context.read<MembersBloc>().add(MembersReset());
           context.read<UserOptionBloc>().add(UserOptionReset());
         }
       },

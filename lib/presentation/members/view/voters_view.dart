@@ -73,7 +73,7 @@ class VotersView extends StatelessWidget {
                       foregroundColor: themeData.colorScheme.error),
                   onPressed: () => context
                       .read<MembersBloc>()
-                      .add(CircleMembersRemovedVoterFromCircle(
+                      .add(MembersRemovedVoterFromCircle(
                         currentCircleId: circleId,
                         voterIdentId: voter.voter,
                       )),

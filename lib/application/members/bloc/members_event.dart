@@ -4,13 +4,13 @@ sealed class MembersEvent extends Equatable {
   const MembersEvent();
 }
 
-final class CircleMembersReset extends MembersEvent {
+final class MembersReset extends MembersEvent {
   @override
   List<Object> get props => [];
 }
 
-final class CircleMembersInitialLoaded extends MembersEvent {
-  const CircleMembersInitialLoaded({
+final class MembersInitialLoaded extends MembersEvent {
+  const MembersInitialLoaded({
     required this.circleId,
     required this.currentCircleId,
   });
@@ -25,8 +25,8 @@ final class CircleMembersInitialLoaded extends MembersEvent {
       ];
 }
 
-final class CircleMembersStartCandidateChangedEvent extends MembersEvent {
-  const CircleMembersStartCandidateChangedEvent({
+final class MembersStartCandidateChangedEvent extends MembersEvent {
+  const MembersStartCandidateChangedEvent({
     required this.currentUserIdentityId,
   });
 
@@ -38,8 +38,8 @@ final class CircleMembersStartCandidateChangedEvent extends MembersEvent {
       ];
 }
 
-final class CircleMembersStartVoterChangedEvent extends MembersEvent {
-  const CircleMembersStartVoterChangedEvent({
+final class MembersStartVoterChangedEvent extends MembersEvent {
+  const MembersStartVoterChangedEvent({
     required this.currentUserIdentityId,
   });
 
@@ -51,34 +51,8 @@ final class CircleMembersStartVoterChangedEvent extends MembersEvent {
       ];
 }
 
-final class CircleMembersCandidateChanged extends MembersEvent {
-  const CircleMembersCandidateChanged({
-    required this.changeEvent,
-  });
-
-  final CircleCandidateChangeEvent changeEvent;
-
-  @override
-  List<Object> get props => [
-        changeEvent,
-      ];
-}
-
-final class CircleMembersVoterChanged extends MembersEvent {
-  const CircleMembersVoterChanged({
-    required this.changeEvent,
-  });
-
-  final CircleVoterChangeEvent changeEvent;
-
-  @override
-  List<Object> get props => [
-        changeEvent,
-      ];
-}
-
-final class CircleMembersRemovedCandidateFromCircle extends MembersEvent {
-  const CircleMembersRemovedCandidateFromCircle({
+final class MembersRemovedCandidateFromCircle extends MembersEvent {
+  const MembersRemovedCandidateFromCircle({
     required this.candidateIdentId,
     required this.currentCircleId,
   });
@@ -93,8 +67,8 @@ final class CircleMembersRemovedCandidateFromCircle extends MembersEvent {
       ];
 }
 
-final class CircleMembersRemovedVoterFromCircle extends MembersEvent {
-  const CircleMembersRemovedVoterFromCircle({
+final class MembersRemovedVoterFromCircle extends MembersEvent {
+  const MembersRemovedVoterFromCircle({
     required this.voterIdentId,
     required this.currentCircleId,
   });

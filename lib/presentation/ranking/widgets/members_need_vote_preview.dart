@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
 import 'package:vote_your_face/application/members/bloc/members_bloc.dart';
 import 'package:vote_your_face/application/members/members.dart';
-import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 import 'package:vote_your_face/theme.dart';
 
@@ -16,7 +14,6 @@ class MembersNeedVotePreview extends StatelessWidget {
 
   final int circleId;
 
-  static const int _previewMemberCount = 3;
   static const double _spaceBetweenMember = 8.0;
   static const AvatarSize _avatarSize = AvatarSize.sm;
 
@@ -27,22 +24,22 @@ class MembersNeedVotePreview extends StatelessWidget {
       builder: (context, circleId) {
         return BlocProvider.value(
           value: BlocProvider.of<MembersBloc>(context)
-            ..add(CircleMembersInitialLoaded(
+            ..add(MembersInitialLoaded(
               circleId: circleId,
               currentCircleId: circleId,
             )),
-          child: BlocBuilder<MembersBloc, MembersState>(
-            builder: (context, state) {
-              if (state.status.isNotSuccessful || state.status.isLoading) {
-                return SizedBox(
-                  width: _avatarSize.preSize.width,
-                  height: _avatarSize.preSize.height,
-                );
-              }
-
-              return _buildMembersNeedVotePreview(
-                context: context,
-                circleCandidate: state.circleCandidate,
+          child: BlocSelector<MembersBloc, MembersState, List<String>>(
+            selector: (state) => state.previewCandidateMemberIds,
+            builder: (context, previewCandidateMemberIds) {
+              return BlocSelector<MembersBloc, MembersState, int>(
+                selector: (state) => state.countOfCandidateMembers,
+                builder: (context, countOfCandidateMembers) {
+                  return _buildMembersNeedVotePreview(
+                    context: context,
+                    previewCandidateMemberIds: previewCandidateMemberIds,
+                    countOfCandidateMembers: countOfCandidateMembers,
+                  );
+                },
               );
             },
           ),
@@ -53,12 +50,12 @@ class MembersNeedVotePreview extends StatelessWidget {
 
   _buildMembersNeedVotePreview({
     required BuildContext context,
-    required CircleCandidate circleCandidate,
+    required List<String> previewCandidateMemberIds,
+    required int countOfCandidateMembers,
   }) {
     final themeData = Theme.of(context);
-    final userIds = _firstThreeUserIds(circleCandidate);
 
-    if (userIds.isEmpty) {
+    if (previewCandidateMemberIds.isEmpty) {
       return Text(
         'No candidates',
         style: themeData.textTheme.bodyMedium?.copyWith(
@@ -69,12 +66,12 @@ class MembersNeedVotePreview extends StatelessWidget {
 
     return Row(
       children: [
-        ..._buildPreviewAvatars(themeData: themeData, userIds: userIds),
+        ..._buildPreviewAvatars(userIds: previewCandidateMemberIds),
         ...[
           const SizedBox(width: 10.0),
           _countOfMembers(
             themeData,
-            circleCandidate,
+            countOfCandidateMembers,
           ),
         ]
       ],
@@ -82,7 +79,6 @@ class MembersNeedVotePreview extends StatelessWidget {
   }
 
   List<Widget> _buildPreviewAvatars({
-    required ThemeData themeData,
     required List<String> userIds,
   }) {
     return userIds
@@ -101,28 +97,12 @@ class MembersNeedVotePreview extends StatelessWidget {
 
   Text _countOfMembers(
     ThemeData themeData,
-    CircleCandidate circleCandidate,
+    int count,
   ) {
-    final count = _countOfRemainingMembers(circleCandidate);
     final counterText = count > 0 ? '+ $count' : '';
     return Text(
       counterText,
       style: themeData.textTheme.labelLarge,
     );
-  }
-
-  List<String> _firstThreeUserIds(
-    CircleCandidate circleCandidate,
-  ) {
-    return circleCandidate.candidates
-        .take(_previewMemberCount)
-        .map((member) => member.candidate)
-        .toList();
-  }
-
-  int _countOfRemainingMembers(
-    CircleCandidate circleCandidate,
-  ) {
-    return circleCandidate.candidates.length - _previewMemberCount;
   }
 }

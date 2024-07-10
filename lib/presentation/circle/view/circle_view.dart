@@ -56,10 +56,10 @@ class CircleView extends StatelessWidget {
           builder: (context, userIdentityId) {
             context
                 .read<MembersBloc>()
-                .add(CircleMembersStartCandidateChangedEvent(
+                .add(MembersStartCandidateChangedEvent(
                   currentUserIdentityId: userIdentityId,
                 ));
-            context.read<MembersBloc>().add(CircleMembersStartVoterChangedEvent(
+            context.read<MembersBloc>().add(MembersStartVoterChangedEvent(
                   currentUserIdentityId: userIdentityId,
                 ));
 

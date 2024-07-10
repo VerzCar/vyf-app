@@ -5,13 +5,29 @@ final class MembersState extends VyfBaseState {
     this.status = StatusIndicator.initial,
     this.circleVoter = CircleVoter.empty,
     this.circleCandidate = CircleCandidate.empty,
+    this.previewMemberIds = const [],
+    this.previewCandidateMemberIds = const [],
+    this.countOfMembers = 0,
+    this.countOfCandidateMembers = 0,
     this.circleRefId = 0,
   });
 
   final CircleVoter circleVoter;
   final CircleCandidate circleCandidate;
 
-  // the members for this reference of circle id
+  /// list of to show preview members (mixed voters and candidates)
+  final List<String> previewMemberIds;
+
+  /// list of to show preview members (only candidates)
+  final List<String> previewCandidateMemberIds;
+
+  /// amount of members minus the preview members count
+  final int countOfMembers;
+
+  /// amount of candidate members minus the preview members count
+  final int countOfCandidateMembers;
+
+  /// circle reference id to couple with this members
   final int circleRefId;
   final StatusIndicator status;
 
@@ -19,16 +35,23 @@ final class MembersState extends VyfBaseState {
   MembersState copyWith({
     CircleVoter? circleVoter,
     CircleCandidate? circleCandidate,
-    CircleVoter? rankingVoter,
-    CircleCandidate? rankingCandidate,
+    List<String>? previewMemberIds,
+    List<String>? previewCandidateMemberIds,
+    int? countOfMembers,
+    int? countOfCandidateMembers,
     int? circleRefId,
-    int? circleRankingsRefId,
     StatusIndicator? status,
   }) {
     return MembersState(
       circleVoter: circleVoter ?? this.circleVoter,
       circleCandidate: circleCandidate ?? this.circleCandidate,
       circleRefId: circleRefId ?? this.circleRefId,
+      previewMemberIds: previewMemberIds ?? this.previewMemberIds,
+      previewCandidateMemberIds:
+          previewCandidateMemberIds ?? this.previewCandidateMemberIds,
+      countOfMembers: countOfMembers ?? this.countOfMembers,
+      countOfCandidateMembers:
+          countOfCandidateMembers ?? this.countOfCandidateMembers,
       status: status ?? this.status,
     );
   }
@@ -41,6 +64,10 @@ final class MembersState extends VyfBaseState {
         circleVoter,
         circleCandidate,
         circleRefId,
+        previewMemberIds,
+        previewCandidateMemberIds,
+        countOfMembers,
+        countOfCandidateMembers,
         status,
       ];
 }
