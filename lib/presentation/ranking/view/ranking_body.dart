@@ -68,29 +68,112 @@ class RankingBody extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 30),
-        _buildRankings(context),
+        BlocSelector<CircleBloc, CircleState, CircleStage>(
+            selector: (state) => state.circle.stage,
+            builder: (context, stage) {
+              if (stage == CircleStage.hot) {
+                return BlocBuilder<RankingCubit, RankingState>(
+                  builder: (context, rankingState) {
+                    if (rankingState.topRankings.isEmpty &&
+                        rankingState.rankings.isEmpty) {
+                      return _buildEmptyRankingsPlaceholder(context);
+                    }
+
+                    final List<Widget> buildRankings = [];
+
+                    if (rankingState.topRankings.isNotEmpty) {
+                      buildRankings.add(
+                        _buildTopRankingsRow(
+                          context: context,
+                          rankings: rankingState.topRankings,
+                        ),
+                      );
+                    }
+
+                    if (rankingState.rankings.isNotEmpty) {
+                      buildRankings.add(
+                        Expanded(
+                          child: _buildRankingListView(
+                            context: context,
+                            rankings: rankingState.rankings,
+                          ),
+                        ),
+                      );
+                    }
+
+                    return Expanded(
+                        child: Column(children: buildRankings.toList()));
+                  },
+                );
+              }
+              return _buildColdCirclePlaceholder(context);
+            }),
       ],
     );
   }
 
-  Widget _buildRankings(BuildContext context) {
-    return BlocBuilder<CircleBloc, CircleState>(builder: (context, state) {
-      if (state.circle.stage == CircleStage.hot) {
-        return BlocBuilder<RankingCubit, RankingState>(
-          builder: (context, rankingState) {
-            return rankingState.rankings.isEmpty
-                ? _buildEmptyRankingsPlaceholder(context)
-                : Expanded(
-                    child: _buildRankingListView(
-                      context: context,
-                      rankings: rankingState.rankings,
-                    ),
-                  );
-          },
-        );
-      }
-      return _buildColdCirclePlaceholder(context);
-    });
+  _buildTopRankingsRow({
+    required BuildContext context,
+    required List<Ranking> rankings,
+  }) {
+    // move the placement of rankings in order of view
+    // first one is 2 placement -> 1 placement -> 3 placement
+    if (rankings.length > 1) {
+      rankings.move(0, 1);
+    }
+
+    final size = MediaQuery.of(context).size;
+    final themeData = Theme.of(context);
+
+    final topRankings = rankings.map((ranking) {
+      return Expanded(
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                ranking.votes.toString(),
+                style: themeData.textTheme.bodyLarge,
+              ),
+            ),
+            Container(
+              width: size.width * 0.30,
+              height: size.width * 0.30,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.white70,
+                //border: Border.all(color: Colors.black)
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 3,
+                    blurRadius: 10,
+                    offset: const Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: UserAvatar(
+                key: ValueKey(ranking.identityId),
+                identityId: ranking.identityId,
+                option: const UserAvatarOption(
+                  size: AvatarSize.lg,
+                ),
+              ),
+            ),
+            Text(
+              ranking.number.toString(),
+              style: themeData.textTheme.headlineLarge,
+            ),
+          ],
+        ),
+      );
+    }).toList();
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: topRankings,
+    );
   }
 
   ListView _buildRankingListView({

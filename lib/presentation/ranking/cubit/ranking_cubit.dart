@@ -46,10 +46,14 @@ class RankingCubit extends Cubit<RankingState> {
         _voteCircleRepository.subscribeToCircleVoterChangedEvent(circleId),
       ]);
 
+      final topThreeRankings = _topThreeRankings(rankings: rankings);
+      final rankedRankings = rankings.sublist(topThreeRankings.length);
+
       emit(
         state.copyWith(
           status: StatusIndicator.success,
-          rankings: rankings,
+          rankings: rankedRankings,
+          topRankings: topThreeRankings,
         ),
       );
     } catch (e) {
@@ -82,7 +86,7 @@ class RankingCubit extends Cubit<RankingState> {
         case rankings_repo.EventOperation.created:
         case rankings_repo.EventOperation.updated:
           {
-            final rankings = List.of(state.rankings);
+            final rankings = List.of([...state.topRankings, ...state.rankings]);
             final rankingIndex = rankings
                 .indexWhere((ranking) => ranking.id == changeEvent.ranking.id);
 
@@ -106,20 +110,28 @@ class RankingCubit extends Cubit<RankingState> {
 
             rankings.insert(changeEvent.ranking.indexedOrder, mappedRanking);
 
+            final topThreeRankings = _topThreeRankings(rankings: rankings);
+            final rankedRankings = rankings.sublist(topThreeRankings.length);
+
             emit(state.copyWith(
-              rankings: rankings,
+              rankings: rankedRankings,
+              topRankings: topThreeRankings,
               status: StatusIndicator.success,
             ));
             break;
           }
         case rankings_repo.EventOperation.deleted:
           {
-            final rankings = List.of(state.rankings);
+            final rankings = List.of([...state.topRankings, ...state.rankings]);
             rankings
                 .removeWhere((ranking) => ranking.id == changeEvent.ranking.id);
 
+            final topThreeRankings = _topThreeRankings(rankings: rankings);
+            final rankedRankings = rankings.sublist(topThreeRankings.length);
+
             emit(state.copyWith(
-              rankings: rankings,
+              rankings: rankedRankings,
+              topRankings: topThreeRankings,
               status: StatusIndicator.success,
             ));
             break;
@@ -137,5 +149,37 @@ class RankingCubit extends Cubit<RankingState> {
       if (isClosed) return;
       emit(state.copyWith(status: StatusIndicator.success));
     }
+  }
+
+  List<Ranking> _topThreeRankings({required List<Ranking> rankings}) {
+    if (rankings.isEmpty) {
+      return const [];
+    }
+
+    final topThreeRankings = List<Ranking>.empty(growable: true);
+    final firstRanking = rankings.elementAtOrNull(0);
+    final secondRanking = rankings.elementAtOrNull(1);
+    final thirdRanking = rankings.elementAtOrNull(2);
+    final fourthRanking = rankings.elementAtOrNull(3);
+
+    if (firstRanking != null &&
+        firstRanking.number == 1 &&
+        secondRanking?.number != 1) {
+      topThreeRankings.add(firstRanking);
+    }
+
+    if (secondRanking != null &&
+        secondRanking.number == 2 &&
+        thirdRanking?.number != 2) {
+      topThreeRankings.add(secondRanking);
+    }
+
+    if (thirdRanking != null &&
+        thirdRanking.number == 3 &&
+        (fourthRanking == null || fourthRanking.number != 3)) {
+      topThreeRankings.add(thirdRanking);
+    }
+
+    return topThreeRankings;
   }
 }
