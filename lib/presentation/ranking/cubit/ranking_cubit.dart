@@ -86,7 +86,8 @@ class RankingCubit extends Cubit<RankingState> {
         case rankings_repo.EventOperation.created:
         case rankings_repo.EventOperation.updated:
           {
-            final List<Ranking> rankings = List.from([...state.topRankings, ...state.rankings]);
+            final List<Ranking> rankings =
+                List.from([...state.topRankings, ...state.rankings]);
             final rankingIndex = rankings
                 .indexWhere((ranking) => ranking.id == changeEvent.ranking.id);
 
@@ -163,21 +164,24 @@ class RankingCubit extends Cubit<RankingState> {
     final thirdRanking = rankings.elementAtOrNull(2);
     final fourthRanking = rankings.elementAtOrNull(3);
 
-    if (firstRanking != null &&
-        firstRanking.number == 1 &&
-        secondRanking?.number != 1) {
+    final firstRankingVotes = firstRanking?.votes ?? 0;
+    final secondRankingVotes = secondRanking?.votes ?? 0;
+    final thirdRankingVotes = thirdRanking?.votes ?? 0;
+    final fourthRankingVotes = fourthRanking?.votes ?? 0;
+
+    if (firstRanking != null && firstRankingVotes > secondRankingVotes) {
       topThreeRankings.add(firstRanking);
+    } else {
+      return topThreeRankings;
     }
 
-    if (secondRanking != null &&
-        secondRanking.number == 2 &&
-        thirdRanking?.number != 2) {
+    if (secondRanking != null && secondRankingVotes > thirdRankingVotes) {
       topThreeRankings.add(secondRanking);
+    } else {
+      return topThreeRankings;
     }
 
-    if (thirdRanking != null &&
-        thirdRanking.number == 3 &&
-        (fourthRanking == null || fourthRanking.number != 3)) {
+    if (thirdRanking != null && thirdRankingVotes > fourthRankingVotes) {
       topThreeRankings.add(thirdRanking);
     }
 
