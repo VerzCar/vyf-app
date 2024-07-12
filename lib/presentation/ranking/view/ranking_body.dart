@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:user_repository/user_repository.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
 import 'package:vote_your_face/application/members/members.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
+import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/ranking/cubit/ranking_cubit.dart';
 import 'package:vote_your_face/presentation/ranking/cubit/vote_cubit.dart';
@@ -136,35 +138,52 @@ class RankingBody extends StatelessWidget {
                 style: themeData.textTheme.bodyLarge,
               ),
             ),
-            Container(
-              width: size.width * 0.30,
-              height: size.width * 0.30,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.white70,
-                //border: Border.all(color: Colors.black)
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 3,
-                    blurRadius: 10,
-                    offset: const Offset(0, 3), // changes position of shadow
+            BlocSelector<UserBloc, UserState, User>(
+              selector: (state) => state.user,
+              builder: (context, user) {
+                return BlocProvider(
+                  create: (context) =>
+                      UserXCubit(userRepository: sl<IUserRepository>())
+                        ..userXFetched(
+                          currentUser: user,
+                          identityId: ranking.identityId,
+                        ),
+                  child: BlocBuilder<UserXCubit, UserXState>(
+                    builder: (context, state) {
+                      return Container(
+                        width: size.width * 0.20,
+                        height: size.width * 0.20,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Colors.white70,
+                          border: Border.all(color: Colors.grey),
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: NetworkImage(state.user.profile.imageSrc),
+                            fit: BoxFit.cover,
+                            alignment: Alignment.topCenter,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 3,
+                              blurRadius: 10,
+                              offset: const Offset(
+                                  0, 3), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
-                ],
-              ),
-              child: UserAvatar(
-                key: ValueKey(ranking.identityId),
-                identityId: ranking.identityId,
-                option: const UserAvatarOption(
-                  size: AvatarSize.lg,
-                ),
-              ),
+                );
+              },
             ),
             Text(
               ranking.number.toString(),
               style: themeData.textTheme.headlineLarge,
             ),
+            ranking.number == 1 ? SizedBox(height: 80) : SizedBox(),
           ],
         ),
       );
