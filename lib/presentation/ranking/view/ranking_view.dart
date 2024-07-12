@@ -6,6 +6,7 @@ import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/application/user/bloc/user_bloc.dart';
 import 'package:vote_your_face/presentation/ranking/cubit/ranking_cubit.dart';
 import 'package:vote_your_face/presentation/ranking/view/ranking_body.dart';
+import 'package:vote_your_face/theme.dart';
 
 class RankingView extends StatelessWidget {
   const RankingView({
@@ -17,6 +18,8 @@ class RankingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: BlocBuilder<CircleBloc, CircleState>(
@@ -25,6 +28,7 @@ class RankingView extends StatelessWidget {
           },
         ),
       ),
+      backgroundColor: themeData.colorScheme.brightColor,
       body: SafeArea(
         child: BlocSelector<UserBloc, UserState, String>(
           selector: (state) => state.user.identityId,

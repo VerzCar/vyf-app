@@ -86,7 +86,7 @@ class RankingCubit extends Cubit<RankingState> {
         case rankings_repo.EventOperation.created:
         case rankings_repo.EventOperation.updated:
           {
-            final rankings = List.of([...state.topRankings, ...state.rankings]);
+            final List<Ranking> rankings = List.from([...state.topRankings, ...state.rankings]);
             final rankingIndex = rankings
                 .indexWhere((ranking) => ranking.id == changeEvent.ranking.id);
 
@@ -113,6 +113,7 @@ class RankingCubit extends Cubit<RankingState> {
             final topThreeRankings = _topThreeRankings(rankings: rankings);
             final rankedRankings = rankings.sublist(topThreeRankings.length);
 
+            sl<Logger>().i('${topThreeRankings} : ${rankedRankings}');
             emit(state.copyWith(
               rankings: rankedRankings,
               topRankings: topThreeRankings,

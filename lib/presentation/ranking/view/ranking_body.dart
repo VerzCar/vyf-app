@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
@@ -153,76 +155,131 @@ class RankingBody extends StatelessWidget {
       final ranking = rankings.elementAtOrNull(index);
 
       if (ranking == null) {
-        return const SizedBox();
+        return const StaggeredGridTile.count(
+          crossAxisCellCount: 1,
+          mainAxisCellCount: 2,
+          child: SizedBox(),
+        );
       }
 
-      return Column(
-        children: [
-          Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              ranking.votes.toString(),
-              style: themeData.textTheme.bodyLarge,
-            ),
-          ),
-          BlocSelector<UserBloc, UserState, User>(
-            selector: (state) => state.user,
-            builder: (context, user) {
-              return BlocProvider(
-                create: (context) =>
-                    UserXCubit(userRepository: sl<IUserRepository>())
-                      ..userXFetched(
-                        currentUser: user,
-                        identityId: ranking.identityId,
-                      ),
-                child: BlocBuilder<UserXCubit, UserXState>(
-                  builder: (context, state) {
-                    return Container(
-                      width: size.width * 0.20,
-                      height: size.width * 0.20,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Colors.white70,
-                        border: Border.all(color: Colors.grey),
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: NetworkImage(state.user.profile.imageSrc),
-                          fit: BoxFit.cover,
-                          alignment: Alignment.topCenter,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 3,
-                            blurRadius: 10,
-                            offset: const Offset(
-                                0, 3), // changes position of shadow
+      return StaggeredGridTile.count(
+        crossAxisCellCount: 1,
+        mainAxisCellCount: 2,
+        child: BlocSelector<UserBloc, UserState, User>(
+          selector: (state) => state.user,
+          builder: (context, user) {
+            return BlocProvider(
+              create: (context) =>
+                  UserXCubit(userRepository: sl<IUserRepository>())
+                    ..userXFetched(
+                      currentUser: user,
+                      identityId: ranking.identityId,
+                    ),
+              child: BlocBuilder<UserXCubit, UserXState>(
+                builder: (context, state) {
+                  return Column(
+                    children: [
+                      index != 1
+                          ? const SizedBox(height: 70)
+                          : const SizedBox(),
+                      Stack(
+                        children: [
+                          Container(
+                            width: index != 1
+                                ? size.width * 0.23
+                                : size.width * 0.35,
+                            height: index != 1
+                                ? size.width * 0.23
+                                : size.width * 0.35,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                color: Colors.grey.withOpacity(0.4),
+                              ),
+                              shape: BoxShape.circle,
+                              boxShadow: index == 1
+                                  ? [
+                                      BoxShadow(
+                                          color: Colors.grey.withOpacity(0.7),
+                                          spreadRadius: 3,
+                                          blurRadius: 17,
+                                          offset: const Offset(0, 6)),
+                                    ]
+                                  : [
+                                      BoxShadow(
+                                          color: Colors.grey.withOpacity(0.7),
+                                          spreadRadius: 2,
+                                          blurRadius: 12,
+                                          offset: const Offset(0, 5)),
+                                    ],
+                            ),
+                          ),
+                          Positioned.fill(
+                            child: Align(
+                              child: AnimatedOpacity(
+                                opacity: state.status.isLoading ? 0.2 : 1.0,
+                                duration: const Duration(milliseconds: 500),
+                                child: Container(
+                                  width: index != 1
+                                      ? size.width * 0.23
+                                      : size.width * 0.25,
+                                  height: index != 1
+                                      ? size.width * 0.23
+                                      : size.width * 0.25,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white70,
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                          state.user.profile.imageSrc),
+                                      fit: BoxFit.cover,
+                                      alignment: Alignment.topCenter,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: 0,
+                            right: 5,
+                            child: Text(
+                              ranking.votes.toString(),
+                              style: themeData.textTheme.bodyLarge
+                                  ?.copyWith(fontWeight: FontWeight.w500),
+                            ),
                           ),
                         ],
                       ),
-                    );
-                  },
-                ),
-              );
-            },
-          ),
-          Expanded(
-            child: Text(
-              ranking.number.toString(),
-              style: themeData.textTheme.headlineLarge,
-            ),
-          ),
-          index == 1 ? Expanded(child: SizedBox(height: 80)) : SizedBox(),
-        ],
+                      Text(
+                        ranking.number.toString(),
+                        style: themeData.textTheme.headlineLarge
+                            ?.copyWith(fontWeight: FontWeight.w600),
+                      ),
+                      Text(
+                        state.user.username,
+                        style: themeData.textTheme.bodyMedium
+                            ?.copyWith(fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            );
+          },
+        ),
       );
     });
 
-    return SizedBox(
-      height: 170,
-      child: GridView.count(
-        crossAxisCount: 3,
-        children: winnerPodiums,
-      ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      child: StaggeredGrid.count(
+          crossAxisCount: 3,
+          mainAxisSpacing: 40,
+          crossAxisSpacing: 4,
+          children: winnerPodiums),
     );
   }
 
@@ -233,73 +290,72 @@ class RankingBody extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final themeData = Theme.of(context);
 
-    return SizedBox(
-      height: 800,
-      child: ListView.separated(
-        itemCount: rankings.length,
-        itemBuilder: (BuildContext contextList, int index) {
-          final ranking = rankings[index];
+    return ListView.separated(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: rankings.length,
+      itemBuilder: (BuildContext contextList, int index) {
+        final ranking = rankings[index];
 
-          return Card(
-            key: Key(ranking.id.toString()),
-            elevation: 0,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.zero,
+        return Card(
+          key: Key(ranking.id.toString()),
+          elevation: 0,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.zero,
+          ),
+          margin: const EdgeInsets.all(0),
+          child: ListTile(
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 15.0,
+              vertical: 3.0,
             ),
-            margin: const EdgeInsets.all(0),
-            child: ListTile(
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 15.0,
-                vertical: 3.0,
-              ),
-              leading: Text(
-                ranking.number.toString(),
-                style: themeData.textTheme.bodyLarge,
-              ),
-              title: UserAvatar(
-                key: ValueKey(ranking.identityId),
-                identityId: ranking.identityId,
-                option: UserAvatarOption(
-                  withLabel: true,
-                  labelChild: Text(
-                    '${ranking.votes} votes',
-                    style: themeData.textTheme.labelMedium,
-                  ),
+            leading: Text(
+              ranking.number.toString(),
+              style: themeData.textTheme.bodyLarge,
+            ),
+            title: UserAvatar(
+              key: ValueKey(ranking.identityId),
+              identityId: ranking.identityId,
+              option: UserAvatarOption(
+                withLabel: true,
+                labelChild: Text(
+                  '${ranking.votes} votes',
+                  style: themeData.textTheme.labelMedium,
                 ),
               ),
-              trailing: BlocBuilder<MembersBloc, MembersState>(
-                buildWhen: (previous, current) =>
-                    previous.status != current.status,
-                builder: (context, state) {
-                  return state.status.isSuccessful
-                      ? _votingActionButton(
-                          themeData: themeData,
-                          ranking: ranking,
-                        )
-                      : const SizedBox();
-                },
-              ),
-              onTap: () {
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  builder: (BuildContext context2) {
-                    return SizedBox(
-                      height: size.height * 0.70,
-                      child: RankingSheet(
-                        identityId: ranking.identityId,
-                        placementNumber: ranking.number,
-                      ),
-                    );
-                  },
-                );
+            ),
+            trailing: BlocBuilder<MembersBloc, MembersState>(
+              buildWhen: (previous, current) =>
+                  previous.status != current.status,
+              builder: (context, state) {
+                return state.status.isSuccessful
+                    ? _votingActionButton(
+                        themeData: themeData,
+                        ranking: ranking,
+                      )
+                    : const SizedBox();
               },
             ),
-          );
-        },
-        separatorBuilder: (context, index) => const Divider(
-          height: 0,
-        ),
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (BuildContext context2) {
+                  return SizedBox(
+                    height: size.height * 0.70,
+                    child: RankingSheet(
+                      identityId: ranking.identityId,
+                      placementNumber: ranking.number,
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        );
+      },
+      separatorBuilder: (context, index) => const Divider(
+        height: 0,
       ),
     );
   }

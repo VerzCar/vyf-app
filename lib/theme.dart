@@ -17,6 +17,7 @@ class Light {
   static const Color appbarForegroundColor = Colors.black;
   static const Color cardColor = Colors.white;
   static const Color white = Colors.white;
+  static const Color bright = Colors.white;
 
   static TextTheme textTheme = Typography.blackCupertino.apply(
     bodyColor: textColorPrimary,
@@ -43,6 +44,7 @@ class Dark {
   static const Color appbarForegroundColor = Colors.white;
   static const Color cardColor = Color(0xFF494949);
   static const Color white = Colors.white;
+  static const Color bright = Color(0xFF0C0C0C);
 
   static TextTheme textTheme = Typography.blackCupertino.apply(
     bodyColor: textColorPrimary,
@@ -64,6 +66,9 @@ extension ColorSchemeExtension on ColorScheme {
 
   Color get whiteColor =>
       brightness == Brightness.light ? Light.white : Dark.white;
+
+  Color get brightColor =>
+      brightness == Brightness.light ? Light.bright : Dark.bright;
 
   Color get textLightColor => brightness == Brightness.light
       ? Light.textColorPrimary.withOpacity(0.6)
