@@ -25,247 +25,281 @@ class RankingBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    child: Text(
-                      'Need a vote',
-                      style: themeData.textTheme.titleMedium,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: Text(
+                        'Need a vote',
+                        style: themeData.textTheme.titleMedium,
+                      ),
                     ),
-                  ),
-                  MembersNeedVotePreview(circleId: circleId),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    child: Text(
-                      'Valid',
-                      style: themeData.textTheme.titleMedium,
+                    MembersNeedVotePreview(circleId: circleId),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: Text(
+                        'Valid',
+                        style: themeData.textTheme.titleMedium,
+                      ),
                     ),
-                  ),
-                  BlocBuilder<CircleBloc, CircleState>(
-                    builder: (context, state) {
-                      return TimeBox(
-                        from: state.circle.validFrom,
-                        until: state.circle.validUntil,
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ],
+                    BlocBuilder<CircleBloc, CircleState>(
+                      builder: (context, state) {
+                        return TimeBox(
+                          from: state.circle.validFrom,
+                          until: state.circle.validUntil,
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-        const SizedBox(height: 30),
-        BlocSelector<CircleBloc, CircleState, CircleStage>(
+          const SizedBox(height: 30),
+          BlocSelector<CircleBloc, CircleState, CircleStage>(
             selector: (state) => state.circle.stage,
             builder: (context, stage) {
-              if (stage == CircleStage.hot) {
-                return BlocBuilder<RankingCubit, RankingState>(
-                  builder: (context, rankingState) {
-                    if (rankingState.topRankings.isEmpty &&
-                        rankingState.rankings.isEmpty) {
-                      return _buildEmptyRankingsPlaceholder(context);
-                    }
-
-                    final List<Widget> buildRankings = [];
-
-                    if (rankingState.topRankings.isNotEmpty) {
-                      buildRankings.add(
-                        _buildTopRankingsRow(
+              return stage == CircleStage.hot
+                  ? BlocBuilder<RankingCubit, RankingState>(
+                      buildWhen: (prev, current) =>
+                          current.topRankings.isEmpty &&
+                          current.rankings.isEmpty,
+                      builder: (context, rankingState) {
+                        return rankingState.topRankings.isEmpty &&
+                                rankingState.rankings.isEmpty
+                            ? _buildEmptyRankingsPlaceholder(context)
+                            : const SizedBox();
+                      })
+                  : const SizedBox();
+            },
+          ),
+          BlocSelector<CircleBloc, CircleState, CircleStage>(
+            selector: (state) => state.circle.stage,
+            builder: (context, stage) {
+              return stage == CircleStage.hot
+                  ? BlocBuilder<RankingCubit, RankingState>(
+                      buildWhen: (prev, current) =>
+                          current.topRankings.isNotEmpty,
+                      builder: (context, rankingState) {
+                        return _buildWinnerPodium(
                           context: context,
-                          rankings: rankingState.topRankings,
-                        ),
-                      );
-                    }
-
-                    if (rankingState.rankings.isNotEmpty) {
-                      buildRankings.add(
-                        Expanded(
-                          child: _buildRankingListView(
-                            context: context,
-                            rankings: rankingState.rankings,
-                          ),
-                        ),
-                      );
-                    }
-
-                    return Expanded(
-                        child: Column(children: buildRankings.toList()));
-                  },
-                );
-              }
-              return _buildColdCirclePlaceholder(context);
-            }),
-      ],
+                          topRankings: rankingState.topRankings,
+                        );
+                      })
+                  : const SizedBox();
+            },
+          ),
+          BlocSelector<CircleBloc, CircleState, CircleStage>(
+            selector: (state) => state.circle.stage,
+            builder: (context, stage) {
+              return stage == CircleStage.hot
+                  ? BlocBuilder<RankingCubit, RankingState>(
+                      buildWhen: (prev, current) => current.rankings.isNotEmpty,
+                      builder: (context, rankingState) {
+                        return _buildRankingListView(
+                          context: context,
+                          rankings: rankingState.rankings,
+                        );
+                      })
+                  : const SizedBox();
+            },
+          ),
+          BlocSelector<CircleBloc, CircleState, CircleStage>(
+            selector: (state) => state.circle.stage,
+            builder: (context, stage) {
+              return stage != CircleStage.hot
+                  ? _buildColdCirclePlaceholder(context)
+                  : const SizedBox();
+            },
+          ),
+        ],
+      ),
     );
   }
 
-  _buildTopRankingsRow({
+  _buildWinnerPodium({
     required BuildContext context,
-    required List<Ranking> rankings,
+    required List<Ranking> topRankings,
   }) {
-    // move the placement of rankings in order of view
-    // first one is 2 placement -> 1 placement -> 3 placement
-    if (rankings.length > 1) {
-      rankings.move(0, 1);
+    final rankings = List<Ranking?>.from(topRankings);
+
+    if (rankings.length < 3) {
+      rankings.length = 3;
     }
 
+    // move the placement of rankings in order of view
+    // first one is 2 placement -> 1 placement -> 3 placement
+    rankings.move(0, 1);
+
     final size = MediaQuery.of(context).size;
     final themeData = Theme.of(context);
 
-    final topRankings = rankings.map((ranking) {
-      return Expanded(
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                ranking.votes.toString(),
-                style: themeData.textTheme.bodyLarge,
-              ),
-            ),
-            BlocSelector<UserBloc, UserState, User>(
-              selector: (state) => state.user,
-              builder: (context, user) {
-                return BlocProvider(
-                  create: (context) =>
-                      UserXCubit(userRepository: sl<IUserRepository>())
-                        ..userXFetched(
-                          currentUser: user,
-                          identityId: ranking.identityId,
-                        ),
-                  child: BlocBuilder<UserXCubit, UserXState>(
-                    builder: (context, state) {
-                      return Container(
-                        width: size.width * 0.20,
-                        height: size.width * 0.20,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.white70,
-                          border: Border.all(color: Colors.grey),
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: NetworkImage(state.user.profile.imageSrc),
-                            fit: BoxFit.cover,
-                            alignment: Alignment.topCenter,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 3,
-                              blurRadius: 10,
-                              offset: const Offset(
-                                  0, 3), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
-            Text(
-              ranking.number.toString(),
-              style: themeData.textTheme.headlineLarge,
-            ),
-            ranking.number == 1 ? SizedBox(height: 80) : SizedBox(),
-          ],
-        ),
-      );
-    }).toList();
+    final winnerPodiums = List.generate(3, (index) {
+      final ranking = rankings.elementAtOrNull(index);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: topRankings,
-    );
-  }
+      if (ranking == null) {
+        return const SizedBox();
+      }
 
-  ListView _buildRankingListView({
-    required BuildContext context,
-    required List<Ranking> rankings,
-  }) {
-    final size = MediaQuery.of(context).size;
-    final themeData = Theme.of(context);
-
-    return ListView.separated(
-      itemCount: rankings.length,
-      itemBuilder: (BuildContext contextList, int index) {
-        final ranking = rankings[index];
-
-        return Card(
-          key: Key(ranking.id.toString()),
-          elevation: 0,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.zero,
-          ),
-          margin: const EdgeInsets.all(0),
-          child: ListTile(
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 15.0,
-              vertical: 3.0,
-            ),
-            leading: Text(
-              ranking.number.toString(),
+      return Column(
+        children: [
+          Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              ranking.votes.toString(),
               style: themeData.textTheme.bodyLarge,
             ),
-            title: UserAvatar(
-              key: ValueKey(ranking.identityId),
-              identityId: ranking.identityId,
-              option: UserAvatarOption(
-                withLabel: true,
-                labelChild: Text(
-                  '${ranking.votes} votes',
-                  style: themeData.textTheme.labelMedium,
+          ),
+          BlocSelector<UserBloc, UserState, User>(
+            selector: (state) => state.user,
+            builder: (context, user) {
+              return BlocProvider(
+                create: (context) =>
+                    UserXCubit(userRepository: sl<IUserRepository>())
+                      ..userXFetched(
+                        currentUser: user,
+                        identityId: ranking.identityId,
+                      ),
+                child: BlocBuilder<UserXCubit, UserXState>(
+                  builder: (context, state) {
+                    return Container(
+                      width: size.width * 0.20,
+                      height: size.width * 0.20,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.white70,
+                        border: Border.all(color: Colors.grey),
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: NetworkImage(state.user.profile.imageSrc),
+                          fit: BoxFit.cover,
+                          alignment: Alignment.topCenter,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 3,
+                            blurRadius: 10,
+                            offset: const Offset(
+                                0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
-              ),
-            ),
-            trailing: BlocBuilder<MembersBloc, MembersState>(
-              buildWhen: (previous, current) =>
-                  previous.status != current.status,
-              builder: (context, state) {
-                return state.status.isSuccessful
-                    ? _votingActionButton(
-                        themeData: themeData,
-                        ranking: ranking,
-                      )
-                    : const SizedBox();
-              },
-            ),
-            onTap: () {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                builder: (BuildContext context2) {
-                  return SizedBox(
-                    height: size.height * 0.70,
-                    child: RankingSheet(
-                      identityId: ranking.identityId,
-                      placementNumber: ranking.number,
-                    ),
-                  );
-                },
               );
             },
           ),
-        );
-      },
-      separatorBuilder: (context, index) => const Divider(
-        height: 0,
+          Expanded(
+            child: Text(
+              ranking.number.toString(),
+              style: themeData.textTheme.headlineLarge,
+            ),
+          ),
+          index == 1 ? Expanded(child: SizedBox(height: 80)) : SizedBox(),
+        ],
+      );
+    });
+
+    return SizedBox(
+      height: 170,
+      child: GridView.count(
+        crossAxisCount: 3,
+        children: winnerPodiums,
+      ),
+    );
+  }
+
+  _buildRankingListView({
+    required BuildContext context,
+    required List<Ranking> rankings,
+  }) {
+    final size = MediaQuery.of(context).size;
+    final themeData = Theme.of(context);
+
+    return SizedBox(
+      height: 800,
+      child: ListView.separated(
+        itemCount: rankings.length,
+        itemBuilder: (BuildContext contextList, int index) {
+          final ranking = rankings[index];
+
+          return Card(
+            key: Key(ranking.id.toString()),
+            elevation: 0,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.zero,
+            ),
+            margin: const EdgeInsets.all(0),
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 15.0,
+                vertical: 3.0,
+              ),
+              leading: Text(
+                ranking.number.toString(),
+                style: themeData.textTheme.bodyLarge,
+              ),
+              title: UserAvatar(
+                key: ValueKey(ranking.identityId),
+                identityId: ranking.identityId,
+                option: UserAvatarOption(
+                  withLabel: true,
+                  labelChild: Text(
+                    '${ranking.votes} votes',
+                    style: themeData.textTheme.labelMedium,
+                  ),
+                ),
+              ),
+              trailing: BlocBuilder<MembersBloc, MembersState>(
+                buildWhen: (previous, current) =>
+                    previous.status != current.status,
+                builder: (context, state) {
+                  return state.status.isSuccessful
+                      ? _votingActionButton(
+                          themeData: themeData,
+                          ranking: ranking,
+                        )
+                      : const SizedBox();
+                },
+              ),
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (BuildContext context2) {
+                    return SizedBox(
+                      height: size.height * 0.70,
+                      child: RankingSheet(
+                        identityId: ranking.identityId,
+                        placementNumber: ranking.number,
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          );
+        },
+        separatorBuilder: (context, index) => const Divider(
+          height: 0,
+        ),
       ),
     );
   }
