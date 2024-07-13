@@ -14,19 +14,20 @@ class RankingCubit extends Cubit<RankingState> {
   RankingCubit({
     required IVoteCircleRepository voteCircleRepository,
     required rankings_repo.IRankingsRepository rankingsRepository,
-  })  : _voteCircleRepository = voteCircleRepository,
+  })
+      : _voteCircleRepository = voteCircleRepository,
         _rankingsRepository = rankingsRepository,
         super(const RankingState()) {
     _rankingChangeEventSubscription =
         _rankingsRepository.watchRankingChangedEvent.listen(
-      (event) => _onRankingChanged(changeEvent: event),
-    );
+              (event) => _onRankingChanged(changeEvent: event),
+        );
   }
 
   final IVoteCircleRepository _voteCircleRepository;
   final rankings_repo.IRankingsRepository _rankingsRepository;
   late StreamSubscription<rankings_repo.RankingChangeEvent>
-      _rankingChangeEventSubscription;
+  _rankingChangeEventSubscription;
 
   @override
   Future<void> close() {
@@ -86,14 +87,7 @@ class RankingCubit extends Cubit<RankingState> {
         case rankings_repo.EventOperation.created:
         case rankings_repo.EventOperation.updated:
           {
-            final List<Ranking> rankings =
-                List.from([...state.topRankings, ...state.rankings]);
-            final rankingIndex = rankings
-                .indexWhere((ranking) => ranking.id == changeEvent.ranking.id);
-
-            if (rankingIndex != -1) {
-              rankings.removeAt(rankingIndex);
-            }
+            final rankings = List.of([...state.topRankings, ...state.rankings]);
 
             final mappedRanking = Ranking(
               id: changeEvent.ranking.id,
@@ -109,12 +103,24 @@ class RankingCubit extends Cubit<RankingState> {
               updatedAt: changeEvent.ranking.updatedAt,
             );
 
-            rankings.insert(changeEvent.ranking.indexedOrder, mappedRanking);
+            if (rankings.length >= (changeEvent.ranking.indexedOrder + 1)) {
+              rankings[changeEvent.ranking.indexedOrder] = mappedRanking;
+            } else {
+              rankings.add(mappedRanking);
+            }
 
-            final topThreeRankings = _topThreeRankings(rankings: rankings);
+            List<Ranking> topThreeRankings;
+
+            // update top three rankings only if incoming ranking index is
+            // one of top four
+            if (changeEvent.ranking.indexedOrder < 4) {
+              topThreeRankings = _topThreeRankings(rankings: rankings);
+            } else {
+              topThreeRankings = state.topRankings;
+            }
+
             final rankedRankings = rankings.sublist(topThreeRankings.length);
 
-            sl<Logger>().i('${topThreeRankings} : ${rankedRankings}');
             emit(state.copyWith(
               rankings: rankedRankings,
               topRankings: topThreeRankings,
@@ -164,24 +170,21 @@ class RankingCubit extends Cubit<RankingState> {
     final thirdRanking = rankings.elementAtOrNull(2);
     final fourthRanking = rankings.elementAtOrNull(3);
 
-    final firstRankingVotes = firstRanking?.votes ?? 0;
-    final secondRankingVotes = secondRanking?.votes ?? 0;
-    final thirdRankingVotes = thirdRanking?.votes ?? 0;
-    final fourthRankingVotes = fourthRanking?.votes ?? 0;
-
-    if (firstRanking != null && firstRankingVotes > secondRankingVotes) {
+    if (firstRanking != null &&
+        firstRanking.number == 1 &&
+        secondRanking?.number != 1) {
       topThreeRankings.add(firstRanking);
-    } else {
-      return topThreeRankings;
     }
 
-    if (secondRanking != null && secondRankingVotes > thirdRankingVotes) {
+    if (secondRanking != null &&
+        secondRanking.number == 2 &&
+        thirdRanking?.number != 2) {
       topThreeRankings.add(secondRanking);
-    } else {
-      return topThreeRankings;
     }
 
-    if (thirdRanking != null && thirdRankingVotes > fourthRankingVotes) {
+    if (thirdRanking != null &&
+        thirdRanking.number == 3 &&
+        (fourthRanking == null || fourthRanking.number != 3)) {
       topThreeRankings.add(thirdRanking);
     }
 
