@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -95,13 +94,11 @@ class RankingBody extends StatelessWidget {
             builder: (context, stage) {
               return stage == CircleStage.hot
                   ? BlocBuilder<RankingCubit, RankingState>(
-                      buildWhen: (prev, current) =>
-                          current.topRankings.isNotEmpty,
                       builder: (context, rankingState) {
-                        return _buildWinnerPodium(
+                        return rankingState.topRankings.isNotEmpty ? _buildWinnerPodium(
                           context: context,
                           topRankings: rankingState.topRankings,
-                        );
+                        ) : const SizedBox();
                       })
                   : const SizedBox();
             },
@@ -111,12 +108,11 @@ class RankingBody extends StatelessWidget {
             builder: (context, stage) {
               return stage == CircleStage.hot
                   ? BlocBuilder<RankingCubit, RankingState>(
-                      buildWhen: (prev, current) => current.rankings.isNotEmpty,
                       builder: (context, rankingState) {
-                        return _buildRankingListView(
+                        return rankingState.rankings.isNotEmpty ? _buildRankingListView(
                           context: context,
                           rankings: rankingState.rankings,
-                        );
+                        ) : const SizedBox();
                       })
                   : const SizedBox();
             },
@@ -258,10 +254,12 @@ class RankingBody extends StatelessWidget {
                         style: themeData.textTheme.headlineLarge
                             ?.copyWith(fontWeight: FontWeight.w600),
                       ),
-                      Text(
-                        state.user.username,
-                        style: themeData.textTheme.bodyMedium
-                            ?.copyWith(fontWeight: FontWeight.w600),
+                      Expanded(
+                        child: Text(
+                          state.user.username,
+                          style: themeData.textTheme.bodyMedium
+                              ?.copyWith(fontWeight: FontWeight.w600),
+                        ),
                       ),
                     ],
                   );
@@ -274,7 +272,7 @@ class RankingBody extends StatelessWidget {
     });
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       child: StaggeredGrid.count(
           crossAxisCount: 3,
           mainAxisSpacing: 40,
@@ -499,7 +497,7 @@ class RankingBody extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('Time until voting - '),
+              const Text('Voting starts in - '),
               BlocBuilder<CircleBloc, CircleState>(
                 builder: (context, state) => TimeUntil(
                   untilTime: state.circle.validFrom,
