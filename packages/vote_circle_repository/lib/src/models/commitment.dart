@@ -6,6 +6,10 @@ enum Commitment {
   rejected,
 }
 
+extension CommitmentX on Commitment {
+  bool get notCommitted => this != Commitment.committed;
+}
+
 Commitment commitmentFromApiCommitment(vote_circle_api.Commitment commitment) {
   switch (commitment) {
     case vote_circle_api.Commitment.open:

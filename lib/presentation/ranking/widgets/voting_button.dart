@@ -11,9 +11,11 @@ class VotingButton extends StatelessWidget {
   const VotingButton({
     super.key,
     required this.identityId,
+    this.disabled = false,
   });
 
   final String identityId;
+  final bool disabled;
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +37,12 @@ class VotingButton extends StatelessWidget {
                           opacity: 1.0,
                           duration: const Duration(milliseconds: 500),
                           child: ElevatedButton(
-                            onPressed: () => context.read<VoteCubit>().voted(
-                                  circleId: circleId,
-                                  candidateId: identityId,
-                                ),
+                            onPressed: disabled
+                                ? null
+                                : () => context.read<VoteCubit>().voted(
+                                      circleId: circleId,
+                                      candidateId: identityId,
+                                    ),
                             style: ElevatedButton.styleFrom(
                                 foregroundColor:
                                     themeData.colorScheme.onSecondary,

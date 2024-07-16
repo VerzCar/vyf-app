@@ -8,15 +8,18 @@ final class MembersInitialLoaded extends MembersEvent {
   const MembersInitialLoaded({
     required this.circleId,
     required this.currentCircleId,
+    this.filter,
   });
 
   final int circleId;
   final int currentCircleId;
+  final CircleCandidatesFilter? filter;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         circleId,
         currentCircleId,
+        filter,
       ];
 }
 

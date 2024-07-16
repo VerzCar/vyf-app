@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
 import 'package:vote_your_face/application/members/bloc/members_bloc.dart';
 import 'package:vote_your_face/application/members/members.dart';
@@ -25,10 +26,13 @@ class MembersNeedVotePreview extends StatelessWidget {
       builder: (context, circleId) {
         return BlocProvider.value(
           value: BlocProvider.of<MembersBloc>(context)
-            ..add(MembersInitialLoaded(
-              circleId: circleId,
-              currentCircleId: circleId,
-            )),
+            ..add(
+              MembersInitialLoaded(
+                circleId: circleId,
+                currentCircleId: circleId,
+                filter: CircleCandidatesFilter(hasBeenVoted: false),
+              ),
+            ),
           child: BlocSelector<MembersBloc, MembersState, List<String>>(
             selector: (state) => state.previewCandidateMemberIds,
             builder: (context, previewCandidateMemberIds) {

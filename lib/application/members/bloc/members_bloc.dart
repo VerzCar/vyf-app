@@ -48,13 +48,11 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
 
       emit(state.copyWith(status: StatusIndicator.loading));
 
-      final candidatesFilter = CircleCandidatesFilter();
-
       final (voter, candidate) = await (
         _voteCircleRepository.circleVoters(event.circleId),
         _voteCircleRepository.circleCandidates(
           event.circleId,
-          candidatesFilter,
+          event.filter,
         ),
       ).wait;
 
