@@ -95,11 +95,13 @@ class RankingBody extends StatelessWidget {
               return stage == CircleStage.hot
                   ? BlocBuilder<RankingCubit, RankingState>(
                       builder: (context, rankingState) {
-                        return rankingState.topRankings.isNotEmpty ? _buildWinnerPodium(
-                          context: context,
-                          topRankings: rankingState.topRankings,
-                        ) : const SizedBox();
-                      })
+                      return rankingState.topRankings.isNotEmpty
+                          ? _buildWinnerPodium(
+                              context: context,
+                              topRankings: rankingState.topRankings,
+                            )
+                          : const SizedBox();
+                    })
                   : const SizedBox();
             },
           ),
@@ -109,11 +111,13 @@ class RankingBody extends StatelessWidget {
               return stage == CircleStage.hot
                   ? BlocBuilder<RankingCubit, RankingState>(
                       builder: (context, rankingState) {
-                        return rankingState.rankings.isNotEmpty ? _buildRankingListView(
-                          context: context,
-                          rankings: rankingState.rankings,
-                        ) : const SizedBox();
-                      })
+                      return rankingState.rankings.isNotEmpty
+                          ? _buildRankingListView(
+                              context: context,
+                              rankings: rankingState.rankings,
+                            )
+                          : const SizedBox();
+                    })
                   : const SizedBox();
             },
           ),
@@ -176,7 +180,7 @@ class RankingBody extends StatelessWidget {
                   return Column(
                     children: [
                       index != 1
-                          ? const SizedBox(height: 70)
+                          ? const SizedBox(height: 60)
                           : const SizedBox(),
                       Stack(
                         children: [
@@ -254,12 +258,23 @@ class RankingBody extends StatelessWidget {
                         style: themeData.textTheme.headlineLarge
                             ?.copyWith(fontWeight: FontWeight.w600),
                       ),
-                      Expanded(
-                        child: Text(
-                          state.user.username,
-                          style: themeData.textTheme.bodyMedium
-                              ?.copyWith(fontWeight: FontWeight.w600),
-                        ),
+                      Text(
+                        state.user.username,
+                        style: themeData.textTheme.bodyMedium
+                            ?.copyWith(fontWeight: FontWeight.w600),
+                      ),
+                      const SizedBox(height: 5),
+                      BlocBuilder<MembersBloc, MembersState>(
+                        buildWhen: (previous, current) =>
+                            previous.status != current.status,
+                        builder: (context, state) {
+                          return state.status.isSuccessful
+                              ? _votingActionButton(
+                              themeData: themeData,
+                              ranking: ranking,
+                                                              )
+                              : const SizedBox();
+                        },
                       ),
                     ],
                   );
@@ -274,10 +289,9 @@ class RankingBody extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       child: StaggeredGrid.count(
-          crossAxisCount: 3,
-          mainAxisSpacing: 40,
-          crossAxisSpacing: 4,
-          children: winnerPodiums),
+        crossAxisCount: 3,
+        children: winnerPodiums,
+      ),
     );
   }
 
@@ -399,7 +413,8 @@ class RankingBody extends StatelessWidget {
                       MembersSelector.canRevokeVote(state, ranking.identityId),
                   builder: (context, canRevokeVote) {
                     return canRevokeVote
-                        ? BlocSelector<CircleRankingBloc, CircleRankingState, int>(
+                        ? BlocSelector<CircleRankingBloc, CircleRankingState,
+                            int>(
                             selector: (state) => state.circle.id,
                             builder: (context, circleId) {
                               return BlocBuilder<RankingCubit, RankingState>(
