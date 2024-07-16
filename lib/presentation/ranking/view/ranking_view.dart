@@ -22,7 +22,7 @@ class RankingView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: BlocBuilder<CircleBloc, CircleState>(
+        title: BlocBuilder<CircleRankingBloc, CircleRankingState>(
           builder: (context, state) {
             return Text('Ranking ${state.circle.name}');
           },

@@ -19,7 +19,7 @@ class MembersNeedVotePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<CircleBloc, CircleState, int>(
+    return BlocSelector<CircleRankingBloc, CircleRankingState, int>(
       selector: (state) => state.circle.id,
       builder: (context, circleId) {
         return BlocProvider.value(

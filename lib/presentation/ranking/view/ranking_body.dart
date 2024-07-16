@@ -58,7 +58,7 @@ class RankingBody extends StatelessWidget {
                         style: themeData.textTheme.titleMedium,
                       ),
                     ),
-                    BlocBuilder<CircleBloc, CircleState>(
+                    BlocBuilder<CircleRankingBloc, CircleRankingState>(
                       builder: (context, state) {
                         return TimeBox(
                           from: state.circle.validFrom,
@@ -72,7 +72,7 @@ class RankingBody extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 30),
-          BlocSelector<CircleBloc, CircleState, CircleStage>(
+          BlocSelector<CircleRankingBloc, CircleRankingState, CircleStage>(
             selector: (state) => state.circle.stage,
             builder: (context, stage) {
               return stage == CircleStage.hot
@@ -89,7 +89,7 @@ class RankingBody extends StatelessWidget {
                   : const SizedBox();
             },
           ),
-          BlocSelector<CircleBloc, CircleState, CircleStage>(
+          BlocSelector<CircleRankingBloc, CircleRankingState, CircleStage>(
             selector: (state) => state.circle.stage,
             builder: (context, stage) {
               return stage == CircleStage.hot
@@ -103,7 +103,7 @@ class RankingBody extends StatelessWidget {
                   : const SizedBox();
             },
           ),
-          BlocSelector<CircleBloc, CircleState, CircleStage>(
+          BlocSelector<CircleRankingBloc, CircleRankingState, CircleStage>(
             selector: (state) => state.circle.stage,
             builder: (context, stage) {
               return stage == CircleStage.hot
@@ -117,7 +117,7 @@ class RankingBody extends StatelessWidget {
                   : const SizedBox();
             },
           ),
-          BlocSelector<CircleBloc, CircleState, CircleStage>(
+          BlocSelector<CircleRankingBloc, CircleRankingState, CircleStage>(
             selector: (state) => state.circle.stage,
             builder: (context, stage) {
               return stage != CircleStage.hot
@@ -369,7 +369,7 @@ class RankingBody extends StatelessWidget {
         selector: (state) => MembersSelector.canVote(state, ranking.identityId),
         builder: (context, canVote) {
           return canVote
-              ? BlocSelector<CircleBloc, CircleState, int>(
+              ? BlocSelector<CircleRankingBloc, CircleRankingState, int>(
                   selector: (state) => state.circle.id,
                   builder: (context, circleId) {
                     return BlocBuilder<VoteCubit, VoteState>(
@@ -399,7 +399,7 @@ class RankingBody extends StatelessWidget {
                       MembersSelector.canRevokeVote(state, ranking.identityId),
                   builder: (context, canRevokeVote) {
                     return canRevokeVote
-                        ? BlocSelector<CircleBloc, CircleState, int>(
+                        ? BlocSelector<CircleRankingBloc, CircleRankingState, int>(
                             selector: (state) => state.circle.id,
                             builder: (context, circleId) {
                               return BlocBuilder<RankingCubit, RankingState>(
@@ -498,7 +498,7 @@ class RankingBody extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text('Voting starts in - '),
-              BlocBuilder<CircleBloc, CircleState>(
+              BlocBuilder<CircleRankingBloc, CircleRankingState>(
                 builder: (context, state) => TimeUntil(
                   untilTime: state.circle.validFrom,
                 ),

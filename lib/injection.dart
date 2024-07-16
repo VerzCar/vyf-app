@@ -18,6 +18,7 @@ Future<void> init() async {
   sl.registerFactory(() => UserBloc(userRepository: sl()));
   sl.registerFactory(() => CirclesBloc(voteCircleRepository: sl()));
   sl.registerFactory(() => CircleBloc(voteCircleRepository: sl()));
+  sl.registerFactory(() => CircleRankingBloc(voteCircleRepository: sl()));
   sl.registerFactory(() => MembersBloc(voteCircleRepository: sl()));
   sl.registerFactory(() => UserOptionBloc(voteCircleRepository: sl()));
 

@@ -51,13 +51,20 @@ class CircleEditView extends StatelessWidget {
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
         if (state.status.isSuccessful) {
-          BlocProvider.of<CircleBloc>(context).add(CircleUpdated(
-            circle: state.updatedCircle!,
-          ));
           BlocProvider.of<circles_bloc.CirclesBloc>(context)
               .add(circles_bloc.CircleUpdated(
             circle: state.updatedCircle!,
           ));
+
+          final circleRankingBloc = BlocProvider.of<CircleRankingBloc>(context);
+          final circleBloc = BlocProvider.of<CircleBloc>(context);
+
+          circleBloc.add(CircleUpdated(circle: state.updatedCircle!));
+
+          if (circleRankingBloc.state.circle.id == circleBloc.state.circle.id) {
+            circleRankingBloc
+                .add(CircleRankingUpdated(circle: state.updatedCircle!));
+          }
 
           showSuccessSnackbar(
             context,

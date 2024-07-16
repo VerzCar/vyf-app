@@ -6,32 +6,32 @@ import 'package:vote_your_face/application/core/core.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/injection.dart';
 
-part 'circle_event.dart';
+part 'circle_ranking_event.dart';
 
-part 'circle_state.dart';
+part 'circle_ranking_state.dart';
 
-class CircleBloc extends Bloc<CircleEvent, CircleState> {
-  CircleBloc({
+class CircleRankingBloc extends Bloc<CircleRankingEvent, CircleRankingState> {
+  CircleRankingBloc({
     required IVoteCircleRepository voteCircleRepository,
   })  : _voteCircleRepository = voteCircleRepository,
-        super(const CircleState()) {
-    on<CircleReset>(_onCircleReset);
-    on<CircleSelected>(_onCircleSelected);
-    on<CircleUpdated>(_onCircleUpdated);
+        super(const CircleRankingState()) {
+    on<CircleRankingReset>(_onCircleRankingReset);
+    on<CircleRankingSelected>(_onCircleRankingSelected);
+    on<CircleRankingUpdated>(_onCircleRankingUpdated);
   }
 
   final IVoteCircleRepository _voteCircleRepository;
 
-  void _onCircleReset(
-    CircleReset event,
-    Emitter<CircleState> emit,
+  void _onCircleRankingReset(
+    CircleRankingReset event,
+    Emitter<CircleRankingState> emit,
   ) {
     emit(state.reset());
   }
 
-  void _onCircleSelected(
-    CircleSelected event,
-    Emitter<CircleState> emit,
+  void _onCircleRankingSelected(
+    CircleRankingSelected event,
+    Emitter<CircleRankingState> emit,
   ) async {
     if (state.circle.id == event.circleId) return;
 
@@ -61,9 +61,9 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
     }
   }
 
-  void _onCircleUpdated(
-    CircleUpdated event,
-    Emitter<CircleState> emit,
+  void _onCircleRankingUpdated(
+    CircleRankingUpdated event,
+    Emitter<CircleRankingState> emit,
   ) {
     emit(
       state.copyWith(

@@ -35,6 +35,9 @@ class App extends StatelessWidget {
         BlocProvider<CircleBloc>(
           create: (context) => sl<CircleBloc>(),
         ),
+        BlocProvider<CircleRankingBloc>(
+          create: (context) => sl<CircleRankingBloc>(),
+        ),
         BlocProvider<MembersBloc>(
           create: (context) => sl<MembersBloc>(),
         ),

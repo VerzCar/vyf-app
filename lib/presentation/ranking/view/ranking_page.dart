@@ -23,11 +23,9 @@ class RankingPage extends StatelessWidget {
                   voteCircleRepository: sl<IVoteCircleRepository>(),
                   rankingsRepository: sl<IRankingsRepository>(),
                 )..loadRankings(circleId)),
-        // TODO: do not select circle here otherwise user selection in circles will be overwritten
-        // bette to have the ranking its own circle
         BlocProvider.value(
-          value: BlocProvider.of<CircleBloc>(context)
-            ..add(CircleSelected(circleId: circleId)),
+          value: BlocProvider.of<CircleRankingBloc>(context)
+            ..add(CircleRankingSelected(circleId: circleId)),
         )
       ],
       child: RankingView(circleId: circleId),
