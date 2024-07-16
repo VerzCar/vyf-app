@@ -5,6 +5,7 @@ import 'package:vote_your_face/application/members/bloc/members_bloc.dart';
 import 'package:vote_your_face/application/members/members.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 import 'package:vote_your_face/theme.dart';
+import 'package:vote_your_face/presentation/ranking/widgets/members_need_vote_sheet.dart';
 
 class MembersNeedVotePreview extends StatelessWidget {
   const MembersNeedVotePreview({
@@ -64,17 +65,20 @@ class MembersNeedVotePreview extends StatelessWidget {
       );
     }
 
-    return Row(
-      children: [
-        ..._buildPreviewAvatars(userIds: previewCandidateMemberIds),
-        ...[
-          const SizedBox(width: 10.0),
-          _countOfMembers(
-            themeData,
-            countOfCandidateMembers,
-          ),
-        ]
-      ],
+    return GestureDetector(
+      onTap: () => _showMembersNeedVoteSheet(context),
+      child: Row(
+        children: [
+          ..._buildPreviewAvatars(userIds: previewCandidateMemberIds),
+          ...[
+            const SizedBox(width: 10.0),
+            _countOfMembers(
+              themeData,
+              countOfCandidateMembers,
+            ),
+          ]
+        ],
+      ),
     );
   }
 
@@ -103,6 +107,19 @@ class MembersNeedVotePreview extends StatelessWidget {
     return Text(
       counterText,
       style: themeData.textTheme.labelLarge,
+    );
+  }
+
+  void _showMembersNeedVoteSheet(
+    BuildContext context,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      useSafeArea: true,
+      isScrollControlled: true,
+      builder: (BuildContext context2) {
+        return const MembersNeedVoteSheet();
+      },
     );
   }
 }

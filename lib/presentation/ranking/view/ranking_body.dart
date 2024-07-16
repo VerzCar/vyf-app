@@ -13,6 +13,7 @@ import 'package:vote_your_face/presentation/ranking/cubit/ranking_cubit.dart';
 import 'package:vote_your_face/presentation/ranking/cubit/vote_cubit.dart';
 import 'package:vote_your_face/presentation/ranking/widgets/members_need_vote_preview.dart';
 import 'package:vote_your_face/presentation/ranking/widgets/ranking_sheet.dart';
+import 'package:vote_your_face/presentation/ranking/widgets/ranked_voting_button.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class RankingBody extends StatelessWidget {
@@ -269,10 +270,7 @@ class RankingBody extends StatelessWidget {
                             previous.status != current.status,
                         builder: (context, state) {
                           return state.status.isSuccessful
-                              ? _votingActionButton(
-                              themeData: themeData,
-                              ranking: ranking,
-                                                              )
+                              ? RankedVotingButton(ranking: ranking)
                               : const SizedBox();
                         },
                       ),
@@ -341,10 +339,7 @@ class RankingBody extends StatelessWidget {
                   previous.status != current.status,
               builder: (context, state) {
                 return state.status.isSuccessful
-                    ? _votingActionButton(
-                        themeData: themeData,
-                        ranking: ranking,
-                      )
+                    ? RankedVotingButton(ranking: ranking)
                     : const SizedBox();
               },
             ),
@@ -368,88 +363,6 @@ class RankingBody extends StatelessWidget {
       },
       separatorBuilder: (context, index) => const Divider(
         height: 0,
-      ),
-    );
-  }
-
-  _votingActionButton({
-    required ThemeData themeData,
-    required Ranking ranking,
-  }) {
-    return BlocProvider(
-      create: (context) =>
-          VoteCubit(voteCircleRepository: sl<IVoteCircleRepository>()),
-      child: BlocSelector<MembersBloc, MembersState, bool>(
-        selector: (state) => MembersSelector.canVote(state, ranking.identityId),
-        builder: (context, canVote) {
-          return canVote
-              ? BlocSelector<CircleRankingBloc, CircleRankingState, int>(
-                  selector: (state) => state.circle.id,
-                  builder: (context, circleId) {
-                    return BlocBuilder<VoteCubit, VoteState>(
-                      builder: (context, state) {
-                        return AnimatedOpacity(
-                          opacity: 1.0,
-                          duration: const Duration(milliseconds: 500),
-                          child: ElevatedButton(
-                            onPressed: () => context.read<VoteCubit>().voted(
-                                  circleId: circleId,
-                                  candidateId: ranking.identityId,
-                                ),
-                            style: ElevatedButton.styleFrom(
-                                foregroundColor:
-                                    themeData.colorScheme.onSecondary,
-                                backgroundColor:
-                                    themeData.colorScheme.secondary),
-                            child: const Text('Vote'),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                )
-              : BlocSelector<MembersBloc, MembersState, bool>(
-                  selector: (state) =>
-                      MembersSelector.canRevokeVote(state, ranking.identityId),
-                  builder: (context, canRevokeVote) {
-                    return canRevokeVote
-                        ? BlocSelector<CircleRankingBloc, CircleRankingState,
-                            int>(
-                            selector: (state) => state.circle.id,
-                            builder: (context, circleId) {
-                              return BlocBuilder<RankingCubit, RankingState>(
-                                builder: (context, state) {
-                                  return BlocBuilder<VoteCubit, VoteState>(
-                                    builder: (context, state) {
-                                      return AnimatedOpacity(
-                                        opacity:
-                                            state.status.isLoading ? 0.0 : 1.0,
-                                        duration:
-                                            const Duration(milliseconds: 500),
-                                        child: ElevatedButton(
-                                          onPressed: () => context
-                                              .read<VoteCubit>()
-                                              .revokedVote(
-                                                circleId: circleId,
-                                              ),
-                                          style: ElevatedButton.styleFrom(
-                                              foregroundColor: themeData
-                                                  .colorScheme.onPrimary,
-                                              backgroundColor: themeData
-                                                  .colorScheme.primary),
-                                          child: const Text('Revoke vote'),
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
-                              );
-                            },
-                          )
-                        : const SizedBox();
-                  },
-                );
-        },
       ),
     );
   }

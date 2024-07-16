@@ -17,54 +17,6 @@ class AppRouter extends $AppRouter {
           page: HomeRoute.page,
           children: [
             AutoRoute(
-                path: 'circles',
-                page: CirclesTabRoute.page,
-                children: [
-                  AutoRoute(
-                    path: '',
-                    page: CirclesRoute.page,
-                  ),
-                  AutoRoute(
-                    path: 'search',
-                    page: CirclesSearchRoute.page,
-                  ),
-                  AutoRoute(
-                    path: ':circleId',
-                    page: CircleRoute.page,
-                  ),
-                  AutoRoute(
-                    path: ':circleId/edit',
-                    page: CircleEditRoute.page,
-                  ),
-                  AutoRoute(
-                    path: ':circleId/members',
-                    page: MembersRoute.page,
-                    children: [
-                      AutoRoute(
-                        path: '#candidates',
-                        page: MembersCandidatesTabRoute.page,
-                        children: [
-                          AutoRoute(
-                            path: '',
-                            page: CandidatesRoute.page,
-                            initial: true,
-                          ),
-                        ]
-                      ),
-                      AutoRoute(
-                          path: '#voters',
-                          page: MembersVotersTabRoute.page,
-                          children: [
-                            AutoRoute(
-                              path: '',
-                              page: VotersRoute.page,
-                            ),
-                          ]
-                      ),
-                    ],
-                  ),
-                ]),
-            AutoRoute(
               path: 'rankings',
               page: RankingsTabRoute.page,
               initial: true,
@@ -76,6 +28,53 @@ class AppRouter extends $AppRouter {
                 AutoRoute(
                   path: ':circleId',
                   page: RankingRoute.page,
+                ),
+              ],
+            ),
+            AutoRoute(
+              path: 'circles',
+              page: CirclesTabRoute.page,
+              children: [
+                AutoRoute(
+                  path: '',
+                  page: CirclesRoute.page,
+                ),
+                AutoRoute(
+                  path: 'search',
+                  page: CirclesSearchRoute.page,
+                ),
+                AutoRoute(
+                  path: ':circleId',
+                  page: CircleRoute.page,
+                ),
+                AutoRoute(
+                  path: ':circleId/edit',
+                  page: CircleEditRoute.page,
+                ),
+                AutoRoute(
+                  path: ':circleId/members',
+                  page: MembersRoute.page,
+                  children: [
+                    AutoRoute(
+                        path: '#candidates',
+                        page: MembersCandidatesTabRoute.page,
+                        children: [
+                          AutoRoute(
+                            path: '',
+                            page: CandidatesRoute.page,
+                            initial: true,
+                          ),
+                        ]),
+                    AutoRoute(
+                        path: '#voters',
+                        page: MembersVotersTabRoute.page,
+                        children: [
+                          AutoRoute(
+                            path: '',
+                            page: VotersRoute.page,
+                          ),
+                        ]),
+                  ],
                 ),
               ],
             ),
