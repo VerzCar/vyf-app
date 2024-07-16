@@ -14,7 +14,6 @@ class CirclesBloc extends Bloc<CirclesEvent, CirclesState> {
     required IVoteCircleRepository voteCircleRepository,
   })  : _voteCircleRepository = voteCircleRepository,
         super(const CirclesState()) {
-    on<CirclesReset>(_onCirclesReset);
     on<CirclesOfUserInitialLoaded>(_onCirclesOfUserInitialLoaded);
     on<CircleCreated>(_onCircleCreated);
     on<CircleUpdated>(_onCircleUpdated);
@@ -23,11 +22,10 @@ class CirclesBloc extends Bloc<CirclesEvent, CirclesState> {
 
   final IVoteCircleRepository _voteCircleRepository;
 
-  void _onCirclesReset(
-    CirclesReset event,
-    Emitter<CirclesState> emit,
-  ) {
-    emit(state.reset());
+  @override
+  Future<void> close() {
+    _voteCircleRepository.dispose();
+    return super.close();
   }
 
   void _onCirclesOfUserInitialLoaded(

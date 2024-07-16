@@ -4,11 +4,6 @@ abstract class CircleRankingEvent extends Equatable {
   const CircleRankingEvent();
 }
 
-final class CircleRankingReset extends CircleRankingEvent {
-  @override
-  List<Object> get props => [];
-}
-
 final class CircleRankingSelected extends CircleRankingEvent {
   const CircleRankingSelected({required this.circleId});
 

@@ -14,19 +14,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     required IUserRepository userRepository,
   })  : _userRepository = userRepository,
         super(const UserState()) {
-    on<UserReset>(_onUserReset);
     on<UserInitialLoaded>(_onUserInitialLoaded);
     on<UserUpdated>(_onUserUpdated);
   }
 
   final IUserRepository _userRepository;
-
-  void _onUserReset(
-    UserReset event,
-    Emitter<UserState> emit,
-  ) {
-    emit(state.reset());
-  }
 
   void _onUserInitialLoaded(
     UserInitialLoaded event,

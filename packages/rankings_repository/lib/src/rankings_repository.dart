@@ -35,7 +35,8 @@ class RankingsRepository implements IRankingsRepository {
     return repo;
   }
 
-  final _addedCircleToViewedRankingsController = StreamController<String>();
+  final _addedCircleToViewedRankingsController =
+      StreamController<String>.broadcast();
   final Logger log = Logger();
   late IAblyServiceClient _ablyService;
   late SharedPreferences _sharedPrefs;
@@ -61,6 +62,11 @@ class RankingsRepository implements IRankingsRepository {
     await _sharedPrefs.setStringList(_viewedRankingsKey, viewedRankings);
 
     _addedCircleToViewedRankingsController.add(circleId);
+  }
+
+  @override
+  void removeAllViewedRankings() async {
+    await _sharedPrefs.setStringList(_viewedRankingsKey, const []);
   }
 
   @override
@@ -99,10 +105,7 @@ class RankingsRepository implements IRankingsRepository {
   @override
   void dispose() {
     // TODO: delete saved rankings when user changes
-    _addedCircleToViewedRankingsController.close();
-    _rankingChangedEventController.close();
     _rankingChangedEventSubscription?.cancel();
-    _ablyService.dispose();
   }
 
   /// Add the given circle id in the front of the either existing or new list

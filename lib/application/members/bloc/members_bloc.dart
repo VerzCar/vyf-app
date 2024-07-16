@@ -17,7 +17,6 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
     required IVoteCircleRepository voteCircleRepository,
   })  : _voteCircleRepository = voteCircleRepository,
         super(const MembersState()) {
-    on<MembersReset>(_onMembersReset);
     on<MembersInitialLoaded>(_onMembersInitialLoaded);
     on<MembersStartCandidateChangedEvent>(
       _onMembersStartCandidateChangedEvent,
@@ -38,13 +37,6 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
   Future<void> close() {
     _voteCircleRepository.dispose();
     return super.close();
-  }
-
-  void _onMembersReset(
-    MembersReset event,
-    Emitter<MembersState> emit,
-  ) {
-    emit(state.reset());
   }
 
   void _onMembersInitialLoaded(

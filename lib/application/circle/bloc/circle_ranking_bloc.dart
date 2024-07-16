@@ -7,7 +7,6 @@ import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/injection.dart';
 
 part 'circle_ranking_event.dart';
-
 part 'circle_ranking_state.dart';
 
 class CircleRankingBloc extends Bloc<CircleRankingEvent, CircleRankingState> {
@@ -15,18 +14,16 @@ class CircleRankingBloc extends Bloc<CircleRankingEvent, CircleRankingState> {
     required IVoteCircleRepository voteCircleRepository,
   })  : _voteCircleRepository = voteCircleRepository,
         super(const CircleRankingState()) {
-    on<CircleRankingReset>(_onCircleRankingReset);
     on<CircleRankingSelected>(_onCircleRankingSelected);
     on<CircleRankingUpdated>(_onCircleRankingUpdated);
   }
 
   final IVoteCircleRepository _voteCircleRepository;
 
-  void _onCircleRankingReset(
-    CircleRankingReset event,
-    Emitter<CircleRankingState> emit,
-  ) {
-    emit(state.reset());
+  @override
+  Future<void> close() {
+    _voteCircleRepository.dispose();
+    return super.close();
   }
 
   void _onCircleRankingSelected(

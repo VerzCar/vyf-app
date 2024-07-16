@@ -4,11 +4,6 @@ sealed class MembersEvent extends Equatable {
   const MembersEvent();
 }
 
-final class MembersReset extends MembersEvent {
-  @override
-  List<Object> get props => [];
-}
-
 final class MembersInitialLoaded extends MembersEvent {
   const MembersInitialLoaded({
     required this.circleId,

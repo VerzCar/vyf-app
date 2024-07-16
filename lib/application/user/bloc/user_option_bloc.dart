@@ -14,17 +14,15 @@ class UserOptionBloc extends Bloc<UserOptionEvent, UserOptionState> {
     required IVoteCircleRepository voteCircleRepository,
   })  : _voteCircleRepository = voteCircleRepository,
         super(const UserOptionState()) {
-    on<UserOptionReset>(_onUserOptionReset);
     on<UserOptionLoaded>(_onUserOptionLoaded);
   }
 
   final IVoteCircleRepository _voteCircleRepository;
 
-  void _onUserOptionReset(
-    UserOptionReset event,
-    Emitter<UserOptionState> emit,
-  ) {
-    emit(state.reset());
+  @override
+  Future<void> close() {
+    _voteCircleRepository.dispose();
+    return super.close();
   }
 
   void _onUserOptionLoaded(

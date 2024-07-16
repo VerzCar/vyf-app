@@ -245,10 +245,7 @@ class VoteCircleRepository implements IVoteCircleRepository {
 
   @override
   void dispose() {
-    _candidateChangedEventController.close();
-    _voterChangedEventController.close();
     _candidateChangedEventSubscription?.cancel();
     _voterChangedEventSubscription?.cancel();
-    _ablyService.dispose();
   }
 }

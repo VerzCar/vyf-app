@@ -18,33 +18,11 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => sl<AuthenticationBloc>()
-            ..add(AuthenticationStatusChanged(
-              AuthState(authFlowStatus: AuthFlowStatus.unknown),
-            )),
-        ),
-        BlocProvider(
-          create: (context) => sl<UserBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => sl<CirclesBloc>(),
-        ),
-        BlocProvider<CircleBloc>(
-          create: (context) => sl<CircleBloc>(),
-        ),
-        BlocProvider<CircleRankingBloc>(
-          create: (context) => sl<CircleRankingBloc>(),
-        ),
-        BlocProvider<MembersBloc>(
-          create: (context) => sl<MembersBloc>(),
-        ),
-        BlocProvider<UserOptionBloc>(
-          create: (context) => sl<UserOptionBloc>(),
-        ),
-      ],
+    return BlocProvider(
+      create: (context) => sl<AuthenticationBloc>()
+        ..add(AuthenticationStatusChanged(
+          AuthState(authFlowStatus: AuthFlowStatus.unknown),
+        )),
       child: Authenticator(
         child: MaterialApp.router(
           routeInformationParser: _appRouter.defaultRouteParser(),
