@@ -34,11 +34,13 @@ class CandidatesView extends StatelessWidget {
                   horizontal: 15.0,
                   vertical: 3.0,
                 ),
-                title: UserAvatar(
-                  key: ValueKey(candidate.candidate),
+                title: UserXProvider(
                   identityId: candidate.candidate,
-                  option: UserAvatarOption(
-                      withLabel: true, commitment: candidate.commitment),
+                  child: UserAvatar(
+                    key: ValueKey(candidate.candidate),
+                    option: UserAvatarOption(
+                        withLabel: true, commitment: candidate.commitment),
+                  ),
                 ),
                 trailing: _removeActionButton(
                   themeData: themeData,

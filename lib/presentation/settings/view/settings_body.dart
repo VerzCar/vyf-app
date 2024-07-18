@@ -25,9 +25,11 @@ class SettingsBody extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: _borderRadius,
                 ),
-                leading: UserAvatar(
-                  key: ValueKey(state.user.identityId),
+                leading: UserXProvider(
                   identityId: state.user.identityId,
+                  child: UserAvatar(
+                    key: ValueKey(state.user.identityId),
+                  ),
                 ),
                 trailing: const Icon(Icons.arrow_forward_ios_outlined),
                 title: Text(

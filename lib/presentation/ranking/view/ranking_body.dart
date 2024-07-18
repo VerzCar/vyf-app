@@ -166,120 +166,110 @@ class RankingBody extends StatelessWidget {
       return StaggeredGridTile.count(
         crossAxisCellCount: 1,
         mainAxisCellCount: 2,
-        child: BlocSelector<UserBloc, UserState, User>(
-          selector: (state) => state.user,
-          builder: (context, user) {
-            return BlocProvider(
-              create: (context) =>
-                  UserXCubit(userRepository: sl<IUserRepository>())
-                    ..userXFetched(
-                      currentUser: user,
-                      identityId: ranking.identityId,
-                    ),
-              child: BlocBuilder<UserXCubit, UserXState>(
-                builder: (context, state) {
-                  return Column(
+        child: UserXProvider(
+          identityId: ranking.identityId,
+          child: BlocBuilder<UserXCubit, UserXState>(
+            builder: (context, state) {
+              return Column(
+                children: [
+                  index != 1
+                      ? const SizedBox(height: 60)
+                      : const SizedBox(),
+                  Stack(
                     children: [
-                      index != 1
-                          ? const SizedBox(height: 60)
-                          : const SizedBox(),
-                      Stack(
-                        children: [
-                          Container(
-                            width: index != 1
-                                ? size.width * 0.23
-                                : size.width * 0.35,
-                            height: index != 1
-                                ? size.width * 0.23
-                                : size.width * 0.35,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: Colors.grey.withOpacity(0.4),
-                              ),
-                              shape: BoxShape.circle,
-                              boxShadow: index == 1
-                                  ? [
-                                      BoxShadow(
-                                          color: Colors.grey.withOpacity(0.7),
-                                          spreadRadius: 3,
-                                          blurRadius: 17,
-                                          offset: const Offset(0, 6)),
-                                    ]
-                                  : [
-                                      BoxShadow(
-                                          color: Colors.grey.withOpacity(0.7),
-                                          spreadRadius: 2,
-                                          blurRadius: 12,
-                                          offset: const Offset(0, 5)),
-                                    ],
-                            ),
+                      Container(
+                        width: index != 1
+                            ? size.width * 0.23
+                            : size.width * 0.35,
+                        height: index != 1
+                            ? size.width * 0.23
+                            : size.width * 0.35,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                            color: Colors.grey.withOpacity(0.4),
                           ),
-                          Positioned.fill(
-                            child: Align(
-                              child: AnimatedOpacity(
-                                opacity: state.status.isLoading ? 0.2 : 1.0,
-                                duration: const Duration(milliseconds: 500),
-                                child: Container(
-                                  width: index != 1
-                                      ? size.width * 0.23
-                                      : size.width * 0.25,
-                                  height: index != 1
-                                      ? size.width * 0.23
-                                      : size.width * 0.25,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white70,
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                          state.user.profile.imageSrc),
-                                      fit: BoxFit.cover,
-                                      alignment: Alignment.topCenter,
-                                    ),
-                                  ),
+                          shape: BoxShape.circle,
+                          boxShadow: index == 1
+                              ? [
+                                  BoxShadow(
+                                      color: Colors.grey.withOpacity(0.7),
+                                      spreadRadius: 3,
+                                      blurRadius: 17,
+                                      offset: const Offset(0, 6)),
+                                ]
+                              : [
+                                  BoxShadow(
+                                      color: Colors.grey.withOpacity(0.7),
+                                      spreadRadius: 2,
+                                      blurRadius: 12,
+                                      offset: const Offset(0, 5)),
+                                ],
+                        ),
+                      ),
+                      Positioned.fill(
+                        child: Align(
+                          child: AnimatedOpacity(
+                            opacity: state.status.isLoading ? 0.2 : 1.0,
+                            duration: const Duration(milliseconds: 500),
+                            child: Container(
+                              width: index != 1
+                                  ? size.width * 0.23
+                                  : size.width * 0.25,
+                              height: index != 1
+                                  ? size.width * 0.23
+                                  : size.width * 0.25,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Colors.white70,
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                      state.user.profile.imageSrc),
+                                  fit: BoxFit.cover,
+                                  alignment: Alignment.topCenter,
                                 ),
                               ),
                             ),
                           ),
-                          Positioned(
-                            top: 0,
-                            right: 5,
-                            child: Text(
-                              ranking.votes.toString(),
-                              style: themeData.textTheme.bodyLarge
-                                  ?.copyWith(fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                      Text(
-                        ranking.number.toString(),
-                        style: themeData.textTheme.headlineLarge
-                            ?.copyWith(fontWeight: FontWeight.w600),
-                      ),
-                      Text(
-                        state.user.username,
-                        style: themeData.textTheme.bodyMedium
-                            ?.copyWith(fontWeight: FontWeight.w600),
-                      ),
-                      const SizedBox(height: 5),
-                      BlocBuilder<MembersBloc, MembersState>(
-                        buildWhen: (previous, current) =>
-                            previous.status != current.status,
-                        builder: (context, state) {
-                          return state.status.isSuccessful
-                              ? RankedVotingButton(ranking: ranking)
-                              : const SizedBox();
-                        },
+                      Positioned(
+                        top: 0,
+                        right: 5,
+                        child: Text(
+                          ranking.votes.toString(),
+                          style: themeData.textTheme.bodyLarge
+                              ?.copyWith(fontWeight: FontWeight.w500),
+                        ),
                       ),
                     ],
-                  );
-                },
-              ),
-            );
-          },
+                  ),
+                  Text(
+                    ranking.number.toString(),
+                    style: themeData.textTheme.headlineLarge
+                        ?.copyWith(fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    state.user.username,
+                    style: themeData.textTheme.bodyMedium
+                        ?.copyWith(fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 5),
+                  BlocBuilder<MembersBloc, MembersState>(
+                    buildWhen: (previous, current) =>
+                        previous.status != current.status,
+                    builder: (context, state) {
+                      return state.status.isSuccessful
+                          ? RankedVotingButton(ranking: ranking)
+                          : const SizedBox();
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       );
     });
@@ -323,14 +313,16 @@ class RankingBody extends StatelessWidget {
               ranking.number.toString(),
               style: themeData.textTheme.bodyLarge,
             ),
-            title: UserAvatar(
-              key: ValueKey(ranking.identityId),
+            title: UserXProvider(
               identityId: ranking.identityId,
-              option: UserAvatarOption(
-                withLabel: true,
-                labelChild: Text(
-                  '${ranking.votes} votes',
-                  style: themeData.textTheme.labelMedium,
+              child: UserAvatar(
+                key: ValueKey(ranking.identityId),
+                option: UserAvatarOption(
+                  withLabel: true,
+                  labelChild: Text(
+                    '${ranking.votes} votes',
+                    style: themeData.textTheme.labelMedium,
+                  ),
                 ),
               ),
             ),

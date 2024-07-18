@@ -19,10 +19,12 @@ class CirclesView extends StatelessWidget {
           builder: (context, identityId) {
             return Padding(
               padding: const EdgeInsets.all(10.0),
-              child: UserAvatar(
-                key: ValueKey(identityId),
+              child: UserXProvider(
                 identityId: identityId,
-                option: const UserAvatarOption(size: AvatarSize.sm),
+                child: UserAvatar(
+                  key: ValueKey(identityId),
+                  option: const UserAvatarOption(size: AvatarSize.sm),
+                ),
               ),
             );
           },
@@ -35,9 +37,7 @@ class CirclesView extends StatelessWidget {
                 onPressed: () =>
                     context.router.push(const CirclesSearchRoute()),
                 style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    alignment: Alignment.centerRight
-                ),
+                    padding: EdgeInsets.zero, alignment: Alignment.centerRight),
                 child: const Icon(Icons.search_outlined),
               ))
         ],

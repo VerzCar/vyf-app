@@ -92,11 +92,13 @@ class MembersNeedVotePreview extends StatelessWidget {
     return userIds
         .map((identityId) => Container(
               margin: const EdgeInsets.only(right: _spaceBetweenMember),
-              child: UserAvatar(
-                key: ValueKey(identityId),
+              child: UserXProvider(
                 identityId: identityId,
-                option: const UserAvatarOption(
-                  size: _avatarSize,
+                child: UserAvatar(
+                  key: ValueKey(identityId),
+                  option: const UserAvatarOption(
+                    size: _avatarSize,
+                  ),
                 ),
               ),
             ))

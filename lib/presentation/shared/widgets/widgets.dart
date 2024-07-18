@@ -8,3 +8,4 @@ export 'time/time_box.dart';
 export 'time/time_until.dart';
 export 'user/commitment_icon.dart';
 export 'user/user_avatar.dart';
+export 'user/user_x_provider.dart';

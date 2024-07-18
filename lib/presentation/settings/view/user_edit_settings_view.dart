@@ -40,11 +40,13 @@ class UserEditSettingsView extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          UserAvatar(
-                            key: ValueKey(state.user.identityId),
+                          UserXProvider(
                             identityId: state.user.identityId,
-                            option: const UserAvatarOption(
-                              size: AvatarSize.lg,
+                            child: UserAvatar(
+                              key: ValueKey(state.user.identityId),
+                              option: const UserAvatarOption(
+                                size: AvatarSize.lg,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 7.0),

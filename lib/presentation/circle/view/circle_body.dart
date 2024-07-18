@@ -58,8 +58,7 @@ class CircleBody extends StatelessWidget {
                       style: TextButton.styleFrom(
                           foregroundColor: themeData.colorScheme.secondary,
                           padding: EdgeInsets.zero,
-                          alignment: Alignment.centerLeft
-                      ),
+                          alignment: Alignment.centerLeft),
                       onPressed: () {
                         //context.router.push(RankingRoute(circleId: circle.id));
                         context.router.navigateNamed('rankings/${circle.id}');
@@ -84,10 +83,12 @@ class CircleBody extends StatelessWidget {
                               style: themeData.textTheme.titleMedium,
                             ),
                           ),
-                          UserAvatar(
-                            key: ValueKey(circle.createdFrom),
+                          UserXProvider(
                             identityId: circle.createdFrom,
-                            option: const UserAvatarOption(withLabel: true),
+                            child: UserAvatar(
+                              key: ValueKey(circle.createdFrom),
+                              option: const UserAvatarOption(withLabel: true),
+                            ),
                           ),
                         ],
                       ),

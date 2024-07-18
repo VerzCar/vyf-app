@@ -95,9 +95,11 @@ class MembersPreview extends StatelessWidget {
     return userIds
         .map((identityId) => Container(
               margin: const EdgeInsets.only(right: _spaceBetweenMember),
-              child: UserAvatar(
-                key: ValueKey(identityId),
+              child: UserXProvider(
                 identityId: identityId,
+                child: UserAvatar(
+                  key: ValueKey(identityId),
+                ),
               ),
             ))
         .toList();

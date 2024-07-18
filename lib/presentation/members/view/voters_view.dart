@@ -34,11 +34,13 @@ class VotersView extends StatelessWidget {
                   horizontal: 15.0,
                   vertical: 3.0,
                 ),
-                title: UserAvatar(
-                  key: ValueKey(voter.voter),
+                title: UserXProvider(
                   identityId: voter.voter,
-                  option: const UserAvatarOption(
-                    withLabel: true,
+                  child: UserAvatar(
+                    key: ValueKey(voter.voter),
+                    option: const UserAvatarOption(
+                      withLabel: true,
+                    ),
                   ),
                 ),
                 trailing: _removeActionButton(

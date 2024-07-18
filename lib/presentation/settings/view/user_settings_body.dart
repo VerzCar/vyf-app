@@ -35,11 +35,13 @@ class UserSettingsBody extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          UserAvatar(
-                            key: ValueKey(state.user.identityId),
+                          UserXProvider(
                             identityId: state.user.identityId,
-                            option: const UserAvatarOption(
-                              size: AvatarSize.xl,
+                            child: UserAvatar(
+                              key: ValueKey(state.user.identityId),
+                              option: const UserAvatarOption(
+                                size: AvatarSize.xl,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 7.0),
