@@ -2,18 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:user_repository/user_repository.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
 import 'package:vote_your_face/application/members/members.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/application/user/user.dart';
-import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/ranking/cubit/ranking_cubit.dart';
-import 'package:vote_your_face/presentation/ranking/cubit/vote_cubit.dart';
 import 'package:vote_your_face/presentation/ranking/widgets/members_need_vote_preview.dart';
-import 'package:vote_your_face/presentation/ranking/widgets/ranking_sheet.dart';
 import 'package:vote_your_face/presentation/ranking/widgets/ranked_voting_button.dart';
+import 'package:vote_your_face/presentation/ranking/widgets/ranking_sheet.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class RankingBody extends StatelessWidget {
@@ -172,18 +169,14 @@ class RankingBody extends StatelessWidget {
             builder: (context, state) {
               return Column(
                 children: [
-                  index != 1
-                      ? const SizedBox(height: 60)
-                      : const SizedBox(),
+                  index != 1 ? const SizedBox(height: 60) : const SizedBox(),
                   Stack(
                     children: [
                       Container(
-                        width: index != 1
-                            ? size.width * 0.23
-                            : size.width * 0.35,
-                        height: index != 1
-                            ? size.width * 0.23
-                            : size.width * 0.35,
+                        width:
+                            index != 1 ? size.width * 0.23 : size.width * 0.35,
+                        height:
+                            index != 1 ? size.width * 0.23 : size.width * 0.35,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -213,22 +206,40 @@ class RankingBody extends StatelessWidget {
                           child: AnimatedOpacity(
                             opacity: state.status.isLoading ? 0.2 : 1.0,
                             duration: const Duration(milliseconds: 500),
-                            child: Container(
-                              width: index != 1
-                                  ? size.width * 0.23
-                                  : size.width * 0.25,
-                              height: index != 1
-                                  ? size.width * 0.23
-                                  : size.width * 0.25,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: Colors.white70,
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: NetworkImage(
-                                      state.user.profile.imageSrc),
-                                  fit: BoxFit.cover,
-                                  alignment: Alignment.topCenter,
+                            child: GestureDetector(
+                              onTap: () => showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                builder: (BuildContext context2) {
+                                  return SizedBox(
+                                    height: size.height * 0.70,
+                                    child: RankingSheet(
+                                      identityId: ranking.identityId,
+                                      placementNumber: ranking.number,
+                                    ),
+                                  );
+                                },
+                              ),
+                              child: Container(
+                                width: index != 1
+                                    ? size.width * 0.23
+                                    : size.width * 0.25,
+                                height: index != 1
+                                    ? size.width * 0.23
+                                    : size.width * 0.25,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: Colors.white70,
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    image: SecureNetImage.image(
+                                      imageSrc: state.user.profile.imageSrc,
+                                      placeholderPath:
+                                          'assets/placeholder/sky.jpg',
+                                    ).image,
+                                    fit: BoxFit.cover,
+                                    alignment: Alignment.topCenter,
+                                  ),
                                 ),
                               ),
                             ),
@@ -246,10 +257,20 @@ class RankingBody extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Text(
-                    ranking.number.toString(),
-                    style: themeData.textTheme.headlineLarge
-                        ?.copyWith(fontWeight: FontWeight.w600),
+                  GradientText(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight,
+                      colors: [
+                        Colors.pinkAccent,
+                        Colors.purple.shade900,
+                      ],
+                    ),
+                    child: Text(
+                      ranking.number.toString(),
+                      style: themeData.textTheme.headlineLarge
+                          ?.copyWith(fontWeight: FontWeight.w600),
+                    ),
                   ),
                   Text(
                     state.user.username,
