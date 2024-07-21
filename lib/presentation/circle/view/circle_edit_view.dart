@@ -66,9 +66,9 @@ class CircleEditView extends StatelessWidget {
                 .add(CircleRankingUpdated(circle: state.updatedCircle!));
           }
 
-          showSuccessSnackbar(
-            context,
-            'Saved successfully',
+          EventTrigger.success(
+            context: context,
+            msg: 'Saved successfully',
           );
         }
 
@@ -78,17 +78,17 @@ class CircleEditView extends StatelessWidget {
             circleId: state.deletedCircleId!,
           ));
 
-          showSuccessSnackbar(
-            context,
-            'Deleted circle successfully',
+          EventTrigger.success(
+            context: context,
+            msg: 'Deleted circle successfully',
           );
           context.router.navigate(const CirclesRoute());
         }
 
         if (state.status.isFailure) {
-          showErrorSnackbar(
-            context,
-            'Could not save. Try again.',
+          EventTrigger.error(
+            context: context,
+            msg: 'Could not save. Try again.',
           );
         }
       },

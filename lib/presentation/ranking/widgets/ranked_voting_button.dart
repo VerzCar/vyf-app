@@ -8,6 +8,7 @@ import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/ranking/cubit/ranking_cubit.dart';
 import 'package:vote_your_face/presentation/ranking/cubit/vote_cubit.dart';
+import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class RankedVotingButton extends StatelessWidget {
   const RankedVotingButton({
@@ -24,7 +25,24 @@ class RankedVotingButton extends StatelessWidget {
     return BlocProvider(
       create: (context) =>
           VoteCubit(voteCircleRepository: sl<IVoteCircleRepository>()),
-      child: BlocSelector<MembersBloc, MembersState, bool>(
+      child: BlocListener<VoteCubit, VoteState>(
+        listenWhen: (previous, current) =>
+        previous.status != current.status,
+        listener: (context, state) {
+          if (state.status.isSuccessful) {
+            EventTrigger.success(
+              context: context,
+              msg: 'You voted for x. Congrats!',
+            );
+          }
+          if (state.status.isFailure) {
+            EventTrigger.error(
+              context: context,
+              msg: 'Sorry this has not worked out. Try again.',
+            );
+          }
+        },
+  child: BlocSelector<MembersBloc, MembersState, bool>(
         selector: (state) => MembersSelector.canVote(state, ranking.identityId),
         builder: (context, canVote) {
           return canVote
@@ -96,6 +114,7 @@ class RankedVotingButton extends StatelessWidget {
                 );
         },
       ),
+),
     );
   }
 }

@@ -34,9 +34,7 @@ class RankingView extends StatelessWidget {
           selector: (state) => state.user.identityId,
           builder: (context, userIdentityId) {
             context.read<RankingCubit>().addToViewedRankings(circleId);
-            context
-                .read<MembersBloc>()
-                .add(MembersStartCandidateChangedEvent(
+            context.read<MembersBloc>().add(MembersStartCandidateChangedEvent(
                   currentUserIdentityId: userIdentityId,
                 ));
             context.read<MembersBloc>().add(MembersStartVoterChangedEvent(
