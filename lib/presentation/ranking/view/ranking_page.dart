@@ -10,7 +10,10 @@ import 'package:vote_your_face/presentation/ranking/view/ranking_view.dart';
 
 @RoutePage()
 class RankingPage extends StatelessWidget {
-  const RankingPage({super.key, @pathParam required this.circleId});
+  const RankingPage({
+    super.key,
+    @pathParam required this.circleId,
+  });
 
   final int circleId;
 

@@ -9,8 +9,8 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoTabsRouter(
       routes: const [
-        CirclesTabRoute(),
         RankingsTabRoute(),
+        CirclesTabRoute(),
         SettingsTabRoute(),
       ],
       builder: (context, child) {
@@ -27,21 +27,23 @@ class HomeView extends StatelessWidget {
             },
             items: const [
               BottomNavigationBarItem(
+                key: Key('rankingsTab'),
+                label: 'Rankings',
+                icon: Icon(Icons.list),
+                activeIcon: Icon(Icons.list_alt_outlined),
+              ),
+              BottomNavigationBarItem(
                 key: Key('circlesTab'),
                 label: 'Circles',
                 icon: Icon(Icons.circle_outlined),
                 activeIcon: Icon(Icons.blur_circular_outlined),
               ),
               BottomNavigationBarItem(
-                  key: Key('rankingsTab'),
-                  label: 'Rankings',
-                  icon: Icon(Icons.list),
-                  activeIcon: Icon(Icons.list_alt_outlined)),
-              BottomNavigationBarItem(
-                  key: Key('settingsTab'),
-                  label: 'Settings',
-                  icon: Icon(Icons.person_outline),
-                  activeIcon: Icon(Icons.person)),
+                key: Key('settingsTab'),
+                label: 'Settings',
+                icon: Icon(Icons.person_outline),
+                activeIcon: Icon(Icons.person),
+              ),
             ],
           ),
         );

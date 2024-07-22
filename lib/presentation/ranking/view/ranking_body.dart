@@ -169,7 +169,9 @@ class RankingBody extends StatelessWidget {
             builder: (context, state) {
               return Column(
                 children: [
-                  index != 1 ? const SizedBox(height: 60) : const SizedBox(),
+                  index != 1
+                      ? const Flexible(child: SizedBox(height: 60))
+                      : const SizedBox(),
                   Stack(
                     children: [
                       Container(

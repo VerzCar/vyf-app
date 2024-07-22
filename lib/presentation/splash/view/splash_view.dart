@@ -18,7 +18,7 @@ class SplashView extends StatelessWidget {
         if (state.status.isSuccessful) {
           context.router.replace(const HomeRoute());
         } else if (state.status.isFailure) {
-          sl<Logger>().t(
+          sl<Logger>().e(
             'User init loading failure',
           );
         }

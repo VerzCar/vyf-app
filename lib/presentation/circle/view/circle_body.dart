@@ -60,7 +60,6 @@ class CircleBody extends StatelessWidget {
                           padding: EdgeInsets.zero,
                           alignment: Alignment.centerLeft),
                       onPressed: () {
-                        //context.router.push(RankingRoute(circleId: circle.id));
                         context.router.navigateNamed('rankings/${circle.id}');
                       },
                       child: const Text('Go to Rankings'),

@@ -30,34 +30,41 @@ class RankingView extends StatelessWidget {
       ),
       backgroundColor: themeData.colorScheme.brightColor,
       body: SafeArea(
-        child: BlocSelector<UserBloc, UserState, String>(
-          selector: (state) => state.user.identityId,
-          builder: (context, userIdentityId) {
-            context.read<RankingCubit>().addToViewedRankings(circleId);
-            context.read<MembersBloc>().add(MembersStartCandidateChangedEvent(
-                  currentUserIdentityId: userIdentityId,
-                ));
-            context.read<MembersBloc>().add(MembersStartVoterChangedEvent(
-                  currentUserIdentityId: userIdentityId,
-                ));
-
-            return BlocBuilder<RankingCubit, RankingState>(
-              builder: (context, state) {
-                switch (state.status) {
-                  case StatusIndicator.initial:
-                    return const Center(child: Text('initial Loading'));
-                  case StatusIndicator.loading:
-                    return const Center(child: CircularProgressIndicator());
-                  case StatusIndicator.success:
-                    return RankingBody(
-                      circleId: circleId,
-                    );
-                  case StatusIndicator.failure:
-                    return const Center(child: Text('Error'));
-                }
-              },
-            );
+        child: BlocListener<CircleRankingBloc, CircleRankingState>(
+          listenWhen: (prev, current) =>
+              (prev.circle.id > 0) && (prev.circle.id != current.circle.id),
+          listener: (context, state) {
+            context.read<RankingCubit>().loadRankings(circleId);
           },
+          child: BlocSelector<UserBloc, UserState, String>(
+            selector: (state) => state.user.identityId,
+            builder: (context, userIdentityId) {
+              context.read<RankingCubit>().addToViewedRankings(circleId);
+              context.read<MembersBloc>().add(MembersStartCandidateChangedEvent(
+                    currentUserIdentityId: userIdentityId,
+                  ));
+              context.read<MembersBloc>().add(MembersStartVoterChangedEvent(
+                    currentUserIdentityId: userIdentityId,
+                  ));
+
+              return BlocBuilder<RankingCubit, RankingState>(
+                builder: (context, state) {
+                  switch (state.status) {
+                    case StatusIndicator.initial:
+                      return const Center(child: Text('initial Loading'));
+                    case StatusIndicator.loading:
+                      return const Center(child: CircularProgressIndicator());
+                    case StatusIndicator.success:
+                      return RankingBody(
+                        circleId: circleId,
+                      );
+                    case StatusIndicator.failure:
+                      return const Center(child: Text('Error'));
+                  }
+                },
+              );
+            },
+          ),
         ),
       ),
     );
