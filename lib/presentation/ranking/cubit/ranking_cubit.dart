@@ -14,20 +14,19 @@ class RankingCubit extends Cubit<RankingState> {
   RankingCubit({
     required IVoteCircleRepository voteCircleRepository,
     required rankings_repo.IRankingsRepository rankingsRepository,
-  })
-      : _voteCircleRepository = voteCircleRepository,
+  })  : _voteCircleRepository = voteCircleRepository,
         _rankingsRepository = rankingsRepository,
         super(const RankingState()) {
     _rankingChangeEventSubscription =
         _rankingsRepository.watchRankingChangedEvent.listen(
-              (event) => _onRankingChanged(changeEvent: event),
-        );
+      (event) => _onRankingChanged(changeEvent: event),
+    );
   }
 
   final IVoteCircleRepository _voteCircleRepository;
   final rankings_repo.IRankingsRepository _rankingsRepository;
   late StreamSubscription<rankings_repo.RankingChangeEvent>
-  _rankingChangeEventSubscription;
+      _rankingChangeEventSubscription;
 
   @override
   Future<void> close() {
@@ -178,13 +177,15 @@ class RankingCubit extends Cubit<RankingState> {
 
     if (secondRanking != null &&
         secondRanking.number == 2 &&
-        thirdRanking?.number != 2) {
+        thirdRanking?.number != 2 &&
+        topThreeRankings.isNotEmpty) {
       topThreeRankings.add(secondRanking);
     }
 
     if (thirdRanking != null &&
         thirdRanking.number == 3 &&
-        (fourthRanking == null || fourthRanking.number != 3)) {
+        (fourthRanking == null || fourthRanking.number != 3) &&
+        topThreeRankings.length >= 2) {
       topThreeRankings.add(thirdRanking);
     }
 

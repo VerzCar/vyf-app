@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circles/circles.dart';
+import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/presentation/circle/widgets/create_circle_sheet.dart';
 import 'package:vote_your_face/presentation/circles/widgets/widgets.dart';
 
 class YourCircles extends StatelessWidget {
   const YourCircles({super.key});
-
-  final int maxAmountCircles = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +50,11 @@ class YourCircles extends StatelessWidget {
                   Radius.circular(5.0),
                 ),
               ),
-              child: state.myCircles.isEmpty
-                  ? _buildEmptyCirclesPlaceholder(context, themeData, size)
-                  : _buildCirclesPageView(state.myCircles),
+              child: state.status.isLoading
+                  ? _buildLoadingIndicator()
+                  : state.myCircles.isEmpty
+                      ? _buildEmptyCirclesPlaceholder(context, themeData, size)
+                      : _buildCirclesPageView(state.myCircles),
             ),
             const SizedBox(height: 3),
             Align(
@@ -107,6 +108,10 @@ class YourCircles extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _buildLoadingIndicator() {
+    return const Center(child: CircularProgressIndicator());
   }
 
   void _showCircleCreateSheet(
