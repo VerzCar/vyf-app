@@ -5,6 +5,7 @@ import 'package:vote_your_face/application/circle/circle.dart';
 import 'package:vote_your_face/application/members/members.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
+import 'package:vote_your_face/theme.dart';
 
 class VotersView extends StatelessWidget {
   const VotersView({super.key});
@@ -32,7 +33,6 @@ class VotersView extends StatelessWidget {
               child: ListTile(
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 15.0,
-                  vertical: 3.0,
                 ),
                 title: UserXProvider(
                   identityId: voter.voter,
@@ -50,7 +50,11 @@ class VotersView extends StatelessWidget {
               ),
             );
           },
-          separatorBuilder: (context, index) => const Divider(),
+          separatorBuilder: (context, index) => Divider(
+            height: 0,
+            thickness: 3,
+            color: themeData.colorScheme.blackColor,
+          )
         );
       },
     );

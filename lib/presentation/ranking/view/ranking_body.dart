@@ -8,10 +8,12 @@ import 'package:vote_your_face/application/members/members.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/presentation/ranking/cubit/ranking_cubit.dart';
+import 'package:vote_your_face/presentation/ranking/widgets/live_indicator.dart';
 import 'package:vote_your_face/presentation/ranking/widgets/members_need_vote_preview.dart';
 import 'package:vote_your_face/presentation/ranking/widgets/ranked_voting_button.dart';
 import 'package:vote_your_face/presentation/ranking/widgets/ranking_sheet.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
+import 'package:vote_your_face/theme.dart';
 
 class RankingBody extends StatelessWidget {
   const RankingBody({
@@ -66,6 +68,15 @@ class RankingBody extends StatelessWidget {
                     ),
                   ],
                 ),
+              ],
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                LiveIndicator(),
               ],
             ),
           ),
@@ -376,8 +387,9 @@ class RankingBody extends StatelessWidget {
           ),
         );
       },
-      separatorBuilder: (context, index) => const Divider(
-        height: 0,
+      separatorBuilder: (context, index) => Divider(
+        thickness: 3,
+        color: themeData.colorScheme.blackColor,
       ),
     );
   }

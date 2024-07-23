@@ -87,9 +87,10 @@ class AppRouter extends $AppRouter {
                   path: '',
                   page: SettingsRoute.page,
                 ),
-                AutoRoute(
+                CustomRoute(
                   path: 'user',
                   page: UserSettingsRoute.page,
+                  transitionsBuilder: TransitionsBuilders.slideLeft,
                 ),
                 AutoRoute(
                   path: 'user/edit',

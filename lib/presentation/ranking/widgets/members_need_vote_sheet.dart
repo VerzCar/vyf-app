@@ -5,6 +5,7 @@ import 'package:vote_your_face/application/members/members.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/presentation/ranking/widgets/voting_button.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
+import 'package:vote_your_face/theme.dart';
 
 class MembersNeedVoteSheet extends StatelessWidget {
   const MembersNeedVoteSheet({super.key});
@@ -49,7 +50,6 @@ class MembersNeedVoteSheet extends StatelessWidget {
                       child: ListTile(
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 15.0,
-                          vertical: 3.0,
                         ),
                         leading: UserAvatar(
                           key: ValueKey(candidate.candidate),
@@ -73,7 +73,11 @@ class MembersNeedVoteSheet extends StatelessWidget {
                     ),
                   );
                 },
-                separatorBuilder: (context, index) => const Divider(),
+                separatorBuilder: (context, index) => Divider(
+                  height: 0,
+                  thickness: 3,
+                  color: themeData.colorScheme.blackColor,
+                )
               ),
             );
           },
