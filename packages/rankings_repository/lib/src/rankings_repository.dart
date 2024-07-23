@@ -4,6 +4,7 @@ import 'package:ably_service/ably_service.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:logger/logger.dart';
 import 'package:rankings_repository/rankings_repository.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RankingsRepository implements IRankingsRepository {
@@ -45,6 +46,8 @@ class RankingsRepository implements IRankingsRepository {
   StreamSubscription<RankingChangeEvent>? _rankingChangedEventSubscription;
   static const String _viewedRankingsKey = 'vyf_viewed_ranked_circles';
   static const int _maxLengthViewedRankings = 15;
+  static const Duration _eventingThrottleDuration =
+      Duration(milliseconds: 2500);
 
   @override
   void addToViewedRankings(String circleId) async {
@@ -96,6 +99,8 @@ class RankingsRepository implements IRankingsRepository {
       _rankingChangedEventSubscription = channel
           .subscribe(name: 'ranking-changed')
           .map((event) => RankingChangeEvent.fromEventData(event.data))
+          .bufferTime(_eventingThrottleDuration)
+          .flatMap((events) => Stream.fromIterable(events))
           .listen((data) => _rankingChangedEventController.add(data));
     } catch (e) {
       log.t('subscribeToRankingChangedEvent', error: e);

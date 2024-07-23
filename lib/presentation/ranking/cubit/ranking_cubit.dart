@@ -173,19 +173,21 @@ class RankingCubit extends Cubit<RankingState> {
         firstRanking.number == 1 &&
         secondRanking?.number != 1) {
       topThreeRankings.add(firstRanking);
+    } else {
+      return topThreeRankings;
     }
 
     if (secondRanking != null &&
         secondRanking.number == 2 &&
-        thirdRanking?.number != 2 &&
-        topThreeRankings.isNotEmpty) {
+        thirdRanking?.number != 2) {
       topThreeRankings.add(secondRanking);
+    } else {
+      return topThreeRankings;
     }
 
     if (thirdRanking != null &&
         thirdRanking.number == 3 &&
-        (fourthRanking == null || fourthRanking.number != 3) &&
-        topThreeRankings.length >= 2) {
+        (fourthRanking == null || fourthRanking.number != 3)) {
       topThreeRankings.add(thirdRanking);
     }
 

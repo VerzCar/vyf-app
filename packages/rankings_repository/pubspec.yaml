@@ -18,6 +18,7 @@ dependencies:
   ably_service:
     path: ../ably_service
   logger: ^2.3.0
+  rxdart: ^0.28.0
 
 dev_dependencies:
   flutter_test:

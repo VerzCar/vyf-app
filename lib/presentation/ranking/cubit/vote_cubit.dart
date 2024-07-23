@@ -24,9 +24,8 @@ class VoteCubit extends Cubit<VoteState> {
     try {
       final req = VoteCreateRequest(candidateId: candidateId);
 
-      await _voteCircleRepository.createVote(circleId, req);
-
-      emit(state.copyWith(status: StatusIndicator.success));
+      await _voteCircleRepository.createVote(circleId, req).whenComplete(
+          () => emit(state.copyWith(status: StatusIndicator.success)));
     } catch (e) {
       sl<Logger>().t(
         'voted',
@@ -43,9 +42,8 @@ class VoteCubit extends Cubit<VoteState> {
     emit(state.copyWith(status: StatusIndicator.loading));
 
     try {
-      await _voteCircleRepository.revokeVote(circleId);
-
-      emit(state.copyWith(status: StatusIndicator.success));
+      await _voteCircleRepository.revokeVote(circleId).whenComplete(
+          () => emit(state.copyWith(status: StatusIndicator.success)));
     } catch (e) {
       sl<Logger>().t(
         'revokedVote',
