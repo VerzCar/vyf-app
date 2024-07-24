@@ -1,11 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vote_circle_repository/vote_circle_repository.dart';
+import 'package:vote_your_face/application/circles/circles.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/presentation/circles/widgets/circles_of_interest.dart';
 import 'package:vote_your_face/presentation/circles/widgets/your_circles.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
+import 'package:vote_your_face/theme.dart';
 
 class CirclesView extends StatelessWidget {
   const CirclesView({super.key});
@@ -31,15 +34,14 @@ class CirclesView extends StatelessWidget {
         ),
         title: const Text('Circles'),
         actions: [
+          _commitmentNotificationAction(context),
           Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextButton(
-                onPressed: () =>
-                    context.router.push(const CirclesSearchRoute()),
-                style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero, alignment: Alignment.centerRight),
-                child: const Icon(Icons.search_outlined),
-              ))
+            padding: const EdgeInsets.only(right: 10.0),
+            child: IconButton(
+              onPressed: () => context.router.push(const CirclesSearchRoute()),
+              icon: const Icon(Icons.search_outlined),
+            ),
+          ),
         ],
       ),
       body: SafeArea(
@@ -57,6 +59,30 @@ class CirclesView extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _commitmentNotificationAction(BuildContext context) {
+    final themeData = Theme.of(context);
+
+    return BlocSelector<CirclesBloc, CirclesState, List<CirclePaginated>>(
+      selector: (state) => state.circlesOpenCommitments,
+      builder: (context, circles) {
+        if (circles.isEmpty) {
+          return IconButton(
+            onPressed: () => {},
+            icon: const Icon(Icons.notifications_none_outlined),
+          );
+        }
+
+        return IconButton(
+          onPressed: () => {},
+          icon: Icon(
+            Icons.notification_important_outlined,
+            color: themeData.colorScheme.infoColor,
+          ),
+        );
+      },
     );
   }
 }

@@ -9,6 +9,8 @@ abstract class IVoteCircleRepository {
 
   Future<List<CirclePaginated>> circlesFiltered({required String name});
 
+  Future<List<CirclePaginated>> circlesOpenCommitments();
+
   Future<List<Ranking>> rankings(int circleId);
 
   Future<CircleVoter> circleVoters(int circleId);
@@ -57,6 +59,11 @@ abstract class IVoteCircleRepository {
   Future<bool> revokeVote(int circleId);
 
   Future<UserOption> userOption();
+
+  Future<List<String>> circleCandidateVotedBy(
+    int circleId,
+    CandidateRequest candidateRequest,
+  );
 
   Future<Commitment> updateCommitment(
     int circleId,

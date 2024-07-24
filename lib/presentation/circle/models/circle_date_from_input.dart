@@ -28,13 +28,6 @@ class CircleDateFromInput extends FormzInput<String, CircleDateFromInputError> {
       return CircleDateFromInputError.dateIsBeforeMinDate;
     }
 
-    // if (dateUntil.isNotEmpty) {
-    //   final dateUntilTime = DateTime.parse(dateUntil);
-    //   if (dateUntilTime.isBefore(dateFromTime)) {
-    //     return CircleDateFromInputError.dateIsAfterUntilDate;
-    //   }
-    // }
-
     return null;
   }
 }

@@ -1,12 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
 import 'package:vote_your_face/application/members/members.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/application/user/bloc/user_bloc.dart';
 import 'package:vote_your_face/presentation/circle/view/circle_body.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
+import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class CircleView extends StatelessWidget {
   const CircleView({super.key});
@@ -25,7 +27,6 @@ class CircleView extends StatelessWidget {
             if (!state.status.isLoading) {
               return Text.rich(
                 TextSpan(
-                  //style: themeData.textTheme.labelSmall,
                   children: [
                     state.circle.private
                         ? const WidgetSpan(
@@ -44,19 +45,18 @@ class CircleView extends StatelessWidget {
           },
         ),
         actions: [
+          _circleStageBannerAction(),
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: _editActionButton(themeData),
-          )
+          ),
         ],
       ),
       body: SafeArea(
         child: BlocSelector<UserBloc, UserState, String>(
           selector: (state) => state.user.identityId,
           builder: (context, userIdentityId) {
-            context
-                .read<MembersBloc>()
-                .add(MembersStartCandidateChangedEvent(
+            context.read<MembersBloc>().add(MembersStartCandidateChangedEvent(
                   currentUserIdentityId: userIdentityId,
                 ));
             context.read<MembersBloc>().add(MembersStartVoterChangedEvent(
@@ -98,12 +98,17 @@ class CircleView extends StatelessWidget {
                   child: const Text('Edit'),
                   onPressed: () =>
                       context.router.push(CircleEditRoute(circleId: circleId)))
-              : const SizedBox(
-                  width: 0,
-                  height: 0,
-                );
+              : const SizedBox();
         },
       ),
     );
+  }
+
+  Widget _circleStageBannerAction() {
+    return BlocSelector<CircleBloc, CircleState, CircleStage>(
+        selector: (state) => state.circle.stage,
+        builder: (context, stage) => stage == CircleStage.closed
+            ? const BannerText(msg: 'closed')
+            : const SizedBox());
   }
 }

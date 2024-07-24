@@ -60,4 +60,11 @@ abstract class IVoteCircleApiClient {
   );
 
   Future<UserOption> fetchUserOption();
+
+  Future<List<String>> fetchCircleCandidateVotedBy(
+    int circleId,
+    CandidateRequest candidateRequest,
+  );
+
+  Future<List<CirclePaginated>> fetchCirclesOpenCommitments();
 }

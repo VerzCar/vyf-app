@@ -121,6 +121,42 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
   }
 
   @override
+  Future<List<CirclePaginated>> fetchCirclesOpenCommitments() async {
+    var logger = Logger();
+
+    try {
+      final res = await http.get(
+        _uri(path: 'circles/open-commitments'),
+        headers: await _headers,
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('querying circles open commitments server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<List<dynamic>>.fromJson(
+          jsonDecode(res.body) as Map<String, dynamic>);
+
+      if (res.statusCode == HttpStatus.ok) {
+        final circles = apiResponse.data
+            .map((circle) => CirclePaginated.fromJson(circle))
+            .toList();
+        return circles;
+      }
+
+      logger.e('querying circles open commitments failed: $apiResponse');
+      throw QueryCircleFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
   Future<List<CirclePaginated>> fetchCirclesFiltered({
     required String name,
   }) async {
@@ -627,6 +663,45 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
 
       logger.e('querying user options failed: $apiResponse');
       throw QueryUserOptionFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<String>> fetchCircleCandidateVotedBy(
+    int circleId,
+    CandidateRequest candidateRequest,
+  ) async {
+    var logger = Logger();
+
+    try {
+      final res = await http.get(
+        _uri(
+          path: 'circle-candidates/$circleId/voted-by',
+          queryParameters: candidateRequest.toJson(),
+        ),
+        headers: await _headers,
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('querying voted by voters server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse =
+          ApiResponse<List<String>>.fromJson(jsonDecode(res.body));
+
+      if (res.statusCode == HttpStatus.ok) {
+        return apiResponse.data;
+      }
+
+      logger.e('querying voted by voters failed: $apiResponse');
+      throw QueryVotedByFailure(
         statusCode: res.statusCode,
         msg: apiResponse.msg,
         status: apiResponse.status,

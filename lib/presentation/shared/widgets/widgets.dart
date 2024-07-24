@@ -1,3 +1,5 @@
+export 'action/event_trigger.dart';
+export 'banner/banner_text.dart';
 export 'button/submit_button.dart';
 export 'field/vyf_text_form_field.dart';
 export 'image/avatar_image.dart';
@@ -10,4 +12,3 @@ export 'time/time_until.dart';
 export 'user/commitment_icon.dart';
 export 'user/user_avatar.dart';
 export 'user/user_x_provider.dart';
-export 'action/event_trigger.dart';

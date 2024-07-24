@@ -57,6 +57,15 @@ class VoteCircleRepository implements IVoteCircleRepository {
   }
 
   @override
+  Future<List<CirclePaginated>> circlesOpenCommitments() async {
+    final res = await _voteCircleApi.fetchCirclesOpenCommitments();
+    final circles = res
+        .map((circle) => CirclePaginated.fromApiCirclePaginated(circle))
+        .toList();
+    return circles;
+  }
+
+  @override
   Future<List<CirclePaginated>> circlesFiltered({required String name}) async {
     final res = await _voteCircleApi.fetchCirclesFiltered(name: name);
     final circles = res
@@ -175,6 +184,15 @@ class VoteCircleRepository implements IVoteCircleRepository {
   Future<UserOption> userOption() async {
     final res = await _voteCircleApi.fetchUserOption();
     return UserOption.fromApiUserOption(res);
+  }
+
+  @override
+  Future<List<String>> circleCandidateVotedBy(
+      int circleId, CandidateRequest candidateRequest) async {
+    return await _voteCircleApi.fetchCircleCandidateVotedBy(
+      circleId,
+      candidateRequest.toApiCandidateRequest(),
+    );
   }
 
   @override

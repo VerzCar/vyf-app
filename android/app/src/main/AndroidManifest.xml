@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Required to fetch data from the internet. -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Required allow vibration. -->
+    <uses-permission android:name="android.permission.VIBRATE" />
     <application
         android:label="vote_your_face"
         android:name="${applicationName}"

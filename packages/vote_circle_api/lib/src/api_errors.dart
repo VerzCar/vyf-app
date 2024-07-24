@@ -58,6 +58,14 @@ class QueryUserOptionFailure extends ApiFailure {
   });
 }
 
+class QueryVotedByFailure extends ApiFailure {
+  QueryVotedByFailure({
+    required super.statusCode,
+    super.msg,
+    super.status,
+  });
+}
+
 class CreateCircleFailure extends ApiFailure {
   CreateCircleFailure({
     required super.statusCode,

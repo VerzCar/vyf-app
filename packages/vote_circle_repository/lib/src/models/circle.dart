@@ -1,7 +1,7 @@
-import 'package:equatable/equatable.dart';
 import 'package:const_date_time/const_date_time.dart';
-import 'package:vote_circle_repository/src/models/models.dart';
+import 'package:equatable/equatable.dart';
 import 'package:vote_circle_api/vote_circle_api.dart' as vote_circle_api;
+import 'package:vote_circle_repository/src/models/models.dart';
 
 import 'circle_stage.dart';
 
@@ -60,6 +60,7 @@ class Circle extends Equatable {
         stage: circleStageFromApiCircleStage(circle.stage),
         createdFrom: circle.createdFrom,
         validFrom: circle.validFrom,
+        validUntil: circle.validUntil,
         createdAt: circle.createdAt,
         updatedAt: circle.updatedAt,
       );

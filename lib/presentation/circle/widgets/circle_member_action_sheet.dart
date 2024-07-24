@@ -6,6 +6,7 @@ import 'package:vote_your_face/application/members/members.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/circle/cubit/circle_member_cubit.dart';
+import 'package:vote_your_face/presentation/shared/shared.dart';
 
 enum _MemberSide { candidate, voter }
 
@@ -34,20 +35,33 @@ class CircleMemberActionSheet extends StatelessWidget {
           create: (context) => CircleMemberCubit(
             voteCircleRepository: sl<IVoteCircleRepository>(),
           ),
-          child: ListView.separated(
-            shrinkWrap: true,
-            itemCount: 2,
-            itemBuilder: (BuildContext context, int index) {
-              if (index == 0) {
-                return _listTile(context, _MemberSide.candidate);
+          child: BlocListener<CircleMemberCubit, CircleMemberState>(
+            listenWhen: (previous, current) =>
+                previous.status != current.status,
+            listener: (context, state) {
+              if (state.status.isCandidateActionFailure ||
+                  state.status.isVoterActionFailure) {
+                EventTrigger.error(
+                  context: context,
+                  msg: 'Sorry this has not worked out. Try again.',
+                );
               }
-              if (index == 1) {
-                return _listTile(context, _MemberSide.voter);
-              }
-              return null;
             },
-            separatorBuilder: (context, index) => const Divider(
-              height: 0,
+            child: ListView.separated(
+              shrinkWrap: true,
+              itemCount: 2,
+              itemBuilder: (BuildContext context, int index) {
+                if (index == 0) {
+                  return _listTile(context, _MemberSide.candidate);
+                }
+                if (index == 1) {
+                  return _listTile(context, _MemberSide.voter);
+                }
+                return null;
+              },
+              separatorBuilder: (context, index) => const Divider(
+                height: 0,
+              ),
             ),
           ),
         ),

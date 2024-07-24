@@ -35,3 +35,8 @@ final class CircleDeleted extends CirclesEvent {
   @override
   List<Object> get props => [circleId];
 }
+
+final class CirclesWithOpenCommitmentsLoaded extends CirclesEvent {
+  @override
+  List<Object> get props => [];
+}

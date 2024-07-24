@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
@@ -48,6 +48,9 @@ class CircleCard extends StatelessWidget {
                 style: themeData.textTheme.bodyMedium
                     ?.copyWith(overflow: TextOverflow.ellipsis),
               ),
+              trailing: circle.stage == CircleStage.closed
+                  ? const BannerText(msg: 'closed')
+                  : null,
             ),
           ],
         ),

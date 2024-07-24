@@ -18,6 +18,7 @@ class CirclesBloc extends Bloc<CirclesEvent, CirclesState> {
     on<CircleCreated>(_onCircleCreated);
     on<CircleUpdated>(_onCircleUpdated);
     on<CircleDeleted>(_onCircleDeleted);
+    on<CirclesWithOpenCommitmentsLoaded>(_onCirclesWithOpenCommitmentsLoaded);
   }
 
   final IVoteCircleRepository _voteCircleRepository;
@@ -119,5 +120,24 @@ class CirclesBloc extends Bloc<CirclesEvent, CirclesState> {
         status: StatusIndicator.success,
       ),
     );
+  }
+
+  void _onCirclesWithOpenCommitmentsLoaded(
+    CirclesWithOpenCommitmentsLoaded event,
+    Emitter<CirclesState> emit,
+  ) async {
+    try {
+      final circles = await _voteCircleRepository.circlesOpenCommitments();
+      emit(
+        state.copyWith(circlesOpenCommitments: circles),
+      );
+    } catch (e) {
+      sl<Logger>().t(
+        '_onCirclesWithOpenCommitmentsLoaded',
+        error: e,
+      );
+      if (isClosed) return;
+      emit(state.copyWith(status: StatusIndicator.failure));
+    }
   }
 }

@@ -16,7 +16,8 @@ class CirclesPage extends StatelessWidget {
       providers: [
         BlocProvider.value(
           value: BlocProvider.of<CirclesBloc>(context)
-            ..add(CirclesOfUserInitialLoaded()),
+            ..add(CirclesOfUserInitialLoaded())
+            ..add(CirclesWithOpenCommitmentsLoaded()),
         ),
         BlocProvider(
           create: (BuildContext ctx) => CirclesOfInterestCubit(

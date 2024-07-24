@@ -107,7 +107,7 @@ class CircleEditFormCubit extends Cubit<CircleEditFormState> {
     try {
       DateTime? validFrom;
 
-      if (!state.dateFrom.isPure) {
+      if (state.dateFrom.value.isNotEmpty && state.timeFrom.value.isNotEmpty) {
         final currentDateTime = DateTime.now();
         final dateFrom = state.dateFrom.value.isEmpty
             ? currentDateTime
@@ -126,7 +126,8 @@ class CircleEditFormCubit extends Cubit<CircleEditFormState> {
 
       DateTime? validUntil;
 
-      if (state.dateUntil.value.isNotEmpty) {
+      if (state.dateUntil.value.isNotEmpty &&
+          state.timeUntil.value.isNotEmpty) {
         final dateUntil = DateTime.parse(state.dateUntil.value);
         final timeUntil = DateTime.parse(state.timeUntil.value);
         validUntil = DateTime(
