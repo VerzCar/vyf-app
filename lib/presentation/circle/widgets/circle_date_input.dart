@@ -39,7 +39,6 @@ class CircleDateInputState extends State<CircleDateInput> {
             key: Key('_CircleDateInput_Date${widget.range.toString()}Field'),
             controller: _controller,
             onTap: () => widget.onTap(),
-            labelText: 'test',
             readOnly: true,
             textAlign: TextAlign.center,
             showError: !state.dateFrom.isPure && state.dateFrom.isNotValid,

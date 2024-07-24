@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:logger/logger.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
-import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/injection.dart';
 
 part 'vote_state.dart';
@@ -19,38 +18,38 @@ class VoteCubit extends Cubit<VoteState> {
     required int circleId,
     required String candidateId,
   }) async {
-    emit(state.copyWith(status: StatusIndicator.loading));
+    emit(state.copyWith(status: VoteStatus.loading));
 
     try {
       final req = VoteCreateRequest(candidateId: candidateId);
 
       await _voteCircleRepository.createVote(circleId, req).whenComplete(
-          () => emit(state.copyWith(status: StatusIndicator.success)));
+          () => emit(state.copyWith(status: VoteStatus.voteSuccess)));
     } catch (e) {
       sl<Logger>().t(
         'voted',
         error: e,
       );
       if (isClosed) return;
-      emit(state.copyWith(status: StatusIndicator.failure));
+      emit(state.copyWith(status: VoteStatus.failure));
     }
   }
 
   void revokedVote({
     required int circleId,
   }) async {
-    emit(state.copyWith(status: StatusIndicator.loading));
+    emit(state.copyWith(status: VoteStatus.loading));
 
     try {
       await _voteCircleRepository.revokeVote(circleId).whenComplete(
-          () => emit(state.copyWith(status: StatusIndicator.success)));
+          () => emit(state.copyWith(status: VoteStatus.revokedSuccess)));
     } catch (e) {
       sl<Logger>().t(
         'revokedVote',
         error: e,
       );
       if (isClosed) return;
-      emit(state.copyWith(status: StatusIndicator.failure));
+      emit(state.copyWith(status: VoteStatus.failure));
     }
   }
 }

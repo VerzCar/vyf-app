@@ -1,14 +1,22 @@
 part of 'vote_cubit.dart';
 
+enum VoteStatus {
+  initial,
+  loading,
+  voteSuccess,
+  revokedSuccess,
+  failure,
+}
+
 final class VoteState extends Equatable {
   const VoteState({
-    this.status = StatusIndicator.initial,
+    this.status = VoteStatus.initial,
   });
 
-  final StatusIndicator status;
+  final VoteStatus status;
 
   VoteState copyWith({
-    StatusIndicator? status,
+    VoteStatus? status,
   }) {
     return VoteState(
       status: status ?? this.status,

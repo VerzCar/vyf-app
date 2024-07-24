@@ -7,7 +7,7 @@ class EventTrigger {
     required BuildContext context,
     String? msg,
   }) {
-    HapticFeedback.lightImpact();
+    HapticFeedback.mediumImpact();
     showSuccessSnackbar(
       context,
       msg ?? '',
