@@ -3,18 +3,18 @@ part of 'rankings_cubit.dart';
 final class RankingsState extends Equatable {
   const RankingsState({
     this.status = StatusIndicator.initial,
-    this.circles = const [],
+    this.lastViewed = const [],
   });
 
-  final List<Circle> circles;
+  final List<RankingLastViewed> lastViewed;
   final StatusIndicator status;
 
   RankingsState copyWith({
-    List<Circle>? circles,
+    List<RankingLastViewed>? lastViewed,
     StatusIndicator? status,
   }) {
     return RankingsState(
-      circles: circles ?? this.circles,
+      lastViewed: lastViewed ?? this.lastViewed,
       status: status ?? this.status,
     );
   }
@@ -22,6 +22,6 @@ final class RankingsState extends Equatable {
   @override
   List<Object> get props => [
         status,
-        circles,
+        lastViewed,
       ];
 }

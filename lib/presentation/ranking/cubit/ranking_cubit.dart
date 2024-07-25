@@ -66,17 +66,6 @@ class RankingCubit extends Cubit<RankingState> {
     }
   }
 
-  void addToViewedRankings(int circleId) {
-    try {
-      _rankingsRepository.addToViewedRankings(circleId.toString());
-    } catch (e) {
-      sl<Logger>().t(
-        'addToViewedRankings',
-        error: e,
-      );
-    }
-  }
-
   void _onRankingChanged({
     required rankings_repo.RankingChangeEvent changeEvent,
   }) {

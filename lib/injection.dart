@@ -25,12 +25,8 @@ Future<void> init() async {
   // repos
 
   // singletons
-  sl.registerSingletonAsync<IAuthenticationRepository>(
-    () async => AuthenticationRepository(),
-  );
-  sl.registerSingletonAsync<IRankingsRepository>(
-    () async => await RankingsRepository.create(authenticationRepository: sl()),
-    dependsOn: [IAuthenticationRepository],
+  sl.registerSingleton<IAuthenticationRepository>(
+    AuthenticationRepository(),
   );
 
   // lazy singletons
@@ -42,5 +38,8 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<Logger>(
     () => Logger(printer: PrettyPrinter()),
+  );
+  sl.registerLazySingleton<IRankingsRepository>(
+    () => RankingsRepository(authenticationRepository: sl()),
   );
 }

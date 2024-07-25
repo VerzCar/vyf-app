@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
 import 'package:vote_your_face/application/members/bloc/members_bloc.dart';
+import 'package:vote_your_face/application/rankings/rankings.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/application/user/bloc/user_bloc.dart';
 import 'package:vote_your_face/presentation/ranking/cubit/ranking_cubit.dart';
@@ -39,7 +40,7 @@ class RankingView extends StatelessWidget {
           child: BlocSelector<UserBloc, UserState, String>(
             selector: (state) => state.user.identityId,
             builder: (context, userIdentityId) {
-              context.read<RankingCubit>().addToViewedRankings(circleId);
+              context.read<RankingsCubit>().addToViewedRankings(circleId);
               context.read<MembersBloc>().add(MembersStartCandidateChangedEvent(
                     currentUserIdentityId: userIdentityId,
                   ));

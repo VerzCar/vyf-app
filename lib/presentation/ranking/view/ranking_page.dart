@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rankings_repository/rankings_repository.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
+import 'package:vote_your_face/application/rankings/rankings.dart';
 import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/ranking/cubit/ranking_cubit.dart';
 import 'package:vote_your_face/presentation/ranking/view/ranking_view.dart';
@@ -29,6 +30,9 @@ class RankingPage extends StatelessWidget {
         BlocProvider.value(
           value: BlocProvider.of<CircleRankingBloc>(context)
             ..add(CircleRankingSelected(circleId: circleId)),
+        ),
+        BlocProvider.value(
+          value: BlocProvider.of<RankingsCubit>(context),
         )
       ],
       child: RankingView(circleId: circleId),

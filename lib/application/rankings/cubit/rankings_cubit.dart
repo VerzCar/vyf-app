@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:logger/logger.dart';
@@ -18,20 +17,14 @@ class RankingsCubit extends Cubit<RankingsState> {
         _rankingsRepository = rankingsRepository,
         super(const RankingsState()) {
     _initialRankingsLoaded();
-
-    _addedCircleToViewedRankingsSubscription =
-        _rankingsRepository.watchAddedCircleToViewedRankings.listen(
-      (circleId) => _addedToRankings(int.parse(circleId)),
-    );
   }
 
   final IVoteCircleRepository _voteCircleRepository;
   final IRankingsRepository _rankingsRepository;
-  late StreamSubscription<String> _addedCircleToViewedRankingsSubscription;
+  static const _maxLengthViewedRankings = 15;
 
   @override
   Future<void> close() {
-    _addedCircleToViewedRankingsSubscription.cancel();
     _rankingsRepository.dispose();
     return super.close();
   }
@@ -40,16 +33,11 @@ class RankingsCubit extends Cubit<RankingsState> {
     emit(state.copyWith(status: StatusIndicator.loading));
 
     try {
-      final viewedCircleIds = _rankingsRepository.viewedRankings;
-
-      final circleRequests = viewedCircleIds
-          .map((id) => _voteCircleRepository.circle(int.parse(id)));
-
-      final circles = await Future.wait(circleRequests);
+      final lastViewed = await _voteCircleRepository.rankingsLastViewed();
       emit(
         state.copyWith(
           status: StatusIndicator.success,
-          circles: circles,
+          lastViewed: lastViewed,
         ),
       );
     } catch (e) {
@@ -62,26 +50,49 @@ class RankingsCubit extends Cubit<RankingsState> {
     }
   }
 
-  void _addedToRankings(int circleId) async {
+  /// Add the visited circle to viewed rankings
+  void addToViewedRankings(int circleId) async {
     try {
-      final circle = await _voteCircleRepository.circle(circleId);
-      final circles = List.of(state.circles);
+      final lastViewed = List.of(state.lastViewed);
 
-      if (circles.length >= _rankingsRepository.maxLengthViewedRankings) {
-        circles.removeLast();
+      final existingLastViewedRankingIndex =
+          lastViewed.indexWhere((ranking) => ranking.circle.id == circleId);
+
+      if (existingLastViewedRankingIndex != -1) {
+        return;
       }
 
-      circles.insert(0, circle);
+      final circle = await _voteCircleRepository.circle(circleId);
+
+      final id = (lastViewed.lastOrNull?.id ?? 0) + 1;
+      final rankingLastViewed = RankingLastViewed(
+        id: id,
+        circle: CirclePaginated(
+          id: circle.id,
+          name: circle.name,
+          description: circle.description,
+          imageSrc: circle.imageSrc,
+          active: circle.active,
+          stage: circle.stage,
+        ),
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
+
+      if (lastViewed.length >= _maxLengthViewedRankings) {
+        lastViewed.removeLast();
+      }
+
+      lastViewed.insert(0, rankingLastViewed);
 
       emit(
         state.copyWith(
-          status: StatusIndicator.success,
-          circles: circles,
+          lastViewed: lastViewed,
         ),
       );
     } catch (e) {
       sl<Logger>().t(
-        '_addedToRankings',
+        'addToViewedRankings',
         error: e,
       );
       if (isClosed) return;

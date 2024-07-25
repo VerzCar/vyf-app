@@ -9,10 +9,10 @@ import 'package:vote_your_face/theme.dart';
 class RankingsBody extends StatelessWidget {
   const RankingsBody({
     super.key,
-    required this.circles,
+    required this.lastViewed,
   });
 
-  final List<Circle> circles;
+  final List<RankingLastViewed> lastViewed;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class RankingsBody extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          circles.isNotEmpty
+          lastViewed.isNotEmpty
               ? _buildViewedRankingsListView(context)
               : _buildEmptyViewedRankingsPlaceholder(context),
         ],
@@ -45,14 +45,15 @@ class RankingsBody extends StatelessWidget {
     return ListView.separated(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: circles.length,
+      itemCount: lastViewed.length,
       itemBuilder: (BuildContext contextListView, int index) {
-        final circle = circles[index];
+        final rankingViewed = lastViewed[index];
 
         return GestureDetector(
-          onTap: () => context.router.push(RankingRoute(circleId: circle.id)),
+          onTap: () => context.router
+              .push(RankingRoute(circleId: rankingViewed.circle.id)),
           child: Card(
-            key: Key(circle.id.toString()),
+            key: Key(rankingViewed.id.toString()),
             elevation: 1,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.zero,
@@ -67,7 +68,7 @@ class RankingsBody extends StatelessWidget {
                     height: 32,
                     width: 32,
                     child: NetImage(
-                      imageSrc: circle.imageSrc,
+                      imageSrc: rankingViewed.circle.imageSrc,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -78,14 +79,14 @@ class RankingsBody extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          circle.name,
+                          rankingViewed.circle.name,
                           style: themeData.textTheme.titleMedium,
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
                         Text(
-                          circle.description,
+                          rankingViewed.circle.description,
                           style: themeData.textTheme.bodySmall,
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,
@@ -112,7 +113,8 @@ class RankingsBody extends StatelessWidget {
                                 child: Icon(
                                   Icons.circle_rounded,
                                   size: 10,
-                                  color: circle.stage == CircleStage.hot
+                                  color: rankingViewed.circle.stage ==
+                                          CircleStage.hot
                                       ? themeData.colorScheme.successColor
                                       : themeData.colorScheme.secondary,
                                 ),
