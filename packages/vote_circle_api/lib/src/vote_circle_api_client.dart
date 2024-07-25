@@ -825,6 +825,42 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     }
   }
 
+  @override
+  Future<List<RankingLastViewed>> fetchRankingsLastViewed() async {
+    var logger = Logger();
+
+    try {
+      final res = await http.get(
+        _uri(path: 'rankings/last-viewed'),
+        headers: await _headers,
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('querying rankings last viewed server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<List<dynamic>>.fromJson(
+          jsonDecode(res.body) as Map<String, dynamic>);
+
+      if (res.statusCode == HttpStatus.ok) {
+        final rankings = apiResponse.data
+            .map((ranking) => RankingLastViewed.fromJson(ranking))
+            .toList();
+        return rankings;
+      }
+
+      logger.e('querying rankings last viewed failed: $apiResponse');
+      throw QueryRankingsLastViewedFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Uri _uri({String? path, Map<String, dynamic>? queryParameters}) {
     final httpsUri = Uri(
       scheme: 'https',

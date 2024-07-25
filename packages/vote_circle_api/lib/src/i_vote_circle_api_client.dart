@@ -67,4 +67,6 @@ abstract class IVoteCircleApiClient {
   );
 
   Future<List<CirclePaginated>> fetchCirclesOpenCommitments();
+
+  Future<List<RankingLastViewed>> fetchRankingsLastViewed();
 }

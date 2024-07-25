@@ -13,6 +13,8 @@ abstract class IVoteCircleRepository {
 
   Future<List<Ranking>> rankings(int circleId);
 
+  Future<List<RankingLastViewed>> rankingsLastViewed();
+
   Future<CircleVoter> circleVoters(int circleId);
 
   Future<CircleCandidate> circleCandidates(

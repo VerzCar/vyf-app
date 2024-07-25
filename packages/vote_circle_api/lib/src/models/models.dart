@@ -18,3 +18,4 @@ export 'user_private_option.dart';
 export 'vote_create_request.dart';
 export 'voter.dart';
 export 'voter_request.dart';
+export 'ranking_last_viewed.dart';

@@ -34,6 +34,14 @@ class QueryRankingFailure extends ApiFailure {
   });
 }
 
+class QueryRankingsLastViewedFailure extends ApiFailure {
+  QueryRankingsLastViewedFailure({
+    required super.statusCode,
+    super.msg,
+    super.status,
+  });
+}
+
 class QueryCandidatesFailure extends ApiFailure {
   QueryCandidatesFailure({
     required super.statusCode,

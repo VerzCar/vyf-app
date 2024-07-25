@@ -4,6 +4,7 @@ import 'package:ably_service/ably_service.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:logger/logger.dart';
 import 'package:vote_circle_api/vote_circle_api.dart' as vote_circle_api;
+import 'package:vote_circle_repository/src/models/ranking_last_viewed.dart';
 
 import 'i_vote_circle_repository.dart';
 import 'models/models.dart';
@@ -79,6 +80,15 @@ class VoteCircleRepository implements IVoteCircleRepository {
     final res = await _voteCircleApi.fetchRankings(circleId);
     final rankings =
         res.map((ranking) => Ranking.fromApiRanking(ranking)).toList();
+    return rankings;
+  }
+
+  @override
+  Future<List<RankingLastViewed>> rankingsLastViewed() async {
+    final res = await _voteCircleApi.fetchRankingsLastViewed();
+    final rankings = res
+        .map((ranking) => RankingLastViewed.fromApiRankingLastViewed(ranking))
+        .toList();
     return rankings;
   }
 
