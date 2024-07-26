@@ -5,6 +5,7 @@ import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circles/circles.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/presentation/circles/widgets/circles_of_interest.dart';
+import 'package:vote_your_face/presentation/circles/widgets/open_invitations_sheet.dart';
 import 'package:vote_your_face/presentation/circles/widgets/your_circles.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
@@ -70,18 +71,31 @@ class CirclesView extends StatelessWidget {
       builder: (context, circles) {
         if (circles.isEmpty) {
           return IconButton(
-            onPressed: () => {},
+            onPressed: () => _showOpenInvitationsSheet(context),
             icon: const Icon(Icons.notifications_none_outlined),
           );
         }
 
         return IconButton(
-          onPressed: () => {},
+          onPressed: () => _showOpenInvitationsSheet(context),
           icon: Icon(
             Icons.notification_important_outlined,
             color: themeData.colorScheme.infoColor,
           ),
         );
+      },
+    );
+  }
+
+  void _showOpenInvitationsSheet(
+    BuildContext context,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      useSafeArea: true,
+      isScrollControlled: true,
+      builder: (BuildContext context2) {
+        return const OpenInvitationsSheet();
       },
     );
   }
