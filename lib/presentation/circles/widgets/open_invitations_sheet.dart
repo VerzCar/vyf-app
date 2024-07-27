@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circles/circles.dart';
+import 'package:vote_your_face/injection.dart';
+import 'package:vote_your_face/presentation/circles/cubit/commitment_cubit.dart';
+import 'package:vote_your_face/presentation/circles/widgets/commitment_button.dart';
 import 'package:vote_your_face/theme.dart';
 
 class OpenInvitationsSheet extends StatelessWidget {
@@ -22,6 +26,24 @@ class OpenInvitationsSheet extends StatelessWidget {
             'Open invitations',
             style: themeData.textTheme.titleLarge,
           ),
+        ),
+        BlocBuilder<CirclesBloc, CirclesState>(
+          builder: (context, state) {
+            if (state.circlesOpenCommitments.isEmpty) {
+              return const SizedBox();
+            }
+
+            return Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 10.0,
+                horizontal: 20.0,
+              ),
+              child: Text(
+                'You have been invited as a candidate to this circles, please accept or decline the invitations.',
+                style: themeData.textTheme.bodyLarge,
+              ),
+            );
+          },
         ),
         const SizedBox(height: 10),
         BlocBuilder<CirclesBloc, CirclesState>(
@@ -55,28 +77,28 @@ class OpenInvitationsSheet extends StatelessWidget {
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 15.0,
                         ),
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Expanded(child: Text(circle.name)),
-                            IconButton(
-                              onPressed: () => {},
-                              style: IconButton.styleFrom(
-                                  foregroundColor:
-                                      themeData.colorScheme.whiteColor,
-                                  backgroundColor: themeData.colorScheme.error),
-                              icon: const Icon(Icons.close),
-                            ),
-                            IconButton(
-                              onPressed: () => {},
-                              style: IconButton.styleFrom(
-                                  foregroundColor:
-                                      themeData.colorScheme.whiteColor,
-                                  backgroundColor:
-                                      themeData.colorScheme.successColor),
-                              icon: const Icon(Icons.check),
-                            )
-                          ],
+                        title: BlocProvider(
+                          create: (context) => CommitmentCubit(
+                              voteCircleRepository:
+                                  sl<IVoteCircleRepository>()),
+                          child: BlocBuilder<CommitmentCubit, CommitmentState>(
+                            builder: (context, state) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Expanded(child: Text(circle.name)),
+                                  CommitmentButton(
+                                    circleId: circle.id,
+                                    commitment: Commitment.rejected,
+                                  ),
+                                  CommitmentButton(
+                                    circleId: circle.id,
+                                    commitment: Commitment.committed,
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
                         ),
                       ),
                     );

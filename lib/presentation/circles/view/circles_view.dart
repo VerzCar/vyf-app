@@ -76,12 +76,40 @@ class CirclesView extends StatelessWidget {
           );
         }
 
-        return IconButton(
-          onPressed: () => _showOpenInvitationsSheet(context),
-          icon: Icon(
-            Icons.notification_important_outlined,
-            color: themeData.colorScheme.infoColor,
-          ),
+        return Stack(
+          children: [
+            IconButton(
+              onPressed: () => _showOpenInvitationsSheet(context),
+              icon: Icon(
+                Icons.notification_important_outlined,
+                color: themeData.colorScheme.infoColor,
+              ),
+            ),
+            Positioned(
+              right: 2,
+              top: 2,
+              child: Container(
+                padding: const EdgeInsets.all(1),
+                decoration: BoxDecoration(
+                  color: Colors.redAccent,
+                  shape: BoxShape.circle,
+                  //borderRadius: BorderRadius.circular(10),
+                ),
+                constraints: const BoxConstraints(
+                  minWidth: 16,
+                  minHeight: 16,
+                ),
+                child: Text(
+                  '${circles.length}',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ],
         );
       },
     );
