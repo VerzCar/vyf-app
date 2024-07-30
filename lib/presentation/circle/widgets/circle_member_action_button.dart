@@ -8,8 +8,8 @@ class CircleMemberActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       style: TextButton.styleFrom(
-          padding: EdgeInsets.zero,
-          alignment: Alignment.centerRight
+        padding: EdgeInsets.zero,
+        alignment: Alignment.centerRight,
       ),
       onPressed: () => _showActionsSheet(context),
       child: const Icon(Icons.more_horiz_outlined),

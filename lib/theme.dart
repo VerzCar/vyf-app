@@ -106,6 +106,12 @@ class AppTheme {
     splashFactory: NoSplash.splashFactory,
   );
 
+  static final ButtonStyle iconButtonStyle = IconButton.styleFrom(
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.elliptical(5, 5)),
+    ),
+  );
+
   static final InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
     floatingLabelStyle: const TextStyle(color: Colors.black),
     focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
@@ -150,6 +156,7 @@ class AppTheme {
       textButtonTheme: TextButtonThemeData(style: flatButtonStyle),
       elevatedButtonTheme: ElevatedButtonThemeData(style: raisedButtonStyle),
       outlinedButtonTheme: OutlinedButtonThemeData(style: outlineButtonStyle),
+      iconButtonTheme: IconButtonThemeData(style: iconButtonStyle),
       cardTheme: const CardTheme(
         color: Light.cardColor,
         surfaceTintColor: Light.cardColor,
@@ -196,6 +203,7 @@ class AppTheme {
       textButtonTheme: TextButtonThemeData(style: flatButtonStyle),
       elevatedButtonTheme: ElevatedButtonThemeData(style: raisedButtonStyle),
       outlinedButtonTheme: OutlinedButtonThemeData(style: outlineButtonStyle),
+      iconButtonTheme: IconButtonThemeData(style: iconButtonStyle),
       cardTheme: const CardTheme(
         color: Dark.cardColor,
         surfaceTintColor: Dark.cardColor,
