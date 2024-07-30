@@ -45,5 +45,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+    <string>Take pictures to upload as personalized images for circles and user profile.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>To capture videos to upload to circles and members.</string>
 </dict>
 </plist>
