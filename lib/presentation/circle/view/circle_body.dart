@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
+import 'package:vote_your_face/presentation/circle/widgets/circle_image.dart';
 import 'package:vote_your_face/presentation/circle/widgets/circle_member_action_button.dart';
 import 'package:vote_your_face/presentation/circle/widgets/members_preview.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
@@ -24,36 +25,7 @@ class CircleBody extends StatelessWidget {
         children: [
           SizedBox(
             height: size.height * 0.25,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.vertical(
-                    bottom: Radius.circular(30.0),
-                  ),
-                  child: ImageFiltered(
-                    imageFilter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                    child: NetImage(
-                      imageSrc: circle.imageSrc,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                NetImage(
-                  imageSrc: circle.imageSrc,
-                  fit: BoxFit.scaleDown,
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: IconButton(
-                    onPressed: () =>
-                        context.router.navigate(const CameraRoute()),
-                    icon: const Icon(Icons.add),
-                  ),
-                )
-              ],
-            ),
+            child: CircleImage(circle: circle),
           ),
           const SizedBox(height: 10.0),
           Container(

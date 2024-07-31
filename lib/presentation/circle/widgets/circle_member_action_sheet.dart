@@ -59,9 +59,7 @@ class CircleMemberActionSheet extends StatelessWidget {
                 }
                 return null;
               },
-              separatorBuilder: (context, index) => const Divider(
-                height: 0,
-              ),
+              separatorBuilder: (context, index) => const Divider(),
             ),
           ),
         ),

@@ -14,6 +14,7 @@ class CameraView extends StatelessWidget {
       appBar: AppBar(title: const Text('Camera')),
       body: SafeArea(
         child: BlocListener<CameraCubit, CameraState>(
+          listenWhen: (prev, current) => prev.status != current.status,
           listener: (context, state) {
             if (state.status.isCaptureSuccessful) {
               context.router.pop(state.capturedPath);
