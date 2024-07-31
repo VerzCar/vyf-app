@@ -100,10 +100,6 @@ class AppRouter extends $AppRouter {
             ),
           ],
         ),
-        AutoRoute(
-          path: '/camera',
-          page: CameraRoute.page,
-        ),
       ];
 }
 
