@@ -871,27 +871,37 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
 
     try {
       final headers = await _headers;
-      final additionalHeaders = {
-        HttpHeaders.contentTypeHeader: 'multipart/form-data',
-      };
 
-      headers.addEntries(additionalHeaders.entries);
-
-      final formMap = <String, dynamic>{};
-      formMap['circleImageFile'] = imageBytes;
-
-      final res = await http.put(
+      final request = http.MultipartRequest(
+        'PUT',
         _uri(path: 'upload/circle-img/$circleId'),
-        headers: headers,
-        body: formMap,
       );
+
+      request.headers[HttpHeaders.contentTypeHeader] = 'multipart/form-data';
+      request.headers[HttpHeaders.authorizationHeader] =
+          headers[HttpHeaders.authorizationHeader]!;
+
+      final httpImage = http.MultipartFile.fromBytes(
+        'circleImageFile',
+        imageBytes,
+      );
+      request.files.add(httpImage);
+
+      final res = await request.send();
 
       if (res.statusCode >= HttpStatus.internalServerError) {
         logger.e('uploading image to circle server error: $res');
         throw ApiError(res);
       }
 
-      final apiResponse = ApiResponse<String>.fromJson(jsonDecode(res.body));
+      // final contents = StringBuffer();
+      // await for (var data in res.stream.transform(utf8.decoder)) {
+      //   contents.write(data);
+      //   return contents.toString();
+      // }
+
+      final apiResponse =
+          ApiResponse<String>.fromJson(jsonDecode(res.stream.toString()));
 
       if (res.statusCode == HttpStatus.ok) {
         return apiResponse.data;
