@@ -50,6 +50,35 @@ class Circle extends Equatable {
 
   bool get isEmpty => this == Circle.empty;
 
+  Circle copyWith({
+    int? id,
+    String? name,
+    String? description,
+    String? imageSrc,
+    bool? private,
+    bool? active,
+    CircleStage? stage,
+    String? createdFrom,
+    DateTime? validFrom,
+    DateTime? validUntil,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return Circle(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      imageSrc: imageSrc ?? this.imageSrc,
+      private: private ?? this.private,
+      active: active ?? this.active,
+      stage: stage ?? this.stage,
+      createdFrom: createdFrom ?? this.createdFrom,
+      validFrom: validFrom ?? this.validFrom,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
   factory Circle.fromApiCircle(vote_circle_api.Circle circle) => Circle(
         id: circle.id,
         name: circle.name,

@@ -1,11 +1,9 @@
 import 'dart:async';
-
+import 'dart:typed_data';
 import 'package:ably_service/ably_service.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:logger/logger.dart';
 import 'package:vote_circle_api/vote_circle_api.dart' as vote_circle_api;
-import 'package:vote_circle_repository/src/models/ranking_last_viewed.dart';
-
 import 'i_vote_circle_repository.dart';
 import 'models/models.dart';
 
@@ -224,6 +222,17 @@ class VoteCircleRepository implements IVoteCircleRepository {
     return await _voteCircleApi.removeVoterFromCircle(
       circleId,
       voterRequest.toApiVoterRequest(),
+    );
+  }
+
+  @override
+  Future<String> uploadCircleImage(
+    int circleId,
+    Uint8List imageBytes,
+  ) async {
+    return await _voteCircleApi.uploadCircleImage(
+      circleId,
+      imageBytes,
     );
   }
 

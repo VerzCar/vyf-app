@@ -1,11 +1,12 @@
 import 'dart:ui';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
+import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/application/user/user.dart';
-import 'package:vote_your_face/presentation/routes/router.gr.dart';
+import 'package:vote_your_face/injection.dart';
+import 'package:vote_your_face/presentation/circle/cubit/circle_upload_cubit.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 import 'package:vote_your_face/presentation/shared/widgets/image/image_selection_sheet.dart';
 
@@ -38,12 +39,12 @@ class CircleImage extends StatelessWidget {
           imageSrc: circle.imageSrc,
           fit: BoxFit.scaleDown,
         ),
-        _editImageActionButton(context),
+        _editImageAction(context),
       ],
     );
   }
 
-  Widget _editImageActionButton(BuildContext context) {
+  Widget _editImageAction(BuildContext context) {
     return BlocSelector<UserBloc, UserState, String>(
       selector: (state) => state.user.identityId,
       builder: (context, identityId) =>
@@ -54,27 +55,56 @@ class CircleImage extends StatelessWidget {
             return Positioned(
               bottom: 0,
               right: 0,
-              child: IconButton(
-                style: IconButton.styleFrom(
-                  backgroundColor: Colors.white30,
-                ),
-                onPressed: () => showModalBottomSheet(
-                  context: context,
-                  builder: (BuildContext context2) {
-                    return SingleChildScrollView(
-                      child: ImageSelectionSheet(
-                        onImageSelected: (s) => print(s),
-                      ),
-                    );
-                  },
-                ),
-                icon: const Icon(Icons.edit_outlined),
-              ),
+              child: _editImageActionButton(context),
             );
           }
 
           return const SizedBox();
         },
+      ),
+    );
+  }
+
+  Widget _editImageActionButton(BuildContext context) {
+    return BlocProvider(
+      create: (context) => CircleUploadCubit(
+        voteCircleRepository: sl<IVoteCircleRepository>(),
+      ),
+      child: BlocListener<CircleUploadCubit, CircleUploadState>(
+        listener: (context, state) {
+          if (state.status.isSuccessful) {
+            context
+                .read<CircleBloc>()
+                .add(CircleImageUpdated(imageSrc: state.uploadedImageSrc));
+          }
+        },
+        child: BlocBuilder<CircleUploadCubit, CircleUploadState>(
+          builder: (context, state) {
+            return IconButton(
+              style: IconButton.styleFrom(
+                backgroundColor: Colors.white30,
+              ),
+              onPressed: () {
+                final circleUploadCubit = context.read<CircleUploadCubit>();
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context2) {
+                    return SingleChildScrollView(
+                      child: ImageSelectionSheet(
+                        onImageSelected: (image) =>
+                            circleUploadCubit.onUploadImage(
+                          circleId: circle.id,
+                          image: image,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+              icon: const Icon(Icons.edit_outlined),
+            );
+          },
+        ),
       ),
     );
   }

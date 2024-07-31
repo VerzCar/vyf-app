@@ -17,6 +17,7 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
         super(const CircleState()) {
     on<CircleSelected>(_onCircleSelected);
     on<CircleUpdated>(_onCircleUpdated);
+    on<CircleImageUpdated>(_onCircleImageUpdated);
   }
 
   final IVoteCircleRepository _voteCircleRepository;
@@ -66,6 +67,19 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
     emit(
       state.copyWith(
         circle: event.circle,
+      ),
+    );
+  }
+
+  void _onCircleImageUpdated(
+    CircleImageUpdated event,
+    Emitter<CircleState> emit,
+  ) {
+    emit(
+      state.copyWith(
+        circle: state.circle.copyWith(
+          imageSrc: event.imageSrc,
+        ),
       ),
     );
   }

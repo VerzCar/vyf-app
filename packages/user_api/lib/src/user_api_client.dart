@@ -166,7 +166,8 @@ class UserApiClient implements IUserApiClient {
 
   Future<Map<String, String>> get _headers async {
     final Map<String, String> headers = {
-      'Authorization': 'Bearer ${await _authenticationRepository.jwtToken}',
+      HttpHeaders.authorizationHeader:
+          'Bearer ${await _authenticationRepository.jwtToken}',
     };
     return headers;
   }

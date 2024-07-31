@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:http/http.dart' as http;
@@ -861,6 +862,52 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     }
   }
 
+  @override
+  Future<String> uploadCircleImage(
+    int circleId,
+    Uint8List imageBytes,
+  ) async {
+    var logger = Logger();
+
+    try {
+      final headers = await _headers;
+      final additionalHeaders = {
+        HttpHeaders.contentTypeHeader: 'multipart/form-data',
+      };
+
+      headers.addEntries(additionalHeaders.entries);
+
+      final formMap = <String, dynamic>{};
+      formMap['circleImageFile'] = imageBytes;
+
+      final res = await http.put(
+        _uri(path: 'upload/circle-img/$circleId'),
+        headers: headers,
+        body: formMap,
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('uploading image to circle server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<String>.fromJson(jsonDecode(res.body));
+
+      if (res.statusCode == HttpStatus.ok) {
+        return apiResponse.data;
+      }
+
+      logger.e('uploading image to circle failed: $apiResponse');
+      throw UploadFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Uri _uri({String? path, Map<String, dynamic>? queryParameters}) {
     final httpsUri = Uri(
       scheme: 'https',
@@ -874,7 +921,8 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
 
   Future<Map<String, String>> get _headers async {
     final Map<String, String> headers = {
-      'Authorization': 'Bearer ${await _authenticationRepository.jwtToken}',
+      HttpHeaders.authorizationHeader:
+          'Bearer ${await _authenticationRepository.jwtToken}',
     };
     return headers;
   }

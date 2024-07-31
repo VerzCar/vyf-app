@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'models/models.dart';
 
 abstract class IVoteCircleApiClient {
@@ -69,4 +70,9 @@ abstract class IVoteCircleApiClient {
   Future<List<CirclePaginated>> fetchCirclesOpenCommitments();
 
   Future<List<RankingLastViewed>> fetchRankingsLastViewed();
+
+  Future<String> uploadCircleImage(
+    int circleId,
+    Uint8List imageBytes,
+  );
 }

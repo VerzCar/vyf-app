@@ -7,7 +7,7 @@ class ImageSelectionSheet extends StatelessWidget {
     required this.onImageSelected,
   });
 
-  final void Function(String path) onImageSelected;
+  final void Function(XFile image) onImageSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +72,7 @@ class ImageSelectionSheet extends StatelessWidget {
       return;
     }
 
-    onImageSelected(image!.path);
+    onImageSelected(image!);
   }
 
   void _fromGallery(BuildContext context) async {
@@ -86,6 +86,6 @@ class ImageSelectionSheet extends StatelessWidget {
       return;
     }
 
-    onImageSelected(image!.path);
+    onImageSelected(image!);
   }
 }

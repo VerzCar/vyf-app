@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'models/models.dart';
 
 abstract class IVoteCircleRepository {
@@ -70,6 +72,11 @@ abstract class IVoteCircleRepository {
   Future<Commitment> updateCommitment(
     int circleId,
     CircleCandidateCommitmentRequest commitmentRequest,
+  );
+
+  Future<String> uploadCircleImage(
+    int circleId,
+    Uint8List imageBytes,
   );
 
   Future<void> subscribeToCircleCandidateChangedEvent(int circleId);

@@ -137,3 +137,11 @@ class UpdateCommitmentFailure extends ApiFailure {
     super.status,
   });
 }
+
+class UploadFailure extends ApiFailure {
+  UploadFailure({
+    required super.statusCode,
+    super.msg,
+    super.status,
+  });
+}
