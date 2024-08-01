@@ -54,7 +54,7 @@ class CreateCircleMembersForm extends StatelessWidget {
                     previous.status != current.status,
                 listener: (context, state) {
                   if (state.status.isSuccess) {
-                    BlocProvider.of<CirclesBloc>(context).add(CircleCreated(
+                    BlocProvider.of<CirclesBloc>(context).add(CirclesCreated(
                       circle: state.createdCircle!,
                     ));
 

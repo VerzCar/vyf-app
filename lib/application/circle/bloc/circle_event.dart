@@ -21,12 +21,3 @@ final class CircleUpdated extends CircleEvent {
   @override
   List<Object> get props => [circle];
 }
-
-final class CircleImageUpdated extends CircleEvent {
-  const CircleImageUpdated({required this.imageSrc});
-
-  final String imageSrc;
-
-  @override
-  List<Object> get props => [imageSrc];
-}

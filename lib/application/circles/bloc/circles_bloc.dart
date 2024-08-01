@@ -15,9 +15,9 @@ class CirclesBloc extends Bloc<CirclesEvent, CirclesState> {
   })  : _voteCircleRepository = voteCircleRepository,
         super(const CirclesState()) {
     on<CirclesOfUserInitialLoaded>(_onCirclesOfUserInitialLoaded);
-    on<CircleCreated>(_onCircleCreated);
-    on<CircleUpdated>(_onCircleUpdated);
-    on<CircleDeleted>(_onCircleDeleted);
+    on<CirclesCreated>(_onCirclesCreated);
+    on<CirclesUpdated>(_onCirclesUpdated);
+    on<CirclesDeleted>(_onCirclesDeleted);
     on<CirclesWithOpenCommitmentsLoaded>(_onCirclesWithOpenCommitmentsLoaded);
   }
 
@@ -53,8 +53,8 @@ class CirclesBloc extends Bloc<CirclesEvent, CirclesState> {
     }
   }
 
-  void _onCircleCreated(
-    CircleCreated event,
+  void _onCirclesCreated(
+    CirclesCreated event,
     Emitter<CirclesState> emit,
   ) {
     emit(state.copyWith(status: StatusIndicator.loading));
@@ -70,8 +70,8 @@ class CirclesBloc extends Bloc<CirclesEvent, CirclesState> {
     );
   }
 
-  void _onCircleUpdated(
-    CircleUpdated event,
+  void _onCirclesUpdated(
+    CirclesUpdated event,
     Emitter<CirclesState> emit,
   ) {
     emit(state.copyWith(status: StatusIndicator.loading));
@@ -96,8 +96,8 @@ class CirclesBloc extends Bloc<CirclesEvent, CirclesState> {
     );
   }
 
-  void _onCircleDeleted(
-    CircleDeleted event,
+  void _onCirclesDeleted(
+    CirclesDeleted event,
     Emitter<CirclesState> emit,
   ) {
     emit(state.copyWith(status: StatusIndicator.loading));

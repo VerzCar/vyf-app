@@ -1,8 +1,10 @@
 import 'dart:ui';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
+import 'package:vote_your_face/application/circles/bloc/circles_bloc.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/injection.dart';
@@ -72,10 +74,19 @@ class CircleImage extends StatelessWidget {
       ),
       child: BlocListener<CircleUploadCubit, CircleUploadState>(
         listener: (context, state) {
+          if (state.status.isLoading) {
+            context.router.maybePop();
+          }
+
           if (state.status.isSuccessful) {
+            final updatedCircle =
+                circle.copyWith(imageSrc: state.uploadedImageSrc);
             context
                 .read<CircleBloc>()
-                .add(CircleImageUpdated(imageSrc: state.uploadedImageSrc));
+                .add(CircleUpdated(circle: updatedCircle));
+            context
+                .read<CirclesBloc>()
+                .add(CirclesUpdated(circle: updatedCircle));
           }
         },
         child: BlocBuilder<CircleUploadCubit, CircleUploadState>(
@@ -101,7 +112,16 @@ class CircleImage extends StatelessWidget {
                   },
                 );
               },
-              icon: const Icon(Icons.edit_outlined),
+              icon: state.status.isLoading
+                  ? Container(
+                      height: 24,
+                      width: 24,
+                      padding: const EdgeInsets.all(2.0),
+                      child: const CircularProgressIndicator(
+                        strokeWidth: 3,
+                      ),
+                    )
+                  : const Icon(Icons.edit_outlined),
             );
           },
         ),

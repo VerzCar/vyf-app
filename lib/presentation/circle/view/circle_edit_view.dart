@@ -52,7 +52,7 @@ class CircleEditView extends StatelessWidget {
       listener: (context, state) {
         if (state.status.isSuccessful) {
           BlocProvider.of<circles_bloc.CirclesBloc>(context)
-              .add(circles_bloc.CircleUpdated(
+              .add(circles_bloc.CirclesUpdated(
             circle: state.updatedCircle!,
           ));
 
@@ -74,7 +74,7 @@ class CircleEditView extends StatelessWidget {
 
         if (state.status.isDeletedSuccessful) {
           BlocProvider.of<circles_bloc.CirclesBloc>(context)
-              .add(circles_bloc.CircleDeleted(
+              .add(circles_bloc.CirclesDeleted(
             circleId: state.deletedCircleId!,
           ));
 

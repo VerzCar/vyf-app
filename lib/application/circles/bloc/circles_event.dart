@@ -9,8 +9,8 @@ final class CirclesOfUserInitialLoaded extends CirclesEvent {
   List<Object> get props => [];
 }
 
-final class CircleCreated extends CirclesEvent {
-  const CircleCreated({required this.circle});
+final class CirclesCreated extends CirclesEvent {
+  const CirclesCreated({required this.circle});
 
   final Circle circle;
 
@@ -18,8 +18,8 @@ final class CircleCreated extends CirclesEvent {
   List<Object> get props => [circle];
 }
 
-final class CircleUpdated extends CirclesEvent {
-  const CircleUpdated({required this.circle});
+final class CirclesUpdated extends CirclesEvent {
+  const CirclesUpdated({required this.circle});
 
   final Circle circle;
 
@@ -27,8 +27,8 @@ final class CircleUpdated extends CirclesEvent {
   List<Object> get props => [circle];
 }
 
-final class CircleDeleted extends CirclesEvent {
-  const CircleDeleted({required this.circleId});
+final class CirclesDeleted extends CirclesEvent {
+  const CirclesDeleted({required this.circleId});
 
   final int circleId;
 

@@ -26,12 +26,14 @@ class CircleUploadCubit extends Cubit<CircleUploadState> {
 
     try {
       final imageBytes = await image.readAsBytes();
-      final imageSrc =
-          await _voteCircleRepository.uploadCircleImage(circleId, imageBytes);
+      final imageSrc = await _voteCircleRepository.uploadCircleImage(
+        circleId,
+        imageBytes,
+      );
 
       emit(state.copyWith(
         status: StatusIndicator.success,
-        uploadedImageSrc: imageSrc,
+        uploadedImageSrc: _srcWithAttachedTimestamp(imageSrc),
       ));
     } catch (e) {
       sl<Logger>().t(
@@ -43,5 +45,11 @@ class CircleUploadCubit extends Cubit<CircleUploadState> {
         status: StatusIndicator.failure,
       ));
     }
+  }
+
+  /// Attach a newly timestamp to image as they are currently always
+  /// have the same naming.
+  String _srcWithAttachedTimestamp(String src) {
+    return '$src?timeStamp=${DateTime.now()}';
   }
 }

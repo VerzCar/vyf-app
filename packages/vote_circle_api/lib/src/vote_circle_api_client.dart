@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:logger/logger.dart';
 import 'package:vote_circle_api/vote_circle_api.dart';
 
@@ -877,13 +878,15 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
         _uri(path: 'upload/circle-img/$circleId'),
       );
 
-      request.headers[HttpHeaders.contentTypeHeader] = 'multipart/form-data';
+      request.headers['Content-Type'] = 'multipart/form-data';
       request.headers[HttpHeaders.authorizationHeader] =
           headers[HttpHeaders.authorizationHeader]!;
 
       final httpImage = http.MultipartFile.fromBytes(
         'circleImageFile',
         imageBytes,
+        filename: 'image',
+        contentType: MediaType('multipart', 'form-data')
       );
       request.files.add(httpImage);
 
@@ -894,14 +897,13 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
         throw ApiError(res);
       }
 
-      // final contents = StringBuffer();
-      // await for (var data in res.stream.transform(utf8.decoder)) {
-      //   contents.write(data);
-      //   return contents.toString();
-      // }
+      final contents = StringBuffer();
+      await for (var data in res.stream.transform(utf8.decoder)) {
+        contents.write(data);
+      }
 
       final apiResponse =
-          ApiResponse<String>.fromJson(jsonDecode(res.stream.toString()));
+          ApiResponse<String>.fromJson(jsonDecode(contents.toString()));
 
       if (res.statusCode == HttpStatus.ok) {
         return apiResponse.data;
