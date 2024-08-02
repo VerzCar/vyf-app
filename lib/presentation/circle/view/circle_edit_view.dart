@@ -5,6 +5,7 @@ import 'package:formz/formz.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
 import 'package:vote_your_face/application/circles/bloc/circles_bloc.dart'
     as circles_bloc;
+import 'package:vote_your_face/application/rankings/rankings.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/presentation/circle/cubit/circle_edit_form_cubit.dart';
 import 'package:vote_your_face/presentation/circle/view/circle_edit_body.dart';
@@ -60,6 +61,9 @@ class CircleEditView extends StatelessWidget {
           final circleBloc = BlocProvider.of<CircleBloc>(context);
 
           circleBloc.add(CircleUpdated(circle: state.updatedCircle!));
+          context
+              .read<RankingsCubit>()
+              .onViewedRankingsCircleUpdated(state.updatedCircle!);
 
           if (circleRankingBloc.state.circle.id == circleBloc.state.circle.id) {
             circleRankingBloc

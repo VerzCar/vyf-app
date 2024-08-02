@@ -15,6 +15,20 @@ class RankingLastViewed extends Equatable {
     required this.updatedAt,
   });
 
+  RankingLastViewed copyWith({
+    int? id,
+    CirclePaginated? circle,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return RankingLastViewed(
+      id: id ?? this.id,
+      circle: circle ?? this.circle,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
   factory RankingLastViewed.fromApiRankingLastViewed(
     vote_circle_api.RankingLastViewed ranking,
   ) =>

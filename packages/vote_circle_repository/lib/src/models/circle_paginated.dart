@@ -29,7 +29,43 @@ class CirclePaginated extends Equatable {
     return name;
   }
 
-  factory CirclePaginated.fromApiCirclePaginated(vote_circle_api.CirclePaginated circle) =>
+  CirclePaginated copyWith({
+    int? id,
+    String? name,
+    String? description,
+    String? imageSrc,
+    int? votersCount,
+    int? candidatesCount,
+    bool? active,
+    CircleStage? stage,
+  }) {
+    return CirclePaginated(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      imageSrc: imageSrc ?? this.imageSrc,
+      votersCount: votersCount ?? this.votersCount,
+      candidatesCount: candidatesCount ?? this.candidatesCount,
+      active: active ?? this.active,
+      stage: stage ?? this.stage,
+    );
+  }
+
+  CirclePaginated from(CirclePaginated circle) {
+    return CirclePaginated(
+      id: circle.id,
+      name: circle.name,
+      description: circle.description,
+      imageSrc: circle.imageSrc,
+      votersCount: circle.votersCount,
+      candidatesCount: circle.candidatesCount,
+      active: circle.active,
+      stage: circle.stage,
+    );
+  }
+
+  factory CirclePaginated.fromApiCirclePaginated(
+          vote_circle_api.CirclePaginated circle) =>
       CirclePaginated(
         id: circle.id,
         name: circle.name,

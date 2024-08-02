@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
 import 'package:vote_your_face/application/circles/bloc/circles_bloc.dart';
+import 'package:vote_your_face/application/rankings/rankings.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/injection.dart';
@@ -87,6 +88,16 @@ class CircleImage extends StatelessWidget {
             context
                 .read<CirclesBloc>()
                 .add(CirclesUpdated(circle: updatedCircle));
+            context
+                .read<RankingsCubit>()
+                .onViewedRankingsCircleUpdated(updatedCircle);
+          }
+
+          if (state.status.isFailure) {
+            EventTrigger.error(
+              context: context,
+              msg: 'Could not upload image. Try again.',
+            );
           }
         },
         child: BlocBuilder<CircleUploadCubit, CircleUploadState>(
@@ -121,7 +132,7 @@ class CircleImage extends StatelessWidget {
                         strokeWidth: 3,
                       ),
                     )
-                  : const Icon(Icons.edit_outlined),
+                  : const Icon(Icons.camera_alt_outlined),
             );
           },
         ),

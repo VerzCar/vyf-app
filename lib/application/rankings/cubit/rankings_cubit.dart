@@ -99,4 +99,35 @@ class RankingsCubit extends Cubit<RankingsState> {
       emit(state.copyWith(status: StatusIndicator.failure));
     }
   }
+
+  void onViewedRankingsCircleUpdated(Circle circle) async {
+    final lastViewed = List.of(state.lastViewed);
+    final lastViewedIndex =
+        lastViewed.indexWhere((viewed) => viewed.circle.id == circle.id);
+
+    if (lastViewedIndex == -1) {
+      return;
+    }
+
+    final viewed = lastViewed[lastViewedIndex];
+
+    final updatedCircle = viewed.circle.copyWith(
+      name: circle.name,
+      description: circle.description,
+      imageSrc: circle.imageSrc,
+      active: circle.active,
+      stage: circle.stage,
+    );
+
+    final updatedViewed = viewed.copyWith(circle: updatedCircle);
+
+    lastViewed[lastViewedIndex] = updatedViewed;
+
+    emit(
+      state.copyWith(
+        lastViewed: lastViewed,
+        status: StatusIndicator.success,
+      ),
+    );
+  }
 }
