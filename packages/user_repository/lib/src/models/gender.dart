@@ -6,6 +6,10 @@ enum Gender {
   women,
 }
 
+extension GenderX on Gender {
+  String get stringify => genderToString(this);
+}
+
 // Helper function to convert enum to string
 String genderToString(Gender gender) {
   switch (gender) {

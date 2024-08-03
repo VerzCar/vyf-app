@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/presentation/settings/widgets/user_profile_image.dart';
 
@@ -63,6 +64,11 @@ class UserSettingsBody extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
+                    'Why vote me?',
+                    style: themeData.textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
                     state.user.profile.whyVoteMe,
                     style: themeData.textTheme.bodyMedium,
                   ),
@@ -91,50 +97,60 @@ class _UserInfoSection extends StatelessWidget {
 
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'First name',
-                  style: themeData.textTheme.labelSmall,
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  state.user.firstName,
-                  style: themeData.textTheme.bodyMedium,
-                ),
-              ],
+            Text(
+              'About me',
+              style: themeData.textTheme.titleMedium,
             ),
-            const SizedBox(width: 30),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
-                  'Last name',
-                  style: themeData.textTheme.labelSmall,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'First name',
+                      style: themeData.textTheme.labelSmall,
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      state.user.firstName,
+                      style: themeData.textTheme.bodyMedium,
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 2),
-                Text(
-                  state.user.lastName,
-                  style: themeData.textTheme.bodyMedium,
+                const SizedBox(width: 30),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Last name',
+                      style: themeData.textTheme.labelSmall,
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      state.user.lastName,
+                      style: themeData.textTheme.bodyMedium,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            const SizedBox(width: 30),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Gender',
-                  style: themeData.textTheme.labelSmall,
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  state.user.gender.toString(),
-                  style: themeData.textTheme.bodyMedium,
+                const SizedBox(width: 30),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Gender',
+                      style: themeData.textTheme.labelSmall,
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      state.user.gender.stringify,
+                      style: themeData.textTheme.bodyMedium,
+                    ),
+                  ],
                 ),
               ],
             ),

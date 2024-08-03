@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:vote_your_face/application/authentication/authentication.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
@@ -90,7 +91,26 @@ class SettingsBody extends StatelessWidget {
             },
           ),
         ),
+        const SizedBox(height: 10),
+        Center(
+          child: FutureBuilder(
+            future: _currentAppVersion(),
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              if (snapshot.hasData) {
+                return Text(snapshot.data!);
+              }
+              return const SizedBox();
+            },
+          ),
+        ),
       ],
     );
+  }
+
+  Future<String> _currentAppVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String version = packageInfo.version;
+    String buildNumber = packageInfo.buildNumber;
+    return 'Version: $version | $buildNumber';
   }
 }
