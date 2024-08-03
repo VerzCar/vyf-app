@@ -14,7 +14,7 @@ class UserSettingsBody extends StatelessWidget {
       children: [
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          height: 170,
+          height: 200,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               end: Alignment.topRight,

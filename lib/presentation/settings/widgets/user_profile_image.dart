@@ -25,7 +25,7 @@ class UserProfileImage extends StatelessWidget {
           child: UserAvatar(
             key: ValueKey(user.identityId),
             option: const UserAvatarOption(
-              size: AvatarSize.xxl,
+              size: AvatarSize.full,
             ),
           ),
         ),
@@ -55,7 +55,6 @@ class UserProfileImage extends StatelessWidget {
 
           if (state.status.isSuccessful) {
             final currentUser = context.read<UserBloc>().state.user;
-            print(state.uploadedImageSrc);
             final updatedProfile =
                 currentUser.profile.copyWith(imageSrc: state.uploadedImageSrc);
             final updatedUser = currentUser.copyWith(profile: updatedProfile);
