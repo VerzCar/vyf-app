@@ -47,6 +47,34 @@ class User extends Equatable {
 
   bool get isEmpty => this == User.empty;
 
+  User copyWith({
+    int? id,
+    String? identityId,
+    String? username,
+    String? firstName,
+    String? lastName,
+    Gender? gender,
+    Address? address,
+    Contact? contact,
+    Profile? profile,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return User(
+      id: id ?? this.id,
+      identityId: identityId ?? this.identityId,
+      username: username ?? this.username,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      gender: gender ?? this.gender,
+      address: address ?? this.address,
+      contact: contact ?? this.contact,
+      profile: profile ?? this.profile,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
   factory User.fromApiUser(user_api.User user) => User(
         id: user.id,
         identityId: user.identityId,

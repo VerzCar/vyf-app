@@ -33,3 +33,11 @@ class UpdateUserFailure extends ApiFailure {
     super.status,
   });
 }
+
+class UploadUserFailure extends ApiFailure {
+  UploadUserFailure({
+    required super.statusCode,
+    super.msg,
+    super.status,
+  });
+}

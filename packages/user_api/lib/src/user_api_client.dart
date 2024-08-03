@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:logger/logger.dart';
 import 'package:user_api/user_api.dart';
 
@@ -144,6 +146,60 @@ class UserApiClient implements IUserApiClient {
 
       logger.e('updating user failed: $apiResponse');
       throw UpdateUserFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> uploadUserProfileImage(Uint8List imageBytes) async {
+    var logger = Logger();
+
+    try {
+      final headers = await _headers;
+
+      final request = http.MultipartRequest(
+        'PUT',
+        _uri(path: 'upload/profile-img'),
+      );
+
+      request.headers['Content-Type'] = 'multipart/form-data';
+      request.headers[HttpHeaders.authorizationHeader] =
+          headers[HttpHeaders.authorizationHeader]!;
+
+      final httpImage = http.MultipartFile.fromBytes(
+        'profileImageFile',
+        imageBytes,
+        filename: 'image',
+        contentType: MediaType('multipart', 'form-data'),
+      );
+      request.files.add(httpImage);
+
+      final res = await request.send();
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('uploading image to user server error: $res');
+        throw ApiError(res);
+      }
+
+      final contents = StringBuffer();
+      await for (var data in res.stream.transform(utf8.decoder)) {
+        contents.write(data);
+      }
+
+      final apiResponse =
+          ApiResponse<String>.fromJson(jsonDecode(contents.toString()));
+
+      if (res.statusCode == HttpStatus.ok) {
+        return apiResponse.data;
+      }
+
+      logger.e('uploading image to user failed: $apiResponse');
+      throw UploadUserFailure(
         statusCode: res.statusCode,
         msg: apiResponse.msg,
         status: apiResponse.status,

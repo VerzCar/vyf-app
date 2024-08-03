@@ -25,7 +25,16 @@ class UserXProvider extends StatelessWidget {
               currentUser: user,
               identityId: identityId,
             ),
-          child: child,
+          child: BlocListener<UserBloc, UserState>(
+            listenWhen: (prev, current) => prev.user != current.user,
+            listener: (context, state) {
+              context.read<UserXCubit>().currentUserChanged(
+                    currentUser: state.user,
+                    identityId: identityId,
+                  );
+            },
+            child: child,
+          ),
         );
       },
     );

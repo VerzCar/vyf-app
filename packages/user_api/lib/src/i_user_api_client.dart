@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'models/models.dart';
 
 abstract class IUserApiClient {
@@ -8,4 +10,6 @@ abstract class IUserApiClient {
   Future<List<User>> fetchUsers();
 
   Future<User> updateUser(UserUpdate user);
+
+  Future<String> uploadUserProfileImage(Uint8List imageBytes);
 }

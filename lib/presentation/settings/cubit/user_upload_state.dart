@@ -1,7 +1,7 @@
-part of 'circle_upload_cubit.dart';
+part of 'user_upload_cubit.dart';
 
-final class CircleUploadState extends Equatable {
-  const CircleUploadState({
+final class UserUploadState extends Equatable {
+  const UserUploadState({
     this.status = StatusIndicator.initial,
     this.uploadedImageSrc = '',
   });
@@ -9,11 +9,11 @@ final class CircleUploadState extends Equatable {
   final StatusIndicator status;
   final String uploadedImageSrc;
 
-  CircleUploadState copyWith({
+  UserUploadState copyWith({
     StatusIndicator? status,
     String? uploadedImageSrc,
   }) {
-    return CircleUploadState(
+    return UserUploadState(
       status: status ?? this.status,
       uploadedImageSrc: uploadedImageSrc ?? this.uploadedImageSrc,
     );

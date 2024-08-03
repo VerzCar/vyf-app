@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:user_api/user_api.dart' as user_api;
 import 'i_user_repository.dart';
@@ -36,5 +38,10 @@ class UserRepository implements IUserRepository {
   Future<User> updateUser(UserUpdate user) async {
     final res = await _userApi.updateUser(user.toApiUserUpdate());
     return User.fromApiUser(res);
+  }
+
+  @override
+  Future<String> uploadUserProfileImage(Uint8List imageBytes) async {
+    return await _userApi.uploadUserProfileImage(imageBytes);
   }
 }

@@ -49,11 +49,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   void _onUserUpdated(
     UserUpdated event,
     Emitter<UserState> emit,
-  ) async {
-    emit(state.copyWith(
-      status: StatusIndicator.loading,
-    ));
-
+  ) {
     emit(state.copyWith(
       user: event.user,
       status: StatusIndicator.success,

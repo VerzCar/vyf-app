@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vote_your_face/application/user/user.dart';
-import 'package:vote_your_face/presentation/shared/shared.dart';
+import 'package:vote_your_face/presentation/settings/widgets/user_profile_image.dart';
 
 class UserSettingsBody extends StatelessWidget {
   const UserSettingsBody({super.key});
@@ -35,14 +35,8 @@ class UserSettingsBody extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          UserXProvider(
-                            identityId: state.user.identityId,
-                            child: UserAvatar(
-                              key: ValueKey(state.user.identityId),
-                              option: const UserAvatarOption(
-                                size: AvatarSize.xl,
-                              ),
-                            ),
+                          UserProfileImage(
+                            user: state.user,
                           ),
                           const SizedBox(height: 7.0),
                           Text(

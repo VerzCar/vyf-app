@@ -70,6 +70,8 @@ class AvatarImage extends StatelessWidget {
         return textTheme.titleMedium?.fontSize;
       case AvatarSize.xl:
         return textTheme.titleLarge?.fontSize;
+      case AvatarSize.xxl:
+        return textTheme.titleLarge?.fontSize;
     }
   }
 }

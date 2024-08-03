@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'models/models.dart';
 
 abstract class IUserRepository {
@@ -8,4 +10,6 @@ abstract class IUserRepository {
   Future<List<User>> users();
 
   Future<User> updateUser(UserUpdate user);
+
+  Future<String> uploadUserProfileImage(Uint8List imageBytes);
 }

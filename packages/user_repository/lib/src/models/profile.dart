@@ -33,6 +33,27 @@ class Profile extends Equatable {
 
   bool get isEmpty => this == Profile.empty;
 
+  Profile copyWith({
+    int? id,
+    String? bio,
+    String? whyVoteMe,
+    String? imageSrc,
+    String? imagePlaceholderColors,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return Profile(
+      id: id ?? this.id,
+      bio: bio ?? this.bio,
+      whyVoteMe: whyVoteMe ?? this.whyVoteMe,
+      imageSrc: imageSrc ?? this.imageSrc,
+      imagePlaceholderColors:
+          imagePlaceholderColors ?? this.imagePlaceholderColors,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
   factory Profile.fromApiProfile(user_api.Profile profile) => Profile(
         id: profile.id,
         bio: profile.bio,

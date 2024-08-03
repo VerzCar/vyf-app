@@ -10,22 +10,23 @@ part 'user_x_state.dart';
 class UserXCubit extends Cubit<UserXState> {
   UserXCubit({
     required IUserRepository userRepository,
-  })  :_userRepository = userRepository,
+  })  : _userRepository = userRepository,
         super(const UserXState());
 
   final IUserRepository _userRepository;
 
-  Future<void> userXFetched({
+  void userXFetched({
     required User currentUser,
     required String identityId,
   }) async {
     if (currentUser.identityId == identityId) {
-      return emit(
+      emit(
         state.copyWith(
           status: StatusIndicator.success,
           user: currentUser,
         ),
       );
+      return;
     }
 
     emit(state.copyWith(status: StatusIndicator.loading));
@@ -45,6 +46,21 @@ class UserXCubit extends Cubit<UserXState> {
       );
       if (isClosed) return;
       emit(state.copyWith(status: StatusIndicator.failure));
+    }
+  }
+
+  void currentUserChanged({
+    required User currentUser,
+    required String identityId,
+  }) {
+    if (currentUser.identityId == identityId) {
+      emit(
+        state.copyWith(
+          status: StatusIndicator.success,
+          user: currentUser,
+        ),
+      );
+      return;
     }
   }
 }
