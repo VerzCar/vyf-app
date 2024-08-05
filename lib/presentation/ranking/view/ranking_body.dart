@@ -12,7 +12,6 @@ import 'package:vote_your_face/presentation/ranking/widgets/live_indicator.dart'
 import 'package:vote_your_face/presentation/ranking/widgets/members_need_vote_preview.dart';
 import 'package:vote_your_face/presentation/ranking/widgets/ranked_voting_button.dart';
 import 'package:vote_your_face/presentation/ranking/widgets/ranking_sheet.dart';
-import 'package:vote_your_face/presentation/ranking/widgets/voted_action_overlay.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 import 'package:vote_your_face/theme.dart';
 
@@ -28,134 +27,120 @@ class RankingBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
 
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.only(bottom: 10.0),
-                          child: Text(
-                            'Need a vote',
-                            style: themeData.textTheme.titleMedium,
-                          ),
-                        ),
-                        MembersNeedVotePreview(circleId: circleId),
-                      ],
+                    Container(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: Text(
+                        'Need a vote',
+                        style: themeData.textTheme.titleMedium,
+                      ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.only(bottom: 10.0),
-                          child: Text(
-                            'Valid',
-                            style: themeData.textTheme.titleMedium,
-                          ),
-                        ),
-                        BlocBuilder<CircleRankingBloc, CircleRankingState>(
-                          builder: (context, state) {
-                            return TimeBox(
-                              from: state.circle.validFrom,
-                              until: state.circle.validUntil,
-                            );
-                          },
-                        ),
-                      ],
-                    ),
+                    MembersNeedVotePreview(circleId: circleId),
                   ],
                 ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    LiveIndicator(),
+                    Container(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: Text(
+                        'Valid',
+                        style: themeData.textTheme.titleMedium,
+                      ),
+                    ),
+                    BlocBuilder<CircleRankingBloc, CircleRankingState>(
+                      builder: (context, state) {
+                        return TimeBox(
+                          from: state.circle.validFrom,
+                          until: state.circle.validUntil,
+                        );
+                      },
+                    ),
                   ],
                 ),
-              ),
-              const SizedBox(height: 30),
-              BlocSelector<CircleRankingBloc, CircleRankingState, CircleStage>(
-                selector: (state) => state.circle.stage,
-                builder: (context, stage) {
-                  return stage == CircleStage.hot
-                      ? BlocBuilder<RankingCubit, RankingState>(
-                          buildWhen: (prev, current) =>
-                              current.topRankings.isEmpty &&
-                              current.rankings.isEmpty,
-                          builder: (context, rankingState) {
-                            return rankingState.topRankings.isEmpty &&
-                                    rankingState.rankings.isEmpty
-                                ? _buildEmptyRankingsPlaceholder(context)
-                                : const SizedBox();
-                          })
-                      : const SizedBox();
-                },
-              ),
-              BlocSelector<CircleRankingBloc, CircleRankingState, CircleStage>(
-                selector: (state) => state.circle.stage,
-                builder: (context, stage) {
-                  return stage == CircleStage.hot
-                      ? BlocBuilder<RankingCubit, RankingState>(
-                          builder: (context, rankingState) {
-                          return rankingState.topRankings.isNotEmpty
-                              ? _buildWinnerPodium(
-                                  context: context,
-                                  topRankings: rankingState.topRankings,
-                                )
-                              : const SizedBox();
-                        })
-                      : const SizedBox();
-                },
-              ),
-              BlocSelector<CircleRankingBloc, CircleRankingState, CircleStage>(
-                selector: (state) => state.circle.stage,
-                builder: (context, stage) {
-                  return stage == CircleStage.hot
-                      ? BlocBuilder<RankingCubit, RankingState>(
-                          builder: (context, rankingState) {
-                          return rankingState.rankings.isNotEmpty
-                              ? _buildRankingListView(
-                                  context: context,
-                                  rankings: rankingState.rankings,
-                                )
-                              : const SizedBox();
-                        })
-                      : const SizedBox();
-                },
-              ),
-              BlocSelector<CircleRankingBloc, CircleRankingState, CircleStage>(
-                selector: (state) => state.circle.stage,
-                builder: (context, stage) {
-                  return stage != CircleStage.hot
-                      ? _buildColdCirclePlaceholder(context)
-                      : const SizedBox();
-                },
-              ),
-            ],
-          ),
-        ),
-        Positioned.fill(
-          child: Align(
-            child: AnimatedScale(
-              scale: true ? 1.0 : 0.0,
-              duration: Duration(milliseconds: 800),
-              child: VotedActionOverlay(),
+              ],
             ),
           ),
-        )
-      ],
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                LiveIndicator(),
+              ],
+            ),
+          ),
+          const SizedBox(height: 30),
+          BlocSelector<CircleRankingBloc, CircleRankingState, CircleStage>(
+            selector: (state) => state.circle.stage,
+            builder: (context, stage) {
+              return stage == CircleStage.hot
+                  ? BlocBuilder<RankingCubit, RankingState>(
+                      buildWhen: (prev, current) =>
+                          current.topRankings.isEmpty &&
+                          current.rankings.isEmpty,
+                      builder: (context, rankingState) {
+                        return rankingState.topRankings.isEmpty &&
+                                rankingState.rankings.isEmpty
+                            ? _buildEmptyRankingsPlaceholder(context)
+                            : const SizedBox();
+                      })
+                  : const SizedBox();
+            },
+          ),
+          BlocSelector<CircleRankingBloc, CircleRankingState, CircleStage>(
+            selector: (state) => state.circle.stage,
+            builder: (context, stage) {
+              return stage == CircleStage.hot
+                  ? BlocBuilder<RankingCubit, RankingState>(
+                      builder: (context, rankingState) {
+                      return rankingState.topRankings.isNotEmpty
+                          ? _buildWinnerPodium(
+                              context: context,
+                              topRankings: rankingState.topRankings,
+                            )
+                          : const SizedBox();
+                    })
+                  : const SizedBox();
+            },
+          ),
+          BlocSelector<CircleRankingBloc, CircleRankingState, CircleStage>(
+            selector: (state) => state.circle.stage,
+            builder: (context, stage) {
+              return stage == CircleStage.hot
+                  ? BlocBuilder<RankingCubit, RankingState>(
+                      builder: (context, rankingState) {
+                      return rankingState.rankings.isNotEmpty
+                          ? _buildRankingListView(
+                              context: context,
+                              rankings: rankingState.rankings,
+                            )
+                          : const SizedBox();
+                    })
+                  : const SizedBox();
+            },
+          ),
+          BlocSelector<CircleRankingBloc, CircleRankingState, CircleStage>(
+            selector: (state) => state.circle.stage,
+            builder: (context, stage) {
+              return stage != CircleStage.hot
+                  ? _buildColdCirclePlaceholder(context)
+                  : const SizedBox();
+            },
+          ),
+        ],
+      ),
     );
   }
 
