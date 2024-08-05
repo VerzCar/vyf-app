@@ -1,25 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:vote_your_face/presentation/shared/shared.dart';
 
-class LiveIndicator extends StatefulWidget {
+class LiveIndicator extends StatelessWidget {
   const LiveIndicator({super.key});
-
-  @override
-  State<LiveIndicator> createState() => _LiveIndicatorState();
-}
-
-class _LiveIndicatorState extends State<LiveIndicator>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-
-  @override
-  void initState() {
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 2),
-    );
-    _controller.repeat(reverse: true);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,29 +11,24 @@ class _LiveIndicatorState extends State<LiveIndicator>
     return Text.rich(
       TextSpan(
         style: themeData.textTheme.labelSmall,
-        children: [
+        children: const [
           WidgetSpan(
             alignment: PlaceholderAlignment.middle,
-            child: FadeTransition(
-              opacity: _controller,
-              child: const Icon(
+            child: Fading(
+              repeat: true,
+              reverse: true,
+              child: Icon(
                 Icons.circle_rounded,
                 size: 10,
                 color: Colors.green,
               ),
             ),
           ),
-          const TextSpan(
+          TextSpan(
             text: ' Live',
           ),
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 }

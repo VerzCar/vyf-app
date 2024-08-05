@@ -93,7 +93,6 @@ class CirclesView extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.redAccent,
                   shape: BoxShape.circle,
-                  //borderRadius: BorderRadius.circular(10),
                 ),
                 constraints: const BoxConstraints(
                   minWidth: 16,
