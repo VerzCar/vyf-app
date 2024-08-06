@@ -118,6 +118,9 @@ class CircleImage extends StatelessWidget {
                           circleId: circle.id,
                           image: image,
                         ),
+                        onImageDeletion: () => circleUploadCubit.onDeleteImage(
+                          circleId: circle.id,
+                        ),
                       ),
                     );
                   },

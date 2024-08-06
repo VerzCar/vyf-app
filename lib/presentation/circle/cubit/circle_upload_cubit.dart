@@ -47,6 +47,32 @@ class CircleUploadCubit extends Cubit<CircleUploadState> {
     }
   }
 
+  void onDeleteImage({
+    required int circleId,
+  }) async {
+    try {
+      emit(state.copyWith(
+        status: StatusIndicator.loading,
+      ));
+
+      final imageSrc = await _voteCircleRepository.deleteCircleImage(circleId);
+
+      emit(state.copyWith(
+        status: StatusIndicator.success,
+        uploadedImageSrc: imageSrc,
+      ));
+    } catch (e) {
+      sl<Logger>().t(
+        'onDeleteImage',
+        error: e,
+      );
+      if (isClosed) return;
+      emit(state.copyWith(
+        status: StatusIndicator.failure,
+      ));
+    }
+  }
+
   /// Attach a newly timestamp to image as they are currently always
   /// have the same naming.
   String _srcWithAttachedTimestamp(String src) {

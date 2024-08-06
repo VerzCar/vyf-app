@@ -4,10 +4,12 @@ import 'package:image_picker/image_picker.dart';
 class ImageSelectionSheet extends StatelessWidget {
   const ImageSelectionSheet({
     super.key,
-    required this.onImageSelected,
+    this.onImageSelected,
+    this.onImageDeletion,
   });
 
-  final void Function(XFile image) onImageSelected;
+  final void Function(XFile image)? onImageSelected;
+  final VoidCallback? onImageDeletion;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +52,7 @@ class ImageSelectionSheet extends StatelessWidget {
               return ListTile(
                 leading: const Icon(Icons.delete),
                 title: const Text('Delete'),
-                onTap: () => {},
+                onTap: () => _onDeletion(),
               );
             }
             return null;
@@ -72,7 +74,9 @@ class ImageSelectionSheet extends StatelessWidget {
       return;
     }
 
-    onImageSelected(image!);
+    if (onImageSelected != null) {
+      onImageSelected!(image!);
+    }
   }
 
   void _fromGallery(BuildContext context) async {
@@ -86,6 +90,14 @@ class ImageSelectionSheet extends StatelessWidget {
       return;
     }
 
-    onImageSelected(image!);
+    if (onImageSelected != null) {
+      onImageSelected!(image!);
+    }
+  }
+
+  void _onDeletion() {
+    if (onImageDeletion != null) {
+      onImageDeletion!();
+    }
   }
 }

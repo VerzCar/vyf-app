@@ -85,6 +85,8 @@ class UserProfileImage extends StatelessWidget {
                             circleUploadCubit.onUploadImage(
                           image: image,
                         ),
+                        onImageDeletion: () =>
+                            circleUploadCubit.onDeleteImage(),
                       ),
                     );
                   },
