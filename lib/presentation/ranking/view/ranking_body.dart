@@ -230,6 +230,8 @@ class RankingBody extends StatelessWidget {
                                     child: RankingSheet(
                                       identityId: ranking.identityId,
                                       placementNumber: ranking.number,
+                                      upVotes: ranking.votes,
+                                      circleId: circleId,
                                     ),
                                   );
                                 },
@@ -266,7 +268,7 @@ class RankingBody extends StatelessWidget {
                         child: Text(
                           ranking.votes.toString(),
                           style: themeData.textTheme.bodyLarge
-                              ?.copyWith(fontWeight: FontWeight.w500),
+                              ?.copyWith(fontWeight: FontWeight.w800),
                         ),
                       ),
                     ],
@@ -287,7 +289,7 @@ class RankingBody extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    state.user.username,
+                    state.user.displayName,
                     style: themeData.textTheme.bodyMedium
                         ?.copyWith(fontWeight: FontWeight.w600),
                   ),
@@ -346,7 +348,9 @@ class RankingBody extends StatelessWidget {
             ),
             leading: Text(
               ranking.number.toString(),
-              style: themeData.textTheme.bodyLarge,
+              style: themeData.textTheme.bodyLarge?.copyWith(
+                fontWeight: FontWeight.w800,
+              ),
             ),
             title: UserXProvider(
               identityId: ranking.identityId,
@@ -380,6 +384,8 @@ class RankingBody extends StatelessWidget {
                     child: RankingSheet(
                       identityId: ranking.identityId,
                       placementNumber: ranking.number,
+                      upVotes: ranking.votes,
+                      circleId: circleId,
                     ),
                   );
                 },

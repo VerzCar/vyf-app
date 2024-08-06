@@ -696,10 +696,10 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
       }
 
       final apiResponse =
-          ApiResponse<List<String>>.fromJson(jsonDecode(res.body));
+          ApiResponse<List<dynamic>>.fromJson(jsonDecode(res.body));
 
       if (res.statusCode == HttpStatus.ok) {
-        return apiResponse.data;
+        return apiResponse.data.map((data) => data as String).toList();
       }
 
       logger.e('querying voted by voters failed: $apiResponse');

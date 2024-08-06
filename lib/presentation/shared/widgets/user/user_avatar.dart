@@ -51,7 +51,7 @@ class UserAvatar extends StatelessWidget {
     final List<Widget> avatarStackChildren = [
       AvatarImage(
         src: user.profile.imageSrc,
-        capitalLetters: usersInitials(user.username),
+        capitalLetters: usersInitials(user.displayName),
         size: avatarSize,
       ),
     ];
@@ -102,7 +102,7 @@ class UserAvatar extends StatelessWidget {
   }) {
     final List<Widget> labelChildren = [
       Text(
-        user.username,
+        user.displayName,
         style: themeData.textTheme.labelLarge,
       ),
     ];

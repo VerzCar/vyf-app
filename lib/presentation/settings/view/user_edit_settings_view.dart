@@ -51,7 +51,7 @@ class UserEditSettingsView extends StatelessWidget {
                           ),
                           const SizedBox(height: 7.0),
                           Text(
-                            state.user.username,
+                            state.user.displayName,
                             style: themeData.textTheme.titleMedium,
                           ),
                         ],

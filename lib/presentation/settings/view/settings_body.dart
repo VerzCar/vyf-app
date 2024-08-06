@@ -34,7 +34,7 @@ class SettingsBody extends StatelessWidget {
                 ),
                 trailing: const Icon(Icons.arrow_forward_ios_outlined),
                 title: Text(
-                  state.user.username,
+                  state.user.displayName,
                   style: themeData.textTheme.titleMedium,
                 ),
                 subtitle:

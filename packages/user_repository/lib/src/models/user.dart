@@ -47,6 +47,18 @@ class User extends Equatable {
 
   bool get isEmpty => this == User.empty;
 
+  String get displayName {
+    if (firstName.isNotEmpty && lastName.isNotEmpty) {
+      return '$firstName $lastName';
+    }
+
+    if (firstName.isNotEmpty) {
+      return firstName;
+    }
+
+    return username;
+  }
+
   User copyWith({
     int? id,
     String? identityId,

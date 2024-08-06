@@ -59,7 +59,7 @@ class MembersNeedVoteSheet extends StatelessWidget {
                         ),
                         title: BlocBuilder<UserXCubit, UserXState>(
                           builder: (context, state) {
-                            return Text(state.user.username);
+                            return Text(state.user.displayName);
                           },
                         ),
                         subtitle: candidate.commitment.notCommitted
