@@ -237,6 +237,11 @@ class VoteCircleRepository implements IVoteCircleRepository {
   }
 
   @override
+  Future<String> deleteCircleImage(int circleId) async {
+    return await _voteCircleApi.deleteCircleImage(circleId);
+  }
+
+  @override
   Future<void> subscribeToCircleCandidateChangedEvent(int circleId) async {
     try {
       if (_candidateChangedEventSubscription != null) {

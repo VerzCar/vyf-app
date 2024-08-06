@@ -883,11 +883,8 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
           headers[HttpHeaders.authorizationHeader]!;
 
       final httpImage = http.MultipartFile.fromBytes(
-        'circleImageFile',
-        imageBytes,
-        filename: 'image',
-        contentType: MediaType('multipart', 'form-data')
-      );
+          'circleImageFile', imageBytes,
+          filename: 'image', contentType: MediaType('multipart', 'form-data'));
       request.files.add(httpImage);
 
       final res = await request.send();
@@ -910,6 +907,38 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
       }
 
       logger.e('uploading image to circle failed: $apiResponse');
+      throw UploadFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> deleteCircleImage(int circleId) async {
+    var logger = Logger();
+
+    try {
+      final res = await http.delete(
+        _uri(path: 'upload/circle-img/$circleId'),
+        headers: await _headers,
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('deleting circle image server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<String>.fromJson(jsonDecode(res.body));
+
+      if (res.statusCode == HttpStatus.ok) {
+        return apiResponse.data;
+      }
+
+      logger.e('deleting circle image failed: $apiResponse');
       throw UploadFailure(
         statusCode: res.statusCode,
         msg: apiResponse.msg,

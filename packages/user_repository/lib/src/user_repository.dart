@@ -44,4 +44,9 @@ class UserRepository implements IUserRepository {
   Future<String> uploadUserProfileImage(Uint8List imageBytes) async {
     return await _userApi.uploadUserProfileImage(imageBytes);
   }
+
+  @override
+  Future<String> deleteUserProfileImage() async {
+    return await _userApi.deleteUserProfileImage();
+  }
 }

@@ -75,4 +75,6 @@ abstract class IVoteCircleApiClient {
     int circleId,
     Uint8List imageBytes,
   );
+
+  Future<String> deleteCircleImage(int circleId);
 }

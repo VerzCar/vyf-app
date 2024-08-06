@@ -209,6 +209,38 @@ class UserApiClient implements IUserApiClient {
     }
   }
 
+  @override
+  Future<String> deleteUserProfileImage() async {
+    var logger = Logger();
+
+    try {
+      final res = await http.delete(
+        _uri(path: 'upload/profile-img'),
+        headers: await _headers,
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('deleting user profile image server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<String>.fromJson(jsonDecode(res.body));
+
+      if (res.statusCode == HttpStatus.ok) {
+        return apiResponse.data;
+      }
+
+      logger.e('deleting user profile imagefailed: $apiResponse');
+      throw UploadUserFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Uri _uri({String? path, Map<String, dynamic>? queryParameters}) {
     final httpsUri = Uri(
       scheme: 'https',

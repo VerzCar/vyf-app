@@ -12,4 +12,6 @@ abstract class IUserApiClient {
   Future<User> updateUser(UserUpdate user);
 
   Future<String> uploadUserProfileImage(Uint8List imageBytes);
+
+  Future<String> deleteUserProfileImage();
 }

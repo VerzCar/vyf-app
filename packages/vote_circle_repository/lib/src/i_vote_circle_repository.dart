@@ -79,6 +79,8 @@ abstract class IVoteCircleRepository {
     Uint8List imageBytes,
   );
 
+  Future<String> deleteCircleImage(int circleId);
+
   Future<void> subscribeToCircleCandidateChangedEvent(int circleId);
 
   Future<void> subscribeToCircleVoterChangedEvent(int circleId);
