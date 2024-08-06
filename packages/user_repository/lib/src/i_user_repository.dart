@@ -7,7 +7,9 @@ abstract class IUserRepository {
 
   Future<User> x(String id);
 
-  Future<List<User>> users();
+  Future<List<UserPaginated>> users();
+
+  Future<List<UserPaginated>> usersFiltered(String username);
 
   Future<User> updateUser(UserUpdate user);
 

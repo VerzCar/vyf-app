@@ -6,3 +6,5 @@ export 'gender.dart';
 export 'country.dart';
 export 'user_update.dart';
 export 'profile_update.dart';
+export 'profile_paginated.dart';
+export 'user_paginated.dart';

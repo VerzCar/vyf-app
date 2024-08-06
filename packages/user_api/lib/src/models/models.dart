@@ -8,3 +8,5 @@ export 'phone_number_country.dart';
 export 'api_response.dart';
 export 'user_update.dart';
 export 'profile_update.dart';
+export 'profile_paginated.dart';
+export 'user_paginated.dart';

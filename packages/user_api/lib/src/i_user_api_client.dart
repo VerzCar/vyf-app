@@ -7,7 +7,9 @@ abstract class IUserApiClient {
 
   Future<User> fetchX(String id);
 
-  Future<List<User>> fetchUsers();
+  Future<List<UserPaginated>> fetchUsers();
+
+  Future<List<UserPaginated>> fetchUsersFiltered(String username);
 
   Future<User> updateUser(UserUpdate user);
 

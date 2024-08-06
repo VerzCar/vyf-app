@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:user_api/user_api.dart' as user_api;
+import 'package:user_repository/src/models/user_paginated.dart';
 import 'i_user_repository.dart';
 import 'models/models.dart';
 
@@ -28,9 +29,18 @@ class UserRepository implements IUserRepository {
   }
 
   @override
-  Future<List<User>> users() async {
+  Future<List<UserPaginated>> users() async {
     final res = await _userApi.fetchUsers();
-    final users = res.map((user) => User.fromApiUser(user)).toList();
+    final users =
+        res.map((user) => UserPaginated.fromApiUserPaginated(user)).toList();
+    return users;
+  }
+
+  @override
+  Future<List<UserPaginated>> usersFiltered(String username) async {
+    final res = await _userApi.fetchUsersFiltered(username);
+    final users =
+        res.map((user) => UserPaginated.fromApiUserPaginated(user)).toList();
     return users;
   }
 
