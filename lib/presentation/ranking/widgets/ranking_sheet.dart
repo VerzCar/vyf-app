@@ -92,7 +92,7 @@ class RankingSheet extends StatelessWidget {
                     children: [
                       Text(
                         'Placement Nr. $placementNumber',
-                        softWrap: false,
+                        textAlign: TextAlign.center,
                         style: themeData.textTheme.headlineSmall?.copyWith(
                           fontWeight: FontWeight.w700,
                         ),

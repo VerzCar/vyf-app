@@ -334,64 +334,88 @@ class RankingBody extends StatelessWidget {
       itemBuilder: (BuildContext contextList, int index) {
         final ranking = rankings[index];
 
-        return Card(
-          key: Key(ranking.id.toString()),
-          elevation: 0,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.zero,
-          ),
-          margin: const EdgeInsets.all(0),
-          child: ListTile(
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 15.0,
-              vertical: 3.0,
-            ),
-            leading: Text(
-              ranking.number.toString(),
-              style: themeData.textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.w800,
+        return Stack(
+          children: [
+            Card(
+              key: Key(ranking.id.toString()),
+              elevation: 0,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.zero,
               ),
-            ),
-            title: UserXProvider(
-              identityId: ranking.identityId,
-              child: UserAvatar(
-                key: ValueKey(ranking.identityId),
-                option: UserAvatarOption(
-                  withLabel: true,
-                  labelChild: Text(
-                    '${ranking.votes} votes',
-                    style: themeData.textTheme.labelMedium,
+              margin: const EdgeInsets.all(0),
+              child: ListTile(
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 15.0,
+                  vertical: 3.0,
+                ),
+                leading: Text(
+                  ranking.number.toString(),
+                  style: themeData.textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
-              ),
-            ),
-            trailing: BlocBuilder<MembersBloc, MembersState>(
-              buildWhen: (previous, current) =>
-                  previous.status != current.status,
-              builder: (context, state) {
-                return state.status.isSuccessful
-                    ? RankedVotingButton(ranking: ranking)
-                    : const SizedBox();
-              },
-            ),
-            onTap: () {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                builder: (BuildContext context2) {
-                  return SizedBox(
-                    height: size.height * 0.70,
-                    child: RankingSheet(
-                      identityId: ranking.identityId,
-                      placementNumber: ranking.number,
-                      upVotes: ranking.votes,
-                      circleId: circleId,
+                title: UserXProvider(
+                  identityId: ranking.identityId,
+                  child: UserAvatar(
+                    key: ValueKey(ranking.identityId),
+                    option: UserAvatarOption(
+                      withLabel: true,
+                      labelChild: Text(
+                        '${ranking.votes} votes',
+                        style: themeData.textTheme.labelMedium,
+                      ),
                     ),
+                  ),
+                ),
+                trailing: BlocBuilder<MembersBloc, MembersState>(
+                  buildWhen: (previous, current) =>
+                      previous.status != current.status,
+                  builder: (context, state) {
+                    return state.status.isSuccessful
+                        ? RankedVotingButton(ranking: ranking)
+                        : const SizedBox();
+                  },
+                ),
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (BuildContext context2) {
+                      return SizedBox(
+                        height: size.height * 0.70,
+                        child: RankingSheet(
+                          identityId: ranking.identityId,
+                          placementNumber: ranking.number,
+                          upVotes: ranking.votes,
+                          circleId: circleId,
+                        ),
+                      );
+                    },
                   );
                 },
-              );
-            },
-          ),
+              ),
+            ),
+            BlocSelector<MembersBloc, MembersState, bool>(
+              selector: (state) =>
+                  MembersSelector.hasVotedFor(state, ranking.identityId),
+              builder: (context, hasVotedFor) {
+                if (hasVotedFor) {
+                  return Positioned(
+                    left: 10,
+                    top: -5,
+                    child: Text(
+                      'You have voted for',
+                      textAlign: TextAlign.center,
+                      style: themeData.textTheme.labelLarge?.copyWith(
+                        color: themeData.colorScheme.secondary,
+                      ),
+                    ),
+                  );
+                }
+                return const SizedBox();
+              },
+            ),
+          ],
         );
       },
       separatorBuilder: (context, index) => Divider(

@@ -10,7 +10,8 @@ class MembersSelector {
       return false;
     }
 
-    return memberState.circleCandidate.userCandidate?.candidate == userIdentityId;
+    return memberState.circleCandidate.userCandidate?.candidate ==
+        userIdentityId;
   }
 
   static bool isUserVoterMemberOfCircle(
@@ -47,9 +48,9 @@ class MembersSelector {
   }
 
   static bool canRevokeVote(
-      MembersState memberState,
-      String toVoteForIdentityId,
-      ) {
+    MembersState memberState,
+    String toVoteForIdentityId,
+  ) {
     if (memberState.status.isNotSuccessful) {
       return false;
     }
@@ -66,5 +67,29 @@ class MembersSelector {
 
     // voter has voted for given user id
     return memberState.circleVoter.userVoter!.votedFor == toVoteForIdentityId;
+  }
+
+  /// Determines if the user has voted for given ident id
+  /// as a voter. True if has voted for the given id, otherwise false.
+  static bool hasVotedFor(
+    MembersState memberState,
+    String identityId,
+  ) {
+    if (memberState.status.isNotSuccessful) {
+      return false;
+    }
+
+    // The member (myself) must be a voter to be able to have voted
+    if (memberState.circleVoter.userVoter == null) {
+      return false;
+    }
+
+    // voter hasn't voted yet
+    if (memberState.circleVoter.userVoter!.votedFor == null) {
+      return false;
+    }
+
+    // voter has voted for given user id
+    return memberState.circleVoter.userVoter!.votedFor == identityId;
   }
 }
