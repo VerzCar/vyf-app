@@ -7,26 +7,46 @@ class UserPaginated extends Equatable {
     required this.id,
     required this.identityId,
     required this.username,
+    required this.firstName,
+    required this.lastName,
     required this.profile,
   });
 
   final int id;
   final String identityId;
   final String username;
+  final String firstName;
+  final String lastName;
   final ProfilePaginated profile;
 
   static const empty = UserPaginated(
     id: 0,
-    identityId: "",
-    username: "",
+    identityId: '',
+    username: '',
+    firstName: '',
+    lastName: '',
     profile: ProfilePaginated.empty,
   );
+
+  String get displayName {
+    if (firstName.isNotEmpty && lastName.isNotEmpty) {
+      return '$firstName $lastName';
+    }
+
+    if (firstName.isNotEmpty) {
+      return firstName;
+    }
+
+    return username;
+  }
 
   factory UserPaginated.fromApiUserPaginated(user_api.UserPaginated user) =>
       UserPaginated(
         id: user.id,
         identityId: user.identityId,
         username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
         profile: ProfilePaginated.fromApiProfilePaginated(user.profile),
       );
 
@@ -35,6 +55,8 @@ class UserPaginated extends Equatable {
         id,
         identityId,
         username,
+        firstName,
+        lastName,
         profile,
       ];
 }

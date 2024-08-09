@@ -11,6 +11,9 @@ class CandidateSearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    late TextEditingController searchController;
+    late FocusNode searchFocusNode;
+
     return Autocomplete<UserPaginated>(
       displayStringForOption: (user) => user.username,
       optionsBuilder: (TextEditingValue textEditingValue) async {
@@ -47,80 +50,55 @@ class CandidateSearch extends StatelessWidget {
         final themeData = Theme.of(context);
         final size = MediaQuery.of(context).size;
 
-        return Scaffold(
-          body: SafeArea(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: size.height * 0.64,
-                  child: ListView.separated(
-                    padding: const EdgeInsets.only(top: 10),
-                    itemCount: options.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final user = options.elementAt(index);
+        return SizedBox(
+          //height: constraints.biggest.height,
+          child: ListView.separated(
+            padding: const EdgeInsets.only(top: 10),
+            itemCount: options.length,
+            itemBuilder: (BuildContext context, int index) {
+              final user = options.elementAt(index);
 
-                      return Card(
-                        key: Key(user.id.toString()),
-                        elevation: 0,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero,
-                        ),
-                        margin: const EdgeInsets.all(0),
-                        child: ListTile(
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 15.0,
-                          ),
-                          onTap: () => onSelected(user),
-                          leading: AvatarImage(
-                            src: user.profile.imageSrc,
-                            capitalLetters: usersInitials(user.username),
-                          ),
-                          title: Text(user.username),
-                          trailing: Checkbox(
-                            value: false,
-                            onChanged: (value) => onSelected(user),
-                          ),
-                        ),
-                      );
-                    },
-                    separatorBuilder: (context, index) => Divider(
-                      height: 3,
-                      thickness: 3,
-                      color: themeData.colorScheme.blackColor,
-                    ),
-                  ),
+              return Card(
+                key: Key(user.id.toString()),
+                elevation: 0,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.zero,
                 ),
-                const SizedBox(height: 7),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () => {},
-                          style: ElevatedButton.styleFrom(
-                              foregroundColor: themeData.colorScheme.onPrimary,
-                              backgroundColor: themeData.colorScheme.primary),
-                          child: const Text('Add'),
-                        ),
-                      ),
-                    ],
+                margin: const EdgeInsets.all(0),
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 15.0,
                   ),
+                  onTap: () => onSelected(user),
+                  leading: AvatarImage(
+                    src: user.profile.imageSrc,
+                    capitalLetters: usersInitials(user.displayName),
+                  ),
+                  title: Text(user.displayName),
                 ),
-              ],
+              );
+            },
+            separatorBuilder: (context, index) => Divider(
+              height: 3,
+              thickness: 3,
+              color: themeData.colorScheme.blackColor,
             ),
           ),
         );
       },
-      onSelected: (UserPaginated selection) =>
-          context.read<CandidatesSelectCubit>().addToSelection(user: selection),
+      onSelected: (UserPaginated selection) {
+        context.read<CandidatesSelectCubit>().addToSelection(user: selection);
+        searchController.clear();
+        searchFocusNode.unfocus();
+      },
       fieldViewBuilder: (
         BuildContext context,
         TextEditingController controller,
         FocusNode focusNode,
         VoidCallback onFieldSubmitted,
       ) {
+        searchController = controller;
+        searchFocusNode = focusNode;
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Row(
@@ -135,13 +113,16 @@ class CandidateSearch extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 3),
-              TextButton(
-                onPressed: () {
-                  controller.clear();
-                  focusNode.unfocus();
-                },
-                child: const Text('cancel'),
-              ),
+              focusNode.hasFocus
+                  ? TextButton(
+                      onPressed: () {
+                        searchController.clear();
+                        searchFocusNode.unfocus();
+                        focusNode.unfocus();
+                      },
+                      child: const Text('cancel'),
+                    )
+                  : const SizedBox(),
             ],
           ),
         );

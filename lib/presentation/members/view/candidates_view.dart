@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
@@ -23,6 +24,7 @@ class CandidatesView extends StatelessWidget {
         Expanded(
           child: _membersList(context),
         ),
+        _selectionButton(context),
       ],
     );
   }
@@ -64,7 +66,7 @@ class CandidatesView extends StatelessWidget {
                       },
                     ),
                     trailing: _removeActionButton(
-                      themeData: themeData,
+                      context: context,
                       candidate: candidate,
                     ),
                   ),
@@ -87,64 +89,91 @@ class CandidatesView extends StatelessWidget {
       builder: (context, state) {
         final selectedUsers = state.selectedUsers;
 
-        return ListView.separated(
-            shrinkWrap: true,
-            itemCount: selectedUsers.length,
-            itemBuilder: (BuildContext context, int index) {
-              final su = selectedUsers[index];
+        if(selectedUsers.isEmpty) {
+          return const SizedBox();
+        }
 
-              return UserXProvider(
-                identityId: su.user.identityId,
-                child: Card(
-                  key: Key(su.user.id.toString()),
-                  elevation: 0,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero,
-                  ),
-                  margin: const EdgeInsets.all(0),
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 15.0,
+        return Column(
+         crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Selected candidates'),
+            const SizedBox(height: 5),
+            ListView.separated(
+                shrinkWrap: true,
+                itemCount: selectedUsers.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final su = selectedUsers[index];
+
+                  return UserXProvider(
+                    identityId: su.user.identityId,
+                    child: Card(
+                      key: Key(su.user.id.toString()),
+                      elevation: 0,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero,
+                      ),
+                      margin: const EdgeInsets.all(0),
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 15.0,
+                        ),
+                        leading: AvatarImage(
+                          src: su.user.profile.imageSrc,
+                          capitalLetters: usersInitials(su.user.username),
+                        ),
+                        title: Text(su.user.username),
+                        onTap: () => su.selected
+                            ? context
+                                .read<CandidatesSelectCubit>()
+                                .removeFromSelection(user: su.user)
+                            : context
+                                .read<CandidatesSelectCubit>()
+                                .selectUser(user: su.user),
+                        trailing: Checkbox(
+                          value: su.selected,
+                          onChanged: (value) => su.selected
+                              ? context
+                                  .read<CandidatesSelectCubit>()
+                                  .removeFromSelection(user: su.user)
+                              : context
+                                  .read<CandidatesSelectCubit>()
+                                  .selectUser(user: su.user),
+                        ),
+                      ),
                     ),
-                    leading: AvatarImage(
-                      src: su.user.profile.imageSrc,
-                      capitalLetters: usersInitials(su.user.username),
+                  );
+                },
+                separatorBuilder: (context, index) => Divider(
+                      height: 3,
+                      thickness: 3,
+                      color: themeData.colorScheme.blackColor,
                     ),
-                    title: Text(su.user.username),
-                    onTap: () => su.selected
-                        ? context
-                            .read<CandidatesSelectCubit>()
-                            .removeFromSelection(user: su.user)
-                        : context
-                            .read<CandidatesSelectCubit>()
-                            .selectUser(user: su.user),
-                    trailing: Checkbox(
-                      value: su.selected,
-                      onChanged: (value) => su.selected
-                          ? context
-                              .read<CandidatesSelectCubit>()
-                              .removeFromSelection(user: su.user)
-                          : context
-                              .read<CandidatesSelectCubit>()
-                              .selectUser(user: su.user),
-                    ),
-                  ),
-                ),
-              );
-            },
-            separatorBuilder: (context, index) => Divider(
-                  height: 3,
-                  thickness: 3,
-                  color: themeData.colorScheme.blackColor,
-                ));
+            ),
+            const SizedBox(height: 20),
+          ],
+        );
       },
     );
   }
 
+  Widget _selectionButton(BuildContext context) {
+    final themeData = Theme.of(context);
+
+    return ElevatedButton(
+      onPressed: () => {},
+      style: ElevatedButton.styleFrom(
+          foregroundColor: themeData.colorScheme.onPrimary,
+          backgroundColor: themeData.colorScheme.primary),
+      child: const Text('Add Candidates'),
+    );
+  }
+
   Widget _removeActionButton({
-    required ThemeData themeData,
+    required BuildContext context,
     required Candidate candidate,
   }) {
+    final themeData = Theme.of(context);
+
     return BlocSelector<UserBloc, UserState, String>(
       selector: (state) => state.user.identityId,
       builder: (context, identityId) =>

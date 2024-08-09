@@ -9,12 +9,16 @@ class UserPaginated {
     required this.id,
     required this.identityId,
     required this.username,
+    required this.firstName,
+    required this.lastName,
     required this.profile,
   });
 
   final int id;
   final String identityId;
   final String username;
+  final String firstName;
+  final String lastName;
   final ProfilePaginated profile;
 
   factory UserPaginated.fromJson(Map<String, dynamic> json) =>
