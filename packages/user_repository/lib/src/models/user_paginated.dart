@@ -15,6 +15,13 @@ class UserPaginated extends Equatable {
   final String username;
   final ProfilePaginated profile;
 
+  static const empty = UserPaginated(
+    id: 0,
+    identityId: "",
+    username: "",
+    profile: ProfilePaginated.empty,
+  );
+
   factory UserPaginated.fromApiUserPaginated(user_api.UserPaginated user) =>
       UserPaginated(
         id: user.id,

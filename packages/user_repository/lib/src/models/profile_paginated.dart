@@ -8,6 +8,8 @@ class ProfilePaginated extends Equatable {
     required this.imageSrc,
   });
 
+  static const empty = ProfilePaginated(imageSrc: "");
+
   factory ProfilePaginated.fromApiProfilePaginated(
           user_api.ProfilePaginated profile) =>
       ProfilePaginated(
