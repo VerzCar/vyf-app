@@ -1,7 +1,7 @@
-part of 'candidates_select_cubit.dart';
+part of 'user_select_cubit.dart';
 
-final class CandidatesSelectState extends Equatable {
-  const CandidatesSelectState({
+final class UserSelectState extends Equatable {
+  const UserSelectState({
     this.status = StatusIndicator.initial,
     this.selectedUsers = const [],
   });
@@ -9,11 +9,11 @@ final class CandidatesSelectState extends Equatable {
   final StatusIndicator status;
   final List<SelectedUser> selectedUsers;
 
-  CandidatesSelectState copyWith({
+  UserSelectState copyWith({
     StatusIndicator? status,
     List<SelectedUser>? selectedUsers,
   }) {
-    return CandidatesSelectState(
+    return UserSelectState(
       status: status ?? this.status,
       selectedUsers: selectedUsers ?? this.selectedUsers,
     );

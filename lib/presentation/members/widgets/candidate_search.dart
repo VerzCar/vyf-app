@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/injection.dart';
-import 'package:vote_your_face/presentation/members/cubit/candidates_select_cubit.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 import 'package:vote_your_face/theme.dart';
 
@@ -86,11 +84,6 @@ class CandidateSearch extends StatelessWidget {
               ),
             ),
           );
-        },
-        onSelected: (UserPaginated selection) {
-          context.read<CandidatesSelectCubit>().addToSelection(user: selection);
-          searchController.clear();
-          searchFocusNode.unfocus();
         },
         fieldViewBuilder: (
           BuildContext context,

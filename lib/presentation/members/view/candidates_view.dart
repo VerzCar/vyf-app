@@ -1,13 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
 import 'package:vote_your_face/application/members/members.dart';
 import 'package:vote_your_face/application/user/user.dart';
-import 'package:vote_your_face/presentation/members/cubit/candidates_select_cubit.dart';
-import 'package:vote_your_face/presentation/members/widgets/candidate_search.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
+import 'package:vote_your_face/presentation/shared/widgets/user/user_selection_sheet.dart';
 import 'package:vote_your_face/theme.dart';
 
 class CandidatesView extends StatelessWidget {
@@ -18,13 +16,10 @@ class CandidatesView extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 5),
-        const CandidateSearch(),
-        const SizedBox(height: 10),
-        _selectionsList(context),
+        _addMemberTile(context),
         Expanded(
           child: _membersList(context),
         ),
-        _selectionButton(context),
       ],
     );
   }
@@ -82,89 +77,39 @@ class CandidatesView extends StatelessWidget {
     );
   }
 
-  Widget _selectionsList(BuildContext context) {
+  Widget _addMemberTile(BuildContext context) {
     final themeData = Theme.of(context);
 
-    return BlocBuilder<CandidatesSelectCubit, CandidatesSelectState>(
-      builder: (context, state) {
-        final selectedUsers = state.selectedUsers;
-
-        if(selectedUsers.isEmpty) {
-          return const SizedBox();
-        }
-
-        return Column(
-         crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Selected candidates'),
-            const SizedBox(height: 5),
-            ListView.separated(
-                shrinkWrap: true,
-                itemCount: selectedUsers.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final su = selectedUsers[index];
-
-                  return UserXProvider(
-                    identityId: su.user.identityId,
-                    child: Card(
-                      key: Key(su.user.id.toString()),
-                      elevation: 0,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero,
-                      ),
-                      margin: const EdgeInsets.all(0),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 15.0,
-                        ),
-                        leading: AvatarImage(
-                          src: su.user.profile.imageSrc,
-                          capitalLetters: usersInitials(su.user.username),
-                        ),
-                        title: Text(su.user.username),
-                        onTap: () => su.selected
-                            ? context
-                                .read<CandidatesSelectCubit>()
-                                .removeFromSelection(user: su.user)
-                            : context
-                                .read<CandidatesSelectCubit>()
-                                .selectUser(user: su.user),
-                        trailing: Checkbox(
-                          value: su.selected,
-                          onChanged: (value) => su.selected
-                              ? context
-                                  .read<CandidatesSelectCubit>()
-                                  .removeFromSelection(user: su.user)
-                              : context
-                                  .read<CandidatesSelectCubit>()
-                                  .selectUser(user: su.user),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) => Divider(
-                      height: 3,
-                      thickness: 3,
-                      color: themeData.colorScheme.blackColor,
-                    ),
-            ),
-            const SizedBox(height: 20),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _selectionButton(BuildContext context) {
-    final themeData = Theme.of(context);
-
-    return ElevatedButton(
-      onPressed: () => {},
-      style: ElevatedButton.styleFrom(
-          foregroundColor: themeData.colorScheme.onPrimary,
-          backgroundColor: themeData.colorScheme.primary),
-      child: const Text('Add Candidates'),
+    return Card(
+      elevation: 0,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero,
+      ),
+      margin: const EdgeInsets.all(0),
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 15.0,
+        ),
+        leading: Container(
+          width: AvatarSize.base.preSize.width,
+          height: AvatarSize.base.preSize.height,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6.5),
+            color: themeData.colorScheme.secondary.withAlpha(220),
+          ),
+          child: Icon(
+            Icons.plus_one_outlined,
+            color: themeData.colorScheme.onSecondary,
+          ),
+        ),
+        title: Text(
+          'Add candidates',
+          style: TextStyle(
+            color: themeData.colorScheme.secondary,
+          ),
+        ),
+        onTap: () => _showAddMembersSheet(context),
+      ),
     );
   }
 
@@ -196,6 +141,19 @@ class CandidatesView extends StatelessWidget {
               : const SizedBox();
         },
       ),
+    );
+  }
+
+  void _showAddMembersSheet(
+    BuildContext context,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      useSafeArea: true,
+      isScrollControlled: true,
+      builder: (BuildContext context2) {
+        return const UserSelectionSheet();
+      },
     );
   }
 }

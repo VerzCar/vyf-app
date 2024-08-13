@@ -46,6 +46,10 @@ class VyfTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
 
+    if (labelText.isEmpty) {
+      return _field();
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -53,32 +57,36 @@ class VyfTextFormField extends StatelessWidget {
           labelText,
           style: themeData.textTheme.labelLarge,
         ),
-        TextFormField(
-          key: key,
-          controller: controller,
-          onChanged: onChanged,
-          onEditingComplete: onEditingComplete,
-          obscureText: obscureText,
-          keyboardType: keyboardType,
-          initialValue: initialValue,
-          minLines: minLines,
-          maxLines: maxLines ?? 1,
-          maxLength: maxLength,
-          readOnly: readOnly,
-          textAlign: textAlign,
-          onTap: onTap,
-          decoration: InputDecoration(
-            focusedBorder: const OutlineInputBorder(),
-            border: const OutlineInputBorder(),
-            errorText: showError ? errorText : null,
-            errorMaxLines: 2,
-            //errorStyle: TextStyle(fontSize: 0),
-            icon: icon,
-            helperText: helperText,
-            hintText: hintText,
-          ),
-        ),
+        _field(),
       ],
+    );
+  }
+
+  TextFormField _field() {
+    return TextFormField(
+      key: key,
+      controller: controller,
+      onChanged: onChanged,
+      onEditingComplete: onEditingComplete,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      initialValue: initialValue,
+      minLines: minLines,
+      maxLines: maxLines ?? 1,
+      maxLength: maxLength,
+      readOnly: readOnly,
+      textAlign: textAlign,
+      onTap: onTap,
+      decoration: InputDecoration(
+        focusedBorder: const OutlineInputBorder(),
+        border: const OutlineInputBorder(),
+        errorText: showError ? errorText : null,
+        errorMaxLines: 2,
+        //errorStyle: TextStyle(fontSize: 0),
+        icon: icon,
+        helperText: helperText,
+        hintText: hintText,
+      ),
     );
   }
 }
