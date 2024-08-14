@@ -65,6 +65,22 @@ final class MembersRemovedCandidateFromCircle extends MembersEvent {
       ];
 }
 
+final class MembersAddedCandidatesToCircle extends MembersEvent {
+  const MembersAddedCandidatesToCircle({
+    required this.candidateIdentIds,
+    required this.currentCircleId,
+  });
+
+  final List<String> candidateIdentIds;
+  final int currentCircleId;
+
+  @override
+  List<Object> get props => [
+        candidateIdentIds,
+        currentCircleId,
+      ];
+}
+
 final class MembersRemovedVoterFromCircle extends MembersEvent {
   const MembersRemovedVoterFromCircle({
     required this.voterIdentId,
@@ -77,6 +93,22 @@ final class MembersRemovedVoterFromCircle extends MembersEvent {
   @override
   List<Object> get props => [
         voterIdentId,
+        currentCircleId,
+      ];
+}
+
+final class MembersAddedVotersToCircle extends MembersEvent {
+  const MembersAddedVotersToCircle({
+    required this.voterIdentIds,
+    required this.currentCircleId,
+  });
+
+  final List<String> voterIdentIds;
+  final int currentCircleId;
+
+  @override
+  List<Object> get props => [
+        voterIdentIds,
         currentCircleId,
       ];
 }

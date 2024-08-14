@@ -22,16 +22,17 @@ class UserSelectCubit extends Cubit<UserSelectState> {
     try {
       final users = await _userRepository.users();
 
-      final selectedUsers = users
-          .map(
-            (user) => SelectedUser(user: user, selected: false),
-          )
+      final searchResults = users
+          .map((user) => SelectedUser(
+                user: user,
+                selected: false,
+              ))
           .toList();
 
       emit(
         state.copyWith(
           status: StatusIndicator.success,
-          selectedUsers: selectedUsers,
+          searchResults: searchResults,
         ),
       );
     } catch (e) {
@@ -48,11 +49,11 @@ class UserSelectCubit extends Cubit<UserSelectState> {
     emit(state.copyWith(status: StatusIndicator.loading));
 
     try {
-      final currentSelectedUsers = List.of(state.selectedUsers);
+      final foundUsers = await _userRepository.usersFiltered(name);
 
-      final users = await _userRepository.usersFiltered(name);
+      final currentSelectedUsers = state.selectedUsers;
 
-      final selectedUsers = users.map((user) {
+      final resultUsers = foundUsers.map((user) {
         final selectedUserIndex =
             currentSelectedUsers.indexWhere((su) => su.user.id == user.id);
 
@@ -69,7 +70,7 @@ class UserSelectCubit extends Cubit<UserSelectState> {
       emit(
         state.copyWith(
           status: StatusIndicator.success,
-          selectedUsers: selectedUsers,
+          searchResults: resultUsers,
         ),
       );
     } catch (e) {
@@ -86,12 +87,12 @@ class UserSelectCubit extends Cubit<UserSelectState> {
     required UserPaginated user,
   }) {
     try {
-      final selectedUsers = List.of(state.selectedUsers);
+      final searchResults = List.of(state.searchResults);
 
-      final selectedUserIndex =
-          selectedUsers.indexWhere((su) => su.user.id == user.id);
+      final searchResultIndex =
+          searchResults.indexWhere((su) => su.user.id == user.id);
 
-      if (selectedUserIndex == -1) {
+      if (searchResultIndex == -1) {
         return;
       }
 
@@ -100,14 +101,18 @@ class UserSelectCubit extends Cubit<UserSelectState> {
         selected: true,
       );
 
-      selectedUsers[selectedUserIndex] = selectedUser;
+      searchResults[searchResultIndex] = selectedUser;
+
+      final selectedUsers = List.of(state.selectedUsers);
+      selectedUsers.add(selectedUser);
 
       emit(state.copyWith(
+        searchResults: searchResults,
         selectedUsers: selectedUsers,
       ));
     } catch (e) {
       sl<Logger>().t(
-        'addToSelection',
+        'selectUser',
         error: e,
       );
       if (isClosed) return;
@@ -119,12 +124,12 @@ class UserSelectCubit extends Cubit<UserSelectState> {
     required UserPaginated user,
   }) {
     try {
-      final selectedUsers = List.of(state.selectedUsers);
+      final searchResults = List.of(state.searchResults);
 
-      final selectedUserIndex =
-          selectedUsers.indexWhere((su) => su.user.id == user.id);
+      final searchResultIndex =
+          searchResults.indexWhere((su) => su.user.id == user.id);
 
-      if (selectedUserIndex == -1) {
+      if (searchResultIndex == -1) {
         return;
       }
 
@@ -133,9 +138,19 @@ class UserSelectCubit extends Cubit<UserSelectState> {
         selected: false,
       );
 
-      selectedUsers[selectedUserIndex] = selectedUser;
+      searchResults[searchResultIndex] = selectedUser;
+
+      final selectedUsers = List.of(state.selectedUsers);
+
+      final selectedUserIndex =
+          selectedUsers.indexWhere((su) => su.user.id == user.id);
+
+      if (selectedUserIndex > -1) {
+        selectedUsers.removeAt(selectedUserIndex);
+      }
 
       emit(state.copyWith(
+        searchResults: searchResults,
         selectedUsers: selectedUsers,
       ));
     } catch (e) {

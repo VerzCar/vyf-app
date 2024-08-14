@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
@@ -6,7 +7,12 @@ import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/shared/widgets/user/user_selection.dart';
 
 class UserSelectionSheet extends StatelessWidget {
-  const UserSelectionSheet({super.key});
+  const UserSelectionSheet({
+    super.key,
+    this.onAdd,
+  });
+
+  final void Function(List<UserPaginated> users)? onAdd;
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +28,17 @@ class UserSelectionSheet extends StatelessWidget {
               vertical: 10.0,
               horizontal: 20.0,
             ),
-            child: _buttonActionRow(context),
+            child: BlocBuilder<UserSelectCubit, UserSelectState>(
+              builder: (context, state) {
+                return _buttonActionRow(context);
+              },
+            ),
           ),
-          // const SizedBox(height: 5),
           BlocBuilder<UserSelectCubit, UserSelectState>(
             builder: (context, state) {
               return Expanded(
                 child: UserSelection(
-                  selectedUsers: state.selectedUsers,
+                  selectedUsers: state.searchResults,
                   onSelect: (user) =>
                       context.read<UserSelectCubit>().selectUser(user: user),
                   onRemoveFromSelection: (user) => context
@@ -53,15 +62,25 @@ class UserSelectionSheet extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         TextButton(
-          onPressed: () => {},
+          onPressed: () => context.router.maybePop(),
           child: const Text('Cancel'),
         ),
         TextButton(
-          onPressed: () => {},
-          child: const Text('Add'),
+          onPressed: () {
+            if (onAdd != null) {
+              final selectedUsers =
+                  context.read<UserSelectCubit>().state.selectedUsers;
+
+              final usersWithSelection =
+                  selectedUsers.where((su) => su.selected);
+
+              onAdd!(usersWithSelection.map((su) => su.user).toList());
+            }
+          },
           style: TextButton.styleFrom(
             foregroundColor: themeData.colorScheme.secondary,
           ),
+          child: const Text('Add'),
         ),
       ],
     );

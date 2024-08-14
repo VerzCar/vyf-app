@@ -27,7 +27,7 @@ class UserSelection extends StatelessWidget {
           child: VyfTextFormField(
             key: const Key('UserSelectionInput_searchInput'),
             onChanged: (name) => onChanged(name),
-            hintText: 'carlo @carlo carlo@mail.com',
+            hintText: 'Search user',
           ),
         ),
         const SizedBox(height: 5),

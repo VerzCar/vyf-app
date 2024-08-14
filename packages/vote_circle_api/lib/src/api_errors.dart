@@ -130,6 +130,38 @@ class RevokeVoteFailure extends ApiFailure {
   });
 }
 
+class RemoveVoteFailure extends ApiFailure {
+  RemoveVoteFailure({
+    required super.statusCode,
+    super.msg,
+    super.status,
+  });
+}
+
+class RemoveCandidateFailure extends ApiFailure {
+  RemoveCandidateFailure({
+    required super.statusCode,
+    super.msg,
+    super.status,
+  });
+}
+
+class AddVoteFailure extends ApiFailure {
+  AddVoteFailure({
+    required super.statusCode,
+    super.msg,
+    super.status,
+  });
+}
+
+class AddCandidateFailure extends ApiFailure {
+  AddCandidateFailure({
+    required super.statusCode,
+    super.msg,
+    super.status,
+  });
+}
+
 class UpdateCommitmentFailure extends ApiFailure {
   UpdateCommitmentFailure({
     required super.statusCode,

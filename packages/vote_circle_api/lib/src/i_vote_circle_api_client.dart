@@ -38,6 +38,16 @@ abstract class IVoteCircleApiClient {
 
   Future<String> leaveCircleAsCandidate(int circleId);
 
+  Future<List<Candidate>> addCandidatesToCircle(
+    int circleId,
+    List<CandidateRequest> candidateRequests,
+  );
+
+  Future<List<Voter>> addVotersToCircle(
+    int circleId,
+    List<VoterRequest> voterRequests,
+  );
+
   Future<String> removeCandidateFromCircle(
     int circleId,
     CandidateRequest candidateRequest,

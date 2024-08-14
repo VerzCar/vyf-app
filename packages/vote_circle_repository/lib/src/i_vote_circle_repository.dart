@@ -41,6 +41,16 @@ abstract class IVoteCircleRepository {
 
   Future<Candidate> joinCircleAsCandidate(int circleId);
 
+  Future<List<Candidate>> addCandidatesToCircle(
+    int circleId,
+    List<CandidateRequest> candidateRequests,
+  );
+
+  Future<List<Voter>> addVotersToCircle(
+    int circleId,
+    List<VoterRequest> voterRequests,
+  );
+
   Future<String> leaveCircleAsVoter(int circleId);
 
   Future<String> leaveCircleAsCandidate(int circleId);

@@ -10,6 +10,7 @@ import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/injection.dart';
 
 part 'members_event.dart';
+
 part 'members_state.dart';
 
 class MembersBloc extends Bloc<MembersEvent, MembersState> {
@@ -28,6 +29,8 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
     );
     on<MembersRemovedCandidateFromCircle>(_onRemovedCandidateFromCircle);
     on<MembersRemovedVoterFromCircle>(_onRemovedVoterFromCircle);
+    on<MembersAddedCandidatesToCircle>(_onMembersAddedCandidatesToCircle);
+    on<MembersAddedVotersToCircle>(_onMembersAddedVotersToCircle);
   }
 
   final IVoteCircleRepository _voteCircleRepository;
@@ -157,6 +160,51 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
     } catch (e) {
       sl<Logger>().t(
         '_onRemovedVoterFromCircle',
+        error: e,
+      );
+      if (isClosed) return;
+      emit(state.copyWith(status: StatusIndicator.failure));
+    }
+  }
+
+  void _onMembersAddedCandidatesToCircle(
+    MembersAddedCandidatesToCircle event,
+    Emitter<MembersState> emit,
+  ) async {
+    try {
+      final requests = event.candidateIdentIds
+          .map((id) => CandidateRequest(candidate: id))
+          .toList();
+
+      await _voteCircleRepository.addCandidatesToCircle(
+        event.currentCircleId,
+        requests,
+      );
+    } catch (e) {
+      sl<Logger>().t(
+        '_onMembersAddedCandidatesToCircle',
+        error: e,
+      );
+      if (isClosed) return;
+      emit(state.copyWith(status: StatusIndicator.failure));
+    }
+  }
+
+  void _onMembersAddedVotersToCircle(
+    MembersAddedVotersToCircle event,
+    Emitter<MembersState> emit,
+  ) async {
+    try {
+      final requests =
+          event.voterIdentIds.map((id) => VoterRequest(voter: id)).toList();
+
+      await _voteCircleRepository.addVotersToCircle(
+        event.currentCircleId,
+        requests,
+      );
+    } catch (e) {
+      sl<Logger>().t(
+        '_onMembersAddedVotersToCircle',
         error: e,
       );
       if (isClosed) return;

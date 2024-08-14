@@ -152,7 +152,16 @@ class CandidatesView extends StatelessWidget {
       useSafeArea: true,
       isScrollControlled: true,
       builder: (BuildContext context2) {
-        return const UserSelectionSheet();
+        return UserSelectionSheet(onAdd: (users) {
+          final usersIdentIds = users.map((user) => user.identityId).toList();
+          final currentCircleId = context.read<CircleBloc>().state.circle.id;
+          context.read<MembersBloc>().add(
+                MembersAddedCandidatesToCircle(
+                  candidateIdentIds: usersIdentIds,
+                  currentCircleId: currentCircleId,
+                ),
+              );
+        });
       },
     );
   }

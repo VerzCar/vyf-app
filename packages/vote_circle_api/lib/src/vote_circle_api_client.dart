@@ -779,7 +779,7 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
       }
 
       logger.e('removing candidate from circle failed: $apiResponse');
-      throw CreateVoteFailure(
+      throw RemoveCandidateFailure(
         statusCode: res.statusCode,
         msg: apiResponse.msg,
         status: apiResponse.status,
@@ -817,7 +817,90 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
       }
 
       logger.e('removing voter from circle failed: $apiResponse');
-      throw CreateVoteFailure(
+      throw RemoveVoteFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<Candidate>> addCandidatesToCircle(
+    int circleId,
+    List<CandidateRequest> candidateRequests,
+  ) async {
+    var logger = Logger();
+
+    try {
+      var jsonBody = jsonEncode(candidateRequests.map((req) => req.toJson()));
+
+      final res = await http.post(
+        _uri(path: 'circle-candidates/$circleId/add'),
+        headers: await _headers,
+        body: jsonBody,
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('add candidate from circle server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<List<dynamic>>.fromJson(
+          jsonDecode(res.body) as Map<String, dynamic>);
+
+      if (res.statusCode == HttpStatus.ok) {
+        final candidates = apiResponse.data
+            .map((candidate) => Candidate.fromJson(candidate))
+            .toList();
+        return candidates;
+      }
+
+      logger.e('add candidate from circle failed: $apiResponse');
+      throw AddCandidateFailure(
+        statusCode: res.statusCode,
+        msg: apiResponse.msg,
+        status: apiResponse.status,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<Voter>> addVotersToCircle(
+    int circleId,
+    List<VoterRequest> voterRequests,
+  ) async {
+    var logger = Logger();
+
+    try {
+      var jsonBody = jsonEncode(voterRequests.map((req) => req.toJson()));
+
+      final res = await http.post(
+        _uri(path: 'circle-voters/$circleId/add'),
+        headers: await _headers,
+        body: jsonBody,
+      );
+
+      if (res.statusCode >= HttpStatus.internalServerError) {
+        logger.e('add voter from circle server error: $res');
+        throw ApiError(res);
+      }
+
+      final apiResponse = ApiResponse<List<dynamic>>.fromJson(
+          jsonDecode(res.body) as Map<String, dynamic>);
+
+      if (res.statusCode == HttpStatus.ok) {
+        final voters =
+            apiResponse.data.map((voter) => Voter.fromJson(voter)).toList();
+        return voters;
+      }
+
+      logger.e('add voter from circle failed: $apiResponse');
+      throw AddVoteFailure(
         statusCode: res.statusCode,
         msg: apiResponse.msg,
         status: apiResponse.status,
