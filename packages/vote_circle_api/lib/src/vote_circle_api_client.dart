@@ -835,7 +835,7 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     var logger = Logger();
 
     try {
-      var jsonBody = jsonEncode(candidateRequests.map((req) => req.toJson()));
+      var jsonBody = jsonEncode(candidateRequests);
 
       final res = await http.post(
         _uri(path: 'circle-candidates/$circleId/add'),
@@ -877,7 +877,7 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
     var logger = Logger();
 
     try {
-      var jsonBody = jsonEncode(voterRequests.map((req) => req.toJson()));
+      var jsonBody = jsonEncode(voterRequests);
 
       final res = await http.post(
         _uri(path: 'circle-voters/$circleId/add'),

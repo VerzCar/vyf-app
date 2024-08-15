@@ -8,12 +8,14 @@ class UserSelection extends StatelessWidget {
   const UserSelection({
     super.key,
     required this.selectedUsers,
+    this.notSelectableUserIdentIds = const [],
     required this.onSelect,
     required this.onRemoveFromSelection,
     required this.onChanged,
   });
 
   final List<SelectedUser> selectedUsers;
+  final List<String> notSelectableUserIdentIds;
   final void Function(UserPaginated user) onSelect;
   final void Function(UserPaginated user) onRemoveFromSelection;
   final void Function(String text) onChanged;
@@ -47,6 +49,11 @@ class UserSelection extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         final su = selectedUsers.elementAt(index);
 
+        final notSelectable = _notSelectable(
+          su: su,
+          notSelectableUserIdentIds: notSelectableUserIdentIds,
+        );
+
         return Card(
           key: Key(su.user.id.toString()),
           elevation: 0,
@@ -58,20 +65,17 @@ class UserSelection extends StatelessWidget {
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 15.0,
             ),
-            onTap: () => su.selected
-                ? onRemoveFromSelection(su.user)
-                : onSelect(su.user),
+            onTap: notSelectable
+                ? null
+                : () => su.selected
+                    ? onRemoveFromSelection(su.user)
+                    : onSelect(su.user),
             leading: AvatarImage(
               src: su.user.profile.imageSrc,
               capitalLetters: usersInitials(su.user.displayName),
             ),
             title: Text(su.user.displayName),
-            trailing: Checkbox(
-              value: su.selected,
-              onChanged: (value) => su.selected
-                  ? onRemoveFromSelection(su.user)
-                  : onSelect(su.user),
-            ),
+            trailing: _trailing(su: su, notSelectable: notSelectable),
           ),
         );
       },
@@ -80,6 +84,35 @@ class UserSelection extends StatelessWidget {
         thickness: 3,
         color: themeData.colorScheme.blackColor,
       ),
+    );
+  }
+
+  bool _notSelectable({
+    required SelectedUser su,
+    required List<String> notSelectableUserIdentIds,
+  }) {
+    final notSelectableIndex =
+        notSelectableUserIdentIds.indexWhere((id) => id == su.user.identityId);
+
+    if (notSelectableIndex != -1) {
+      return true;
+    }
+
+    return false;
+  }
+
+  Widget _trailing({
+    required SelectedUser su,
+    required bool notSelectable,
+  }) {
+    if (notSelectable) {
+      return const Text('is candidate');
+    }
+
+    return Checkbox(
+      value: su.selected,
+      onChanged: (value) =>
+          su.selected ? onRemoveFromSelection(su.user) : onSelect(su.user),
     );
   }
 }

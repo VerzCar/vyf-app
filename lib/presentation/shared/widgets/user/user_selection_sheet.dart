@@ -9,9 +9,11 @@ import 'package:vote_your_face/presentation/shared/widgets/user/user_selection.d
 class UserSelectionSheet extends StatelessWidget {
   const UserSelectionSheet({
     super.key,
+    this.notSelectableUserIdentIds = const [],
     this.onAdd,
   });
 
+  final List<String> notSelectableUserIdentIds;
   final void Function(List<UserPaginated> users)? onAdd;
 
   @override
@@ -39,6 +41,7 @@ class UserSelectionSheet extends StatelessWidget {
               return Expanded(
                 child: UserSelection(
                   selectedUsers: state.searchResults,
+                  notSelectableUserIdentIds: notSelectableUserIdentIds,
                   onSelect: (user) =>
                       context.read<UserSelectCubit>().selectUser(user: user),
                   onRemoveFromSelection: (user) => context
