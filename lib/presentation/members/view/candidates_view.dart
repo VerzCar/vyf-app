@@ -17,6 +17,8 @@ class CandidatesView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<MembersBloc, MembersState>(
       listener: (context, state) {
+        // TODO: this will take any failed actions from members bloc
+        //  we need more detailed error handling here
         if (state.status.isFailure) {
           EventTrigger.error(
             context: context,
@@ -47,9 +49,7 @@ class CandidatesView extends StatelessWidget {
             itemCount: candidates.length,
             itemBuilder: (BuildContext context, int index) {
               final candidate = candidates[index];
-              print('++++++++++++++++++++++++');
-print(candidate.candidate);
-              print('++++++++++++++++++++++++');
+
               return UserXProvider(
                 identityId: candidate.candidate,
                 child: Card(
