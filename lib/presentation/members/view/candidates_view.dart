@@ -7,7 +7,6 @@ import 'package:vote_your_face/application/members/members.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
-import 'package:vote_your_face/presentation/shared/widgets/user/user_selection_sheet.dart';
 import 'package:vote_your_face/theme.dart';
 
 class CandidatesView extends StatelessWidget {
