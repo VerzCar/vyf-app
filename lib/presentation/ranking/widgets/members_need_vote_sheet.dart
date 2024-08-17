@@ -33,24 +33,16 @@ class MembersNeedVoteSheet extends StatelessWidget {
             final candidates = state.circleCandidate.candidates;
 
             return Expanded(
-              child: ListView.separated(
-                itemCount: candidates.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final candidate = candidates[index];
+              child: BodyLayout(
+                child: ListView.separated(
+                  itemCount: candidates.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final candidate = candidates[index];
 
-                  return Card(
-                    key: Key(candidate.id.toString()),
-                    elevation: 0,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.zero,
-                    ),
-                    margin: const EdgeInsets.all(0),
-                    child: UserXProvider(
+                    return UserXProvider(
                       identityId: candidate.candidate,
                       child: ListTile(
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 15.0,
-                        ),
+                        key: Key(candidate.id.toString()),
                         leading: UserAvatar(
                           key: ValueKey(candidate.candidate),
                           option: UserAvatarOption(
@@ -70,14 +62,10 @@ class MembersNeedVoteSheet extends StatelessWidget {
                           disabled: candidate.commitment.notCommitted,
                         ),
                       ),
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) => Divider(
-                  height: 0,
-                  thickness: 3,
-                  color: themeData.colorScheme.blackColor,
-                )
+                    );
+                  },
+                  separatorBuilder: (context, index) => const ListSeparator(),
+                ),
               ),
             );
           },

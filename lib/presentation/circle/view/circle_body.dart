@@ -1,12 +1,9 @@
-import 'dart:ui';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/presentation/circle/widgets/circle_image.dart';
 import 'package:vote_your_face/presentation/circle/widgets/circle_member_action_button.dart';
 import 'package:vote_your_face/presentation/circle/widgets/members_preview.dart';
-import 'package:vote_your_face/presentation/routes/router.gr.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class CircleBody extends StatelessWidget {

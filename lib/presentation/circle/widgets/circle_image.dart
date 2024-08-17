@@ -11,7 +11,6 @@ import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/circle/cubit/circle_upload_cubit.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
-import 'package:vote_your_face/presentation/shared/widgets/image/image_selection_sheet.dart';
 
 class CircleImage extends StatelessWidget {
   const CircleImage({
@@ -38,9 +37,14 @@ class CircleImage extends StatelessWidget {
             ),
           ),
         ),
-        NetImage(
-          imageSrc: circle.imageSrc,
-          fit: BoxFit.scaleDown,
+        ClipRRect(
+          borderRadius: const BorderRadius.vertical(
+            bottom: Radius.circular(30.0),
+          ),
+          child: NetImage(
+            imageSrc: circle.imageSrc,
+            fit: BoxFit.scaleDown,
+          ),
         ),
         _editImageAction(context),
       ],

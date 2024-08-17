@@ -5,6 +5,7 @@ import 'package:vote_your_face/application/circles/circles.dart';
 import 'package:vote_your_face/injection.dart';
 import 'package:vote_your_face/presentation/circles/cubit/commitment_cubit.dart';
 import 'package:vote_your_face/presentation/circles/widgets/commitment_button.dart';
+import 'package:vote_your_face/presentation/shared/shared.dart';
 import 'package:vote_your_face/theme.dart';
 
 class OpenInvitationsSheet extends StatelessWidget {
@@ -62,52 +63,38 @@ class OpenInvitationsSheet extends StatelessWidget {
 
             return Expanded(
               child: ListView.separated(
-                  itemCount: circles.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final circle = circles[index];
+                itemCount: circles.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final circle = circles[index];
 
-                    return Card(
-                      key: Key(circle.id.toString()),
-                      elevation: 0,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero,
+                  return ListTile(
+                    key: Key(circle.id.toString()),
+                    title: BlocProvider(
+                      create: (context) => CommitmentCubit(
+                          voteCircleRepository: sl<IVoteCircleRepository>()),
+                      child: BlocBuilder<CommitmentCubit, CommitmentState>(
+                        builder: (context, state) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Expanded(child: Text(circle.name)),
+                              CommitmentButton(
+                                circleId: circle.id,
+                                commitment: Commitment.rejected,
+                              ),
+                              CommitmentButton(
+                                circleId: circle.id,
+                                commitment: Commitment.committed,
+                              ),
+                            ],
+                          );
+                        },
                       ),
-                      margin: const EdgeInsets.all(0),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 15.0,
-                        ),
-                        title: BlocProvider(
-                          create: (context) => CommitmentCubit(
-                              voteCircleRepository:
-                                  sl<IVoteCircleRepository>()),
-                          child: BlocBuilder<CommitmentCubit, CommitmentState>(
-                            builder: (context, state) {
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Expanded(child: Text(circle.name)),
-                                  CommitmentButton(
-                                    circleId: circle.id,
-                                    commitment: Commitment.rejected,
-                                  ),
-                                  CommitmentButton(
-                                    circleId: circle.id,
-                                    commitment: Commitment.committed,
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) => Divider(
-                        height: 0,
-                        thickness: 3,
-                        color: themeData.colorScheme.blackColor,
-                      )),
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) => const ListSeparator(),
+              ),
             );
           },
         ),

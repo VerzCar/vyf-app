@@ -43,6 +43,7 @@ class MiniCircleCard extends StatelessWidget {
                   ),
                 ),
                 ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
                   title: Text(
                     circle.name,
                     style: themeData.textTheme.titleMedium
@@ -60,12 +61,11 @@ class MiniCircleCard extends StatelessWidget {
               top: 0,
               right: 0,
               child: ClipRRect(
-                //clipBehavior: Clip.antiAliasWithSaveLayer,
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
                   child: Container(
                     padding: const EdgeInsets.all(5.0),
-                    color: Colors.grey.withOpacity(0.2),
+                    color: Colors.grey.withOpacity(0.55),
                     child: Text(
                       '$_countOfPeople Members',
                       style: themeData.textTheme.labelSmall?.copyWith(

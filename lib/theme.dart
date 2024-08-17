@@ -5,7 +5,7 @@ class Light {
   static const Color onPrimaryColor = Color(0xFFffffff);
   static const Color secondaryColor = Color(0xFF2962ff);
   static const Color onSecondaryColor = Color(0xFFFAFAFA);
-  static const Color surfaceColor = Color(0xFFFAFAFA);
+  static const Color surfaceColor = Color(0xFFffffff);
   static const Color onSurfaceColor = Color(0xFF0F0F0F);
   static const Color backgroundColor = Color(0xFFFAFAFA);
   static const Color successColor = Color(0xFF4caf50);
@@ -153,6 +153,12 @@ class AppTheme {
         color: Light.appbarColor,
         elevation: 4.0,
       ),
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: Light.surfaceColor,
+      ),
+      listTileTheme: const ListTileThemeData(
+        contentPadding: EdgeInsets.symmetric(horizontal: 2.0),
+      ),
       textButtonTheme: TextButtonThemeData(style: flatButtonStyle),
       elevatedButtonTheme: ElevatedButtonThemeData(style: raisedButtonStyle),
       outlinedButtonTheme: OutlinedButtonThemeData(style: outlineButtonStyle),
@@ -199,6 +205,12 @@ class AppTheme {
       bottomAppBarTheme: const BottomAppBarTheme(
         color: Dark.appbarColor,
         elevation: 4.0,
+      ),
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: Dark.surfaceColor,
+      ),
+      listTileTheme: const ListTileThemeData(
+        contentPadding: EdgeInsets.symmetric(horizontal: 2.0),
       ),
       textButtonTheme: TextButtonThemeData(style: flatButtonStyle),
       elevatedButtonTheme: ElevatedButtonThemeData(style: raisedButtonStyle),

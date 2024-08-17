@@ -23,6 +23,7 @@ class SettingsBody extends StatelessWidget {
             return Card.outlined(
               margin: const EdgeInsets.symmetric(vertical: 6.0),
               child: ListTile(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 15.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: _borderRadius,
                 ),

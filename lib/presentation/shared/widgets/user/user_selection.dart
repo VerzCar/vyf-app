@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/domain/models/models.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
-import 'package:vote_your_face/theme.dart';
 
 class UserSelection extends StatelessWidget {
   const UserSelection({
@@ -24,13 +23,10 @@ class UserSelection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: VyfTextFormField(
-            key: const Key('UserSelectionInput_searchInput'),
-            onChanged: (name) => onChanged(name),
-            hintText: 'Search user',
-          ),
+        VyfTextFormField(
+          key: const Key('UserSelectionInput_searchInput'),
+          onChanged: (name) => onChanged(name),
+          hintText: 'Search user',
         ),
         const SizedBox(height: 5),
         Expanded(
@@ -44,27 +40,18 @@ class UserSelection extends StatelessWidget {
     final themeData = Theme.of(context);
 
     return ListView.separated(
-      padding: const EdgeInsets.only(top: 10),
-      itemCount: selectedUsers.length,
-      itemBuilder: (BuildContext context, int index) {
-        final su = selectedUsers.elementAt(index);
+        padding: const EdgeInsets.only(top: 10),
+        itemCount: selectedUsers.length,
+        itemBuilder: (BuildContext context, int index) {
+          final su = selectedUsers.elementAt(index);
 
-        final notSelectable = _notSelectable(
-          su: su,
-          notSelectableUserIdentIds: notSelectableUserIdentIds,
-        );
+          final notSelectable = _notSelectable(
+            su: su,
+            notSelectableUserIdentIds: notSelectableUserIdentIds,
+          );
 
-        return Card(
-          key: Key(su.user.id.toString()),
-          elevation: 0,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.zero,
-          ),
-          margin: const EdgeInsets.all(0),
-          child: ListTile(
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 15.0,
-            ),
+          return ListTile(
+            key: Key(su.user.id.toString()),
             onTap: notSelectable
                 ? null
                 : () => su.selected
@@ -76,15 +63,9 @@ class UserSelection extends StatelessWidget {
             ),
             title: Text(su.user.displayName),
             trailing: _trailing(su: su, notSelectable: notSelectable),
-          ),
-        );
-      },
-      separatorBuilder: (context, index) => Divider(
-        height: 3,
-        thickness: 3,
-        color: themeData.colorScheme.blackColor,
-      ),
-    );
+          );
+        },
+        separatorBuilder: (context, index) => const ListSeparator());
   }
 
   bool _notSelectable({

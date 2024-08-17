@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/injection.dart';
-import 'package:vote_your_face/presentation/shared/widgets/user/user_selection.dart';
+import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class UserSelectionSheet extends StatelessWidget {
   const UserSelectionSheet({
@@ -22,38 +22,36 @@ class UserSelectionSheet extends StatelessWidget {
       create: (BuildContext ctx) => UserSelectCubit(
         userRepository: sl<IUserRepository>(),
       )..initialLoadUsers(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 10.0,
-              horizontal: 20.0,
-            ),
-            child: BlocBuilder<UserSelectCubit, UserSelectState>(
+      child: BodyLayout(
+        verticalPadding: 10.0,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            BlocBuilder<UserSelectCubit, UserSelectState>(
               builder: (context, state) {
                 return _buttonActionRow(context);
               },
             ),
-          ),
-          BlocBuilder<UserSelectCubit, UserSelectState>(
-            builder: (context, state) {
-              return Expanded(
-                child: UserSelection(
-                  selectedUsers: state.searchResults,
-                  notSelectableUserIdentIds: notSelectableUserIdentIds,
-                  onSelect: (user) =>
-                      context.read<UserSelectCubit>().selectUser(user: user),
-                  onRemoveFromSelection: (user) => context
-                      .read<UserSelectCubit>()
-                      .removeFromSelection(user: user),
-                  onChanged: (text) =>
-                      context.read<UserSelectCubit>().loadUsers(name: text),
-                ),
-              );
-            },
-          ),
-        ],
+            const SizedBox(height: 5.0),
+            BlocBuilder<UserSelectCubit, UserSelectState>(
+              builder: (context, state) {
+                return Expanded(
+                  child: UserSelection(
+                    selectedUsers: state.searchResults,
+                    notSelectableUserIdentIds: notSelectableUserIdentIds,
+                    onSelect: (user) =>
+                        context.read<UserSelectCubit>().selectUser(user: user),
+                    onRemoveFromSelection: (user) => context
+                        .read<UserSelectCubit>()
+                        .removeFromSelection(user: user),
+                    onChanged: (text) =>
+                        context.read<UserSelectCubit>().loadUsers(name: text),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

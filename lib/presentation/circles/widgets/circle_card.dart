@@ -38,6 +38,7 @@ class CircleCard extends StatelessWidget {
               ),
             ),
             ListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 15.0),
               title: Text(
                 circle.name,
                 style: themeData.textTheme.headlineSmall

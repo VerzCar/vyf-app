@@ -33,7 +33,6 @@ class AvatarImage extends StatelessWidget {
             ? Image.network(
                 src,
                 fit: BoxFit.cover,
-                alignment: Alignment.topCenter,
               )
             : Container(
                 color: Colors.black87,

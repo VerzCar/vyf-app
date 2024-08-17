@@ -56,9 +56,9 @@ class RankingSheet extends StatelessWidget {
   }) {
     final themeData = Theme.of(context);
 
-    return Container(
-      padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
+      child: BodyLayout(
+        verticalPadding: 20.0,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -67,7 +67,6 @@ class RankingSheet extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  //width: 100,
                   child: Row(
                     children: [
                       const Icon(Icons.trending_up_outlined),
@@ -81,7 +80,8 @@ class RankingSheet extends StatelessWidget {
                               fontWeight: FontWeight.w700,
                             ),
                           ),
-                          Text('up votes', style: themeData.textTheme.labelSmall),
+                          Text('up votes',
+                              style: themeData.textTheme.labelSmall),
                         ],
                       ),
                     ],
@@ -124,7 +124,8 @@ class RankingSheet extends StatelessWidget {
                               fontWeight: FontWeight.w700,
                             ),
                           ),
-                          Text('down votes', style: themeData.textTheme.labelSmall),
+                          Text('down votes',
+                              style: themeData.textTheme.labelSmall),
                         ],
                       ),
                     ],
@@ -156,8 +157,6 @@ class RankingSheet extends StatelessWidget {
   }
 
   Widget _votedByList(BuildContext context) {
-    final themeData = Theme.of(context);
-
     return BlocBuilder<RankingItemCubit, RankingItemState>(
       builder: (context, state) {
         final ids = state.votedByIds;
@@ -180,9 +179,6 @@ class RankingSheet extends StatelessWidget {
               child: UserXProvider(
                 identityId: identityId,
                 child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 15.0,
-                  ),
                   leading: UserAvatar(
                     key: ValueKey(identityId),
                   ),
@@ -195,11 +191,7 @@ class RankingSheet extends StatelessWidget {
               ),
             );
           },
-          separatorBuilder: (context, index) => Divider(
-            height: 5,
-            thickness: 3,
-            color: themeData.colorScheme.blackColor,
-          ),
+          separatorBuilder: (context, index) => const ListSeparator(),
         );
       },
     );

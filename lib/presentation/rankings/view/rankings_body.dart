@@ -19,22 +19,20 @@ class RankingsBody extends StatelessWidget {
     final themeData = Theme.of(context);
 
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-            child: Text(
+      child: BodyLayout(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
               'Last viewed',
               style: themeData.textTheme.titleMedium,
             ),
-          ),
-          const SizedBox(height: 10),
-          lastViewed.isNotEmpty
-              ? _buildViewedRankingsListView(context)
-              : _buildEmptyViewedRankingsPlaceholder(context),
-        ],
+            const SizedBox(height: 10),
+            lastViewed.isNotEmpty
+                ? _buildViewedRankingsListView(context)
+                : _buildEmptyViewedRankingsPlaceholder(context),
+          ],
+        ),
       ),
     );
   }
@@ -60,8 +58,10 @@ class RankingsBody extends StatelessWidget {
             ),
             margin: const EdgeInsets.all(0),
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10.0,
+                vertical: 10,
+              ),
               child: Row(
                 children: [
                   SizedBox(
