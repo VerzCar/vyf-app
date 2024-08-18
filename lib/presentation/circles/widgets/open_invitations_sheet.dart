@@ -62,38 +62,40 @@ class OpenInvitationsSheet extends StatelessWidget {
             }
 
             return Expanded(
-              child: ListView.separated(
-                itemCount: circles.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final circle = circles[index];
+              child: BodyLayout(
+                child: ListView.separated(
+                  itemCount: circles.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final circle = circles[index];
 
-                  return ListTile(
-                    key: Key(circle.id.toString()),
-                    title: BlocProvider(
-                      create: (context) => CommitmentCubit(
-                          voteCircleRepository: sl<IVoteCircleRepository>()),
-                      child: BlocBuilder<CommitmentCubit, CommitmentState>(
-                        builder: (context, state) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Expanded(child: Text(circle.name)),
-                              CommitmentButton(
-                                circleId: circle.id,
-                                commitment: Commitment.rejected,
-                              ),
-                              CommitmentButton(
-                                circleId: circle.id,
-                                commitment: Commitment.committed,
-                              ),
-                            ],
-                          );
-                        },
+                    return ListTile(
+                      key: Key(circle.id.toString()),
+                      title: BlocProvider(
+                        create: (context) => CommitmentCubit(
+                            voteCircleRepository: sl<IVoteCircleRepository>()),
+                        child: BlocBuilder<CommitmentCubit, CommitmentState>(
+                          builder: (context, state) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Expanded(child: Text(circle.name)),
+                                CommitmentButton(
+                                  circleId: circle.id,
+                                  commitment: Commitment.rejected,
+                                ),
+                                CommitmentButton(
+                                  circleId: circle.id,
+                                  commitment: Commitment.committed,
+                                ),
+                              ],
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) => const ListSeparator(),
+                    );
+                  },
+                  separatorBuilder: (context, index) => const ListSeparator(),
+                ),
               ),
             );
           },

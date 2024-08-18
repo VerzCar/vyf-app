@@ -39,7 +39,7 @@ class SettingsBody extends StatelessWidget {
                   style: themeData.textTheme.titleMedium,
                 ),
                 subtitle:
-                    Text('${state.user.firstName} ${state.user.lastName}'),
+                    Text('${state.user.username} | ${state.user.firstName} ${state.user.lastName}'),
                 onTap: () => {context.pushRoute(const UserSettingsRoute())},
               ),
             );

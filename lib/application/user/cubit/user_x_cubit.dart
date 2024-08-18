@@ -33,6 +33,10 @@ class UserXCubit extends Cubit<UserXState> {
 
     try {
       final user = await _userRepository.x(identityId);
+
+      // TODO; this is currently a bug when switching from ranking to ranking therefore check if the state exists before emitting something
+      if (isClosed) return;
+
       emit(
         state.copyWith(
           status: StatusIndicator.success,

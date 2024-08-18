@@ -40,6 +40,12 @@ class CircleEditView extends StatelessWidget {
             case StatusIndicator.success:
               return CircleEditBody(circle: state.circle);
             case StatusIndicator.failure:
+              // TODO: check if is api failure or if its not eligible error
+              // put this text:
+              // This Circle is private!
+              // You are not eligible to see that circle.
+              // Ask the owner, if you can join.
+              // Go back to circles
               return const Center(child: Text('Error'));
           }
         }),
