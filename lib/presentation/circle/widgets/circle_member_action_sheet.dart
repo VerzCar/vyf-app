@@ -87,6 +87,8 @@ class CircleMemberActionSheet extends StatelessWidget {
                     return BlocBuilder<CircleMemberCubit, CircleMemberState>(
                       builder: (context, state) {
                         return ListTile(
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 20.0),
                           leading: const Icon(Icons.group_add_outlined),
                           title: const Text('Join as candidate'),
                           trailing: state.status.isCandidateActionLoading
@@ -107,6 +109,8 @@ class CircleMemberActionSheet extends StatelessWidget {
                     return BlocBuilder<CircleMemberCubit, CircleMemberState>(
                       builder: (context, state) {
                         return ListTile(
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 20.0),
                           leading: const Icon(Icons.group_remove_outlined),
                           title: const Text('Leave as candidate'),
                           trailing: state.status.isCandidateActionLoading
@@ -146,6 +150,8 @@ class CircleMemberActionSheet extends StatelessWidget {
                   return BlocBuilder<CircleMemberCubit, CircleMemberState>(
                     builder: (context, state) {
                       return ListTile(
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 20.0),
                         leading: const Icon(Icons.add_task_outlined),
                         title: const Text('Join as voter'),
                         trailing: state.status.isVoterActionLoading
@@ -166,6 +172,8 @@ class CircleMemberActionSheet extends StatelessWidget {
                   return BlocBuilder<CircleMemberCubit, CircleMemberState>(
                     builder: (context, state) {
                       return ListTile(
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 20.0),
                         leading: const Icon(Icons.remove_done_outlined),
                         title: const Text('Leave as voter'),
                         trailing: state.status.isVoterActionLoading

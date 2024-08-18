@@ -36,6 +36,7 @@ class ImageSelectionSheet extends StatelessWidget {
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {
               return ListTile(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
                 leading: const Icon(Icons.camera_alt_outlined),
                 title: const Text('Open camera'),
                 onTap: () => _fromCamera(context),
@@ -43,6 +44,7 @@ class ImageSelectionSheet extends StatelessWidget {
             }
             if (index == 1) {
               return ListTile(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
                 leading: const Icon(Icons.image_outlined),
                 title: const Text('Select from album'),
                 onTap: () => _fromGallery(context),
@@ -50,6 +52,7 @@ class ImageSelectionSheet extends StatelessWidget {
             }
             if (index == 2) {
               return ListTile(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
                 leading: const Icon(Icons.delete),
                 title: const Text('Delete'),
                 onTap: () => _onDeletion(),

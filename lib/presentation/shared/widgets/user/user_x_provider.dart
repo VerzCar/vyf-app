@@ -4,17 +4,51 @@ import 'package:user_repository/user_repository.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/injection.dart';
 
-class UserXProvider extends StatelessWidget {
+/// This provider can be used as a wrapper around any child and it
+/// provides the UserXCubit State in the subtree. If the parent identityId
+/// changes the user will be fetched again for the given identityId.
+class UserXProvider extends StatefulWidget {
   const UserXProvider({
     super.key,
-    required this.child,
     required this.identityId,
+    required this.child,
   });
 
-  final Widget child;
   final String identityId;
+  final Widget child;
 
-  // TODO: this is not working very well when the identId is updating from outside
+  @override
+  State<UserXProvider> createState() => _UserXProviderState();
+}
+
+class _UserXProviderState extends State<UserXProvider> {
+  String _currentIdentId = '';
+  bool _fetchUser = true;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _currentIdentId = widget.identityId;
+    });
+  }
+
+  @override
+  void didUpdateWidget(covariant UserXProvider oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!_isSameIdentId) {
+      setState(() {
+        _currentIdentId = widget.identityId;
+        _fetchUser = true;
+      });
+      return;
+    }
+
+    setState(() {
+      _fetchUser = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocSelector<UserBloc, UserState, User>(
@@ -25,27 +59,50 @@ class UserXProvider extends StatelessWidget {
               UserXCubit(userRepository: sl<IUserRepository>()),
           child: BlocListener<UserBloc, UserState>(
             listenWhen: (prev, current) => prev.user != current.user,
-            listener: (context2, state) {
+            listener: (context, state) {
               context.read<UserXCubit>().currentUserChanged(
                     currentUser: state.user,
-                    identityId: identityId,
+                    identityId: widget.identityId,
                   );
             },
-            child: BlocBuilder<UserXCubit, UserXState>(
-              buildWhen: (prev, current) =>
-                  prev.user.id != 0 && prev.user.id != current.user.id,
-              builder: (context, state) {
-                context.read<UserXCubit>().userXFetched(
-                      currentUser: user,
-                      identityId: identityId,
-                    );
-
-                return child;
-              },
+            child: _UserX(
+              fetchUser: _fetchUser,
+              currentUser: user,
+              identityId: widget.identityId,
+              child: widget.child,
             ),
           ),
         );
       },
     );
+  }
+
+  bool get _isSameIdentId {
+    return _currentIdentId == widget.identityId;
+  }
+}
+
+class _UserX extends StatelessWidget {
+  const _UserX({
+    required this.fetchUser,
+    required this.currentUser,
+    required this.identityId,
+    required this.child,
+  });
+
+  final bool fetchUser;
+  final User currentUser;
+  final String identityId;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    if (fetchUser) {
+      context.read<UserXCubit>().userXFetched(
+            currentUser: currentUser,
+            identityId: identityId,
+          );
+    }
+    return child;
   }
 }
