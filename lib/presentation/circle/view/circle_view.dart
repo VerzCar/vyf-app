@@ -73,7 +73,8 @@ class CircleView extends StatelessWidget {
                 case StatusIndicator.success:
                   return CircleBody(circle: state.circle);
                 case StatusIndicator.failure:
-                  return const Center(child: Text('Error'));
+                  // TODO: check if is api failure or if its not eligible error
+                  return _errorBody(context);
               }
             });
           },
@@ -110,5 +111,42 @@ class CircleView extends StatelessWidget {
         builder: (context, stage) => stage == CircleStage.closed
             ? const BannerText(msg: 'closed')
             : const SizedBox());
+  }
+
+  Widget _errorBody(BuildContext context) {
+    final themeData = Theme.of(context);
+
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'This Circle is private!',
+            style: themeData.textTheme.headlineMedium,
+          ),
+          const SizedBox(height: 10),
+          Text(
+            'You are not eligible to see that circle.',
+            style: themeData.textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 5),
+          Text(
+            'Ask the owner, if you can join.',
+            style: themeData.textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 20),
+          TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: themeData.colorScheme.secondary,
+            ),
+            onPressed: () {
+              context.router.navigate(const CirclesRoute());
+            },
+            child: const Text('Go back to circles'),
+          ),
+        ],
+      ),
+    );
   }
 }
