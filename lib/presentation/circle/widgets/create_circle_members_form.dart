@@ -90,7 +90,7 @@ class CreateCircleMembersForm extends StatelessWidget {
     return 'Choose whether your circle should be public or private. '
         'If it’s public (default), anyone can see and join the circle as a voter or candidate. '
         'If it’s private, you (the circle owner) will need to select the members, both voters and candidates. '
-        'Only these selected members can interact with the circle and see it. You can change this members afterwards anytime.';
+        'Only these selected members can interact with the circle and see it. You can change members afterwards at anytime.';
   }
 
   Widget _membersSelectionColumn(BuildContext context) {

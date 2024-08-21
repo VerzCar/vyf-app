@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vote_your_face/application/circle/bloc/circle_bloc.dart';
 import 'package:vote_your_face/application/members/members.dart';
 import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/presentation/routes/router.gr.dart';
@@ -29,12 +30,21 @@ class MembersView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       const Text('Candidates'),
-                      BlocBuilder<UserOptionBloc, UserOptionState>(
-                        builder: (context, state) {
-                          return BlocBuilder<MembersBloc, MembersState>(
-                            builder: (context, membersState) {
-                              return Text(
-                                  '${membersState.circleCandidate.candidates.length}/${state.userOption.maxCandidates}');
+                      BlocSelector<CircleBloc, CircleState, bool>(
+                        selector: (state) => state.circle.private,
+                        builder: (context, isPrivateCircle) {
+                          return BlocBuilder<UserOptionBloc, UserOptionState>(
+                            builder: (context, state) {
+                              return BlocBuilder<MembersBloc, MembersState>(
+                                builder: (context, membersState) {
+                                  final maxCandidates = isPrivateCircle
+                                      ? state.userOption.privateOption
+                                          .maxCandidates
+                                      : state.userOption.maxCandidates;
+                                  return Text(
+                                      '${membersState.circleCandidate.candidates.length}/$maxCandidates');
+                                },
+                              );
                             },
                           );
                         },
@@ -48,12 +58,20 @@ class MembersView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       const Text('Voters'),
-                      BlocBuilder<UserOptionBloc, UserOptionState>(
-                        builder: (context, state) {
-                          return BlocBuilder<MembersBloc, MembersState>(
-                            builder: (context, membersState) {
-                              return Text(
-                                  '${membersState.circleVoter.voters.length}/${state.userOption.maxVoters}');
+                      BlocSelector<CircleBloc, CircleState, bool>(
+                        selector: (state) => state.circle.private,
+                        builder: (context, isPrivateCircle) {
+                          return BlocBuilder<UserOptionBloc, UserOptionState>(
+                            builder: (context, state) {
+                              return BlocBuilder<MembersBloc, MembersState>(
+                                builder: (context, membersState) {
+                                  final maxVoters = isPrivateCircle
+                                      ? state.userOption.privateOption.maxVoters
+                                      : state.userOption.maxVoters;
+                                  return Text(
+                                      '${membersState.circleVoter.voters.length}/$maxVoters');
+                                },
+                              );
                             },
                           );
                         },

@@ -109,30 +109,29 @@ class VotersBody extends StatelessWidget {
       selector: (state) => state.user.identityId,
       builder: (context, identityId) =>
           BlocSelector<CircleBloc, CircleState, int?>(
-        selector: (state) =>
+            selector: (state) =>
             CircleSelector.canEdit(state, identityId) ? state.circle.id : null,
-        builder: (context, circleId) {
-          return circleId != null
-              ? TextButton(
-                  style: TextButton.styleFrom(
-                      foregroundColor: themeData.colorScheme.error),
-                  onPressed: () => context
-                      .read<MembersBloc>()
-                      .add(MembersRemovedVoterFromCircle(
-                        currentCircleId: circleId,
-                        voterIdentId: voter.voter,
-                      )),
-                  child: const Icon(Icons.close),
-                )
-              : const SizedBox();
-        },
-      ),
+            builder: (context, circleId) {
+              return circleId != null
+                  ? TextButton(
+                style: TextButton.styleFrom(
+                    foregroundColor: themeData.colorScheme.error),
+                onPressed: () =>
+                    context
+                        .read<MembersBloc>()
+                        .add(MembersRemovedVoterFromCircle(
+                      currentCircleId: circleId,
+                      voterIdentId: voter.voter,
+                    )),
+                child: const Icon(Icons.close),
+              )
+                  : const SizedBox();
+            },
+          ),
     );
   }
 
-  void _showAddMembersSheet(
-    BuildContext context,
-  ) {
+  void _showAddMembersSheet(BuildContext context,) {
     showModalBottomSheet(
       context: context,
       useSafeArea: true,
@@ -142,21 +141,39 @@ class VotersBody extends StatelessWidget {
           selector: (state) =>
               state.circleVoter.voters.map((v) => v.voter).toList(),
           builder: (context, notSelectableUserIdentIds) {
-            return UserSelectionSheet(
-                notSelectableUserIdentIds: notSelectableUserIdentIds,
-                onAdd: (users) {
-                  final usersIdentIds =
-                      users.map((user) => user.identityId).toList();
-                  final currentCircleId =
-                      context.read<CircleBloc>().state.circle.id;
-                  context.read<MembersBloc>().add(
-                        MembersAddedVotersToCircle(
-                          voterIdentIds: usersIdentIds,
-                          currentCircleId: currentCircleId,
-                        ),
-                      );
-                  context.router.maybePop();
-                });
+            return BlocSelector<CircleBloc, CircleState, bool>(
+              selector: (state) => state.circle.private,
+              builder: (context, isPrivateCircle) {
+                return BlocSelector<UserOptionBloc, UserOptionState, int>(
+                  selector: (state) =>
+                  isPrivateCircle
+                      ? state.userOption.privateOption.maxVoters
+                      : state.userOption.maxVoters,
+                  builder: (context, maxMembers) {
+                    return UserSelectionSheet(
+                        maxSelections: maxMembers,
+                        notSelectableUserIdentIds: notSelectableUserIdentIds,
+                        onAdd: (users) {
+                          final usersIdentIds =
+                          users.map((user) => user.identityId).toList();
+                          final currentCircleId =
+                              context
+                                  .read<CircleBloc>()
+                                  .state
+                                  .circle
+                                  .id;
+                          context.read<MembersBloc>().add(
+                            MembersAddedVotersToCircle(
+                              voterIdentIds: usersIdentIds,
+                              currentCircleId: currentCircleId,
+                            ),
+                          );
+                          context.router.maybePop();
+                        });
+                  },
+                );
+              },
+            );
           },
         );
       },

@@ -31,33 +31,33 @@ class CandidatesBody extends StatelessWidget {
         final candidates = state.circleCandidate.candidates;
 
         return ListView.separated(
-            itemCount: candidates.length,
-            itemBuilder: (BuildContext context, int index) {
-              final candidate = candidates[index];
+          itemCount: candidates.length,
+          itemBuilder: (BuildContext context, int index) {
+            final candidate = candidates[index];
 
-              return UserXProvider(
-                identityId: candidate.candidate,
-                child: ListTile(
-                  key: Key(candidate.id.toString()),
-                  leading: UserAvatar(
-                    key: ValueKey(candidate.candidate),
-                    option: UserAvatarOption(
-                      commitment: candidate.commitment,
-                    ),
-                  ),
-                  title: BlocBuilder<UserXCubit, UserXState>(
-                    builder: (context, state) {
-                      return Text(state.user.displayName);
-                    },
-                  ),
-                  trailing: _removeActionButton(
-                    context: context,
-                    candidate: candidate,
+            return UserXProvider(
+              identityId: candidate.candidate,
+              child: ListTile(
+                key: Key(candidate.id.toString()),
+                leading: UserAvatar(
+                  key: ValueKey(candidate.candidate),
+                  option: UserAvatarOption(
+                    commitment: candidate.commitment,
                   ),
                 ),
-              );
-            },
-            separatorBuilder: (context, index) => const ListSeparator(),
+                title: BlocBuilder<UserXCubit, UserXState>(
+                  builder: (context, state) {
+                    return Text(state.user.displayName);
+                  },
+                ),
+                trailing: _removeActionButton(
+                  context: context,
+                  candidate: candidate,
+                ),
+              ),
+            );
+          },
+          separatorBuilder: (context, index) => const ListSeparator(),
         );
       },
     );
@@ -146,21 +146,34 @@ class CandidatesBody extends StatelessWidget {
           selector: (state) =>
               state.circleCandidate.candidates.map((c) => c.candidate).toList(),
           builder: (context, notSelectableUserIdentIds) {
-            return UserSelectionSheet(
-                notSelectableUserIdentIds: notSelectableUserIdentIds,
-                onAdd: (users) {
-                  final usersIdentIds =
-                      users.map((user) => user.identityId).toList();
-                  final currentCircleId =
-                      context.read<CircleBloc>().state.circle.id;
-                  context.read<MembersBloc>().add(
-                        MembersAddedCandidatesToCircle(
-                          candidateIdentIds: usersIdentIds,
-                          currentCircleId: currentCircleId,
-                        ),
-                      );
-                  context.router.maybePop();
-                });
+            return BlocSelector<CircleBloc, CircleState, bool>(
+              selector: (state) => state.circle.private,
+              builder: (context, isPrivateCircle) {
+                return BlocSelector<UserOptionBloc, UserOptionState, int>(
+                  selector: (state) => isPrivateCircle
+                      ? state.userOption.privateOption.maxCandidates
+                      : state.userOption.maxCandidates,
+                  builder: (context, maxMembers) {
+                    return UserSelectionSheet(
+                        maxSelections: maxMembers,
+                        notSelectableUserIdentIds: notSelectableUserIdentIds,
+                        onAdd: (users) {
+                          final usersIdentIds =
+                              users.map((user) => user.identityId).toList();
+                          final currentCircleId =
+                              context.read<CircleBloc>().state.circle.id;
+                          context.read<MembersBloc>().add(
+                                MembersAddedCandidatesToCircle(
+                                  candidateIdentIds: usersIdentIds,
+                                  currentCircleId: currentCircleId,
+                                ),
+                              );
+                          context.router.maybePop();
+                        });
+                  },
+                );
+              },
+            );
           },
         );
       },

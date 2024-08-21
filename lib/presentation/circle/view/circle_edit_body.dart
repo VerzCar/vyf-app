@@ -78,6 +78,7 @@ class CircleEditBody extends StatelessWidget {
                 ? circle.validFrom
                 : circle.validUntil,
           ),
+          const SizedBox(height: 10),
           CircleTimeInput(
             range: range,
             onTap: () => _showCupertinoDialog(context, timePicker),
