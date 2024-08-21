@@ -10,10 +10,12 @@ class UserSelectionSheet extends StatelessWidget {
   const UserSelectionSheet({
     super.key,
     this.notSelectableUserIdentIds = const [],
+    this.maxSelections,
     this.onAdd,
   });
 
   final List<String> notSelectableUserIdentIds;
+  final int? maxSelections;
   final void Function(List<UserPaginated> users)? onAdd;
 
   @override
@@ -38,6 +40,7 @@ class UserSelectionSheet extends StatelessWidget {
                 return Expanded(
                   child: UserSelection(
                     selectedUsers: state.searchResults,
+                    maxSelections: maxSelections,
                     notSelectableUserIdentIds: notSelectableUserIdentIds,
                     onSelect: (user) =>
                         context.read<UserSelectCubit>().selectUser(user: user),

@@ -71,29 +71,7 @@ class CreateCircleMembersForm extends StatelessWidget {
                               child: const Text('Previous'),
                             ),
                             const SizedBox(width: 10),
-                            BlocBuilder<CircleCreateFormCubit,
-                                CircleCreateFormState>(
-                              builder: (context, state) {
-                                return SubmitButton(
-                                  disabled: Formz.isPure([
-                                        state.name,
-                                        state.description,
-                                        state.private,
-                                      ]) ||
-                                      state.status.isInProgress ||
-                                      state.private.value,
-                                  isLoading: state.status.isInProgress,
-                                  foregroundColor:
-                                      themeData.colorScheme.onSecondary,
-                                  backgroundColor:
-                                      themeData.colorScheme.secondary,
-                                  label: 'Create',
-                                  onPressed: () => context
-                                      .read<CircleCreateFormCubit>()
-                                      .onSubmit(),
-                                );
-                              },
-                            ),
+                            _submitButton(context),
                           ],
                         ),
                       ],
@@ -120,14 +98,31 @@ class CreateCircleMembersForm extends StatelessWidget {
 
     return Column(
       children: [
+        Text(
+          'Please select at least one candidate and voter for your circle.',
+          style: themeData.textTheme.bodyMedium,
+        ),
+        const SizedBox(height: 5),
         Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Candidates',
-                  style: themeData.textTheme.titleMedium,
+                BlocSelector<UserOptionBloc, UserOptionState, int>(
+                  selector: (state) =>
+                      state.userOption.privateOption.maxCandidates,
+                  builder: (context, maxCandidates) {
+                    return BlocSelector<CircleCreateFormCubit,
+                        CircleCreateFormState, List<String>>(
+                      selector: (state) => state.selectedMemberCandidateIds,
+                      builder: (context, ids) {
+                        return Text(
+                          'Candidates ${ids.length}/$maxCandidates',
+                          style: themeData.textTheme.titleMedium,
+                        );
+                      },
+                    );
+                  },
                 ),
                 OutlinedButton(
                   style: OutlinedButton.styleFrom(
@@ -195,9 +190,20 @@ class CreateCircleMembersForm extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Voters',
-                  style: themeData.textTheme.titleMedium,
+                BlocSelector<UserOptionBloc, UserOptionState, int>(
+                  selector: (state) => state.userOption.privateOption.maxVoters,
+                  builder: (context, maxVoters) {
+                    return BlocSelector<CircleCreateFormCubit,
+                        CircleCreateFormState, List<String>>(
+                      selector: (state) => state.selectedMemberVoterIds,
+                      builder: (context, ids) {
+                        return Text(
+                          'Voters ${ids.length}/$maxVoters',
+                          style: themeData.textTheme.titleMedium,
+                        );
+                      },
+                    );
+                  },
                 ),
                 OutlinedButton(
                   style: OutlinedButton.styleFrom(
@@ -278,28 +284,72 @@ class CreateCircleMembersForm extends StatelessWidget {
               return state.selectedMemberVoterIds;
             },
             builder: (context, notSelectableUserIdentIds) {
-              return UserSelectionSheet(
-                  notSelectableUserIdentIds: notSelectableUserIdentIds,
-                  onAdd: (users) {
-                    final usersIdentIds =
-                        users.map((user) => user.identityId).toList();
+              return BlocSelector<UserOptionBloc, UserOptionState, int>(
+                selector: (state) => type == MemberType.candidate
+                    ? state.userOption.privateOption.maxCandidates
+                    : state.userOption.privateOption.maxVoters,
+                builder: (context, maxMembers) {
+                  return UserSelectionSheet(
+                      maxSelections: maxMembers,
+                      notSelectableUserIdentIds: notSelectableUserIdentIds,
+                      onAdd: (users) {
+                        final usersIdentIds =
+                            users.map((user) => user.identityId).toList();
 
-                    if (type == MemberType.candidate) {
-                      context
-                          .read<CircleCreateFormCubit>()
-                          .onAddToSelectedMemberCandidateIds(usersIdentIds);
-                      context.router.maybePop();
-                      return;
-                    }
+                        if (type == MemberType.candidate) {
+                          context
+                              .read<CircleCreateFormCubit>()
+                              .onAddToSelectedMemberCandidateIds(usersIdentIds);
+                          context.router.maybePop();
+                          return;
+                        }
 
-                    context
-                        .read<CircleCreateFormCubit>()
-                        .onAddToSelectedMemberVoterIds(usersIdentIds);
-                    context.router.maybePop();
-                    return;
-                  });
+                        context
+                            .read<CircleCreateFormCubit>()
+                            .onAddToSelectedMemberVoterIds(usersIdentIds);
+                        context.router.maybePop();
+                        return;
+                      });
+                },
+              );
             },
           ),
+        );
+      },
+    );
+  }
+
+  Widget _submitButton(BuildContext context) {
+    final themeData = Theme.of(context);
+
+    return BlocBuilder<CircleCreateFormCubit, CircleCreateFormState>(
+      builder: (context, state) {
+        final formValid = Formz.validate([
+          state.name,
+          state.description,
+          state.dateFrom,
+          state.timeFrom,
+          state.dateUntil,
+          state.timeUntil,
+        ]);
+
+        bool privateMembersSelected = false;
+
+        if (state.private.value) {
+          privateMembersSelected = state.selectedMemberCandidateIds.isEmpty ||
+              state.selectedMemberVoterIds.isEmpty;
+        }
+
+        final disabled =
+            !formValid || privateMembersSelected || state.status.isInProgress;
+
+        return SubmitButton(
+          disabled: disabled,
+          isLoading: state.status.isInProgress,
+          foregroundColor: themeData.colorScheme.onSecondary,
+          backgroundColor: themeData.colorScheme.secondary,
+          label: 'Create',
+          onPressed: () => context.read<CircleCreateFormCubit>().onSubmit(),
         );
       },
     );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
+import 'package:vote_your_face/application/user/user.dart';
 import 'package:vote_your_face/domain/models/models.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 
@@ -8,6 +10,7 @@ class UserSelection extends StatelessWidget {
     super.key,
     required this.selectedUsers,
     this.notSelectableUserIdentIds = const [],
+    this.maxSelections,
     required this.onSelect,
     required this.onRemoveFromSelection,
     required this.onChanged,
@@ -15,6 +18,7 @@ class UserSelection extends StatelessWidget {
 
   final List<SelectedUser> selectedUsers;
   final List<String> notSelectableUserIdentIds;
+  final int? maxSelections;
   final void Function(UserPaginated user) onSelect;
   final void Function(UserPaginated user) onRemoveFromSelection;
   final void Function(String text) onChanged;
@@ -22,12 +26,15 @@ class UserSelection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         VyfTextFormField(
           key: const Key('UserSelectionInput_searchInput'),
           onChanged: (name) => onChanged(name),
           hintText: 'Search user',
         ),
+        const SizedBox(height: 2),
+        _maxSelectedLabel(),
         const SizedBox(height: 5),
         Expanded(
           child: _usersList(context),
@@ -37,8 +44,6 @@ class UserSelection extends StatelessWidget {
   }
 
   Widget _usersList(BuildContext context) {
-    final themeData = Theme.of(context);
-
     return ListView.separated(
         padding: const EdgeInsets.only(top: 10),
         itemCount: selectedUsers.length,
@@ -50,19 +55,28 @@ class UserSelection extends StatelessWidget {
             notSelectableUserIdentIds: notSelectableUserIdentIds,
           );
 
-          return ListTile(
-            key: Key(su.user.id.toString()),
-            onTap: notSelectable
-                ? null
-                : () => su.selected
-                    ? onRemoveFromSelection(su.user)
-                    : onSelect(su.user),
-            leading: AvatarImage(
-              src: su.user.profile.imageSrc,
-              capitalLetters: usersInitials(su.user.displayName),
-            ),
-            title: Text(su.user.displayName),
-            trailing: _trailing(su: su, notSelectable: notSelectable),
+          return BlocSelector<UserSelectCubit, UserSelectState, int>(
+            selector: (state) => state.selectedUsers.length,
+            builder: (context, selectedUsersLength) {
+              return ListTile(
+                key: Key(su.user.id.toString()),
+                onTap: () => _onTap(
+                  selectedUsersLength: selectedUsersLength,
+                  su: su,
+                  notSelectable: notSelectable,
+                ),
+                leading: AvatarImage(
+                  src: su.user.profile.imageSrc,
+                  capitalLetters: usersInitials(su.user.displayName),
+                ),
+                title: Text(su.user.displayName),
+                trailing: _trailing(
+                  su: su,
+                  notSelectable: notSelectable,
+                  selectedUsersLength: selectedUsersLength,
+                ),
+              );
+            },
           );
         },
         separatorBuilder: (context, index) => const ListSeparator());
@@ -82,18 +96,64 @@ class UserSelection extends StatelessWidget {
     return false;
   }
 
+  bool _maxSelectionReached(int selectedUsersLength) {
+    if (maxSelections != null) {
+      return selectedUsersLength + notSelectableUserIdentIds.length >=
+          maxSelections!;
+    }
+    return false;
+  }
+
+  _onTap({
+    required SelectedUser su,
+    required bool notSelectable,
+    required int selectedUsersLength,
+  }) {
+    if (notSelectable) {
+      return null;
+    }
+
+    if (_maxSelectionReached(selectedUsersLength) && !su.selected) {
+      return null;
+    }
+
+    return su.selected ? onRemoveFromSelection(su.user) : onSelect(su.user);
+  }
+
   Widget _trailing({
     required SelectedUser su,
     required bool notSelectable,
+    required int selectedUsersLength,
   }) {
     if (notSelectable) {
       return const Text('already selected');
     }
 
+    bool disabled = false;
+
+    if (_maxSelectionReached(selectedUsersLength) && !su.selected) {
+      disabled = true;
+    }
+
     return Checkbox(
       value: su.selected,
-      onChanged: (value) =>
-          su.selected ? onRemoveFromSelection(su.user) : onSelect(su.user),
+      onChanged: disabled
+          ? null
+          : (value) =>
+              su.selected ? onRemoveFromSelection(su.user) : onSelect(su.user),
     );
+  }
+
+  Widget _maxSelectedLabel() {
+    if (maxSelections != null) {
+      return BlocSelector<UserSelectCubit, UserSelectState, int>(
+        selector: (state) => state.selectedUsers.length,
+        builder: (context, selectedUsersLength) {
+          return Text(
+              'selections ${selectedUsersLength + notSelectableUserIdentIds.length}/$maxSelections');
+        },
+      );
+    }
+    return const SizedBox();
   }
 }

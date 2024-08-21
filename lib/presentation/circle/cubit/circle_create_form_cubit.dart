@@ -122,7 +122,8 @@ class CircleCreateFormCubit extends Cubit<CircleCreateFormState> {
   }
 
   void onAddToSelectedMemberCandidateIds(List<String> ids) {
-    final selectedMemberCandidateIds = List.of(state.selectedMemberCandidateIds);
+    final selectedMemberCandidateIds =
+        List.of(state.selectedMemberCandidateIds);
 
     selectedMemberCandidateIds.addAll(ids);
 
@@ -198,14 +199,26 @@ class CircleCreateFormCubit extends Cubit<CircleCreateFormState> {
         );
       }
 
+      List<CandidateRequest> candidates = const [];
+      List<VoterRequest> voters = const [];
+
+      if (state.private.value) {
+        candidates = state.selectedMemberCandidateIds
+            .map((id) => CandidateRequest(candidate: id))
+            .toList();
+        voters = state.selectedMemberVoterIds
+            .map((id) => VoterRequest(voter: id))
+            .toList();
+      }
+
       final request = CircleCreateRequest(
         name: state.name.value,
         description: state.description.value,
         validFrom: validFrom,
         validUntil: validUntil,
         private: state.private.value,
-        candidates: const [],
-        voters: const [],
+        candidates: candidates,
+        voters: voters,
       );
 
       final circle = await _voteCircleRepository.createCircle(request);
