@@ -57,7 +57,8 @@ class CandidatesBody extends StatelessWidget {
                 ),
               );
             },
-            separatorBuilder: (context, index) => const ListSeparator());
+            separatorBuilder: (context, index) => const ListSeparator(),
+        );
       },
     );
   }

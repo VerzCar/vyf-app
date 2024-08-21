@@ -87,7 +87,7 @@ class UserSelection extends StatelessWidget {
     required bool notSelectable,
   }) {
     if (notSelectable) {
-      return const Text('is candidate');
+      return const Text('already selected');
     }
 
     return Checkbox(

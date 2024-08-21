@@ -121,6 +121,47 @@ class CircleCreateFormCubit extends Cubit<CircleCreateFormState> {
     ));
   }
 
+  void onAddToSelectedMemberCandidateIds(List<String> ids) {
+    final selectedMemberCandidateIds = List.of(state.selectedMemberCandidateIds);
+
+    selectedMemberCandidateIds.addAll(ids);
+
+    emit(state.copyWith(
+      selectedMemberCandidateIds: selectedMemberCandidateIds,
+    ));
+  }
+
+  void onAddToSelectedMemberVoterIds(List<String> ids) {
+    final selectedMemberVoterIds = List.of(state.selectedMemberVoterIds);
+
+    selectedMemberVoterIds.addAll(ids);
+
+    emit(state.copyWith(
+      selectedMemberVoterIds: selectedMemberVoterIds,
+    ));
+  }
+
+  void onRemoveFromSelectedMemberCandidateIds(String id) {
+    final selectedMemberCandidateIds =
+        List.of(state.selectedMemberCandidateIds);
+
+    selectedMemberCandidateIds.removeWhere((vId) => vId == id);
+
+    emit(state.copyWith(
+      selectedMemberCandidateIds: selectedMemberCandidateIds,
+    ));
+  }
+
+  void onRemoveFromSelectedMemberVoterIds(String id) {
+    final selectedMemberVoterIds = List.of(state.selectedMemberVoterIds);
+
+    selectedMemberVoterIds.removeWhere((vId) => vId == id);
+
+    emit(state.copyWith(
+      selectedMemberVoterIds: selectedMemberVoterIds,
+    ));
+  }
+
   void onSubmit() async {
     emit(state.copyWith(
       status: FormzSubmissionStatus.inProgress,

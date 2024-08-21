@@ -124,12 +124,9 @@ class YourCircles extends StatelessWidget {
       isScrollControlled: true,
       useSafeArea: true,
       builder: (BuildContext context2) {
-        return SizedBox(
-          height: height,
-          child: BlocProvider.value(
-            value: circlesBloc,
-            child: const CreateCircleSheet(),
-          ),
+        return BlocProvider.value(
+          value: circlesBloc,
+          child: const CreateCircleSheet(),
         );
       },
     );

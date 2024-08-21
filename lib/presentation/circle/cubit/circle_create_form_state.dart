@@ -10,6 +10,8 @@ final class CircleCreateFormState extends Equatable {
     this.dateUntil = const CircleDateUntilInput.pure(),
     this.timeUntil = const CircleTimeUntilInput.pure(),
     this.private = const CirclePrivateInput.pure(),
+    this.selectedMemberCandidateIds = const [],
+    this.selectedMemberVoterIds = const [],
     this.createdCircle,
   });
 
@@ -21,6 +23,8 @@ final class CircleCreateFormState extends Equatable {
   final CircleDateUntilInput dateUntil;
   final CircleTimeUntilInput timeUntil;
   final CirclePrivateInput private;
+  final List<String> selectedMemberCandidateIds;
+  final List<String> selectedMemberVoterIds;
   final Circle? createdCircle;
 
   CircleCreateFormState copyWith({
@@ -32,6 +36,8 @@ final class CircleCreateFormState extends Equatable {
     CircleDateUntilInput? dateUntil,
     CircleTimeUntilInput? timeUntil,
     CirclePrivateInput? private,
+    List<String>? selectedMemberCandidateIds,
+    List<String>? selectedMemberVoterIds,
     Circle? createdCircle,
   }) {
     return CircleCreateFormState(
@@ -43,6 +49,10 @@ final class CircleCreateFormState extends Equatable {
       dateUntil: dateUntil ?? this.dateUntil,
       timeUntil: timeUntil ?? this.timeUntil,
       private: private ?? this.private,
+      selectedMemberCandidateIds:
+          selectedMemberCandidateIds ?? this.selectedMemberCandidateIds,
+      selectedMemberVoterIds:
+          selectedMemberVoterIds ?? this.selectedMemberVoterIds,
       createdCircle: createdCircle ?? this.createdCircle,
     );
   }
@@ -57,6 +67,8 @@ final class CircleCreateFormState extends Equatable {
         dateUntil,
         timeUntil,
         private,
+        selectedMemberCandidateIds,
+        selectedMemberVoterIds,
         createdCircle,
       ];
 }
