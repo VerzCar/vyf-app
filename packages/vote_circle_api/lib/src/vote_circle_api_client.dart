@@ -15,7 +15,7 @@ class VoteCircleApiClient implements IVoteCircleApiClient {
       : _authenticationRepository = authenticationRepository;
 
   final IAuthenticationRepository _authenticationRepository;
-  final String _baseApiHost = 'vyf-vote-circle-309d72dfd728.herokuapp.com';
+  final String _baseApiHost = 'vote-circle.dev.api.voteyourface.de';
   final String _basePath = 'v1/api/vote-circle';
 
   @override

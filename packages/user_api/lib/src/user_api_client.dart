@@ -15,7 +15,7 @@ class UserApiClient implements IUserApiClient {
       : _authenticationRepository = authenticationRepository;
 
   final IAuthenticationRepository _authenticationRepository;
-  final String _baseApiHost = 'vyf-user-service-4fe07f1427d1.herokuapp.com';
+  final String _baseApiHost = 'user.dev.api.voteyourface.de';
   final String _basePath = 'v1/api/user';
 
   @override
