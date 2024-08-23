@@ -25,7 +25,7 @@ class AblyServiceClient implements IAblyServiceClient {
   late StreamSubscription<String> _accessJwtTokenSubscription;
   late final ably.Realtime _realtime;
   static const String _ablyTokenUrl =
-      'https://vyf-vote-circle-309d72dfd728.herokuapp.com/v1/api/vote-circle/token/ably';
+      'https://vote-circle.dev.api.voteyourface.de/v1/api/vote-circle/token/ably';
   final _defaultAblyOptions = ably.ClientOptions(
     authMethod: 'GET',
     authUrl: _ablyTokenUrl,
