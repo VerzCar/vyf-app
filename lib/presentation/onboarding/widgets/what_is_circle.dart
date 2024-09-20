@@ -105,7 +105,6 @@ class WhatIsCircle extends StatelessWidget {
             },
           ),
         ),
-        //const Spacer(),
         Container(
           height: 48,
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
