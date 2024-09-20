@@ -16,7 +16,7 @@ class SplashView extends StatelessWidget {
     return BlocListener<UserBloc, UserState>(
       listener: (context, state) {
         if (state.status.isSuccessful) {
-          context.router.replace(const HomeRoute());
+          context.router.replace(const OnboardingRoute());
         } else if (state.status.isFailure) {
           sl<Logger>().e(
             'User init loading failure',

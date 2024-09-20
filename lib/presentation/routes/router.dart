@@ -100,6 +100,10 @@ class AppRouter extends $AppRouter {
             ),
           ],
         ),
+        AutoRoute(
+          path: '/onboarding',
+          page: OnboardingRoute.page,
+        ),
       ];
 }
 
