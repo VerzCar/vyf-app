@@ -1,5 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:vote_your_face/presentation/routes/router.gr.dart';
 
 class LiveRankings extends StatelessWidget {
   const LiveRankings({super.key, required this.onNext});
@@ -15,7 +16,7 @@ class LiveRankings extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextButton.icon(
-          onPressed: () => {},
+          onPressed: () => context.router.navigate(const HomeRoute()),
           label: const Text('Skip'),
           icon: const Icon(Icons.close),
         ),
@@ -32,7 +33,7 @@ class LiveRankings extends StatelessWidget {
               const SizedBox(height: 5),
               Text(
                 'As soon as the election has started and voters cast their votes, the ranking list is updated in real time. Follow live how the ranking of your candidates evolves and who wins the election!',
-                style: themeData.textTheme.bodyMedium,
+                style: themeData.textTheme.bodyLarge,
               ),
             ],
           ),

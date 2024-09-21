@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vote_your_face/application/circle/circle.dart';
 import 'package:vote_your_face/presentation/circle/cubit/circle_edit_form_cubit.dart';
-import 'package:vote_your_face/presentation/circle/models/models.dart';
 
 class CircleTimePicker extends StatelessWidget {
   const CircleTimePicker({

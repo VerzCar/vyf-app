@@ -5,7 +5,7 @@ import 'package:formz/formz.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circles/circles.dart';
 import 'package:vote_your_face/injection.dart';
-import 'package:vote_your_face/presentation/circle/cubit/circle_create_form_cubit.dart';
+import 'package:vote_your_face/application/circle/cubit/circle_create_form_cubit.dart';
 import 'package:vote_your_face/presentation/circle/widgets/create_circle_description_form.dart';
 import 'package:vote_your_face/presentation/circle/widgets/create_circle_duration_form.dart';
 import 'package:vote_your_face/presentation/circle/widgets/create_circle_members_form.dart';

@@ -1,5 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:vote_your_face/presentation/routes/router.gr.dart';
 
 class Rules extends StatelessWidget {
   const Rules({super.key, required this.onNext});
@@ -14,7 +16,7 @@ class Rules extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextButton.icon(
-          onPressed: () => {},
+          onPressed: () => context.router.navigate(const HomeRoute()),
           label: const Text('Skip'),
           icon: const Icon(Icons.close),
         ),

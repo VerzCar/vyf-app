@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vote_circle_repository/vote_circle_repository.dart';
+import 'package:vote_your_face/application/circle/circle.dart';
+import 'package:vote_your_face/application/user/user.dart';
+import 'package:vote_your_face/injection.dart';
+import 'package:vote_your_face/presentation/onboarding/widgets/create_circle_members_form.dart';
 import 'package:vote_your_face/presentation/onboarding/widgets/create_circle_name_desc_form.dart';
 import 'package:vote_your_face/presentation/onboarding/widgets/live_rankings.dart';
 import 'package:vote_your_face/presentation/onboarding/widgets/members.dart';
@@ -20,28 +26,47 @@ class _OnboardingViewState extends State<OnboardingView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: PageView(
-          controller: _pageController,
-          children: [
-            Welcome(
-              onNext: _onNext,
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => sl<UserBloc>()..add(UserInitialLoaded()),
             ),
-            WhatIsCircle(
-              onNext: _onNext,
+            BlocProvider<UserOptionBloc>(
+              create: (context) =>
+                  sl<UserOptionBloc>()..add(UserOptionLoaded()),
             ),
-            Members(
-              onNext: _onNext,
-            ),
-            LiveRankings(
-              onNext: _onNext,
-            ),
-            Rules(
-              onNext: _onNext,
-            ),
-            CreateCircleNameDescForm(
-              onNext: _onNext,
+            BlocProvider(
+              create: (context) => CircleCreateFormCubit(
+                voteCircleRepository: sl<IVoteCircleRepository>(),
+              ),
             ),
           ],
+          child: PageView(
+            controller: _pageController,
+            children: [
+              Welcome(
+                onNext: _onNext,
+              ),
+              WhatIsCircle(
+                onNext: _onNext,
+              ),
+              Members(
+                onNext: _onNext,
+              ),
+              LiveRankings(
+                onNext: _onNext,
+              ),
+              Rules(
+                onNext: _onNext,
+              ),
+              CreateCircleNameDescForm(
+                onNext: _onNext,
+              ),
+              CreateCircleMembersForm(
+                onNext: _onNext,
+              ),
+            ],
+          ),
         ),
       ),
     );

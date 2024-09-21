@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:intl/intl.dart';
-import 'package:vote_your_face/presentation/circle/cubit/circle_create_form_cubit.dart';
-import 'package:vote_your_face/presentation/circle/models/models.dart';
+import 'package:vote_your_face/application/circle/circle.dart';
+import 'package:vote_your_face/application/circle/cubit/circle_create_form_cubit.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class CreateCircleDurationForm extends StatelessWidget {

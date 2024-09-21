@@ -4,8 +4,8 @@ import 'package:formz/formz.dart';
 import 'package:logger/logger.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/injection.dart';
-import 'package:vote_your_face/presentation/circle/models/models.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
+import 'package:vote_your_face/application/circle/models/models.dart';
 
 part 'circle_create_form_state.dart';
 

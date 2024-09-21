@@ -2,8 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:logger/logger.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
+import 'package:vote_your_face/application/circle/circle.dart';
 import 'package:vote_your_face/injection.dart';
-import 'package:vote_your_face/presentation/circle/models/models.dart';
 
 part 'circle_edit_form_state.dart';
 

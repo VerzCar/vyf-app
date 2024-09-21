@@ -13,11 +13,6 @@ class Welcome extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextButton.icon(
-          onPressed: () => {},
-          label: const Text('Skip'),
-          icon: const Icon(Icons.close),
-        ),
         const SizedBox(height: 20),
         Column(
           children: [

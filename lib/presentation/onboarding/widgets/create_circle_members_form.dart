@@ -1,96 +1,105 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:formz/formz.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
+import 'package:vote_your_face/application/circle/circle.dart';
 import 'package:vote_your_face/application/user/user.dart';
-import 'package:vote_your_face/application/circle/cubit/circle_create_form_cubit.dart';
+import 'package:vote_your_face/presentation/routes/router.gr.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class CreateCircleMembersForm extends StatelessWidget {
-  const CreateCircleMembersForm({
-    super.key,
-    required this.onPrevious,
-  });
+  const CreateCircleMembersForm({super.key, required this.onNext});
 
-  final VoidCallback onPrevious;
+  final VoidCallback onNext;
 
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 15.0,
-        horizontal: 20.0,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Public or private',
-            style: themeData.textTheme.titleLarge,
-          ),
-          const SizedBox(height: 20.0),
-          Expanded(
-            child: LayoutBuilder(
-              builder: (context, constraint) => SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(minHeight: constraint.maxHeight),
-                  child: IntrinsicHeight(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        const CreateCirclePrivateInput(),
-                        const SizedBox(height: 20.0),
-                        Text(
-                          helpText,
-                          style: themeData.textTheme.bodyMedium,
-                        ),
-                        const SizedBox(height: 20.0),
-                        BlocBuilder<CircleCreateFormCubit,
-                            CircleCreateFormState>(
-                          builder: (context, state) {
-                            if (state.private.value) {
-                              return _membersSelectionColumn(context);
-                            }
-                            return const SizedBox();
-                          },
-                        ),
-                        const Spacer(),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            OutlinedButton(
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor:
-                                    themeData.colorScheme.secondary,
-                              ),
-                              onPressed: onPrevious,
-                              child: const Text('Previous'),
-                            ),
-                            const SizedBox(width: 10),
-                            _submitButton(context),
-                          ],
-                        ),
-                      ],
-                    ),
+    return LayoutBuilder(
+      builder: (context, constraint) => SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: constraint.maxHeight),
+          child: IntrinsicHeight(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextButton.icon(
+                  onPressed: () => context.router.navigate(const HomeRoute()),
+                  label: const Text('Skip'),
+                  icon: const Icon(Icons.close),
+                ),
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Create your first Circle',
+                        style: themeData.textTheme.headlineLarge,
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        'Privacy & Members',
+                        style: themeData.textTheme.titleLarge,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 30),
+                      const CreateCirclePrivateInput(),
+                      const SizedBox(height: 5),
+                      Text(
+                        _helpText,
+                        style: themeData.textTheme.bodySmall,
+                      ),
+                      const SizedBox(height: 30),
+                      BlocBuilder<CircleCreateFormCubit, CircleCreateFormState>(
+                        builder: (context, state) {
+                          if (state.private.value) {
+                            return _membersSelectionColumn(context);
+                          }
+                          return const SizedBox();
+                        },
+                      ),
+                    ],
                   ),
                 ),
-              ),
+                const SizedBox(height: 20),
+                const Spacer(),
+                Container(
+                  height: 48,
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: BlocBuilder<CircleCreateFormCubit,
+                            CircleCreateFormState>(
+                          builder: (context, state) {
+                            return ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor:
+                                    themeData.colorScheme.onSecondary,
+                                backgroundColor:
+                                    themeData.colorScheme.secondary,
+                              ),
+                              onPressed: state.name.isValid &&
+                                      state.description.isValid
+                                  ? onNext
+                                  : null,
+                              child: const Text('Next'),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
-  }
-
-  String get helpText {
-    return 'Choose whether your circle should be public or private. '
-        'If it’s public (default), anyone can see and join the circle as a voter or candidate. '
-        'If it’s private, you (the circle owner) will need to select the members, both voters and candidates. '
-        'Only these selected members can interact with the circle and see it. You can change members afterwards at anytime.';
   }
 
   Widget _membersSelectionColumn(BuildContext context) {
@@ -273,8 +282,15 @@ class CreateCircleMembersForm extends StatelessWidget {
       useSafeArea: true,
       isScrollControlled: true,
       builder: (BuildContext context2) {
-        return BlocProvider.value(
-          value: BlocProvider.of<CircleCreateFormCubit>(context),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider.value(
+              value: BlocProvider.of<CircleCreateFormCubit>(context),
+            ),
+            BlocProvider.value(
+              value: BlocProvider.of<UserOptionBloc>(context),
+            ),
+          ],
           child: BlocSelector<CircleCreateFormCubit, CircleCreateFormState,
               List<String>>(
             selector: (state) {
@@ -319,39 +335,10 @@ class CreateCircleMembersForm extends StatelessWidget {
     );
   }
 
-  Widget _submitButton(BuildContext context) {
-    final themeData = Theme.of(context);
-
-    return BlocBuilder<CircleCreateFormCubit, CircleCreateFormState>(
-      builder: (context, state) {
-        final formValid = Formz.validate([
-          state.name,
-          state.description,
-          state.dateFrom,
-          state.timeFrom,
-          state.dateUntil,
-          state.timeUntil,
-        ]);
-
-        bool privateMembersSelected = false;
-
-        if (state.private.value) {
-          privateMembersSelected = state.selectedMemberCandidateIds.isEmpty ||
-              state.selectedMemberVoterIds.isEmpty;
-        }
-
-        final disabled =
-            !formValid || privateMembersSelected || state.status.isInProgress;
-
-        return SubmitButton(
-          disabled: disabled,
-          isLoading: state.status.isInProgress,
-          foregroundColor: themeData.colorScheme.onSecondary,
-          backgroundColor: themeData.colorScheme.secondary,
-          label: 'Create',
-          onPressed: () => context.read<CircleCreateFormCubit>().onSubmit(),
-        );
-      },
-    );
+  String get _helpText {
+    return 'Choose whether your circle should be public or private. '
+        'If it’s public (default), anyone can see and join the circle as a voter or candidate. '
+        'If it’s private, you (the circle owner) will need to select the members, both voters and candidates. '
+        'Only these selected members can interact with the circle and see it. You can change members afterwards at anytime.';
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vote_your_face/presentation/circle/cubit/circle_create_form_cubit.dart';
+import 'package:vote_your_face/application/circle/cubit/circle_create_form_cubit.dart';
 import 'package:vote_your_face/presentation/shared/shared.dart';
 
 class CreateCircleNameForm extends StatelessWidget {
@@ -25,7 +25,7 @@ class CreateCircleNameForm extends StatelessWidget {
             style: themeData.textTheme.titleLarge,
           ),
           const SizedBox(height: 20.0),
-          _CircleNameInput(),
+          const CreateCircleNameInput(),
           const SizedBox(height: 20.0),
           Text(
             helpText,
@@ -57,25 +57,5 @@ class CreateCircleNameForm extends StatelessWidget {
     return 'Enter a descriptive name for your voting circle. '
         'This should reflect what the circle stands for. '
         'For example, if your circle is about voting for the best actor in Hollywood, you might name it "Hollywood Best Actor Voting Circle"';
-  }
-}
-
-class _CircleNameInput extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<CircleCreateFormCubit, CircleCreateFormState>(
-      buildWhen: (previous, current) => previous.name != current.name,
-      builder: (context, state) {
-        return VyfTextFormField(
-          key: const Key('CreateCircleNameForm_CircleNameInput_textFormField'),
-          onChanged: (name) =>
-              context.read<CircleCreateFormCubit>().onNameChanged(name),
-          labelText: 'Circle name',
-          errorText: 'Invalid circle name',
-          maxLength: 40,
-          showError: !state.name.isPure && state.name.isNotValid,
-        );
-      },
-    );
   }
 }
