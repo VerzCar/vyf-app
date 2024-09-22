@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/circle/circle.dart';
 import 'package:vote_your_face/application/user/user.dart';
@@ -72,24 +73,7 @@ class CreateCircleMembersForm extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Expanded(
-                        child: BlocBuilder<CircleCreateFormCubit,
-                            CircleCreateFormState>(
-                          builder: (context, state) {
-                            return ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor:
-                                    themeData.colorScheme.onSecondary,
-                                backgroundColor:
-                                    themeData.colorScheme.secondary,
-                              ),
-                              onPressed: state.name.isValid &&
-                                      state.description.isValid
-                                  ? onNext
-                                  : null,
-                              child: const Text('Next'),
-                            );
-                          },
-                        ),
+                        child: _submitButton(context),
                       ),
                     ],
                   ),
@@ -330,6 +314,42 @@ class CreateCircleMembersForm extends StatelessWidget {
               );
             },
           ),
+        );
+      },
+    );
+  }
+
+  Widget _submitButton(BuildContext context) {
+    final themeData = Theme.of(context);
+
+    return BlocBuilder<CircleCreateFormCubit, CircleCreateFormState>(
+      builder: (context, state) {
+        final formValid = Formz.validate([
+          state.name,
+          state.description,
+          state.dateFrom,
+          state.timeFrom,
+          state.dateUntil,
+          state.timeUntil,
+        ]);
+
+        bool privateMembersSelected = false;
+
+        if (state.private.value) {
+          privateMembersSelected = state.selectedMemberCandidateIds.isEmpty ||
+              state.selectedMemberVoterIds.isEmpty;
+        }
+
+        final disabled =
+            !formValid || privateMembersSelected || state.status.isInProgress;
+
+        return SubmitButton(
+          disabled: disabled,
+          isLoading: state.status.isInProgress,
+          foregroundColor: themeData.colorScheme.onPrimary,
+          backgroundColor: themeData.colorScheme.primary,
+          label: 'Create',
+          onPressed: () => context.read<CircleCreateFormCubit>().onSubmit(),
         );
       },
     );

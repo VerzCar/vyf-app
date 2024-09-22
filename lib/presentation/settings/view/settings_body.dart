@@ -52,6 +52,34 @@ class SettingsBody extends StatelessWidget {
               borderRadius: _borderRadius,
             ),
             title: Text(
+              'Rules & Regulations',
+              textAlign: TextAlign.center,
+              style: themeData.textTheme.titleMedium,
+            ),
+            onTap: () => {},
+          ),
+        ),
+        Card.outlined(
+          margin: const EdgeInsets.symmetric(vertical: 6.0),
+          child: ListTile(
+            shape: RoundedRectangleBorder(
+              borderRadius: _borderRadius,
+            ),
+            title: Text(
+              'FAQ & Help',
+              textAlign: TextAlign.center,
+              style: themeData.textTheme.titleMedium,
+            ),
+            onTap: () => {},
+          ),
+        ),
+        Card.outlined(
+          margin: const EdgeInsets.symmetric(vertical: 6.0),
+          child: ListTile(
+            shape: RoundedRectangleBorder(
+              borderRadius: _borderRadius,
+            ),
+            title: Text(
               'Impressum',
               textAlign: TextAlign.center,
               style: themeData.textTheme.titleMedium,
