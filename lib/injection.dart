@@ -2,6 +2,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:rankings_repository/rankings_repository.dart';
+import 'package:shared_settings_repository/shared_settings_repository.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:vote_circle_repository/vote_circle_repository.dart';
 import 'package:vote_your_face/application/authentication/bloc/authentication_bloc.dart';
@@ -27,6 +28,9 @@ Future<void> init() async {
   // singletons
   sl.registerSingleton<IAuthenticationRepository>(
     AuthenticationRepository(),
+  );
+  sl.registerSingletonAsync<ISharedSettingsRepository>(
+    () async => await SharedSettingsRepository.create(),
   );
 
   // lazy singletons

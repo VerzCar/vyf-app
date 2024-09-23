@@ -11,9 +11,23 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<UserBloc>()..add(UserInitialLoaded()),
-      child: const SplashView(),
+    return FutureBuilder(
+      future: sl.allReady(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          return BlocProvider(
+            create: (context) => sl<UserBloc>()..add(UserInitialLoaded()),
+            child: const SplashView(),
+          );
+        }
+        return const Scaffold(
+          body: SafeArea(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        );
+      },
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_settings_repository/shared_settings_repository.dart';
 import 'package:vote_your_face/application/shared/shared.dart';
 import 'package:vote_your_face/application/user/bloc/user_bloc.dart';
 import 'package:vote_your_face/application/user/user.dart';
@@ -16,7 +17,13 @@ class SplashView extends StatelessWidget {
     return BlocListener<UserBloc, UserState>(
       listener: (context, state) {
         if (state.status.isSuccessful) {
-          context.router.replace(const OnboardingRoute());
+          final settings = sl<ISharedSettingsRepository>().settings;
+
+          if (settings.initialUseOfApp) {
+            context.router.replace(const OnboardingRoute());
+          } else {
+            context.router.replace(const HomeRoute());
+          }
         } else if (state.status.isFailure) {
           sl<Logger>().e(
             'User init loading failure',

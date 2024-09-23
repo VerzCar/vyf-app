@@ -1,0 +1,23 @@
+name: shared_settings_repository
+description: "Shared settings repo"
+version: 0.0.1
+homepage: ''
+publish_to: none
+
+environment:
+  sdk: ^3.5.3
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  logger: ^2.3.0
+  shared_preferences: ^2.2.3
+  equatable: ^2.0.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
